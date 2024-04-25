@@ -16,20 +16,21 @@ public class UTC{
 
 	public static void main(String[] args) {
 		
-		// write Calendar code here. Research API for details
+	// write Calendar code here. Research API for details
 		
         long millis = System.currentTimeMillis();
 		System.out.println("miliseconds since Epoch: " +  millis);
 		Calendar rightNow = Calendar.getInstance();
         System.out.println("Java Calendar API Time: " + rightNow.get(Calendar.HOUR_OF_DAY) + ":" + rightNow.get(Calendar.MINUTE) + ":" + rightNow.get(Calendar.SECOND));
 
-        // get the command line argument, convert to an integer
-		// byte timeZoneAdjust = Byte.parseByte(args[0]);
+    // get the command line argument, convert to an integer
+		
+        byte timeZoneAdjust = Byte.parseByte(args[0]);
+
         
-        byte timeZoneAdjust = - 4;
-        String AM_PM = "AM";
-        
-        // convert milliseconds since Epoch to today's time in milliseconds
+        int milAdjust = timeZoneAdjust * MIL_PER_HOUR;
+
+    // convert milliseconds since Epoch to today's time in milliseconds
         
         long curHourInMil  = millis       %  MIL_PER_DAY;
         long curMinInMil   = curHourInMil %  MIL_PER_HOUR;
@@ -40,32 +41,38 @@ public class UTC{
         int currentHour = (int)curHourInMil / MIL_PER_HOUR;
         int currentMin  = (int)curMinInMil  / MIL_PER_MIN;
         int currentSec  = (int)curSecInMil  / MIL_PER_SEC;
+
+    // redo above for timezone adjusted UTC
+
+        long curHourInMilTimeAdj  = (millis + milAdjust) %  MIL_PER_DAY;
+        long curMinInMilTimeAdj  = curHourInMil %  MIL_PER_HOUR;
+        long curSecInMilTimeAdj   = curHourInMil %  MIL_PER_MIN; 
         
-        // output for UTC
+        // convert timezoned adjusted milliseconds into readable time
+        
+        int currentHourTimeAdj = (int)curHourInMilTimeAdj / MIL_PER_HOUR;
+        int currentMinTimeAdj  = (int)curMinInMilTimeAdj  / MIL_PER_MIN;
+        int currentSecTimeAdj  = (int)curSecInMilTimeAdj  / MIL_PER_SEC;
+
+    // output for UTC
         
         System.out.printf("GMT Time: %d:%d:%d%n",currentHour,currentMin,currentSec);
         
-        // conditionals for if timezone adjusts put you into previous or next day
-        
-        if (currentHour + timeZoneAdjust > 24)
-            currentHour -= 24;
-        else if (currentHour + timeZoneAdjust < 0)
-            currentHour += 24;
-       
-        // conditionals for 12 hour clock adjust with AM/PM
-        
-        if (currentHour + timeZoneAdjust >= 12){
+    // conditionals for 12 hour clock adjust with AM/PM
+        // initialize AM_PM var
+        String AM_PM = "AM";
+        if (currentHourTimeAdj >= 12){
             AM_PM = "PM";
-            if (currentHour + timeZoneAdjust > 12){
-                currentHour -= 12;
+            if (currentHourTimeAdj > 12){
+                currentHourTimeAdj -= 12;
             }  
         }
         else
             AM_PM = "AM";
        
-        // current locations time output
+     // output for current time
         
-        System.out.printf("Local Time: %d:%d:%d %S%n", currentHour + timeZoneAdjust, currentMin, currentSec, AM_PM);
+        System.out.printf("Local Time: %d:%d:%d %S%n", currentHourTimeAdj, currentMinTimeAdj, currentSecTimeAdj, AM_PM);
 
 	}
 }   
