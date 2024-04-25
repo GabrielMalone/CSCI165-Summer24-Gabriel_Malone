@@ -8,7 +8,7 @@ public class UTC{
 	// constants for raw time conversion
 	// these must be static because they will be called from a "static context" => main
 	
-    static final int MILLISECONDS	= 1;
+        static final int MILLISECONDS	= 1;
 	static final int MIL_PER_SEC	= MILLISECONDS * 1000;
 	static final int MIL_PER_MIN	= MIL_PER_SEC  * 60;
 	static final int MIL_PER_HOUR	= MIL_PER_MIN  * 60;
@@ -16,17 +16,17 @@ public class UTC{
 
 	public static void main(String[] args) {
 		
-		// write Calendar code here. Research API for details
+	// write Calendar code here. Research API for details
 		
         long millis = System.currentTimeMillis();
-		System.out.println("miliseconds since Epoch: " +  millis);
-		Calendar rightNow = Calendar.getInstance();
+	System.out.println("miliseconds since Epoch: " +  millis);
+	Calendar rightNow = Calendar.getInstance();
         System.out.println("Java Calendar API Time: " + rightNow.get(Calendar.HOUR_OF_DAY) + ":" + rightNow.get(Calendar.MINUTE) + ":" + rightNow.get(Calendar.SECOND));
 
         // get the command line argument, convert to an integer
-		// byte timeZoneAdjust = Byte.parseByte(args[0]);
+	byte timeZoneAdjust = Byte.parseByte(args[0]);
         
-        byte timeZoneAdjust = - 4;
+       	// initialize this for later
         String AM_PM = "AM";
         
         // convert milliseconds since Epoch to today's time in milliseconds
