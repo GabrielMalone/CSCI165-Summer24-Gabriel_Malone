@@ -43,7 +43,6 @@ public class UTC{
             // convert the decimal value to current number of hours in today's day from the decimal value in the days calculated above
             double currentHours      = currentDayVal * 24;
             
-            
             // get the decimal value from hours ^ and assign it to a variable 
             // this will give the minutes in the current hour
             // convert the decimal string back to a double
@@ -54,7 +53,6 @@ public class UTC{
             double currentDayMinutesVal  = Double.parseDouble(currentDayMinutes);
             double currentMinutes        = currentDayMinutesVal * 60;
 
-            
             // get the decimal value from minutes ^ and assign it to a variable 
             // this will give the seconds in the current minute
             // convert the decimal string back to a double
@@ -65,14 +63,8 @@ public class UTC{
             double currentDaySecondsVal  = Double.parseDouble(currentDaySeconds);
             double currentSeconds        = currentDaySecondsVal * 60;
 
-        // output - need to add 1 to hours to account for the way the hours are calcualted... 
-        // (e.g. 17.143 hours means you're technically in the 18th hour of the day)
+        // output 
         System.out.printf("Current GMT Time: %.0f:%.0f:%.0f%n", Math.floor(currentHours), Math.floor(currentMinutes), Math.floor(currentSeconds));
-        // 12 hour clock adjust
-        if (Math.floor(currentHours + timeZoneAdjust + 1) >= 12 ) {
-			System.out.printf("Current Local Time: %.0f:%.0f:%.0f PM%n", Math.floor(currentHours + timeZoneAdjust + 1 - 12), Math.floor(currentMinutes), Math.floor(currentSeconds));}
-        else {
-            System.out.printf("Current Local Time: %.0f:%.0f:%.0f AM%n", Math.floor(currentHours + timeZoneAdjust + 1), Math.floor(currentMinutes), Math.floor(currentSeconds));
-        }   
+        System.out.printf("Current Local Time: %.0f:%.0f:%.0f%n", Math.floor(currentHours + timeZoneAdjust), Math.floor(currentMinutes), Math.floor(currentSeconds));
 	}
 }   
