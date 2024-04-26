@@ -25,8 +25,8 @@ public class UTC{
 
     // get the command line argument, convert to an integer
 		
-        byte timeZoneAdjust = Byte.parseByte(args[0]);
-
+        //byte timeZoneAdjust = Byte.parseByte(args[0]);
+        byte timeZoneAdjust = - 4;
         
         int milAdjust = timeZoneAdjust * MIL_PER_HOUR;
 
@@ -56,7 +56,7 @@ public class UTC{
 
     // output for UTC
         
-        System.out.printf("GMT Time: %d:%d:%d%n",currentHour,currentMin,currentSec);
+        System.out.printf("GMT Time:  %02d:%02d:%02d%n",currentHour,currentMin,currentSec);
         
     // conditionals for 12 hour clock adjust with AM/PM
         // initialize AM_PM var
@@ -72,7 +72,7 @@ public class UTC{
        
      // output for current time
         
-        System.out.printf("Local Time: %d:%d:%d %S%n", currentHourTimeAdj, currentMinTimeAdj, currentSecTimeAdj, AM_PM);
+        System.out.printf("Local Time: %d:%02d:%02d %S%n", currentHourTimeAdj, currentMinTimeAdj, currentSecTimeAdj, AM_PM);
 
 	}
 }   
