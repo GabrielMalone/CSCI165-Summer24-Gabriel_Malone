@@ -25,9 +25,8 @@ public class UTC{
 
     // get the command line argument, convert to an integer
 		
-        //byte timeZoneAdjust = Byte.parseByte(args[0]);
-        byte timeZoneAdjust = - 4;
-        
+        int timeZoneAdjust = Byte.parseByte(args[0]);
+       
         int milAdjust = timeZoneAdjust * MIL_PER_HOUR;
 
     // convert milliseconds since Epoch to today's time in milliseconds
