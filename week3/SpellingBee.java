@@ -56,6 +56,12 @@ public class SpellingBee {
         words.add(word);
     }
 
+    private void totalWordsDisplay(ArrayList words, SpellingBeeGraphics sbg){
+        String totalWords = words.size() + " words";
+        // display word total
+        sbg.showMessage(totalWords);
+    }
+
     private String scoreWord(String word){
         // add score to each valid word
         // one point per letter
@@ -174,15 +180,13 @@ public class SpellingBee {
                 // display each word/score
                 sbg.addWord(word);
                     }
-                }
+                } // while loop end
+            totalWordsDisplay(words, sbg);
             dictionary.close();
             }
         catch(FileNotFoundException fnf){
             System.out.println("ERROR: FILE NOT FOUND!");
             }	
-        String totalWords = words.size() + " words";
-        // display word total
-        sbg.showMessage(totalWords);
         }
 
     /* Constants */
