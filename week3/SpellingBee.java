@@ -51,6 +51,11 @@ public class SpellingBee {
     // The contents of the field will be automatically passed to the method as a string
     
     
+    private void totalWords(ArrayList words, String word){
+        // keep track of total words used
+        words.add(word);
+    }
+
     private String scoreWord(String word){
         // add score to each valid word
         // one point per letter
@@ -147,7 +152,7 @@ public class SpellingBee {
     private void solveAction(SpellingBeeGraphics sbg) {
         sbg.clearWordList(); // clear list when new valid puzzle being solved
         String beehiveWord = sbg.getBeehiveLetters();
-        
+        ArrayList<String> words = new ArrayList<String>();
         try{
             FileReader fileReader = new FileReader("lab/EnglishWords.txt");
             Scanner    dictionary = new Scanner(fileReader);
@@ -160,9 +165,13 @@ public class SpellingBee {
                 else if (! onlyBeeHiveLetters(beehiveWord, word)) okayToAdd = false;
                 // and contains the first character of the beehiveword
                 else if (! centerLetterCheck(beehiveWord, word)) okayToAdd = false;
-                // add the word to the list 
+                // okay to add word 
                 else if (okayToAdd) {
+                // count how many words there are
+                totalWords(words, word);
+                // score each word
                 word = scoreWord(word);
+                // display each word/score
                 sbg.addWord(word);
                     }
                 }
@@ -170,7 +179,10 @@ public class SpellingBee {
             }
         catch(FileNotFoundException fnf){
             System.out.println("ERROR: FILE NOT FOUND!");
-            }		
+            }	
+        String totalWords = words.size() + " words";
+        // display word total
+        sbg.showMessage(totalWords);
         }
 
     /* Constants */
