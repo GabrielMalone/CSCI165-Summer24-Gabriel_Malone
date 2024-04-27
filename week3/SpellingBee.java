@@ -28,23 +28,21 @@ public class SpellingBee {
 		String remainingLetters = beehiveWord.substring(1, beehiveWord.length());
 		// put the remaining letters into an array
 		List<Character> characters = new ArrayList<>(); 
-        for (char c : remainingLetters.toCharArray()) { 
-            characters.add(c); 
+	        for (char c : remainingLetters.toCharArray()) { 
+	            	characters.add(c); }
 		// shuffle the list
 		Collections.shuffle(characters);
 		// convert list back to a string
 		StringBuilder shuffledString = new StringBuilder(); 
 		for (char d : characters) { 
-            shuffledString.append(d); 
-        } 
+            		shuffledString.append(d); 
+       		 } 
 		// concatenate the center letter + the remaining shuffled letters
 		String shuffled = shuffledString.toString();
 		shuffled = center + shuffled;
 		// update the beehiveword
 		sbg.setBeehiveLetters(shuffled);
-        } 
-
-	}
+   	 } 
 
 	private boolean alreadyInList(String word){
 		// check to see if a user has already used this valid word
@@ -82,8 +80,8 @@ public class SpellingBee {
 	}
 		
 	private static void addUserWordToDisplay(ArrayList<String> beeHiveBonusWords, 
-											 String word, 
-											 SpellingBeeGraphics sbg){
+						 String word, 
+						 SpellingBeeGraphics sbg){
 		// seperate the word and score tuple
 		int index = word.indexOf(" ");
 		// if the word contains all the beehive letters and is 7 or more letters
@@ -94,8 +92,8 @@ public class SpellingBee {
 	}
 	
 	private static void addWordsToDisplay(ArrayList<String> validWords, 
-										  ArrayList<String> beeHiveBonusWords, 
-										  SpellingBeeGraphics sbg){
+					      ArrayList<String> beeHiveBonusWords, 
+					      SpellingBeeGraphics sbg){
 		// iterate through valid word list
 		for (String word : validWords){
 			// seperate the word and score tuple
@@ -110,16 +108,16 @@ public class SpellingBee {
 	}
 	
 	public static ArrayList<String> loadWords(String fileName){
-		ArrayList<String> words = new ArrayList<String>(); // create an instance of the ArrayList class
+		ArrayList<String> words = new ArrayList<String>();             // create an instance of the ArrayList class
 		try{
-			File file 			= new File(fileName);		// create a File object
+			File file 			= new File(fileName);	// create a File object
 			Scanner fileScanner = new Scanner(file);		// Create a scanner for the file object
-			String word 		= "";						// string variable to hold a word
-			while(fileScanner.hasNext()){					// while the file has more tokens
-				word = fileScanner.next();					// grab the next token
-				words.add(word);							// add it to the ArrayList
+			String word 		= "";				// string variable to hold a word
+			while(fileScanner.hasNext()){				// while the file has more tokens
+				word = fileScanner.next();			// grab the next token
+				words.add(word);				// add it to the ArrayList
 			}
-			fileScanner.close();							// close the scanner object  
+			fileScanner.close();					// close the scanner object  
 		}
 		catch(FileNotFoundException fnfe){
 			System.out.println("Problem opening the file: " + fnfe.getMessage());
@@ -143,16 +141,16 @@ public class SpellingBee {
 	}
  
 	private void totalWordsScoreDisplay(ArrayList<String> validWords, 
-										int totalScore, 
-										SpellingBeeGraphics sbg ){
+					    int totalScore, 
+					    SpellingBeeGraphics sbg ){
 		String totalWords = validWords.size() + " words; " + totalScore + " points";
 		// display word total
 		sbg.showMessage(totalWords);
 	}
 
 	private String scoreWord(String word, 
-							 String beehiveWord, 
-							 ArrayList<String> beeHiveBonusWords){
+				 String beehiveWord, 
+				 ArrayList<String> beeHiveBonusWords){
 		// add score to each valid word
 		// one point per letter
 		int score = score(word, beehiveWord, beeHiveBonusWords);
@@ -193,20 +191,20 @@ public class SpellingBee {
 		}
 	
 	private boolean uniqueCheck(String s){		
-		int i = 0;               	      	// outer loop stepper
-		int j = 1;               	  	    // inner loop stepper
-		while(i < s.length()){	 	  		// outer while loop head
-			char a = s.charAt(i);	 		// 'a' is the character that will be compared against all other characters ('b') in the word
-			while(j < s.length()){    		// inner loop head 
-				char b = s.charAt(j); 		// all the other characters that are not 'a'. 
-				if(a == b) return false;	// if 'a' equals 'b' then not all characters unique // break out of loop if match found, no need to continue	
+		int i = 0;               	      	  // outer loop stepper
+		int j = 1;               	  	  // inner loop stepper
+		while(i < s.length()){	 	  	  // outer while loop head
+			char a = s.charAt(i);	 	  // 'a' is the character that will be compared against all other characters ('b') in the word
+			while(j < s.length()){    	  // inner loop head 
+				char b = s.charAt(j); 	  // all the other characters that are not 'a'. 
+				if(a == b) return false;  // if 'a' equals 'b' then not all characters unique // break out of loop if match found, no need to continue	
 				else
-				j += 1; 		  			// if no pairs found, move on. 
-					}       			    // end of inner-loop
-			j =  i + 2; 			  		// reset inner loop to always start at the letter following 'a'
-			i += 1;     			  		// progress outer-loop ('a' moved to next letter in the word)
-			}           			    	// end of outer-loop
-		return true;
+				j += 1; 		   // if no pairs found, move on. 
+					}          	   // end of inner-loop
+			j =  i + 2; 			   // reset inner loop to always start at the letter following 'a'
+			i += 1;     			   // progress outer-loop ('a' moved to next letter in the word)
+			}           			   // end of outer-loop
+		return true;				   // return true if all unique
 		}               			  		
 		
 	private boolean realWordCheck(String s){
@@ -224,8 +222,10 @@ public class SpellingBee {
 	for(int k = 0; k < s.length(); k++){
 		// char to int type conersion
 		int check = s.charAt(k);
-		if(check < 65 || check > 122){ // check to see if char is in range of English alphabet chars
-			return false;		   // if not...
+		// check to see if char is in range of English alphabet chars
+		if(check < 65 || check > 122){     
+			// if not...
+			return false;		  
 			} // end if-statement
 		} // end of for-loop
 	return true;
@@ -347,8 +347,8 @@ public class SpellingBee {
 	}
 
 	/* Startup code */
-	public static void main(String[] args) {	// application starts here
+	public static void main(String[] args) { // application starts here
 		SpellingBee sb = new SpellingBee();
-		sb.run();// call the run method (defined below)
+		sb.run(); // call the run method (defined below)
 	}
 }
