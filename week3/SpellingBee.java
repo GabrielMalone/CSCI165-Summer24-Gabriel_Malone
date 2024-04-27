@@ -52,11 +52,15 @@ public class SpellingBee {
 	
 	
 	private boolean centerLetterCheck(String beehiveword, String word){
+		// check to see if any part of the, thus far valid, 
+		// word contains the first letter of the beehive word (index 0)
 		if (word.contains(beehiveword.toLowerCase().substring(0, 1))) return true;
 		else return false;
 	}
 
 	private boolean onlyBeeHiveLetters(String beehiveWord, String word){
+		// iterate through the dictionary word and see if all letters
+		// in the dictionary word are present in the beehive word. 
 		for(int i = 0; i < word.length(); i ++){
 			String a = word.substring(i, i+1);
 			if (! beehiveWord.toLowerCase().contains(a)) return false;	
