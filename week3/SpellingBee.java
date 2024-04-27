@@ -57,7 +57,6 @@ public class SpellingBee {
 	}
 
 	private boolean onlyBeeHiveLetters(String beehiveWord, String word){
-		
 		for(int i = 0; i < word.length(); i ++){
 			String a = word.substring(i, i+1);
 			if (! beehiveWord.toLowerCase().contains(a)) return false;	
@@ -140,8 +139,8 @@ public class SpellingBee {
 	// but you can change this if you'd like
 	
 	private void solveAction(SpellingBeeGraphics sbg) {
-		
-	
+
+		sbg.clearWordList();
 		String beehiveWord = sbg.getBeehiveLetters();
 		
 		try{
