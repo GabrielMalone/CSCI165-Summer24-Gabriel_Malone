@@ -51,6 +51,20 @@ public class SpellingBee {
     // The contents of the field will be automatically passed to the method as a string
     
     
+    private String scoreWord(String word){
+        // add score to each valid word
+        // one point per letter
+        int score = word.length();
+        // above code is true for all cases except length of 4
+        if (score == 4) score = 1;
+        // bonus of +7 if 7 letters or more
+        if (score > 6) score += 7;
+        // create new string of word and score
+        String newWordString = word + " (" + score + ") ";
+        return newWordString;
+
+    }
+    
     private boolean centerLetterCheck(String beehiveword, String word){
         // check to see if any part of the, thus far valid, 
         // word contains the first letter of the beehive word (index 0)
@@ -147,7 +161,10 @@ public class SpellingBee {
                 // and contains the first character of the beehiveword
                 else if (! centerLetterCheck(beehiveWord, word)) okayToAdd = false;
                 // add the word to the list 
-                else if (okayToAdd) sbg.addWord(word);
+                else if (okayToAdd) {
+                word = scoreWord(word);
+                sbg.addWord(word);
+                    }
                 }
             dictionary.close();
             }
