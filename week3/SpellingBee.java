@@ -3,23 +3,48 @@
 import java.awt.Color;	// import the Color class
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class SpellingBee {
 
 	boolean solved = false; // prevent user from trying to enter new words once puzzle solved
 	int totalUserScore = 0; // keep track of total user score
 	// class level ArrayList for all of the words in the dictionary
-	ArrayList<String> words = loadWords("lab/EnglishWords.txt");
+	ArrayList<String> words = loadWords("EnglishWords.txt");
 	// list for the found words
 	ArrayList<String> validWords = new ArrayList<String>(); 
 	// list for bonus words
 	ArrayList<String> beeHiveBonusWords = new ArrayList<String>(); 
    
+	private void shuffleBeeString(SpellingBeeGraphics sbg){
+		// shuffle beehive word, but center (index 0) needs to remain the same
+		String beehiveWord = sbg.getBeehiveLetters();
+		// get center character
+		char center = beehiveWord.charAt(0);
+		// get all letters besides the center character
+		String remainingLetters = beehiveWord.substring(1, beehiveWord.length());
+		// put the remaining letters into an array
+		List<Character> characters = new ArrayList<>(); 
+        for (char c : remainingLetters.toCharArray()) { 
+            characters.add(c); 
+		// shuffle the list
+		Collections.shuffle(characters);
+		// convert list back to a string
+		StringBuilder shuffledString = new StringBuilder(); 
+		for (char d : characters) { 
+            shuffledString.append(d); 
+        } 
+		// concatenate the center letter + the remaining shuffled letters
+		String shuffled = shuffledString.toString();
+		shuffled = center + shuffled;
+		// update the beehiveword
+		sbg.setBeehiveLetters(shuffled);
+        } 
+
+	}
 
 	private boolean alreadyInList(String word){
 		// check to see if a user has already used this valid word
@@ -106,11 +131,14 @@ public class SpellingBee {
 
 		SpellingBeeGraphics sbg = new SpellingBeeGraphics();
 
+		sbg.addButton("Shuffle", (s) -> shuffleBeeString(sbg));
+
 		sbg.addField("Puzzle", (s) -> puzzleAction(s, sbg));
 
 		sbg.addField("Word",  (s) ->  wordAction(s, sbg));
 
 		sbg.addButton("Solve", (s) -> solveAction(sbg));
+
 		
 	}
  
@@ -140,7 +168,7 @@ public class SpellingBee {
 		if (word.toLowerCase().contains(beehiveword.toLowerCase().substring(0, 1))) return true;
 		else return false;
 	}
-
+	
 	private boolean onlyBeeHiveLetters(String beehiveWord, String word){
 		// iterate through the dictionary word and see if all letters
 		// in the dictionary word are present in the beehive word. 
@@ -185,7 +213,9 @@ public class SpellingBee {
 		boolean valid = false;
 		// iterate through dictionary and see if there's a match
 		for (String word : words){
-			if (s.toLowerCase() == word) valid = true;
+			if (s.toLowerCase().equals(word))
+			{valid = true; 
+			break;}
 		}
 		return valid;
 	}
