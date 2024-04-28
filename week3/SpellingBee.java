@@ -16,20 +16,20 @@ public class SpellingBee {
 	// class level ArrayList for all of the words in the dictionary
 	ArrayList<String> words = loadWords("EnglishWords.txt");
 	// list for the found words
-	ArrayList<String> validWords = new ArrayList<String>(); 
+	ArrayList<String> validWords = new ArrayList<String>();
 	// list for bonus words
-	ArrayList<String> beeHiveBonusWords = new ArrayList<String>(); 
+	ArrayList<String> beeHiveBonusWords = new ArrayList<String>();
 	// list for all valid BeeHiveWords
-	ArrayList<String> allValidBeeHiveWords = new ArrayList<String>(); 
-	
-	
-   
+	ArrayList<String> allValidBeeHiveWords = new ArrayList<String>();
+
+
+
 	private Boolean allLettersNotS(String word){
 		// reject words that have 's'
 		if (word.contains("s")) return false;
 		else return true;
 	}
-	
+
 	private String selectRandomBeehiveWord(){
 		// select a random word from the arraylist
 		createBeeString();
@@ -44,7 +44,7 @@ public class SpellingBee {
 			if (lengthCheck(word) && (uniqueCheck(word)) && (allLettersNotS(word)))
 			allValidBeeHiveWords.add(word);}
 	}
-	
+
 	private void shuffleBeeString(SpellingBeeGraphics sbg){
 		// shuffle beehive word, but center (index 0) needs to remain the same
 		String beehiveWord = sbg.getBeehiveLetters();
@@ -53,46 +53,48 @@ public class SpellingBee {
 		// get all letters besides the center character
 		String remainingLetters = beehiveWord.substring(1, beehiveWord.length());
 		// put the remaining letters into an array
-		List<Character> characters = new ArrayList<>(); 
-        for (char c : remainingLetters.toCharArray()) { 
-            characters.add(c); 
+		List<Character> characters = new ArrayList<>();
+		for (char c : remainingLetters.toCharArray()) {
+			characters.add(c);
 		// shuffle the list
 		Collections.shuffle(characters);
 		// convert list back to a string
-		StringBuilder shuffledString = new StringBuilder(); 
-		for (char d : characters) { 
-            shuffledString.append(d); 
-        } 
+		StringBuilder shuffledString = new StringBuilder();
+		for (char d : characters) {
+			shuffledString.append(d);
+		}
 		// concatenate the center letter + the remaining shuffled letters
 		String shuffled = shuffledString.toString();
 		shuffled = center + shuffled;
 		// update the beehiveword
 		sbg.setBeehiveLetters(shuffled);
-        } 
+		}
 
 	}
 
 	private boolean alreadyInList(String word){
 		// check to see if a user has already used this valid word
 		// seperate the word and score tuple
-		if (validWords.contains(word.toLowerCase()) || beeHiveBonusWords.contains(word.toLowerCase())) return true;
+		if (validWords.contains(word.toLowerCase()) 
+			|| beeHiveBonusWords.contains(word.toLowerCase())) 
+				return true;
 		else return false;
 	}
 
-	private boolean allSeven(String word, 
+	private boolean allSeven(String word,
 							String beehiveword){
 		// iterate through the beehive word and see if all letters
 		// in the beehive word are present in the valid word
-		// for bonus points 
+		// for bonus points
 		for(int i = 0; i < beehiveword.length(); i ++){
 			String a = beehiveword.substring(i, i+1).toLowerCase();
-			if (! word.toLowerCase().contains(a)) return false;	
+			if (! word.toLowerCase().contains(a)) return false;
 		}
 		return true;
 	}
-	 
-	private int score(  String word, 
-						String beehiveWord, 
+
+	private int score(  String word,
+						String beehiveWord,
 						ArrayList<String> beeHiveBonusWords){
 		// add score to each valid word
 		// one point per letter
@@ -103,12 +105,12 @@ public class SpellingBee {
 		if (word.length() > 6  && allSeven(word, beehiveWord)){
 			score += 7;
 			beeHiveBonusWords.add(word);
-		} 
+		}
 		return score;
 	}
-		
-	private static void addUserWordToDisplay(ArrayList<String> beeHiveBonusWords, 
-											 String word, 
+
+	private static void addUserWordToDisplay(ArrayList<String> beeHiveBonusWords,
+											 String word,
 											 SpellingBeeGraphics sbg){
 		// seperate the word and score tuple
 		int index = word.indexOf(" ");
@@ -118,9 +120,9 @@ public class SpellingBee {
 		// otherwise print word and score in black
 		else sbg.addWord(word);
 	}
-	
-	private static void addWordsToDisplay(ArrayList<String> validWords, 
-										  ArrayList<String> beeHiveBonusWords, 
+
+	private static void addWordsToDisplay(ArrayList<String> validWords,
+										  ArrayList<String> beeHiveBonusWords,
 										  SpellingBeeGraphics sbg){
 		// iterate through valid word list
 		for (String word : validWords){
@@ -134,52 +136,46 @@ public class SpellingBee {
 			else sbg.addWord(word);
 		}
 	}
-	
+
 	public static ArrayList<String> loadWords(String fileName){
 		ArrayList<String> words = new ArrayList<String>(); // create an instance of the ArrayList class
 		try{
-			File file 			= new File(fileName);		// create a File object
+			File file = new File(fileName);					// create a File object
 			Scanner fileScanner = new Scanner(file);		// Create a scanner for the file object
-			String word 		= "";						// string variable to hold a word
+			String word = "";								// string variable to hold a word
 			while(fileScanner.hasNext()){					// while the file has more tokens
 				word = fileScanner.next();					// grab the next token
 				words.add(word);							// add it to the ArrayList
 			}
-			fileScanner.close();							// close the scanner object  
+			fileScanner.close();							// close the scanner object
 		}
 		catch(FileNotFoundException fnfe){
 			System.out.println("Problem opening the file: " + fnfe.getMessage());
 		}
-		return words;	
+		return words;
 	}
 
 	public void run() {
-		
+
 		SpellingBeeGraphics sbg = new SpellingBeeGraphics();
 
 		sbg.addButton("Generate Random Puzzle", (s) -> randomPuzzleAction(sbg));
-		
 		sbg.addButton("Shuffle", (s) -> shuffleBeeString(sbg));
-
 		sbg.addField("Puzzle", (s) -> puzzleAction(s, sbg));
-
 		sbg.addField("Word",  (s) ->  wordAction(s, sbg));
-
 		sbg.addButton("Solve", (s) -> solveAction(sbg));
-
-		
 	}
- 
-	private void totalWordsScoreDisplay(ArrayList<String> validWords, 
-										int totalScore, 
+
+	private void totalWordsScoreDisplay(ArrayList<String> validWords,
+										int totalScore,
 										SpellingBeeGraphics sbg ){
 		String totalWords = validWords.size() + " words; " + totalScore + " points";
 		// display word total
 		sbg.showMessage(totalWords);
 	}
 
-	private String scoreWord(String word, 
-							 String beehiveWord, 
+	private String scoreWord(String word,
+							 String beehiveWord,
 							 ArrayList<String> beeHiveBonusWords){
 		// add score to each valid word
 		// one point per letter
@@ -188,26 +184,26 @@ public class SpellingBee {
 		return newWordString;
 
 	}
-	
+
 	private boolean centerLetterCheck(String beehiveword, String word){
-		// check to see if any part of the, thus far valid, 
+		// check to see if any part of the, thus far valid,
 		// word contains the first letter of the beehive word (index 0)
 		// get everything the same case regardless of input
 		if (word.toLowerCase().contains(beehiveword.toLowerCase().substring(0, 1))) return true;
 		else return false;
 	}
-	
+
 	private boolean onlyBeeHiveLetters(String beehiveWord, String word){
 		// iterate through the dictionary word and see if all letters
-		// in the dictionary word are present in the beehive word. 
+		// in the dictionary word are present in the beehive word.
 		for(int i = 0; i < word.length(); i ++){
 			// get everything the same case, regardless of how inputted
 			String a = word.substring(i, i+1).toLowerCase();
-			if (! beehiveWord.toLowerCase().contains(a)) return false;	
+			if (! beehiveWord.toLowerCase().contains(a)) return false;
 			}
 		return true;
 		}
-	
+
 	private boolean lengthCheck(String s) {
 		// check length of puzzle word
 		if (s.length() != 7) return false;
@@ -219,30 +215,30 @@ public class SpellingBee {
 		if (s.length() < 4) return false;
 		else return true;
 		}
-	
-	private boolean uniqueCheck(String s){		
+
+	private boolean uniqueCheck(String s){
 		int i = 0;               	      	// outer loop stepper
 		int j = 1;               	  	    // inner loop stepper
 		while(i < s.length()){	 	  		// outer while loop head
 			char a = s.charAt(i);	 		// 'a' is the character that will be compared against all other characters ('b') in the word
-			while(j < s.length()){    		// inner loop head 
-				char b = s.charAt(j); 		// all the other characters that are not 'a'. 
-				if(a == b) return false;	// if 'a' equals 'b' then not all characters unique // break out of loop if match found, no need to continue	
+			while(j < s.length()){    		// inner loop head
+				char b = s.charAt(j); 		// all the other characters that are not 'a'.
+				if(a == b) return false;	// if 'a' equals 'b' then not all characters unique // break out of loop if match found, no need to continue
 				else
-				j += 1; 		  			// if no pairs found, move on. 
+				j += 1; 		  			// if no pairs found, move on.
 					}       			    // end of inner-loop
 			j =  i + 2; 			  		// reset inner loop to always start at the letter following 'a'
 			i += 1;     			  		// progress outer-loop ('a' moved to next letter in the word)
 			}           			    	// end of outer-loop
 		return true;
-		}               			  		
-		
+		}
+
 	private boolean realWordCheck(String s){
 		boolean valid = false;
 		// iterate through dictionary and see if there's a match
 		for (String word : words){
 			if (s.toLowerCase().equals(word))
-			{valid = true; 
+			{valid = true;
 			break;}
 		}
 		return valid;
@@ -260,11 +256,11 @@ public class SpellingBee {
 	}
 
 	private void wordAction(String s, SpellingBeeGraphics sbg) {
-		
+
 		boolean validWord = true; // innocent until proven guilty
 		String beehiveWord = sbg.getBeehiveLetters(); // get the beehive word
 		sbg.clearField("Word"); // clear field after word is entered
-		
+
 		// IF PUZZLE ALREADY SOLVED
 		if (solved == true){
 			validWord = false;
@@ -273,7 +269,7 @@ public class SpellingBee {
 		else if (! lengthCheckForScore(s)){
 			validWord = false;
 			sbg.showMessage("Word must be 4 characters long.", Color.GRAY);}
-		// VALID LETTERS CHECK	
+		// VALID LETTERS CHECK
 		else if (! validLetterCheck(s)){
 			validWord = false;
 			sbg.showMessage("Word must contain letters only.", Color.GRAY);}
@@ -292,8 +288,8 @@ public class SpellingBee {
 		// IF NOT ALREADY IN LIST
 		else if (alreadyInList(s)){
 			validWord = false;
-			sbg.showMessage("Word already found.", Color.GRAY);}           
-		// IF NO TEST FAILED	
+			sbg.showMessage("Word already found.", Color.GRAY);}
+		// IF NO TEST FAILED
 		else if (validWord){
 			sbg.showMessage(""); // remove any error messages
 			// score each word
@@ -307,15 +303,15 @@ public class SpellingBee {
 			// display score and words found
 			totalWordsScoreDisplay(validWords, totalUserScore, sbg);
 			addUserWordToDisplay(beeHiveBonusWords, s_score, sbg);
-		} 
-		  
-	}     
+		}
+
+	}
 
 	private void randomPuzzleAction(SpellingBeeGraphics sbg) {
-		
+
 		String s = selectRandomBeehiveWord();
-		validWords = new ArrayList<String>(); // clear array
-		beeHiveBonusWords = new ArrayList<String>(); // clear array
+		validWords = new ArrayList<String>(); // clear array if needed
+		beeHiveBonusWords = new ArrayList<String>(); // clear array if needed
 		totalUserScore = 0; // reset
 		sbg.clearWordList(); // clear list when new valid puzzle being solved
 		sbg.clearField("Puzzle");
@@ -331,10 +327,13 @@ public class SpellingBee {
 		sbg.clearWordList(); // clear list when new valid puzzle being solved
 		sbg.showMessage(""); // remove any error messages
 		solved = false; // reset
-	} 
-	
+		validWords = new ArrayList<String>(); // clear array again or else all words stay found
+		beeHiveBonusWords = new ArrayList<String>(); // clear array again or else ^
+
+	}
+
 	private void puzzleAction(String s, SpellingBeeGraphics sbg) {
-		
+
 		validWords = new ArrayList<String>(); // clear array
 		beeHiveBonusWords = new ArrayList<String>(); // clear array
 		totalUserScore = 0; // reset
@@ -349,21 +348,21 @@ public class SpellingBee {
 		else if (! uniqueCheck(s)){
 			validWord = false;
 			sbg.showMessage("Word must contain unique letters only.", Color.ORANGE);}
-		// VALID LETTERS CHECK	
+		// VALID LETTERS CHECK
 		else if (! validLetterCheck(s)){
 			validWord = false;
 			sbg.showMessage("Word must contain letters only.", Color.ORANGE);}
-		// IF NO TEST FAILED	
+		// IF NO TEST FAILED
 		else if (validWord){
 			sbg.setBeehiveLetters(s); // set the puzzle
 			sbg.showMessage(""); // remove any error messages
 			solved = false; // reset
-		} 
-	} 
-		
+		}
+	}
+
 	private int solveAction(SpellingBeeGraphics sbg) {
 		solved = true; // puzzle solved
-		int totalScore = 0; // keep track of total score 
+		int totalScore = 0; // keep track of total score
 		validWords = new ArrayList<String>(); // clear array
 		beeHiveBonusWords = new ArrayList<String>(); // clear array
 		sbg.clearWordList(); // clear list when new valid puzzle being solved
@@ -372,13 +371,13 @@ public class SpellingBee {
 		for(String word : words){
 			// innocent until proven guilty
 			boolean okayToAdd = true;
-			// if word is at least 4 characters long 
+			// if word is at least 4 characters long
 			if (! lengthCheckForScore(word)) okayToAdd = false;
 			// and contains only letters found in the beehive word
 			else if (! onlyBeeHiveLetters(beehiveWord, word)) okayToAdd = false;
 			// and contains the first character of the beehiveword
 			else if (! centerLetterCheck(beehiveWord, word)) okayToAdd = false;
-			// okay to add word 
+			// okay to add word
 			else if (okayToAdd) {
 				// score each word
 				int score = score(word, beehiveWord, beeHiveBonusWords);
@@ -389,11 +388,11 @@ public class SpellingBee {
 				// add each word to a new ArrayList
 				validWords.add(word);
 			}
-		} 
+		}
 		// display valid words in app
 		addWordsToDisplay(validWords, beeHiveBonusWords, sbg);
 		// display total valid words
-		totalWordsScoreDisplay(validWords, totalScore, sbg);  
+		totalWordsScoreDisplay(validWords, totalScore, sbg);
 		return totalScore;
 	}
 
