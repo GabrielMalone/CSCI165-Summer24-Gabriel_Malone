@@ -317,8 +317,16 @@ public class SpellingBee {
 		totalUserScore = 0; // reset
 		sbg.clearWordList(); // clear list when new valid puzzle being solved
 		sbg.clearField("Puzzle");
-		boolean validWord = true;
+		// pick puzzle words that have proper amount of solutions // points
 		sbg.setBeehiveLetters(s); // set the puzzle
+		int score = solveAction(sbg);
+		while (score > 400 || score < 50 || validWords.size() > 50){
+			s = selectRandomBeehiveWord();
+			sbg.setBeehiveLetters(s);
+			score = solveAction(sbg);
+		}
+		sbg.setBeehiveLetters(s); // set the puzzle
+		sbg.clearWordList(); // clear list when new valid puzzle being solved
 		sbg.showMessage(""); // remove any error messages
 		solved = false; // reset
 	} 
@@ -351,7 +359,7 @@ public class SpellingBee {
 		} 
 	} 
 		
-	private void solveAction(SpellingBeeGraphics sbg) {
+	private int solveAction(SpellingBeeGraphics sbg) {
 		solved = true; // puzzle solved
 		int totalScore = 0; // keep track of total score 
 		validWords = new ArrayList<String>(); // clear array
@@ -384,6 +392,7 @@ public class SpellingBee {
 		addWordsToDisplay(validWords, beeHiveBonusWords, sbg);
 		// display total valid words
 		totalWordsScoreDisplay(validWords, totalScore, sbg);  
+		return totalScore;
 	}
 
 	/* Startup code */
