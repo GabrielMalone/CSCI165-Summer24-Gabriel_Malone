@@ -21,6 +21,8 @@ public class SpellingBee {
 	ArrayList<String> beeHiveBonusWords = new ArrayList<String>(); 
 	// list for all valid BeeHiveWords
 	ArrayList<String> allValidBeeHiveWords = new ArrayList<String>(); 
+	
+	
    
 	private Boolean allLettersNotS(String word){
 		// reject words that have 's'
@@ -310,7 +312,7 @@ public class SpellingBee {
 	}     
 
 	private void randomPuzzleAction(SpellingBeeGraphics sbg) {
-		createBeeString();
+		
 		String s = selectRandomBeehiveWord();
 		validWords = new ArrayList<String>(); // clear array
 		beeHiveBonusWords = new ArrayList<String>(); // clear array
