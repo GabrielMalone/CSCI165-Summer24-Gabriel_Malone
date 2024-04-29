@@ -9,8 +9,9 @@ import java.util.Scanner;
 
 public class ROT {
     
-    // if someone selects ROT13 their input needs to be in caps
-    static boolean all_caps = false;
+    // if someone selects ROT13 their char values need to be adjusted
+    // so all chars from a string can be read
+    static boolean char_val_adjust = false;
     
     static String rotCharacterSet(int x){
         
@@ -129,7 +130,7 @@ public class ROT {
         String encodeDecode  = "e";
         int    
         */
-        if (rotType == 13) all_caps = true;
+        if (rotType == 13) char_val_adjust = true;
 
         ArrayList<String> new_string_array = openFile(fileName);
 
