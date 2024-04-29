@@ -175,7 +175,7 @@ public class ROT {
     }
     
     public static String encipher(String uniqueCipher, String stringToEncipher){
-
+        // one to one substitution for encrpting with keyword cipher
         String encipheredString = "";
 
         for (int index = 0 ; index < stringToEncipher.length() ; index ++){

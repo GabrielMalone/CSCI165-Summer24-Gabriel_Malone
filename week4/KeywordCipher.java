@@ -9,6 +9,7 @@ public class KeywordCipher {
 
     private static void writeToFile(String enciphered_string, String file_name){
         
+        // open file that has the string to encrypt/decrpt
         try{
             File output_file = new File(file_name);
             PrintWriter writer = new PrintWriter(output_file);
@@ -24,6 +25,7 @@ public class KeywordCipher {
     private static String arrayToString(ArrayList<String> new_string_array){
         
         // didn't want to write a new open file function
+        // so converting array to string so can use the old function
         String string_from_file = "";
         for ( String s : new_string_array){
             string_from_file += s.toUpperCase();
@@ -122,6 +124,7 @@ public class KeywordCipher {
             // add 5 letters at a time + a space
             encipheredStringColumns += encipheredString.substring(index, index + 5) + " ";
         }
+        // get any remainding bits that didn't make the 5 char length cut
         encipheredStringColumns += encipheredString.substring(encipheredString.length() - remainder_after_split);
     
         return encipheredStringColumns;
