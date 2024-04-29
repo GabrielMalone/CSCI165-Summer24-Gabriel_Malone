@@ -42,7 +42,7 @@ public class ROT {
         // blank array for encrpted/decrypted words               
         ArrayList<String> altered_string_array = new ArrayList<>();   
         int cipher_start = cipher.charAt(0);
-        if (all_caps) cipher_start = Character.getNumericValue(cipher.charAt(0));
+        if (char_val_adjust) cipher_start = Character.getNumericValue(cipher.charAt(0));
         // iterate through the string array
         for(String s : new_string_array ){                            
             String new_string = "";    
@@ -51,7 +51,7 @@ public class ROT {
             for(int index  = 0 ; index < s.length(); index ++ ){      
                 // get decimal value of each char in the string
                 char digit = s.charAt(index);
-                if (all_caps){ digit = (char)Character.getNumericValue(s.charAt(index));}
+                if (char_val_adjust){ digit = (char)Character.getNumericValue(s.charAt(index));}
                 // wrap around algorithm 
                 int num = ( digit - cipher_start + rotType) % (rotType * 2);      
                 // new char 
