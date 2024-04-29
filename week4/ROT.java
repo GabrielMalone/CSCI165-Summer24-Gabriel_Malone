@@ -13,6 +13,28 @@ public class ROT {
     // so all chars from a string can be read
     static boolean char_val_adjust = false;
     
+    public static String newFileNameCreator(String fileName, String encodeDecode){
+        // create new file name for the encoded file
+        // remove the .txt extension
+        
+        String new_file_name = "";
+        
+        if (encodeDecode.equals("e")){
+            int delimeter = fileName.indexOf(".");
+            String base_file_name = fileName.substring(0, delimeter);
+            // place the _encrypted.txt suffix
+            new_file_name = base_file_name + "_encrypted.txt";
+            return new_file_name;
+        }
+        if (encodeDecode.equals("d")){
+            int delimeter = fileName.indexOf("_");
+            String base_file_name = fileName.substring(0, delimeter);
+            // place '.txt' back on file name
+            new_file_name = base_file_name + ".txt";
+        }
+        return new_file_name;
+    }
+    
     public static String rotCharacterSet(int x){
         
         String cipher = "";
@@ -126,7 +148,6 @@ public class ROT {
         return uniqueKeyWord.toUpperCase();
     }
 
-
     public static String generateCipherAlphabet(String uniqueKeyWord){
         
         // array to hold the keyword characters
@@ -168,7 +189,6 @@ public class ROT {
         return encipheredString;
     }
     
-
     public static void main(String[] args) {
         
         if (args.length != 3){                                      
@@ -176,7 +196,7 @@ public class ROT {
             System.exit(0); 
         }
         else if ( ! (args[1].equals("d") || args[1].equals("e")) ){
-            System.out.println("Ivalid argument. Goodbye.");
+            System.out.println("Ivalid argument. (d)ecrypt or (e)ncrypt only. Goodbye.");
             System.exit(0); 
         }
         else if (! (args[2].equals("13") || args[2].equals("47"))){
@@ -187,8 +207,6 @@ public class ROT {
         String fileName      = args[0];
         String encodeDecode  = args[1];
         int    rotType       = Integer.parseInt(args[2]);
-  
-        
         
         // test inputs
         /* 
@@ -200,6 +218,7 @@ public class ROT {
         */
         
         // adjust char value for 13
+        // this wil allow all character inputs with ROT13 encoding
         if (rotType == 13) char_val_adjust = true;
 
         // testing area 
@@ -221,22 +240,15 @@ public class ROT {
             // get the encoded String
             ArrayList<String> encoded_string_array = applyROT(new_string_array, rotType);
             // create new file name for the encoded file
-            // remove the .txt extension
-            int delimeter = fileName.indexOf(".");
-            String base_file_name = fileName.substring(0, delimeter);
-            // place the _encrypted.txt suffix
-            String encoded_file_name = base_file_name + "_encrypted.txt";
+            String encoded_file_name = newFileNameCreator(fileName, encodeDecode);
             writeToFile(encoded_string_array, encoded_file_name);
 
         }
         // if decode selected
         else if (encodeDecode.equals("d")){
             ArrayList<String> decoded_string_array = applyROT(new_string_array, rotType);
-            // remove '_encrypted.txt' from file name
-            int delimeter = fileName.indexOf("_");
-            String base_file_name = fileName.substring(0, delimeter);
-            // place '.txt' back on file name
-            String decoded_file_name = base_file_name + ".txt";
+            // create new file name for the encoded file
+            String decoded_file_name = newFileNameCreator(fileName, encodeDecode);
             writeToFile(decoded_string_array, decoded_file_name);
         }
     }
