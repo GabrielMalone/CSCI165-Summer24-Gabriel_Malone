@@ -58,11 +58,12 @@ public class Fraction {
 	 */
 	public boolean setDenominator(int d){
 		// denominator cannot be zero
-		if (d != 0){ 
-			this.d = d;
-			return true;
+		if (d == 0) {
+			this.d = 1; 
+			return false;
 		}
-		return false;
+		else this.d = d;
+			return true;
 	}
 
 	/**
