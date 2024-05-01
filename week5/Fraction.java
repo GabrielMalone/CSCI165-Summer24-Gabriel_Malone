@@ -22,8 +22,7 @@ public class Fraction {
 	public Fraction(int n, int d) {
 		setNumerator(n);
 		// denominator should not be set to 0. If it is, set it to 1
-		if (setDenominator(d)) this.d = d;
-		else this.d = 1;
+		setDenominator(d);
 	}
 
 	public Fraction(int n) {
@@ -32,7 +31,7 @@ public class Fraction {
 	}
 	
 	/**
-	 * Sets the numerator of the fraction
+	 * Method to set the numerator of an instance's fraction
 	 * @param n
 	 */
 	public void setNumerator(int n) {
@@ -40,7 +39,7 @@ public class Fraction {
 	}
 
 	/**
-	 * 
+	 * Method to get the numerator of an instance's fraction
 	 * @return the numerator of the fraction
 	 */
 	public int getNumerator() {
@@ -52,18 +51,13 @@ public class Fraction {
 	}
 
 	/**
-	 * Method to set the denominator in a fraction
+	 * Method to set the denominator of an instance's fraction
 	 * @param d
-	 * @return
 	 */
-	public boolean setDenominator(int d){
+	public void setDenominator(int d){
 		// denominator cannot be zero
-		if (d == 0) {
-			this.d = 1; 
-			return false;
-		}
+		if (d == 0) this.d = 1; 
 		else this.d = d;
-			return true;
 	}
 
 	/**

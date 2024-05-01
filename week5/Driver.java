@@ -1,7 +1,5 @@
 // Gabriel Malone / CS165 / Week 5 / Summer 2024
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -26,8 +24,6 @@ public class Driver {
     }
 
     public static void main(String[] args) {
-        
-
         // 1 -  create an instance from Fraction class
         Fraction myF = new Fraction(20, -6);
         // print fraction
@@ -39,14 +35,6 @@ public class Driver {
         // show results
         System.out.printf("%s's numerator changed to %s%n",originalF , myF.toString());
         
-        // 4 - set new denominator and show results
-        Fraction a = new Fraction( 1 );					// initialize the test Fraction object
-		a.setDenominator( 378 );				// set the denominator to 378
-		assertEquals( 378, a.getDenominator() );// check that the denominator is 378 using assertion
-
-		a.setDenominator( 0 );					// set the denominator to 0. This should not be allowed
-		assertEquals( 1, a.getDenominator() );	// check that the denominator is 1
-       
         // 5 - convert fraction to a decimal and show results
         double myFdecimal = myF.toDecimal();
         System.out.printf("%s converted to a decimal is %f%n", myF.toString(), myFdecimal);
