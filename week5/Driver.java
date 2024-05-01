@@ -27,7 +27,7 @@ public class Driver {
         
 
         // 1 -  create an instance from Fraction class
-        Fraction myF = new Fraction(4, 12);
+        Fraction myF = new Fraction(1, -2);
         // print fraction
         String originalF = myF.toString();
         System.out.printf("%nOriginal fraction: %s%n", originalF);
@@ -81,13 +81,15 @@ public class Driver {
         System.out.printf("%s + %s = %s%n", myF4String, myF5String, myF4.toString());
         
         // another new instance just 'cause
-        Fraction myF6 = new Fraction(1, 3);
+        Fraction myF6 = new Fraction(1, 8);
+        Fraction myFA = new Fraction(1, 4);
         
         // 10 - subtract fractions
-        System.out.printf("%s - %s = ", myF4.toString(), myF6.toString());
-        myF4.subtract(myF6);
-        System.out.printf("%s%n", myF4.toString());
-       
+        System.out.printf("%s - %s = ", myF6.toString(), myFA.toString());
+        myF6.subtract(myFA);
+        System.out.printf("%s%n", myF6.toString());
+      
+    
         // 11 - multiply fractions
         System.out.printf("%s * %s = ", myF4.toString(), myF6.toString());
         myF4.multiply(myF6);

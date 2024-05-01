@@ -45,6 +45,9 @@ public class Fraction {
 	 */
 	public int getNumerator() {
 		// return numerator
+		// if denom negative, nom negative
+		if (this.d < 0) this.n *= -1;
+		// otherwise positive
 		return this.n;
 	}
 
@@ -68,7 +71,8 @@ public class Fraction {
 	 */
 	public int getDenominator() {
 		// return denominator of the fraction
-		return this.d;
+		// always positive
+		return Math.abs(this.d);
 	}
 
 	/**
@@ -88,6 +92,7 @@ public class Fraction {
 	 */
 	public void subtract(Fraction f) {
 		addSubtractInitialize(f);
+		
 		// subtracted numerators
 		this.n -= f.n;
 		this.reduce();
@@ -187,7 +192,15 @@ public class Fraction {
 	 * @return the value of the fraction as a string "numerator/denominator"
 	 */
 	public String toString() {
-		String fraction = this.n + "/" + this.d;
+		String fraction = "";
+		this.reduce();
+		// get unsigned values 
+		int absN = Math.abs(this.n);
+		int absD = Math.abs(this.d);
+		// if negative
+		if (this.n < 0|| this.d < 0) fraction = "-" + absN + "/" + absD;
+		// if positive
+		else fraction = this.n + "/" + this.d;
 		return fraction;
 	}
 
