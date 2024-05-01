@@ -20,7 +20,7 @@ public class Fraction {
 	 * @param d	the denominator of the fraction
 	 */
 	public Fraction(int n, int d) {
-		this.n = n;
+		setNumerator(n);
 		// denominator should not be set to 0. If it is, set it to 1
 		if (setDenominator(d)) this.d = d;
 		else this.d = 1;
@@ -260,13 +260,14 @@ public class Fraction {
 		// stop at the value of the numerator itself
 		int smallestDivisor = 1;
 		ArrayList<Integer> divisors = new ArrayList<Integer>();
+		
 		// find numbers that evenly go into numerator
-		for (int divisor = 2 ; divisor < this.n; divisor ++){
+		for (int divisor = 2 ; divisor < Math.abs(this.n); divisor ++){
 			// append to list
 			if (this.n % divisor == 0) divisors.add(divisor);
 		}
 		// find numbers that evenly go into denominator
-		for (int divisor = 2 ; divisor < this.d; divisor ++){
+		for (int divisor = 2 ; divisor < Math.abs(this.d); divisor ++){
 			// append to list
 			if (this.d % divisor == 0) divisors.add(divisor);
 		}

@@ -1,5 +1,7 @@
 // Gabriel Malone / CS165 / Week 5 / Summer 2024
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -27,26 +29,23 @@ public class Driver {
         
 
         // 1 -  create an instance from Fraction class
-        Fraction myF = new Fraction(1, -2);
+        Fraction myF = new Fraction(20, -6);
         // print fraction
         String originalF = myF.toString();
         System.out.printf("%nOriginal fraction: %s%n", originalF);
         
-        // 2 - reduce
-        myF.reduce();
-        // print results
-        String reducedF = myF.toString();
-        System.out.printf("%s reduces to %s%n", originalF, reducedF);
-        
         // 3 - set new numerator
         myF.setNumerator(4);
         // show results
-        System.out.printf("%s's numerator changed to %s%n", reducedF, myF.toString());
+        System.out.printf("%s's numerator changed to %s%n",originalF , myF.toString());
         
         // 4 - set new denominator and show results
-        String currentFraction = myF.toString();
-        myF.setDenominator(6);
-        System.out.printf("%s's denominator changed to %s%n", currentFraction, myF.toString());
+        Fraction a = new Fraction( 1 );					// initialize the test Fraction object
+		a.setDenominator( 378 );				// set the denominator to 378
+		assertEquals( 378, a.getDenominator() );// check that the denominator is 378 using assertion
+
+		a.setDenominator( 0 );					// set the denominator to 0. This should not be allowed
+		assertEquals( 1, a.getDenominator() );	// check that the denominator is 1
        
         // 5 - convert fraction to a decimal and show results
         double myFdecimal = myF.toDecimal();
@@ -104,7 +103,7 @@ public class Driver {
         // new instances for these comparisons
         Fraction myF7 = new Fraction(1, 2);
         Fraction myF8 = new Fraction(2, 4);
-        Fraction myF9 = new Fraction(3, 4);
+        Fraction myF9 = new Fraction(-3, 4);
         
         // starting with equals
         if (myF7.equals(myF8)) System.out.printf("%s equals %s%n", myF7.toString(), myF8.toString());
@@ -169,28 +168,5 @@ public class Driver {
         Fraction largesFraction = largestFraction(fractions);
         System.out.printf("The largest fraction in the array is: %s%n", largesFraction.toString());
 
-        
-    
-        
-
-
-
-
-        
-
-
-
-
-
-
-    
-
-
-
-
-       
-
-        
-        
     }
 }
