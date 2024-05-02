@@ -5,35 +5,33 @@ public class Shapes {
         
         String asterix = "*";
         String space = " ";
-        String c = "* ";
-        String d = "*   *";
+        String asterix_space = "* ";
+        String hollow = "*   *";
 
-        int x = 5;
-        int y = 4;
-        int z = 5;
+        int F = 5;
+        int O = 5;
+        int X = 4;
+        int SPACE1 = 5;
+        int SPACE2 = 5;
 
-        for(int j = 0; j < 5; j ++){
-            if (j == 4) {
-                System.out.print(asterix);
-                y += 2;
-            }
-            else System.out.print(asterix.repeat(x));
-            x -= 1;
-            System.out.print(space.repeat(y));
-            y += 1;
-            if (j > 0 && j < 4) System.out.print(d);
-            else System.out.print(asterix.repeat(z)); 
-            if (j > 2) {
-                if (j == 4) y -= 2;
-                y -= 2;
-                x += 2;
-                System.out.print(space.repeat(y));
-                System.out.print(c.repeat(x));
-            }
-            else {
-                System.out.print(space.repeat(y)); 
-                System.out.print(c.repeat(x));}
+        for (int index = 0 ; index < 5 ; index ++ ){
+            System.out.print(asterix.repeat(F));
+            System.out.print(space.repeat(SPACE1));
+            if (index > 0 && index < 4) 
+                System.out.print(hollow);
+            else System.out.print(asterix.repeat(O));
+            System.out.print(space.repeat(SPACE2));
+            System.out.print(asterix_space.repeat(X));
             System.out.println();
+            F -= 1;
+            SPACE1 += 1;
+            SPACE2 += 1;
+            if (index > 1) {
+                X += 1;
+                SPACE2 -=2;
+            }
+            else X -= 1;
         }
     }
 }
+
