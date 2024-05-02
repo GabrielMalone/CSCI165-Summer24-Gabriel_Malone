@@ -10,7 +10,7 @@ public class Shapes {
 
         int F = 5;
         int O = 5;
-        int X = 4;
+        int X = 3;
         int SPACE1 = 5;
         int SPACE2 = 5;
 
@@ -28,7 +28,7 @@ public class Shapes {
             SPACE2 += 1;
             if (index > 1) {
                 X += 1;
-                SPACE2 -=2;
+                SPACE2 -= 2;
             }
             else X -= 1;
         }
