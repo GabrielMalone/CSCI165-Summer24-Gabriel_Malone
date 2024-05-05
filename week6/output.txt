@@ -1,0 +1,38 @@
+
+Customer: GOOBERT DOE
+
+Invoice number: GODO15299
+Date: 6/3/2024
+Time: Time: 21:43:5
+Item                          Quant   Price  Total
+====================================================
+CHOCOLATE CHIP COOKIE           2     $6.45  $12.90
+FREEDOM FRIES                   11    $2.99  $32.89
+FRESH TOMATOE                   5     $4.35  $21.75
+MUFFIN MIX - CORN HARVEST       6     $6.20  $37.20
+
+Calories: 10526
+====================================================
+
+Subtotal               $104.74
+6.25% sales tax        $6.55
+Order Total            $111.29
+
+Customer: OLD YELLER
+
+Invoice number: OLYE16809
+Date: 6/3/2024
+Time: Time: 21:43:41
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         3     $6.09  $18.27
+CHOCOLATE CHIP COOKIE           1     $6.45  $6.45
+FREEDOM FRIES                   7     $2.99  $20.93
+MUFFIN MIX - CORN HARVEST       5     $6.20  $31.00
+
+Calories: 7533
+====================================================
+
+Subtotal               $76.65
+6.25% sales tax        $4.79
+Order Total            $81.44

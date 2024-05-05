@@ -1,13 +1,10 @@
 // Gabriel Malone / CSCI65 / Week 6 / Summer 2024
 
-// to do: 1 - include prices / cals in menu
-// 		  2 - colors for int, string, double
-//        4 - checks and loops so invalid inputs don't crash program
-//        5 - option to remove items from shopping cart
-
+//        5 - option to remove items from shopping cart ?
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.NumberFormat;
@@ -20,6 +17,13 @@ import java.util.Scanner;
 
 public class Driver{
 	
+	// text colors
+	public static final String ANSI_RESET  = "\u001B[0m"; 
+	public static final String ANSI_YELLOW = "\u001B[33m";
+	public static final String ANSI_GREEN  = "\u001B[32m";
+	public static final String ANSI_BLUE   = "\u001B[34m";
+
+
 	// hashamp for easy ordering
 	static Map<Integer, MenuItem> orderMap = new HashMap<Integer, MenuItem>(10);
 	// load current items on the menu
@@ -28,90 +32,161 @@ public class Driver{
 	static Scanner order = new Scanner(System.in);
 	// create customer
 	
-
+	// main program loop
 	public static void main(String[] args) {
+		// run until machine turned off
+		while(true){
 		// clear screen and show menu
 		clearSequence();
 		Customer customer = createCustomer();
-		// take order
-		ArrayList<MenuItem> shoppingCart = takeOrder();
+		// take order // clear shopping cart
+		ArrayList<MenuItem> shoppingCart = takeOrder(customer);
 		// today's date
 		Date today = dateInitializer();
 		// print receipt // save receipt info
 		printOrder(shoppingCart, customer, today);
+		}
 	}
-	
+
+	/**
+	 * Method to alphabetize customer's shopping cart
+	 * 
+	 * @param shoppingCart list of MenuItems
+	 * @return ArrayList<MenuItem>
+	 */
+	public static void shoppingCartAlphabetize(ArrayList<MenuItem> shoppingCart){
+		if (shoppingCart.size() > 1){
+			// stating letter A
+			char letter = 65;
+			// iterate through the menut items
+			while (letter <= 90){
+				for (int index = 0 ; index < shoppingCart.size() ; index ++){
+					MenuItem item = shoppingCart.get(index);
+					// put each item name into a char array
+					char [] itemname = item.getName().toCharArray();
+					// check first letter of the char in the name
+					// if A, go to front of list, if B, go next in list, etc. 
+					if (itemname[0] == letter) {
+						// take the item from it's current position
+						shoppingCart.remove(item);
+						// put it in the back of the list. A will go to the back, then B, etc..
+						shoppingCart.add(shoppingCart.size() - 1, item);
+					}			
+				} // for loop end
+				// move letter to next letter
+				letter += 1;
+			} // while loop end
+			// now sort within A's, B's, etc..
+			int index = 0;
+			while (index < shoppingCart.size() - 1){
+				MenuItem item1 = shoppingCart.get(index);
+				MenuItem item2 = shoppingCart.get(index + 1);
+				// if item1 comes after item2 alphabetically, swap
+				if (item1.compareName(item2) == 1){
+					shoppingCart.remove(item1);
+					shoppingCart.add(index + 1, item1);
+				}
+				index += 1;
+			}
+		}	
+	}
+		
+	/**
+	 * This method checks for valid input of during menu selection process
+	 * @param itemNumber
+	 * @return (bool) whether valid or invalid input
+	 */
+	public static boolean validInput(String itemNumber){
+		boolean valid  = false;
+		String [] validIndput = new String [] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "D" };
+		for (String valids : validIndput){
+			if (itemNumber.equals(valids)){
+				valid = true;
+				return valid;
+			}
+		}
+		return valid;
+	}
+
 	/**
 	 * Method to take the customer's order
 	 * 
 	 * @return (ArrayList<String>) shopping cart items
 	 */
-	public static ArrayList<MenuItem> takeOrder(){
-		// output var
-		String itemRequest = " Add item number to order. 'D' for done: ";
+	public static ArrayList<MenuItem> takeOrder(Customer customer){
 		// order total 
-		double orderTotal = 0;
-		// items total
-		int itemsTotal = 0;
+		double orderTotal = 0;	
 		// create shopping cart
 		ArrayList<MenuItem> shoppingCart = new ArrayList<>();
 		// ask for order
-		System.out.printf("%s", itemRequest);
+		addRequest();
 		String itemNumber = order.next().toUpperCase();
+		// valid input check
+		while(! validInput(itemNumber)){
+			clearSequence();
+			addRequest();
+			itemNumber = order.next().toUpperCase();
+		}
 		// clear screen
 		clearSequence();
-		// 'D' to complete order
-		try {
-			while ( ! itemNumber.equals("D")) {
-				// get integer from input
-				int number = Integer.parseInt(itemNumber);
-				// get order from hashmap (number key, object value)
-				MenuItem itemForOrder = orderMap.get(number);
-				// for output feedback on order
-				String orderName = itemForOrder.getName();
-				double orderPrice = itemForOrder.getPrice();
-				orderTotal += orderPrice;
-				itemsTotal += 1;
-				// add item to shopping cart
-				shoppingCart.add(itemForOrder);
-				// order feedback
-				System.out.printf(" #%d - %s, $%.2f", 
-								number, orderName, orderPrice );
-				System.out.printf("%n%n Total Items: %d | Total Price: $%.2f%n%n%n", 
-										itemsTotal, 
-										orderTotal); 
-										
-				// get next input
-				System.out.printf("%s", itemRequest);
-				itemNumber = order.next().toUpperCase();
-				//clear screen // keep menu and last order on screen
-				clearSequence();	
+		while(validInput(itemNumber) && ! itemNumber.equals("D")){
+			// get integer from input
+			int number = Integer.parseInt(itemNumber);
+			// get order from hashmap (number key, object value)
+			MenuItem itemForOrder = orderMap.get(number);
+			// for output feedback on order
+			double orderPrice = itemForOrder.getPrice();
+			orderTotal += orderPrice;
+			shoppingCart.add(itemForOrder);
+			shoppingCartAlphabetize(shoppingCart);
+			shoppingCartAlphabetize(shoppingCart);
+			// order feedback			
+			horizontalLine();
+			orderFeedback(shoppingCart);
+
+			// total feedback
+			horizontalLine();
+			subTotalOutPut(orderTotal, customer);
+			horizontalLine();
+			
+			// get next input
+			addRequest();
+			itemNumber = order.next().toUpperCase();
+		
+			// valid input check
+			while(! validInput(itemNumber)){
+				clearSequence();
+				horizontalLine();
+				orderFeedback(shoppingCart);
+				
+			// order feedback
+			horizontalLine();
+			subTotalOutPut(orderTotal, customer);
+			horizontalLine();
+			addRequest();
+			itemNumber = order.next().toUpperCase();
+							
 			}
+			//clear screen // keep menu and last order on screen
+			clearSequence();
 		}
-		catch(NumberFormatException e) {
-			System.out.println("whoops");
-		}
-		order.close();
 		return shoppingCart;
 	}
-
+	
 	/**
 	 * Method to create a new customer 
 	 * 
 	 * @return (Object) new customer instance
 	 */
 	public static Customer createCustomer(){
-		System.out.printf(" %s", "Enter your name: ");
-		// NextLine in case they enter just first name or first and last
-		String name = order.nextLine();
+		// get info 
+		String name = nameRequest();
 		clearSequence();
-		System.out.printf(" %s", "Enter a valid email: ");
-		String email = order.nextLine();
+		String email = emailRequest();
 		clearSequence();
-		System.out.printf(" %s", "Enter 10-digit phone #: ");
-		String phone = order.nextLine();
+		String phone = phoneRequest();
+		// create customer
 		Customer newCustomer = new Customer(name, email, phone);
-		// clear these inputs from screen
 		clearSequence();
 		return   newCustomer;		
 	}
@@ -125,7 +200,7 @@ public class Driver{
 	public static ArrayList<MenuItem> loadMenuItems(String filename){
 		ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();	// Create an ArrayList to store the menu items
 		try{
-			File file		= new File(filename);	// Create a File object
+			File file = new File(filename);	// Create a File object
 			Scanner scanner	= new Scanner(file);	// Create a Scanner object to read the file
 			while(scanner.hasNextLine()){			// Loop through the file
 				// split line at commas into array
@@ -138,22 +213,13 @@ public class Driver{
 				MenuItem newMenuItem = new MenuItem(name, price, calories);
 				// 	add it to the ArrayList
 				menuItems.add(newMenuItem);
-			}	
-			scanner.close();// Close the Scanner object (lots of folks NOT DOING THIS)
+			}		
 		}
 		catch(FileNotFoundException e){	// Catch the FileNotFoundException
 			System.out.println("File not found: " + filename);	// Print an error message
 		}
 		return menuItems;	// Return the ArrayList
-	}
-	/**
-	 * Method to print welcome message
-	 * 
-	 */
-	public static void printLogo(){
-		String welcomeMsg = "WELCOME TO HOORDUB";
-		System.out.printf("%n%55s%n",welcomeMsg);
-	}
+	}	
 
 	/**
 	 * Displays items on the menu
@@ -161,14 +227,22 @@ public class Driver{
 	 * @param menuItems loaded from file
 	 */
 	public static void printMenu(ArrayList<MenuItem> myMenuItems){
+		// create string for money values
+		NumberFormat nf = NumberFormat.getCurrencyInstance();
+		// table constructors
 		String lineBreak = "-";
 		String leftRowSeperator = "| ";
 		String rightRowSeperator = " |";
 		int index = 1;
 		int foodItem = 0;
+		int foodItem2 = 0;
+		// row constructor
 		for (int rows = 0; rows < 3; rows ++){
 			System.out.println();
 			System.out.println(lineBreak.repeat(95));	
+			// column constructor - two inner loops
+			// first for item name and number
+			// second for item price & cals
 			for (int columns = 0; columns < 3; columns ++) {
 					MenuItem item = myMenuItems.get(foodItem);
 					System.out.printf("%s%d%s%-25s", 
@@ -181,22 +255,40 @@ public class Driver{
 					index += 1;
 					foodItem += 1;
 			}
+			// far right margin
+			System.out.print(rightRowSeperator);
+			System.out.println();
+			// second inner loop for price
+			for (int columns2 = 0; columns2 < 3; columns2 ++) {
+				MenuItem item = myMenuItems.get(foodItem2);
+				System.out.printf("%s%s%-25s", 
+									leftRowSeperator,
+									"    ",
+									nf.format(item.getPrice())
+									);
+				foodItem2 += 1;
+				
+			}
+			// far right margin
 			System.out.print(rightRowSeperator);
 		}
 		System.out.println();
 		System.out.println(lineBreak.repeat(95));	
-		System.out.printf("%33s%d%s%-24s%s%n%63s%n",
+		// the final menu item centered in its own row
+		System.out.printf("%33s%d%s%-24s%s%n%33s%9s%21s%n%63s",
 						leftRowSeperator,
 						index,
 						"  ",
 						myMenuItems.get(9).getName(),
 						rightRowSeperator,
-						lineBreak.repeat(32));
+						leftRowSeperator,
+						nf.format(myMenuItems.get(9).getPrice()),
+						rightRowSeperator,
+						lineBreak.repeat(32)
+						);
 		orderMap.put(index, myMenuItems.get(9));
 		System.out.println();
 	}
-
-
 
 	/**
 	 * Method to save order to file and print receipt
@@ -218,15 +310,19 @@ public class Driver{
 		String timeNow = getTime();
 		// for printing money values in printf with space alignment
 		NumberFormat nf = NumberFormat.getCurrencyInstance();
+		
 		//Write to file and print       
-        try{	
-			File output_file = new File("output.txt");
-            PrintWriter writer = new PrintWriter(output_file);
+        try{
+			
+			// open printwriter in append mode to save all receipts to file, not just one.
+			PrintWriter writer = new PrintWriter(new FileOutputStream(new File("output.txt"), true)); 	
 			// goodbye message
-			System.out.println("Enjoy your food!");
+			System.out.println("ENJOY!");
 			System.out.println();
             // print receipt and save data at each step
 			System.out.printf("Customer: %s%n", customer.getName());
+			// space between receipts
+			writer.println();
 			writer.printf("Customer: %s%n", customer.getName());
 			System.out.println();
 			writer.println();
@@ -246,12 +342,18 @@ public class Driver{
 			double subtotal = 0;
 			int caloriesTotal = 0;
 			int index = 0;
+			
+			// alphabetize shopping cart
+			shoppingCartAlphabetize(shoppingCart);
+			
 			// iterate through shopping cart
 			while (shoppingCart.size() > 0){
+				
 				// get first item from cart
 				MenuItem menuitem = shoppingCart.get(index);
 				int quant = 0;
 				index += 1;
+				
 				// if cart has more than one of this item, calc how many
 				while (shoppingCart.contains(menuitem)){
 					quant += 1;
@@ -260,6 +362,7 @@ public class Driver{
 					// remove item when done with it
 					shoppingCart.remove(menuitem);	
 				}
+				
 				// total cost for each item bought
 				double total = quant * menuitem.getPrice();
 				// print item name, price, and total cost of each item
@@ -295,12 +398,25 @@ public class Driver{
 			System.out.println("Order Total"+space.repeat(12) + nf.format(totalWithTax));
 			writer.println("Order Total"+space.repeat(12) + nf.format(totalWithTax));
 			writer.close();
+			
+			// clear the scanner
+			order.nextLine();
+			
+			// space between receipts in save file
+			writer.println();
+			writer.println();
+			
+			// wait for user input
+			System.out.println();
+			System.out.print("PRESS ENTER ");
+			String placeHolder = order.nextLine();
+			
         }catch(IOException ioe){
             System.out.print("Could not write to file");
             System.exit(0);
         }
-    }
-
+	}
+	
 	/**
 	 * Creates a (mostly) unique invoice number from the Customer data and the Date
 	 * 
@@ -379,6 +495,56 @@ public class Driver{
 		System.out.print("\033[H\033[2J");  
 		System.out.flush();
 		printLogo();
-		printMenu(myMenuItems); 
+		printMenu(myMenuItems);
+		System.out.println(); 
+	}
+	
+	private static void printLogo(){
+		String welcomeMsg = "WELCOME TO HOORDUB";
+		System.out.printf("%n%55s%n",welcomeMsg);
+	}
+
+	private static void horizontalLine(){
+		System.out.printf("%69s%n","-".repeat(46));
+	}
+
+	private static void addRequest(){
+		String space = " ";
+		String itemRequest = "SELECT / D TO FINISH: ";
+		System.out.printf("%36s%s", space, itemRequest);
+	}
+
+	private static void subTotalOutPut(double orderTotal, Customer newCustomer){
+		String space = " ";
+		System.out.printf("%23s%s%23s $%.2f%n", space, newCustomer.getName(), "Subtotal", orderTotal);
+	}
+
+	private static void orderFeedback(ArrayList<MenuItem> shoppingCart){
+		String space = " ";
+		for ( int counter = 0 ;  counter < shoppingCart.size() ; counter ++){
+			MenuItem item = shoppingCart.get(counter);
+			System.out.printf("%25s%-2d - %-26s $%.2f %4d%n", space, counter + 1, item.getName(), item.getPrice(), item.getCalories());
+		}
+	}
+
+	private static String nameRequest(){
+		String space = " ";
+		System.out.printf("%38s%s ", space,"NAME: ");
+		String name = order.nextLine();
+		return name;
+	}
+
+	private static String emailRequest(){
+		String space = " ";
+		System.out.printf("%38s%s", space, "EMAIL: ");
+		String email = order.nextLine();
+		return email;
+	}
+
+	private static String phoneRequest(){
+		String space = " ";
+		System.out.printf("%38s%s", space, "PHONE: ");
+		String phone = order.nextLine();
+		return phone;
 	}
 }

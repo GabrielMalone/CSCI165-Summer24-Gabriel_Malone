@@ -135,4 +135,37 @@ public class MenuItem {
         
         else                                        return  1;
     }
+
+    /**
+     * Method to compare two menu item names alphabetically
+     * 
+     * @param name of menu item to be compared
+     * @return (int) 1 for greater than, 0 for equal, -1 for less than
+     */
+    public int compareName(MenuItem other){
+        
+        // convert names to all uppercase for comparisons
+		String otherName = other.name.toUpperCase();
+		String thisName  = this.name.toUpperCase();
+		// create character arrays
+		char[] otherNameArray = otherName.toCharArray();
+		char[] thisNameArray  = thisName.toCharArray();
+		// find shortest name for indexing range purposes
+		int shortestName = 0;
+		if (thisName.length() <= otherName.length()) shortestName = thisName.length();
+		if (thisName.length() >= otherName.length()) shortestName = otherName.length();
+		// iterate through characters in each name and compare
+		int index = 0;
+		while (index < shortestName){
+			 if 		(otherNameArray [index] <  thisNameArray [index]) return   1;
+			 else if 	(otherNameArray [index] >  thisNameArray [index]) return  -1;
+			 else if 	(otherNameArray [index] == thisNameArray [index]) index += 1;
+			}
+		// if all letters same and names the same length
+		// or if otherName shorter but has same substring
+		// or otherName longer and has same substring
+		if 		(otherName.length() == thisName.length()) return  0;
+		else if (otherName.length() <  thisName.length()) return  1;
+		else 											  return -1;
+	}
 }
