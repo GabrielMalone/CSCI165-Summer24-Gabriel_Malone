@@ -121,7 +121,7 @@ public class Driver{
 				horizontalLine();
 				subTotalOutPut(orderTotal, customer);
 				horizontalLine();
-				double priceReduction = removeRequest(shoppingCart);
+				double priceReduction = removeRequest(shoppingCart, orderTotal, customer);
 				shoppingCartAlphabetize(shoppingCart);
 				clearSequence();
 				horizontalLine();
@@ -136,11 +136,40 @@ public class Driver{
 					clearSequence();
 					horizontalLine();
 					orderFeedback(shoppingCart);
+					horizontalLine();
+					subTotalOutPut(orderTotal, customer);
+					horizontalLine();
+					addRequest();
+					itemNumber = order.next().toUpperCase();
 				}	
 			}
+			while (itemNumber.equals("R") && shoppingCart.size() == 0){
+				clearSequence();
+				horizontalLine();
+				orderFeedback(shoppingCart);
+				horizontalLine();
+				subTotalOutPut(orderTotal, customer);
+				horizontalLine();
+				addRequest();
+				itemNumber = order.next().toUpperCase();
+				while(! validInput(itemNumber)){
+					clearSequence();
+					horizontalLine();
+					orderFeedback(shoppingCart);
+					horizontalLine();
+					subTotalOutPut(orderTotal, customer);
+					horizontalLine();
+					addRequest();
+					itemNumber = order.next().toUpperCase();
+				}
+			}	
 			clearSequence();
 			// get integer from input
-			int number = Integer.parseInt(itemNumber);
+			int number = 0;
+			if (! itemNumber.equals("D")){
+				number = Integer.parseInt(itemNumber);
+			}
+			else if (itemNumber.equals("D")) break;
 			// get order from hashmap (number key, object value)
 			MenuItem itemForOrder = orderMap.get(number);
 			// for output feedback on order
@@ -152,12 +181,10 @@ public class Driver{
 			// order feedback			
 			horizontalLine();
 			orderFeedback(shoppingCart);
-
 			// total feedback
 			horizontalLine();
 			subTotalOutPut(orderTotal, customer);
 			horizontalLine();
-			
 			// get next input
 			addRequest();
 			itemNumber = order.next().toUpperCase();
@@ -167,14 +194,13 @@ public class Driver{
 				clearSequence();
 				horizontalLine();
 				orderFeedback(shoppingCart);
-				
-			// order feedback
-			horizontalLine();
-			subTotalOutPut(orderTotal, customer);
-			horizontalLine();
-			addRequest();
-			itemNumber = order.next().toUpperCase();
-							
+				// order feedback
+				horizontalLine();
+				subTotalOutPut(orderTotal, customer);
+				horizontalLine();
+				addRequest();
+				itemNumber = order.next().toUpperCase();
+								
 			}
 			//clear screen // keep menu and last order on screen
 			clearSequence();
@@ -551,14 +577,32 @@ public class Driver{
 		return phone;
 	}
 
-	private static double removeRequest(ArrayList<MenuItem> shoppingCart){
+	private static double removeRequest(ArrayList<MenuItem> shoppingCart, double orderTotal, Customer customer){
 		double priceReduction = 0;
 		String itemRequest = "# TO REMOVE: ";
 		System.out.printf("%34s%s", space, itemRequest);
 		order.nextLine();
+		int itemToRemove = 0; 
 		String removeRequest = order.nextLine();
-		int itemToRemove = Integer.parseInt(removeRequest);
+		while (true){
+			try {
+			itemToRemove = Integer.parseInt(removeRequest);
+			break; 
+			}
+			catch(NumberFormatException eNumberFormatException){
+				clearSequence();
+				clearSequence();
+				horizontalLine();
+				orderFeedback(shoppingCart);
+				horizontalLine();
+				subTotalOutPut(orderTotal, customer);
+				horizontalLine();
+				addRequest();
+				removeRequest = order.next().toUpperCase();
+			}	
+		}
 		if (validRemoveInput(shoppingCart, itemToRemove)){
+			clearSequence();
 			MenuItem itemBeingRemoved = shoppingCart.get(itemToRemove - 1);
 			priceReduction = itemBeingRemoved.getPrice();
 			shoppingCart.remove(itemToRemove - 1);
