@@ -1,6 +1,5 @@
 // Gabriel Malone / CSCI65 / Week 6 / Summer 2024
 
-//        5 - option to remove items from shopping cart ?
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,7 +22,8 @@ public class Driver{
 	public static final String ANSI_GREEN  = "\u001B[32m";
 	public static final String ANSI_BLUE   = "\u001B[34m";
 
-
+	// use this a lot
+	static String space = " ";
 	// hashamp for easy ordering
 	static Map<Integer, MenuItem> orderMap = new HashMap<Integer, MenuItem>(10);
 	// load current items on the menu
@@ -92,23 +92,6 @@ public class Driver{
 	}
 		
 	/**
-	 * This method checks for valid input of during menu selection process
-	 * @param itemNumber
-	 * @return (bool) whether valid or invalid input
-	 */
-	public static boolean validInput(String itemNumber){
-		boolean valid  = false;
-		String [] validIndput = new String [] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "D" };
-		for (String valids : validIndput){
-			if (itemNumber.equals(valids)){
-				valid = true;
-				return valid;
-			}
-		}
-		return valid;
-	}
-
-	/**
 	 * Method to take the customer's order
 	 * 
 	 * @return (ArrayList<String>) shopping cart items
@@ -130,6 +113,32 @@ public class Driver{
 		// clear screen
 		clearSequence();
 		while(validInput(itemNumber) && ! itemNumber.equals("D")){
+			// remove request sequence
+			while (itemNumber.equals("R") && shoppingCart.size() > 0){
+				clearSequence();
+				horizontalLine();
+				orderFeedback(shoppingCart);
+				horizontalLine();
+				subTotalOutPut(orderTotal, customer);
+				horizontalLine();
+				double priceReduction = removeRequest(shoppingCart);
+				shoppingCartAlphabetize(shoppingCart);
+				clearSequence();
+				horizontalLine();
+				orderFeedback(shoppingCart);
+				horizontalLine();
+				orderTotal -= priceReduction;
+				subTotalOutPut(orderTotal, customer);
+				horizontalLine();
+				addRequest();
+				itemNumber = order.next().toUpperCase();
+				while(! validInput(itemNumber)){
+					clearSequence();
+					horizontalLine();
+					orderFeedback(shoppingCart);
+				}	
+			}
+			clearSequence();
 			// get integer from input
 			int number = Integer.parseInt(itemNumber);
 			// get order from hashmap (number key, object value)
@@ -509,18 +518,15 @@ public class Driver{
 	}
 
 	private static void addRequest(){
-		String space = " ";
-		String itemRequest = "SELECT / D TO FINISH: ";
-		System.out.printf("%36s%s", space, itemRequest);
+		String itemRequest = "ADD (#) / (R)EMOVE / (D)ONE ";
+		System.out.printf("%33s%s", space, itemRequest);
 	}
 
 	private static void subTotalOutPut(double orderTotal, Customer newCustomer){
-		String space = " ";
 		System.out.printf("%23s%s%23s $%.2f%n", space, newCustomer.getName(), "Subtotal", orderTotal);
 	}
 
 	private static void orderFeedback(ArrayList<MenuItem> shoppingCart){
-		String space = " ";
 		for ( int counter = 0 ;  counter < shoppingCart.size() ; counter ++){
 			MenuItem item = shoppingCart.get(counter);
 			System.out.printf("%25s%-2d - %-26s $%.2f %4d%n", space, counter + 1, item.getName(), item.getPrice(), item.getCalories());
@@ -528,23 +534,65 @@ public class Driver{
 	}
 
 	private static String nameRequest(){
-		String space = " ";
 		System.out.printf("%38s%s ", space,"NAME: ");
 		String name = order.nextLine();
 		return name;
 	}
 
 	private static String emailRequest(){
-		String space = " ";
 		System.out.printf("%38s%s", space, "EMAIL: ");
 		String email = order.nextLine();
 		return email;
 	}
 
 	private static String phoneRequest(){
-		String space = " ";
 		System.out.printf("%38s%s", space, "PHONE: ");
 		String phone = order.nextLine();
 		return phone;
+	}
+
+	private static double removeRequest(ArrayList<MenuItem> shoppingCart){
+		double priceReduction = 0;
+		String itemRequest = "# TO REMOVE: ";
+		System.out.printf("%34s%s", space, itemRequest);
+		order.nextLine();
+		String removeRequest = order.nextLine();
+		int itemToRemove = Integer.parseInt(removeRequest);
+		if (validRemoveInput(shoppingCart, itemToRemove)){
+			MenuItem itemBeingRemoved = shoppingCart.get(itemToRemove - 1);
+			priceReduction = itemBeingRemoved.getPrice();
+			shoppingCart.remove(itemToRemove - 1);
+		}
+		return priceReduction;
+	}
+
+	private static boolean validInput(String itemNumber){
+		boolean valid  = false;
+		String [] validIndput = new String [] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "D", "R" };
+		for (String valids : validIndput){
+			if (itemNumber.equals(valids)){
+				valid = true;
+				return valid;
+			}
+		}
+		return valid;
+	}
+
+	private static boolean validRemoveInput(ArrayList<MenuItem> shoppingCart, int itemNumber){
+		boolean valid = false;
+		// create empty array
+		ArrayList<Integer> validOptions = new ArrayList<Integer>();
+		// fill array with integers matching the items placed in cart 
+		for (int index = 0; index < shoppingCart.size(); index ++){
+			validOptions.add(index + 1);
+		}	
+		// iterate through array and check input against the integers in array
+		for (int validInt : validOptions){
+			if (itemNumber == validInt){
+				valid = true;
+				return valid;
+			}
+		}
+		return valid;
 	}
 }
