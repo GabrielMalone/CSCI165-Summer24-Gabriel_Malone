@@ -1,4 +1,4 @@
-// Gabriel Malone / CSCI65 / Week 6 / Summer 2024
+   // Gabriel Malone / CSCI65 / Week 6 / Summer 2024
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -277,57 +277,65 @@ public class Driver{
         int index = 1;
         int foodItem = 0;
         int foodItem2 = 0;
+        int rowsMax = myMenuItems.size() / 3;
+        // if any stragglers, add one more row
+        if (myMenuItems.size() % 3 > 0) {
+            rowsMax += 1;
+        }
         // row constructor
-        for (int rows = 0; rows < 3; rows ++){
+        for (int rows = 0; rows < rowsMax; rows ++){
             System.out.println();
-            System.out.println(lineBreak.repeat(95));	
+            System.out.println(lineBreak.repeat(92));	
             // column constructor - two inner loops
             // first for item name and number
             // second for item price & cals
             for (int columns = 0; columns < 3; columns ++) {
-				MenuItem item = myMenuItems.get(foodItem);
-				System.out.printf("%s%d%s%-25s", 
-				leftRowSeperator,
-				index,
-				"   ",
-				item.getName()
-				);
-				orderMap.put(index, item);
-				index += 1;
-				foodItem += 1;
+				if (foodItem >= myMenuItems.size()){
+            
+                    System.out.printf("%-30s", 
+                    leftRowSeperator
+                    );
+                }
+                else{
+
+                    MenuItem item = myMenuItems.get(foodItem);
+                    System.out.printf("%s%2d%s%-25s", 
+                    leftRowSeperator,
+                    index,
+                    " ",
+                    item.getName()
+                    );
+                    orderMap.put(index, item);
+                    index += 1;
+                    foodItem += 1;
+                }    
             }
             // far right margin
             System.out.print(rightRowSeperator);
             System.out.println();
             // second inner loop for price
             for (int columns2 = 0; columns2 < 3; columns2 ++) {
-                MenuItem item = myMenuItems.get(foodItem2);
-                System.out.printf("%s%s%-25s", 
-                leftRowSeperator,
-                "    ",
-                nf.format(item.getPrice())
-                );
-                foodItem2 += 1;
+                if (foodItem2 >= myMenuItems.size()){
+                    System.out.printf("%-30s", 
+                    leftRowSeperator
+                    );
+                }    
+                else{
+                    MenuItem item = myMenuItems.get(foodItem2);
+                    System.out.printf("%s%s%-25s", 
+                    leftRowSeperator,
+                    "   ",
+                    nf.format(item.getPrice())
+                    );
+                    foodItem2 += 1;
+                }    
                 
             }
             // far right margin
             System.out.print(rightRowSeperator);
         }
         System.out.println();
-        System.out.println(lineBreak.repeat(95));	
-        // the final menu item centered in its own row
-        System.out.printf("%33s%d%s%-24s%s%n%33s%9s%21s%n%63s",
-        leftRowSeperator,
-        index,
-        "  ",
-        myMenuItems.get(9).getName(),
-        rightRowSeperator,
-        leftRowSeperator,
-        nf.format(myMenuItems.get(9).getPrice()),
-        rightRowSeperator,
-        lineBreak.repeat(32)
-        );
-        orderMap.put(index, myMenuItems.get(9));
+        System.out.println(lineBreak.repeat(92));	
         System.out.println();
     }
 
