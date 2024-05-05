@@ -121,7 +121,7 @@ public class Driver{
                 subTotalOutPut(orderTotal, customer);
                 horizontalLine();
                 double priceReduction = removeRequest(shoppingCart, orderTotal, customer);
-                shoppingCartAlphabetize(shoppingCart);
+                //shoppingCartAlphabetize(shoppingCart);
                 clearSequence();
                 horizontalLine();
                 orderFeedback(shoppingCart);
@@ -166,7 +166,7 @@ public class Driver{
                 }
             }	
             clearSequence();
-            // get integer from input
+			// get integer from input
             int number = 0;
             if (! itemNumber.equals("D")){
                 number = Integer.parseInt(itemNumber);
@@ -177,9 +177,7 @@ public class Driver{
             // for output feedback on order
             double orderPrice = itemForOrder.getPrice();
             orderTotal += orderPrice;
-            shoppingCart.add(itemForOrder);
-            shoppingCartAlphabetize(shoppingCart);
-            shoppingCartAlphabetize(shoppingCart);
+			shoppingCart.add(itemForOrder);
             // order feedback			
             horizontalLine();
             orderFeedback(shoppingCart);
@@ -287,16 +285,16 @@ public class Driver{
             // first for item name and number
             // second for item price & cals
             for (int columns = 0; columns < 3; columns ++) {
-                    MenuItem item = myMenuItems.get(foodItem);
-                    System.out.printf("%s%d%s%-25s", 
-                    leftRowSeperator,
-                    index,
-                    "   ",
-                    item.getName()
-                    );
-                    orderMap.put(index, item);
-                    index += 1;
-                    foodItem += 1;
+				MenuItem item = myMenuItems.get(foodItem);
+				System.out.printf("%s%d%s%-25s", 
+				leftRowSeperator,
+				index,
+				"   ",
+				item.getName()
+				);
+				orderMap.put(index, item);
+				index += 1;
+				foodItem += 1;
             }
             // far right margin
             System.out.print(rightRowSeperator);
@@ -485,7 +483,7 @@ public class Driver{
         // Concatenate the initials and ID
         invoiceNumber = firstInitials + lastInitials + id;	
         // Concatenate the date (add the time in if you want)			
-        invoiceNumber += today.getDay() + today.getMonth() + getTime();				
+        invoiceNumber += today.getDay() + today.getMonth();		
         return invoiceNumber;											
     }
 
@@ -561,7 +559,8 @@ public class Driver{
     }
 
     private static void orderFeedback(ArrayList<MenuItem> shoppingCart){
-        for ( int counter = 0 ;  counter < shoppingCart.size() ; counter ++){
+		//shoppingCartAlphabetize(shoppingCart);
+		for ( int counter = 0 ;  counter < shoppingCart.size() ; counter ++){
             MenuItem item = shoppingCart.get(counter);
             System.out.printf("%25s%-2d - %-26s $%.2f %4d%n", space, counter + 1, item.getName(), item.getPrice(), item.getCalories());
         }
@@ -590,7 +589,7 @@ public class Driver{
         // reduce total amount variable
         double priceReduction = 0;
         // output information
-        String itemRequest = "# TO REMOVE: ";
+        String itemRequest = "REMOVE # / 0 TO CANCEL: ";
         System.out.printf("%34s%s", space, itemRequest);
         order.nextLine();
         // initialize item to remove var
@@ -612,7 +611,8 @@ public class Driver{
                 horizontalLine();
                 subTotalOutPut(orderTotal, customer);
                 horizontalLine();
-                addRequest();
+				itemRequest = "# TO REMOVE: ";
+				System.out.printf("%34s%s", space, itemRequest);
                 removeRequest = order.next().toUpperCase();
             }	
         }
