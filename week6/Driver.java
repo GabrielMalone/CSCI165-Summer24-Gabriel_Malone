@@ -110,8 +110,9 @@ public class Driver{
         }
         // clear screen
         clearSequence();
+        // whilte input valid logic
         while(validInput(itemNumber) && ! itemNumber.equals("D")){
-            // remove request sequence
+            // if remove requested sequence
             while (itemNumber.equals("R") && shoppingCart.size() > 0){
                 clearSequence();
                 horizontalLine();
@@ -130,6 +131,7 @@ public class Driver{
                 horizontalLine();
                 addRequest();
                 itemNumber = order.next().toUpperCase();
+                // valid input check
                 while(! validInput(itemNumber)){
                     clearSequence();
                     horizontalLine();
@@ -141,6 +143,7 @@ public class Driver{
                     itemNumber = order.next().toUpperCase();
                 }	
             }
+            // remove request logic if nothing to remove
             while (itemNumber.equals("R") && shoppingCart.size() == 0){
                 clearSequence();
                 horizontalLine();
@@ -150,6 +153,7 @@ public class Driver{
                 horizontalLine();
                 addRequest();
                 itemNumber = order.next().toUpperCase();
+                // valid input check
                 while(! validInput(itemNumber)){
                     clearSequence();
                     horizontalLine();
@@ -231,11 +235,15 @@ public class Driver{
      * @return ArrayList<MenuItem> of menu items
      */
     public static ArrayList<MenuItem> loadMenuItems(String filename){
-        ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();	// Create an ArrayList to store the menu items
+        // Create an ArrayList to store the menu items
+        ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();	
         try{
-            File file = new File(filename);	// Create a File object
-            Scanner scanner	= new Scanner(file);	// Create a Scanner object to read the file
-            while(scanner.hasNextLine()){			// Loop through the file
+            // Create a File object
+            File file = new File(filename);	
+            // Create a Scanner object to read the file	
+            Scanner scanner	= new Scanner(file);
+            // Loop through the file
+            while(scanner.hasNextLine()){			
                 // split line at commas into array
                 String[] line = scanner.nextLine().split(",", 0);
                 // pull out name, price, calories via indexing
@@ -248,10 +256,12 @@ public class Driver{
                 menuItems.add(newMenuItem);
             }		
         }
-        catch(FileNotFoundException e){	// Catch the FileNotFoundException
-            System.out.println("File not found: " + filename);	// Print an error message
+        // Catch the FileNotFoundException
+        catch(FileNotFoundException e){	
+            // Print an error message
+            System.out.println("File not found: " + filename);	
         }
-        return menuItems;	// Return the ArrayList
+        return menuItems;
     }	
 
     /**
@@ -463,12 +473,12 @@ public class Driver{
         // Get the first name										
         String[] name = customer.getName().split(" ");		
         // Get the first two initials of the first name			
-        String firstInitials= name[0].substring(0, 2).toUpperCase();
+        String firstInitials = name[0].substring(0, 2).toUpperCase();
         // Get the first two initials of the last name	
         String lastInitials = name[1].substring(0, 2).toUpperCase();	
-        int firstUnicode 	= (int)name[0].charAt(0);
+        int firstUnicode = (int)name[0].charAt(0);
         // Get the Unicode value of the first character of the first name					
-        int lastUnicode 	= (int)name[1].charAt(0);	
+        int lastUnicode = (int)name[1].charAt(0);	
         // Get the Unicode value of the first character of the last name
         // Calculate the ID				
         int id = (firstUnicode + lastUnicode) * customer.getName().length();
@@ -576,12 +586,19 @@ public class Driver{
     }
 
     private static double removeRequest(ArrayList<MenuItem> shoppingCart, double orderTotal, Customer customer){
+        // this sets up the remove request 
+        // reduce total amount variable
         double priceReduction = 0;
+        // output information
         String itemRequest = "# TO REMOVE: ";
         System.out.printf("%34s%s", space, itemRequest);
         order.nextLine();
+        // initialize item to remove var
         int itemToRemove = 0; 
+        // get the requested item # to remove
         String removeRequest = order.nextLine();
+        // see if it's actually a number
+        // ask for a number until get one
         while (true){
             try {
             itemToRemove = Integer.parseInt(removeRequest);
@@ -599,9 +616,12 @@ public class Driver{
                 removeRequest = order.next().toUpperCase();
             }	
         }
+        // if remove request valid
         if (validRemoveInput(shoppingCart, itemToRemove)){
             clearSequence();
+            // remove item
             MenuItem itemBeingRemoved = shoppingCart.get(itemToRemove - 1);
+            // reduce total price
             priceReduction = itemBeingRemoved.getPrice();
             shoppingCart.remove(itemToRemove - 1);
         }
@@ -609,6 +629,7 @@ public class Driver{
     }
 
     private static boolean validInput(String itemNumber){
+        // checks to see if user inputted valid options
         boolean valid  = false;
         String [] validIndput = new String [] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "D", "R" };
         for (String valids : validIndput){
@@ -621,6 +642,7 @@ public class Driver{
     }
 
     private static boolean validRemoveInput(ArrayList<MenuItem> shoppingCart, int itemNumber){
+        // checks to see if the remove requests something that exists
         boolean valid = false;
         // create empty array
         ArrayList<Integer> validOptions = new ArrayList<Integer>();
