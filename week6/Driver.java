@@ -14,11 +14,22 @@ import java.util.Scanner;
 
 public class Driver{
     
-    // text colors
-    public static final String ANSI_RESET  = "\u001B[0m"; 
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_GREEN  = "\u001B[32m";
-    public static final String ANSI_BLUE   = "\u001B[34m";
+    // text // graphic colors
+    public static final String ANSI_RESET           = "\u001B[0m"; 
+    public static final String ANSI_PURPLE          = "\u001B[35m";
+    public static final String ANSI_WHITE           = "\u001B[37m";
+    public static final String ANSI_BLACK           = "\u001B[31m";
+    public static final String ANSI_YELLOW          = "\u001B[33m";
+    public static final String ANSI_PINK            = "\u001b[38;5;201m";
+    public static final String ANSI_BLUE            = "\u001B[34m";
+    public static final String ANSI_CYAN            = "\u001B[36m";
+    public static final String ANSI_BOLD            = "\u001b[1m";
+    public static final String ANSI_BLUE_BACK       = "\u001B[44m";
+    public static final String CALORIE_COLOR        = ANSI_PURPLE;
+    public static final String MENU_NUMBER_COLOR    = ANSI_PURPLE;
+    public static final String MENU_BORDER_COLOR    = ANSI_PINK;
+    public static final String PRICE_COLORS         = ANSI_BLUE;
+    public static final String SUBTOTAL_COLOR       = ANSI_BLUE_BACK + ANSI_BOLD + ANSI_WHITE;
 
     // use this a lot
     static String space = " ";
@@ -271,13 +282,12 @@ public class Driver{
         // create string for money values
         NumberFormat nf = NumberFormat.getCurrencyInstance();
         // table constructors
-        String lineBreak = "-";
-        String leftRowSeperator = "| ";
-        String rightRowSeperator = " |";
-        int index = 1;
-        int foodItem = 0;
+        String leftRowSeperator  = menuSeperator();
+        String rightRowSeperator = rightMenuSeperator();
+        int index     = 1;
+        int foodItem  = 0;
         int foodItem2 = 0;
-        int rowsMax = myMenuItems.size() / 3;
+        int rowsMax   = myMenuItems.size() / 3;
         // if any stragglers, add one more row
         if (myMenuItems.size() % 3 > 0) {
             rowsMax += 1;
@@ -285,23 +295,25 @@ public class Driver{
         // row constructor
         for (int rows = 0; rows < rowsMax; rows ++){
             System.out.println();
-            System.out.println(lineBreak.repeat(92));	
+            menuTopBottomBorder();	
             // column constructor - two inner loops
             // first for item name and number
             // second for item price & cals
             for (int columns = 0; columns < 3; columns ++) {
-				if (foodItem >= myMenuItems.size()){
-            
-                    System.out.printf("%-30s", 
+				// if no more items in menu, complete empty row
+                if (foodItem >= myMenuItems.size()){
+                    System.out.printf("%-45s", 
                     leftRowSeperator
                     );
                 }
+                // otherwise fill row
                 else{
-
                     MenuItem item = myMenuItems.get(foodItem);
-                    System.out.printf("%s%2d%s%-25s", 
+                    System.out.printf("%s%s%2d%s%s%-25s", 
                     leftRowSeperator,
+                    MENU_NUMBER_COLOR,
                     index,
+                    ANSI_RESET,
                     " ",
                     item.getName()
                     );
@@ -315,27 +327,30 @@ public class Driver{
             System.out.println();
             // second inner loop for price
             for (int columns2 = 0; columns2 < 3; columns2 ++) {
+                // if no more items in menu / complete empty row
                 if (foodItem2 >= myMenuItems.size()){
-                    System.out.printf("%-30s", 
+                    System.out.printf("%-45s", 
                     leftRowSeperator
                     );
-                }    
+                } 
+                // otherwise fill row  
                 else{
                     MenuItem item = myMenuItems.get(foodItem2);
-                    System.out.printf("%s%s%-25s", 
+                    System.out.printf("%s%s%s%-25s%s", 
                     leftRowSeperator,
                     "   ",
-                    nf.format(item.getPrice())
+                    PRICE_COLORS,
+                    nf.format(item.getPrice()),
+                    ANSI_RESET
                     );
                     foodItem2 += 1;
-                }    
-                
+                }        
             }
             // far right margin
             System.out.print(rightRowSeperator);
         }
         System.out.println();
-        System.out.println(lineBreak.repeat(92));	
+        menuTopBottomBorder();	
         System.out.println();
     }
 
@@ -359,6 +374,13 @@ public class Driver{
         String timeNow = getTime();
         // for printing money values in printf with space alignment
         NumberFormat nf = NumberFormat.getCurrencyInstance();
+        String name = customer.getName();
+        if (name.equals("unknown customer"))  name =  "Name : N/A";
+        String phone = customer.getPhone();
+        if (phone.equals("unknown customer")) phone = "Phone : N/A";
+        String email = customer.getEmail();
+        if (email.equals("unknown customer")) email = "Email : N/A";
+
         
         //Write to file and print       
         try{
@@ -369,7 +391,7 @@ public class Driver{
             System.out.println("ENJOY!");
             System.out.println();
             // print receipt and save data at each step
-            System.out.printf("Customer: %s%n", customer.getName());
+            System.out.printf("%s / %s / %s", name, phone, email);
             // space between receipts
             writer.println();
             writer.printf("Customer: %s%n", customer.getName());
@@ -457,7 +479,7 @@ public class Driver{
             
             // wait for user input
             System.out.println();
-            System.out.print("PRESS ENTER ");
+            System.out.print(PRICE_COLORS + "PRESS ENTER " + ANSI_RESET);
             String placeHolder = order.nextLine();
             
         }catch(IOException ioe){
@@ -550,27 +572,28 @@ public class Driver{
     
     private static void printLogo(){
         String welcomeMsg = "WELCOME TO HOORDUB";
-        System.out.printf("%n%55s%n",welcomeMsg);
+        System.out.printf("%n%s%55s%s%n",PRICE_COLORS, welcomeMsg, ANSI_RESET);
     }
 
     private static void horizontalLine(){
-        System.out.printf("%69s%n","-".repeat(46));
+        System.out.printf("%s%69s%s%n", MENU_BORDER_COLOR, "-".repeat(46), ANSI_RESET);
     }
 
     private static void addRequest(){
-        String itemRequest = "ADD (#) / (R)EMOVE / (D)ONE ";
+        String itemRequest = "ADD (" + MENU_NUMBER_COLOR + "#" + ANSI_RESET + ") / (" + ANSI_PURPLE + "R" + ANSI_RESET + ")EMOVE / (" + ANSI_PURPLE + "D" + ANSI_RESET + ")ONE ";
         System.out.printf("%33s%s", space, itemRequest);
     }
 
     private static void subTotalOutPut(double orderTotal, Customer newCustomer){
-        System.out.printf("%23s%s%23s $%.2f%n", space, newCustomer.getName(), "Subtotal", orderTotal);
+        System.out.printf("%23s%s%23s %s$%.2f%s%n", space, newCustomer.getName(), "Subtotal", SUBTOTAL_COLOR, orderTotal, ANSI_RESET);
     }
 
     private static void orderFeedback(ArrayList<MenuItem> shoppingCart){
 		//shoppingCartAlphabetize(shoppingCart);
 		for ( int counter = 0 ;  counter < shoppingCart.size() ; counter ++){
             MenuItem item = shoppingCart.get(counter);
-            System.out.printf("%25s%-2d - %-26s $%.2f %4d%n", space, counter + 1, item.getName(), item.getPrice(), item.getCalories());
+            System.out.printf("%25s%s%-2d%s - %-26s %s%s$%.2f%s %s%4d%s%n", 
+            space, MENU_BORDER_COLOR, counter + 1, ANSI_RESET, item.getName(), ANSI_BLUE, PRICE_COLORS, item.getPrice(), ANSI_RESET, CALORIE_COLOR, item.getCalories(), ANSI_RESET);
         }
     }
 
@@ -666,5 +689,20 @@ public class Driver{
             }
         }
         return valid;
+    }
+
+    private static void menuTopBottomBorder(){
+        String lineBreak = MENU_BORDER_COLOR + "-" + ANSI_RESET;
+        System.out.println(lineBreak.repeat(92));	
+    }
+
+    private static String menuSeperator(){
+        String leftRowSeperator  = MENU_BORDER_COLOR + "| " + ANSI_RESET;
+        return leftRowSeperator;
+    }
+
+    private static String rightMenuSeperator(){
+        String rightRowSeperator = MENU_BORDER_COLOR + " |" + ANSI_RESET;
+        return rightRowSeperator;
     }
 }
