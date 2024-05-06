@@ -1,5 +1,7 @@
    // Gabriel Malone / CSCI65 / Week 6 / Summer 2024
 
+   // stil need to make valid input scalable
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -39,7 +41,8 @@ public class Driver{
     static ArrayList<MenuItem> myMenuItems = loadMenuItems("products.txt");
     // scanner for user input
     static Scanner order = new Scanner(System.in);
-    // create customer
+    // money output used quite a bit
+    static NumberFormat nf = NumberFormat.getCurrencyInstance();
     
     // main program loop
     public static void main(String[] args) {
@@ -111,11 +114,21 @@ public class Driver{
         // create shopping cart
         ArrayList<MenuItem> shoppingCart = new ArrayList<>();
         // ask for order
+        horizontalLine();
+        orderFeedback(shoppingCart);
+        horizontalLine();
+        subTotalOutPut(orderTotal, customer);
+        horizontalLine();
         addRequest();
         String itemNumber = order.next().toUpperCase();
         // valid input check
         while(! validInput(itemNumber)){
             clearSequence();
+            horizontalLine();
+            orderFeedback(shoppingCart);
+            horizontalLine();
+            subTotalOutPut(orderTotal, customer);
+            horizontalLine();
             addRequest();
             itemNumber = order.next().toUpperCase();
         }
@@ -191,6 +204,7 @@ public class Driver{
 			shoppingCart.add(itemForOrder);
             // order feedback			
             horizontalLine();
+            
             orderFeedback(shoppingCart);
             // total feedback
             horizontalLine();
@@ -279,8 +293,6 @@ public class Driver{
      * @param menuItems loaded from file
      */
     public static void printMenu(ArrayList<MenuItem> myMenuItems){
-        // create string for money values
-        NumberFormat nf = NumberFormat.getCurrencyInstance();
         // table constructors
         String leftRowSeperator  = menuSeperator();
         String rightRowSeperator = rightMenuSeperator();
@@ -585,31 +597,40 @@ public class Driver{
     }
 
     private static void subTotalOutPut(double orderTotal, Customer newCustomer){
-        System.out.printf("%23s%s%23s %s$%.2f%s%n", space, newCustomer.getName(), "Subtotal", SUBTOTAL_COLOR, orderTotal, ANSI_RESET);
+        
+        System.out.printf("%23s%-37s%s %s$%.2f%s%n", space, newCustomer.getName(), "Subtotal", SUBTOTAL_COLOR, orderTotal, ANSI_RESET);
     }
 
     private static void orderFeedback(ArrayList<MenuItem> shoppingCart){
-		//shoppingCartAlphabetize(shoppingCart);
+
 		for ( int counter = 0 ;  counter < shoppingCart.size() ; counter ++){
             MenuItem item = shoppingCart.get(counter);
+            
             System.out.printf("%25s%s%-2d%s - %-26s %s%s$%.2f%s %s%4d%s%n", 
             space, MENU_BORDER_COLOR, counter + 1, ANSI_RESET, item.getName(), ANSI_BLUE, PRICE_COLORS, item.getPrice(), ANSI_RESET, CALORIE_COLOR, item.getCalories(), ANSI_RESET);
         }
     }
 
     private static String nameRequest(){
+        horizontalLine();
         System.out.printf("%38s%s ", space,"NAME: ");
         String name = order.nextLine();
+        if (name.length() > 26){
+            // cap name lengths to 26 char to fit nicely in menu
+            name = name.substring(0, 26);
+        }
         return name;
     }
 
     private static String emailRequest(){
+        horizontalLine();
         System.out.printf("%38s%s", space, "EMAIL: ");
         String email = order.nextLine();
         return email;
     }
 
     private static String phoneRequest(){
+        horizontalLine();
         System.out.printf("%38s%s", space, "PHONE: ");
         String phone = order.nextLine();
         return phone;
@@ -662,8 +683,15 @@ public class Driver{
     private static boolean validInput(String itemNumber){
         // checks to see if user inputted valid options
         boolean valid  = false;
-        String [] validIndput = new String [] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "D", "R" };
-        for (String valids : validIndput){
+        // lets make the valid input scalable to uknown menu sizes
+        ArrayList<String> validInputArray = new ArrayList<String>();
+        for (int index = 0; index <= myMenuItems.size(); index ++){
+            String number = Integer.toString(index);
+            validInputArray.add(number);
+        }
+        validInputArray.add("R");
+        validInputArray.add("D");
+        for (String valids : validInputArray){
             if (itemNumber.equals(valids)){
                 valid = true;
                 return valid;
