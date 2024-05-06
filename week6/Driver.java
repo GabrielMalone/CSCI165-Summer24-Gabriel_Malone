@@ -13,7 +13,7 @@
    import java.util.HashMap;
    import java.util.Map;
    import java.util.Scanner;
-import java.util.Set;
+
    
    public class Driver{
        
@@ -46,13 +46,23 @@ import java.util.Set;
        static Scanner order = new Scanner(System.in);
        // money output used quite a bit
        static NumberFormat nf = NumberFormat.getCurrencyInstance();
+       // map for removing items
+       static Map<Integer, MenuItem> removeMap = new HashMap<Integer, MenuItem>(10);
+
        
        // main program loop
        public static void main(String[] args) {
-           // run until machine turned off
+           
+          
+            // run until machine turned off
            while(true){
            // clear screen and show menu
            clearSequence();
+            // clear any carts
+           cartMap = new HashMap<MenuItem, Integer>(10);
+           orderMap = new HashMap<Integer, MenuItem>(10);
+           removeMap = new HashMap<Integer, MenuItem>(10);
+           
            Customer customer = createCustomer();
            // take order // clear shopping cart
            ArrayList<MenuItem> shoppingCart = takeOrder(customer);
@@ -117,6 +127,7 @@ import java.util.Set;
            // create shopping cart
            ArrayList<MenuItem> shoppingCart = new ArrayList<>();
            // ask for order
+           headerOutput();
            horizontalLine();
            orderFeedback(shoppingCart);
            horizontalLine();
@@ -127,6 +138,7 @@ import java.util.Set;
            // valid input check
            while(! validInput(itemNumber)){
                clearSequence();
+               headerOutput();
                horizontalLine();
                orderFeedback(shoppingCart);
                horizontalLine();
@@ -142,6 +154,7 @@ import java.util.Set;
                // if remove requested sequence
                while (itemNumber.equals("R") && shoppingCart.size() > 0){
                    clearSequence();
+                   headerOutput();
                    horizontalLine();
                    orderFeedback(shoppingCart);
                    horizontalLine();
@@ -150,7 +163,9 @@ import java.util.Set;
                    double priceReduction = removeRequest(shoppingCart, orderTotal, customer);
                    //shoppingCartAlphabetize(shoppingCart);
                    clearSequence();
+                   headerOutput();
                    horizontalLine();
+                  
                    orderFeedback(shoppingCart);
                    horizontalLine();
                    orderTotal -= priceReduction;
@@ -161,6 +176,7 @@ import java.util.Set;
                    // valid input check
                    while(! validInput(itemNumber)){
                        clearSequence();
+                       headerOutput();
                        horizontalLine();
                        orderFeedback(shoppingCart);
                        horizontalLine();
@@ -173,6 +189,7 @@ import java.util.Set;
                // remove request logic if nothing to remove
                while (itemNumber.equals("R") && shoppingCart.size() == 0){
                    clearSequence();
+                   headerOutput();
                    horizontalLine();
                    orderFeedback(shoppingCart);
                    horizontalLine();
@@ -183,6 +200,7 @@ import java.util.Set;
                    // valid input check
                    while(! validInput(itemNumber)){
                        clearSequence();
+                       headerOutput();
                        horizontalLine();
                        orderFeedback(shoppingCart);
                        horizontalLine();
@@ -208,8 +226,8 @@ import java.util.Set;
                orderTotal += orderPrice;
                shoppingCart.add(itemForOrder);
                // order feedback			
+               headerOutput();
                horizontalLine();
-               
                orderFeedback(shoppingCart);
                // total feedback
                horizontalLine();
@@ -218,10 +236,10 @@ import java.util.Set;
                // get next input
                addRequest();
                itemNumber = order.next().toUpperCase();
-           
                // valid input check
                while(! validInput(itemNumber)){
                    clearSequence();
+                   headerOutput();
                    horizontalLine();
                    orderFeedback(shoppingCart);
                    // order feedback
@@ -229,8 +247,7 @@ import java.util.Set;
                    subTotalOutPut(orderTotal, customer);
                    horizontalLine();
                    addRequest();
-                   itemNumber = order.next().toUpperCase();
-                                   
+                   itemNumber = order.next().toUpperCase();         
                }
                //clear screen // keep menu and last order on screen
                clearSequence();
@@ -588,22 +605,22 @@ import java.util.Set;
        }
        
        private static void printLogo(){
-           String welcomeMsg = "WELCOME TO HOORDUB";
+           String welcomeMsg = "GOOBERT'S RETRO FOODHUB";
            System.out.printf("%n%s%55s%s%n",PRICE_COLORS, welcomeMsg, ANSI_RESET);
        }
    
        private static void horizontalLine(){
-           System.out.printf("%s%69s%s%n", MENU_BORDER_COLOR, "-".repeat(46), ANSI_RESET);
+           System.out.printf("%s%71s%s%n", MENU_BORDER_COLOR, "-".repeat(50), ANSI_RESET);
        }
    
        private static void addRequest(){
-           String itemRequest = "ADD (" + MENU_NUMBER_COLOR + "#" + ANSI_RESET + ") / (" + ANSI_PURPLE + "R" + ANSI_RESET + ")EMOVE / (" + ANSI_PURPLE + "D" + ANSI_RESET + ")ONE ";
+           String itemRequest = "ADD (" + MENU_NUMBER_COLOR + "#" + ANSI_RESET + ") | (" + ANSI_PURPLE + "R" + ANSI_RESET + ")EMOVE | (" + ANSI_PURPLE + "D" + ANSI_RESET + ")ONE ";
            System.out.printf("%33s%s", space, itemRequest);
        }
    
        private static void subTotalOutPut(double orderTotal, Customer newCustomer){
            
-           System.out.printf("%23s%-37s%s %s$%.2f%s%n", space, newCustomer.getName(), "Subtotal", SUBTOTAL_COLOR, orderTotal, ANSI_RESET);
+           System.out.printf("%23s%-30s%s %s$%.2f%s%n", space, newCustomer.getName(), "Subtotal", SUBTOTAL_COLOR, orderTotal, ANSI_RESET);
        }
    
        private static void orderFeedback(ArrayList<MenuItem> shoppingCart){
@@ -611,19 +628,23 @@ import java.util.Set;
         ArrayList <MenuItem> tempCart = new ArrayList<>();
         // make a hashmap, add menuitem as key and quantity as value.
         // then print from the hashmap 
-       
+        
         for(MenuItem items : shoppingCart){
             if (cartMap.containsKey(items) && ! tempCart.contains(items)) tempCart.add(items);
         }
         int counter = 0;
-        
+        shoppingCartAlphabetize(tempCart);
+        shoppingCartAlphabetize(tempCart);
         for (MenuItem item: tempCart){
             String itemTotal = "(" +  cartMap.get(item) + ")";
             String itemSubtotal = PRICE_COLORS + nf.format((item.getPrice()) * cartMap.get(item)) +  ANSI_RESET;
             String caloriesTotal = CALORIE_COLOR +  (item.getCalories() * cartMap.get(item)) +  ANSI_RESET;
             String cartList = MENU_BORDER_COLOR + (counter += 1) +  ANSI_RESET;
-            System.out.printf("%23s%2s - %-26s%-4s %-15s %s%n", 
+            System.out.printf("%23s%-18s%-26s%-4s %-17s %s%n", 
             space, cartList, item.getName(),itemTotal, itemSubtotal, caloriesTotal);
+
+            removeMap.put(counter + 1, item);
+
             }
         }
    
@@ -673,7 +694,7 @@ import java.util.Set;
                }
                catch(NumberFormatException eNumberFormatException){
                    clearSequence();
-                   clearSequence();
+                   headerOutput();
                    horizontalLine();
                    orderFeedback(shoppingCart);
                    horizontalLine();
@@ -686,14 +707,14 @@ import java.util.Set;
            }
            // if remove request valid
            if (validRemoveInput(shoppingCart, itemToRemove)){
-               clearSequence();
                // remove item
-               MenuItem itemBeingRemoved = shoppingCart.get(itemToRemove - 1);
+               MenuItem itemBeingRemoved = removeMap.get(itemToRemove+1);
                // for live cart updates
                cartMap.computeIfPresent(itemBeingRemoved, (key, val) -> val -= 1);
+               if (cartMap.get(itemBeingRemoved) == 0) cartMap.remove(itemBeingRemoved);
                // reduce total price
                priceReduction = itemBeingRemoved.getPrice();
-               shoppingCart.remove(itemToRemove - 1);
+               shoppingCart.remove(itemBeingRemoved);
            }
            return priceReduction;
        }
@@ -703,7 +724,7 @@ import java.util.Set;
            boolean valid  = false;
            // lets make the valid input scalable to uknown menu sizes
            ArrayList<String> validInputArray = new ArrayList<String>();
-           for (int index = 0; index <= myMenuItems.size(); index ++){
+           for (int index = 1; index <= myMenuItems.size(); index ++){
                String number = Integer.toString(index);
                validInputArray.add(number);
            }
@@ -724,7 +745,7 @@ import java.util.Set;
            // create empty array
            ArrayList<Integer> validOptions = new ArrayList<Integer>();
            // fill array with integers matching the items placed in cart 
-           for (int index = 0; index < shoppingCart.size(); index ++){
+           for (int index = 0; index < cartMap.size(); index ++){
                validOptions.add(index + 1);
            }	
            // iterate through array and check input against the integers in array
@@ -751,4 +772,12 @@ import java.util.Set;
            String rightRowSeperator = MENU_BORDER_COLOR + " |" + ANSI_RESET;
            return rightRowSeperator;
        }
+
+       private static void headerOutput(){
+        String itemString  =  ANSI_PURPLE + "item"  +  ANSI_RESET;
+        String quantString =  ANSI_PURPLE + "quant" +  ANSI_RESET;
+        String priceString =  ANSI_PURPLE + "price" +  ANSI_RESET;
+        String calsString  =  ANSI_PURPLE + "cals"  +  ANSI_RESET;
+        System.out.printf("%-26s%-33s%-16s%-17s%s%n", space, itemString, quantString, priceString, calsString);
+    }
    }

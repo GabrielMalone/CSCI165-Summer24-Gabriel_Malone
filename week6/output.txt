@@ -36,3 +36,623 @@ Calories: 7533
 Subtotal               $76.65
 6.25% sales tax        $4.79
 Order Total            $81.44
+
+Customer: GOOB DOE
+
+Invoice number: GODO11124
+Date: 1/3/2024
+Time: Time: 15:36:36
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         1     $6.09  $6.09
+APPLE - ROYAL GALA              2     $8.75  $17.50
+BEEF PATTY                      1     $3.79  $3.79
+BEER                            3     $9.00  $27.00
+CHOCOLATE CHIP COOKIE           2     $6.45  $12.90
+FREEDOM FRIES                   2     $2.99  $5.98
+FRESH TOMATOE                   1     $4.35  $4.35
+LETTUCE - ARUGULA               6     $6.25  $37.50
+MUFFIN MIX - CORN HARVEST       5     $6.20  $31.00
+PORK SANDWICH                   1     $6.34  $6.34
+
+Calories: 15086
+====================================================
+
+Subtotal               $152.45
+6.25% sales tax        $9.53
+Order Total            $161.98
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 15:36:57
+Item                          Quant   Price  Total
+====================================================
+FRESH TOMATOE                   20    $4.35  $87.00
+
+Calories: 4120
+====================================================
+
+Subtotal               $87.00
+6.25% sales tax        $5.44
+Order Total            $92.44
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 15:38:51
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         3     $6.09  $18.27
+APPLE - ROYAL GALA              3     $8.75  $26.25
+BEEF PATTY                      2     $3.79  $7.58
+BEER                            2     $9.00  $18.00
+CHOCOLATE CHIP COOKIE           2     $6.45  $12.90
+FRESH TOMATOE                   4     $4.35  $17.40
+FREEDOM FRIES                   1     $2.99  $2.99
+LETTUCE - ARUGULA               2     $6.25  $12.50
+MUFFIN MIX - CORN HARVEST       2     $6.20  $12.40
+PORK SANDWICH                   1     $6.34  $6.34
+
+Calories: 11450
+====================================================
+
+Subtotal               $134.63
+6.25% sales tax        $8.41
+Order Total            $143.04
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:7:26
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         7     $6.09  $42.63
+APPLE - ROYAL GALA              4     $8.75  $35.00
+BEER                            2     $9.00  $18.00
+BEEF PATTY                      1     $3.79  $3.79
+CHOCOLATE CHIP COOKIE           2     $6.45  $12.90
+FREEDOM FRIES                   6     $2.99  $17.94
+LETTUCE - ARUGULA               10    $6.25  $62.50
+MUFFIN MIX - CORN HARVEST       10    $6.20  $62.00
+
+Calories: 24896
+====================================================
+
+Subtotal               $254.76
+6.25% sales tax        $15.92
+Order Total            $270.68
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:8:50
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         12    $6.09  $73.08
+BEER                            3     $9.00  $27.00
+CHOCOLATE CHIP COOKIE           6     $6.45  $38.70
+FREEDOM FRIES                   8     $2.99  $23.92
+FRESH TOMATOE                   4     $4.35  $17.40
+MUFFIN MIX - CORN HARVEST       8     $6.20  $49.60
+
+Calories: 20765
+====================================================
+
+Subtotal               $229.70
+6.25% sales tax        $14.36
+Order Total            $244.06
+
+Customer: GOOB DOE
+
+Invoice number: GODO11124
+Date: 1/3/2024
+Time: Time: 16:9:55
+Item                          Quant   Price  Total
+====================================================
+
+Calories: 0
+====================================================
+
+Subtotal               $0.00
+6.25% sales tax        $0.00
+Order Total            $0.00
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:11:32
+Item                          Quant   Price  Total
+====================================================
+APPLE - ROYAL GALA              2     $8.75  $17.50
+APPLES - SLICED / WEDGE         2     $6.09  $12.18
+BEEF PATTY                      2     $3.79  $7.58
+BEER                            2     $9.00  $18.00
+CHOCOLATE CHIP COOKIE           2     $6.45  $12.90
+FRESH TOMATOE                   2     $4.35  $8.70
+FREEDOM FRIES                   1     $2.99  $2.99
+LETTUCE - ARUGULA               2     $6.25  $12.50
+MUFFIN MIX - CORN HARVEST       2     $6.20  $12.40
+PORK SANDWICH                   2     $6.34  $12.68
+
+Calories: 10578
+====================================================
+
+Subtotal               $117.43
+6.25% sales tax        $7.34
+Order Total            $124.77
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:11:53
+Item                          Quant   Price  Total
+====================================================
+FRESH TOMATOE                   12    $4.35  $52.20
+
+Calories: 2472
+====================================================
+
+Subtotal               $52.20
+6.25% sales tax        $3.26
+Order Total            $55.46
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:12:8
+Item                          Quant   Price  Total
+====================================================
+FRESH TOMATOE                   16    $4.35  $69.60
+
+Calories: 3296
+====================================================
+
+Subtotal               $69.60
+6.25% sales tax        $4.35
+Order Total            $73.95
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:12:24
+Item                          Quant   Price  Total
+====================================================
+FRESH TOMATOE                   6     $4.35  $26.10
+
+Calories: 1236
+====================================================
+
+Subtotal               $26.10
+6.25% sales tax        $1.63
+Order Total            $27.73
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:12:40
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         4     $6.09  $24.36
+BEEF PATTY                      4     $3.79  $15.16
+BEER                            4     $9.00  $36.00
+CHOCOLATE CHIP COOKIE           6     $6.45  $38.70
+FRESH TOMATOE                   10    $4.35  $43.50
+FREEDOM FRIES                   1     $2.99  $2.99
+LETTUCE - ARUGULA               5     $6.25  $31.25
+
+Calories: 21391
+====================================================
+
+Subtotal               $191.96
+6.25% sales tax        $12.00
+Order Total            $203.96
+
+Customer: GOOB DOE
+
+Invoice number: GODO11124
+Date: 1/3/2024
+Time: Time: 16:12:58
+Item                          Quant   Price  Total
+====================================================
+FRESH TOMATOE                   8     $4.35  $34.80
+LETTUCE - ARUGULA               3     $6.25  $18.75
+MUFFIN MIX - CORN HARVEST       3     $6.20  $18.60
+
+Calories: 5869
+====================================================
+
+Subtotal               $72.15
+6.25% sales tax        $4.51
+Order Total            $76.66
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:13:37
+Item                          Quant   Price  Total
+====================================================
+FRESH TOMATOE                   1     $4.35  $4.35
+
+Calories: 206
+====================================================
+
+Subtotal               $4.35
+6.25% sales tax        $0.27
+Order Total            $4.62
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:14:16
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         6     $6.09  $36.54
+BEER                            4     $9.00  $36.00
+BEEF PATTY                      3     $3.79  $11.37
+CHOCOLATE CHIP COOKIE           4     $6.45  $25.80
+FRESH TOMATOE                   17    $4.35  $73.95
+FREEDOM FRIES                   4     $2.99  $11.96
+MUFFIN MIX - CORN HARVEST       6     $6.20  $37.20
+
+Calories: 19745
+====================================================
+
+Subtotal               $232.82
+6.25% sales tax        $14.55
+Order Total            $247.37
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:14:55
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         9     $6.09  $54.81
+APPLE - ROYAL GALA              1     $8.75  $8.75
+BEEF PATTY                      3     $3.79  $11.37
+BEER                            6     $9.00  $54.00
+CHOCOLATE CHIP COOKIE           7     $6.45  $45.15
+FREEDOM FRIES                   8     $2.99  $23.92
+LETTUCE - ARUGULA               1     $6.25  $6.25
+MUFFIN MIX - CORN HARVEST       6     $6.20  $37.20
+
+Calories: 24789
+====================================================
+
+Subtotal               $241.45
+6.25% sales tax        $15.09
+Order Total            $256.54
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:19:50
+Item                          Quant   Price  Total
+====================================================
+APPLE - ROYAL GALA              13    $8.75  $113.75
+APPLES - SLICED / WEDGE         12    $6.09  $73.08
+BEER                            17    $9.00  $153.00
+CHOCOLATE CHIP COOKIE           23    $6.45  $148.35
+FRESH TOMATOE                   14    $4.35  $60.90
+LETTUCE - ARUGULA               14    $6.25  $87.50
+MUFFIN MIX - CORN HARVEST       19    $6.20  $117.80
+PORK SANDWICH                   3     $6.34  $19.02
+
+Calories: 67390
+====================================================
+
+Subtotal               $773.40
+6.25% sales tax        $48.34
+Order Total            $821.74
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:21:21
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         3     $6.09  $18.27
+APPLE - ROYAL GALA              24    $8.75  $210.00
+CHOCOLATE CHIP COOKIE           43    $6.45  $277.35
+FREEDOM FRIES                   9     $2.99  $26.91
+FRESH TOMATOE                   4     $4.35  $17.40
+LETTUCE - ARUGULA               4     $6.25  $25.00
+MUFFIN MIX - CORN HARVEST       7     $6.20  $43.40
+
+Calories: 61977
+====================================================
+
+Subtotal               $618.33
+6.25% sales tax        $38.65
+Order Total            $656.98
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:21:37
+Item                          Quant   Price  Total
+====================================================
+PORK SANDWICH                   4     $6.34  $25.36
+
+Calories: 828
+====================================================
+
+Subtotal               $25.36
+6.25% sales tax        $1.58
+Order Total            $26.95
+
+Customer: 10 DOE
+
+Invoice number: 10DO7024
+Date: 1/3/2024
+Time: Time: 16:22:3
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         3     $6.09  $18.27
+BEER                            3     $9.00  $27.00
+CHOCOLATE CHIP COOKIE           4     $6.45  $25.80
+FREEDOM FRIES                   5     $2.99  $14.95
+FRESH TOMATOE                   6     $4.35  $26.10
+LETTUCE - ARUGULA               5     $6.25  $31.25
+MUFFIN MIX - CORN HARVEST       8     $6.20  $49.60
+
+Calories: 18957
+====================================================
+
+Subtotal               $192.97
+6.25% sales tax        $12.06
+Order Total            $205.03
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:22:33
+Item                          Quant   Price  Total
+====================================================
+APPLE - ROYAL GALA              4     $8.75  $35.00
+APPLES - SLICED / WEDGE         6     $6.09  $36.54
+BEEF PATTY                      3     $3.79  $11.37
+BEER                            3     $9.00  $27.00
+CHOCOLATE CHIP COOKIE           1     $6.45  $6.45
+FREEDOM FRIES                   2     $2.99  $5.98
+FRESH TOMATOE                   3     $4.35  $13.05
+LETTUCE - ARUGULA               4     $6.25  $25.00
+MUFFIN MIX - CORN HARVEST       5     $6.20  $31.00
+
+Calories: 16810
+====================================================
+
+Subtotal               $191.39
+6.25% sales tax        $11.96
+Order Total            $203.35
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:23:0
+Item                          Quant   Price  Total
+====================================================
+APPLE - ROYAL GALA              1     $8.75  $8.75
+BEER                            1     $9.00  $9.00
+CHOCOLATE CHIP COOKIE           1     $6.45  $6.45
+FREEDOM FRIES                   1     $2.99  $2.99
+FRESH TOMATOE                   1     $4.35  $4.35
+LETTUCE - ARUGULA               1     $6.25  $6.25
+MUFFIN MIX - CORN HARVEST       1     $6.20  $6.20
+
+Calories: 3944
+====================================================
+
+Subtotal               $43.99
+6.25% sales tax        $2.75
+Order Total            $46.74
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:23:14
+Item                          Quant   Price  Total
+====================================================
+BEER                            1     $9.00  $9.00
+FRESH TOMATOE                   1     $4.35  $4.35
+LETTUCE - ARUGULA               1     $6.25  $6.25
+
+Calories: 1820
+====================================================
+
+Subtotal               $19.60
+6.25% sales tax        $1.23
+Order Total            $20.83
+
+Customer: GABE DOE
+
+Invoice number: GADO11124
+Date: 1/3/2024
+Time: Time: 16:27:35
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         6     $6.09  $36.54
+BEER                            2     $9.00  $18.00
+CHOCOLATE CHIP COOKIE           2     $6.45  $12.90
+FREEDOM FRIES                   4     $2.99  $11.96
+FRESH TOMATOE                   7     $4.35  $30.45
+LETTUCE - ARUGULA               1     $6.25  $6.25
+MUFFIN MIX - CORN HARVEST       13    $6.20  $80.60
+
+Calories: 15561
+====================================================
+
+Subtotal               $196.70
+6.25% sales tax        $12.29
+Order Total            $208.99
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:38:5
+Item                          Quant   Price  Total
+====================================================
+APPLE - ROYAL GALA              14    $8.75  $122.50
+APPLES - SLICED / WEDGE         13    $6.09  $79.17
+BEEF PATTY                      8     $3.79  $30.32
+FREEDOM FRIES                   12    $2.99  $35.88
+FRESH TOMATOE                   10    $4.35  $43.50
+MUFFIN MIX - CORN HARVEST       19    $6.20  $117.80
+
+Calories: 32031
+====================================================
+
+Subtotal               $429.17
+6.25% sales tax        $26.82
+Order Total            $455.99
+
+Customer: 10 DOE
+
+Invoice number: 10DO7024
+Date: 1/3/2024
+Time: Time: 16:39:16
+Item                          Quant   Price  Total
+====================================================
+APPLE - ROYAL GALA              1     $8.75  $8.75
+APPLES - SLICED / WEDGE         2     $6.09  $12.18
+FRESH TOMATOE                   2     $4.35  $8.70
+LETTUCE - ARUGULA               2     $6.25  $12.50
+MUFFIN MIX - CORN HARVEST       3     $6.20  $18.60
+PORK SANDWICH                   1     $6.34  $6.34
+
+Calories: 4947
+====================================================
+
+Subtotal               $67.07
+6.25% sales tax        $4.19
+Order Total            $71.26
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:39:51
+Item                          Quant   Price  Total
+====================================================
+APPLE - ROYAL GALA              9     $8.75  $78.75
+APPLES - SLICED / WEDGE         10    $6.09  $60.90
+BEER                            22    $9.00  $198.00
+LETTUCE - ARUGULA               14    $6.25  $87.50
+MUFFIN MIX - CORN HARVEST       11    $6.20  $68.20
+PORK SANDWICH                   3     $6.34  $19.02
+
+Calories: 39427
+====================================================
+
+Subtotal               $512.37
+6.25% sales tax        $32.02
+Order Total            $544.39
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:43:2
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         6     $6.09  $36.54
+APPLE - ROYAL GALA              1     $8.75  $8.75
+BEER                            34    $9.00  $306.00
+BEEF PATTY                      20    $3.79  $75.80
+FREEDOM FRIES                   5     $2.99  $14.95
+FRESH TOMATOE                   2     $4.35  $8.70
+LETTUCE - ARUGULA               2     $6.25  $12.50
+MUFFIN MIX - CORN HARVEST       8     $6.20  $49.60
+PORK SANDWICH                   6     $6.34  $38.04
+
+Calories: 52488
+====================================================
+
+Subtotal               $550.88
+6.25% sales tax        $34.43
+Order Total            $585.31
+
+Customer: GABE DOE
+
+Invoice number: GADO11124
+Date: 1/3/2024
+Time: Time: 16:48:36
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         5     $6.09  $30.45
+BEER                            2     $9.00  $18.00
+CHOCOLATE CHIP COOKIE           2     $6.45  $12.90
+FREEDOM FRIES                   4     $2.99  $11.96
+FRESH TOMATOE                   1     $4.35  $4.35
+LETTUCE - ARUGULA               3     $6.25  $18.75
+MUFFIN MIX - CORN HARVEST       2     $6.20  $12.40
+
+Calories: 11156
+====================================================
+
+Subtotal               $108.81
+6.25% sales tax        $6.80
+Order Total            $115.61
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:48:54
+Item                          Quant   Price  Total
+====================================================
+APPLE - ROYAL GALA              8     $8.75  $70.00
+APPLES - SLICED / WEDGE         4     $6.09  $24.36
+BEEF PATTY                      5     $3.79  $18.95
+BEER                            5     $9.00  $45.00
+CHOCOLATE CHIP COOKIE           5     $6.45  $32.25
+FREEDOM FRIES                   5     $2.99  $14.95
+LETTUCE - ARUGULA               2     $6.25  $12.50
+MUFFIN MIX - CORN HARVEST       3     $6.20  $18.60
+
+Calories: 22032
+====================================================
+
+Subtotal               $236.61
+6.25% sales tax        $14.79
+Order Total            $251.40
+
+Customer: unknown customer
+
+Invoice number: UNCU34564
+Date: 1/3/2024
+Time: Time: 16:49:26
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         4     $6.09  $24.36
+FRESH TOMATOE                   4     $4.35  $17.40
+LETTUCE - ARUGULA               3     $6.25  $18.75
+MUFFIN MIX - CORN HARVEST       4     $6.20  $24.80
+PORK SANDWICH                   5     $6.34  $31.70
+
+Calories: 8184
+====================================================
+
+Subtotal               $117.01
+6.25% sales tax        $7.31
+Order Total            $124.32
