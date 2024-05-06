@@ -1,6 +1,6 @@
    // Gabriel Malone / CSCI65 / Week 6 / Summer 2024
 
-   // stil need to make valid input scalable
+ 
 
    import java.io.File;
    import java.io.FileNotFoundException;
