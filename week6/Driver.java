@@ -551,12 +551,8 @@
            return invoiceNumber;											
        }
    
-       /**
-        * Method to create today's date
-        * 
-        * @return (Date) object of tooday's date
-        */
-       public static Date dateInitializer(){
+
+       private static Date dateInitializer(){
            Date today = new Date();
            Calendar timeNow = Calendar.getInstance();
            int dayOfWeek = timeNow.get(Calendar.DAY_OF_WEEK);
@@ -568,13 +564,8 @@
            return today;
        }
    
-       /**
-        * Method to get string of today's date
-        * 
-        * @param today object of today's date
-        * @return string of today's date
-        */
-       public static String dateString(Date today){
+    
+      private static String dateString(Date today){
            String dayToday   = Integer.toString(today.getDay());
            String monthToday = Integer.toString(today.getMonth());
            String yearToday  = Integer.toString(today.getYear());
@@ -582,12 +573,8 @@
            return todaysDateComplete;
        }
    
-       /**
-        * Method to get the current time
-        * 
-        * @return (String) of the current time
-        */
-       public static String getTime(){
+
+       private static String getTime(){
            Calendar rightNow = Calendar.getInstance();
            String currentTime = "Time: " 
            + rightNow.get(Calendar.HOUR_OF_DAY) 
