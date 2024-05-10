@@ -12,7 +12,7 @@ public class World {
 	// timestep recorder
 	public static int timeStep;
 	// probability of a tree catching on fire
-	private static double CATCHPROBABILITY = .25;
+	private static double CATCHPROBABILITY = .3;
 
 	/**
 	 * Method to fill in a matrix with Cell objects
@@ -79,13 +79,15 @@ public class World {
 		// this way the changes dont affect the current iteration
 		// of the world map
 		
+		// copy world matrix sets the updated matrix to the current world matrix
 		copyWorldMatrix();
+		
+		//applies weather conditions to map in sinewave pattern
 		
 		Weather.sinewave();	
 		// iterate through the matrix up to the fireboundaries (1 -> length - 1)
 		// until burning has ceased
 		while (burning){
-			
 			trackSteps();
 			copyNextStepMatrix();
 			Weather.setSineWave();
@@ -199,6 +201,7 @@ public class World {
 			}
 			if (! stillBurning()) burning = false;	
 		}
+		trackSteps();
 	}
 
 	private void copyNextStepMatrix(){

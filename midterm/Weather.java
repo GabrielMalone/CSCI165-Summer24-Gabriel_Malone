@@ -4,33 +4,26 @@ import java.util.Random;
 
 public class Weather {
 
-	private static int direction;
+
 	public static ArrayList<String> windCoordinates = new ArrayList<>();
 
-	public static int direcProb(){
+	public static double doubleProb(double range){
 		Random rand = new Random();
-		// random value from  0.0 - 1.0
-		double direcProb = rand.nextDouble(.8);
-		if (direcProb <= .10)       direction = 1;
-		else if (direcProb <= .20)  direction = 2;
-		else if (direcProb <= .30)  direction = 3;
-		else if (direcProb <= .40)  direction = 4;
-		else if (direcProb <= .50)  direction = 5;
-		else if (direcProb <= .60)  direction = 6;
-		else if (direcProb <= .70)  direction = 7;
-		else if (direcProb <= .80)  direction = 8;
-		return direction;
-	}  
+		double doubleResult = rand.nextDouble(range);
+		return doubleResult;
+	}
+
 	public static void sinewave(){
 		// will be able to randomize these values in a range
 		// modified sinewave output from stackoverflow
-		double midlinea  	=   3;
-		double midlineb  	=  -9;
-		double amplitude 	= 0.2;
-		double frequency 	=  .5;
-		double bottomwidth	= 0.9;
-		double topwidth		= 0.9;
-		double phaseShift	= 	0;
+		Terminal_Graphics.clearSequence();
+		double midlinea  	=   7;//doubleProb(World.worldMatrix.length/3);
+		double midlineb  	=  -15;//doubleProb(World.worldMatrix.length/3) * -1;
+		double amplitude 	=  .5;//doubleProb(1.0);
+		double frequency 	=  .5;//doubleProb(1.0);
+		double bottomwidth	=   3;
+		double topwidth		=   3;
+		double phaseShift	=   0;
 		int period 			= World.worldMatrix.length;
 		// create the wave
 		int a =0;  // index positions for map
@@ -57,7 +50,7 @@ public class Weather {
 					b+=1;
 		  	}
 			// checking purposes
-		  //System.out.println();
+		  System.out.println();
 
 		}
 	}

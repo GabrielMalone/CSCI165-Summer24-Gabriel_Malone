@@ -57,10 +57,25 @@ public class Terminal_Graphics {
 				String color = cell.cellColor;
 			
 				if (cell.getCellWeather() == Cell.WEATHER.WINDY){
+					// conditional for animation
+					if (World.timeStep % 2 == 0){
 					if (color.equals(YELLOW)) 		System.out.print(ANSI_YELLOW + "-->");
 					else if (color.equals(GREEN)) 	System.out.print(ANSI_GREEN  + "-->");
 					else if (color.equals(RED))   	System.out.print(ANSI_RED	 + "-->");
 					System.out.print(ANSI_RESET);
+					}// conditional for animation
+					else if (World.timeStep % 3 == 0){
+						if (color.equals(YELLOW)) 		System.out.print(ANSI_YELLOW + "->-");
+						else if (color.equals(GREEN)) 	System.out.print(ANSI_GREEN  + "->-");
+						else if (color.equals(RED))   	System.out.print(ANSI_RED	 + "->-");
+						System.out.print(ANSI_RESET);
+						}
+					else{// conditional for animation
+						if (color.equals(YELLOW)) 		System.out.print(ANSI_YELLOW + ">--");
+						else if (color.equals(GREEN)) 	System.out.print(ANSI_GREEN  + ">--");
+						else if (color.equals(RED))   	System.out.print(ANSI_RED	 + ">--");
+						System.out.print(ANSI_RESET);
+					}
 				}
 				else
 					if (color.equals(YELLOW)) 		System.out.print(ANSI_YELLOW + "   ");
@@ -73,7 +88,7 @@ public class Terminal_Graphics {
 	
 		
     
-    private static void clearSequence(){
+    public static void clearSequence(){
         System.out.print("\033[H\033[2J");  
         System.out.flush(); 
     }
