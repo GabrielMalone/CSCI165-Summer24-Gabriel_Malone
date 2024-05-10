@@ -2,7 +2,13 @@
 
 public class Terminal_Graphics {
     
-    // text // graphic colors
+	// RBG Colors
+    public static String YELLOW = "255-255-051";
+	public static String GREEN  = "000-204-000";
+	public static String RED    = "255-000-000";
+	public static String PINK   = "255-153-255";
+	
+	// text // graphic colors
 	public static final String ANSI_RESET           = "\u001B[0m"; 
 	public static final String ANSI_GREEN          	= "\u001B[42m";
 	public static final String ANSI_YELLOW          = "\u001B[43m";
@@ -33,20 +39,40 @@ public class Terminal_Graphics {
 	 * Method to test results of the matrix creators
 	 */
 	public void displayWorld(){
-        clearSequence();
+        
+		clearSequence();
+		
 		for (int i = 0 ; i < World.worldMatrix.length ; i++){
 			System.out.println();
+
+			// number markers on grid
+			/* 
+			if (i > 0 && i < World.worldMatrix.length-1)
+				System.out.printf("%s%3d%s", ANSI_YELLOW, i, ANSI_RESET); 
+			*/
+			
 			for (int j = 0 ; j < World.worldMatrix[i].length; j++){
-				Cell currentCell = World.worldMatrix[i][j];
-				String color = currentCell.cellColor;
-				if (color.equals(Cell.YELLOW)) 	System.out.print(ANSI_YELLOW + "YEL" + ANSI_RESET);
-				if (color.equals(Cell.GREEN)) 	System.out.print(ANSI_GREEN + "GRE" + ANSI_RESET);
-				if (color.equals(Cell.RED))   	System.out.print(ANSI_RED + "RED" + ANSI_RESET);
+				
+				Cell cell = World.worldMatrix[i][j];
+				String color = cell.cellColor;
+			
+				if (cell.getCellWeather() == Cell.WEATHER.WINDY){
+					if (color.equals(YELLOW)) 		System.out.print(ANSI_YELLOW + "-->");
+					else if (color.equals(GREEN)) 	System.out.print(ANSI_GREEN  + "-->");
+					else if (color.equals(RED))   	System.out.print(ANSI_RED	 + "-->");
+					System.out.print(ANSI_RESET);
+				}
+				else
+					if (color.equals(YELLOW)) 		System.out.print(ANSI_YELLOW + "   ");
+					else if (color.equals(GREEN)) 	System.out.print(ANSI_GREEN  + "   ");
+					else if (color.equals(RED))   	System.out.print(ANSI_RED	 + "   ");
+					System.out.print(ANSI_RESET);
 				}
 			}
 		}
+	
+		
     
-  
     private static void clearSequence(){
         System.out.print("\033[H\033[2J");  
         System.out.flush(); 
