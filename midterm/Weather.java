@@ -7,20 +7,29 @@ public class Weather {
 
 	public static ArrayList<String> windCoordinates = new ArrayList<>();
 
+	/**
+	 * Method to create appropriate random variables for the sinewave
+	 * @param range
+	 * @return
+	 */
 	public static double doubleProb(double range){
 		Random rand = new Random();
 		double doubleResult = rand.nextDouble(range);
 		return doubleResult;
 	}
 
+	/**
+	 * Method to create a sinewave and overlay it onto the world matrix
+	 * 
+	 */
 	public static void sinewave(){
 		// will be able to randomize these values in a range
 		// modified sinewave output from stackoverflow
 		Terminal_Graphics.clearSequence();
-		double midlinea  	=   7;//doubleProb(World.worldMatrix.length/3);
-		double midlineb  	=  -15;//doubleProb(World.worldMatrix.length/3) * -1;
-		double amplitude 	=  .5;//doubleProb(1.0);
-		double frequency 	=  .5;//doubleProb(1.0);
+		double midlinea  	=   7;	//doubleProb(World.worldMatrix.length/3);
+		double midlineb  	=  -15;	//doubleProb(World.worldMatr ix.length/3) * -1;
+		double amplitude 	=  .5;	//doubleProb(1.0);
+		double frequency 	=  .5;	//doubleProb(1.0);
 		double bottomwidth	=   3;
 		double topwidth		=   3;
 		double phaseShift	=   0;
@@ -54,22 +63,16 @@ public class Weather {
 
 		}
 	}
-
+	/**
+	 * Method to set the cell in the coordinates within the path of the sinewave as windy
+	 * 
+	 */
 	public static void setSineWave(){
 		for (int i = 0; i < World.worldMatrix.length ; i ++ ){
-			// colums
 			for (int j = 0; j < World.worldMatrix.length ; j ++ ){
 				if (windCoordinates.contains(World.worldMatrix[i][j].coordinates)) World.worldMatrix[i][j].setWeather(Cell.WEATHER.WINDY);
 			}
 		}
 	}
-
-	public static void windCheck(Cell currentCell){
-		for (String coord : windCoordinates){
-			if (currentCell.coordinates.equals(coord)) currentCell.setWeather(Cell.WEATHER.WINDY);
-			else currentCell.setWeather(Cell.WEATHER.CALM);
-		}
-	}
-
 }
 

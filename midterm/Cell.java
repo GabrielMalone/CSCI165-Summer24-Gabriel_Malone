@@ -11,18 +11,18 @@ public class Cell {
 		EMPTY, 
 		TREE, 
 		BURNING,
-		EMBERS;
+		NULL;
 	}
 	public static enum WEATHER {
 		WINDY,
 		CALM;
 	}
 	private STATES state;
-	private WEATHER weather;
+	private WEATHER weather = WEATHER.CALM;
+	private String position;
+	double burnMultiplier = 1.0;
 	String cellColor;
 	String coordinates;
-	private String position;
-
 	
 	/**
 	 * Method to assign a color to a cell object
@@ -36,7 +36,7 @@ public class Cell {
 							break;
 			case EMPTY: 	this.cellColor = Terminal_Graphics.YELLOW;
 							break;
-			case EMBERS: 	this.cellColor = Terminal_Graphics.PINK;
+			case NULL: 	this.cellColor = Terminal_Graphics.PINK;
 							break;
 			default:
 							break;
@@ -48,6 +48,7 @@ public class Cell {
 		}
 
 	public STATES getState(){
+		if (this.state == null) return Cell.STATES.NULL;
 		return this.state;
 	}
 
@@ -67,5 +68,28 @@ public class Cell {
 		return this.weather;
 	}
 
+	public double getBurnMultiplier(){
+		// if cell burning and windy, increase burn chance of cell in path of wind
+		if (this.weather.equals(WEATHER.WINDY)){
+			this.burnMultiplier *= -1;
+		}
+		return this.burnMultiplier;
+	}
+	/**
+	 * Method to return the cell's coordinates in integer form
+	 * @return array of integers
+	 */
+	public int[] convertCoordsToInteger(){
+		String [] coordinateStrings = this.coordinates.split(",");
+		int x = Integer.valueOf(coordinateStrings[0]);
+		int y = Integer.valueOf(coordinateStrings[1]);
+		int [] intCoords = {x, y};
+		return intCoords;
+	}
+
+	public boolean equals(Cell otherCell){
+		if (this.coordinates.equals(otherCell.coordinates)) return true;
+		else return false;
+	}
 }
 

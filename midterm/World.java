@@ -70,7 +70,7 @@ public class World {
 	 * Method to model the spread of a fire
 	 *
 	 */
-	public void applySpread(){
+	public static void applySpread(){
 		
 		boolean burning = true;
 		
@@ -144,7 +144,7 @@ public class World {
 					}
 					
 					if (Cell.STATES.BURNING == currentCell.getState()){
-						// FIX need to update to calm if moving out of path of wind
+						
 						// if current cell burning change to empty
 						Cell cellNextStep = new Cell();
 						// carry over coordinate information
@@ -157,15 +157,44 @@ public class World {
 						nextStep[i][j] = cellNextStep;
 						// calculate if nearby cells catch on fire
 						// by iterating through nearby cells
+						
+						// if burn cell windy, increase burn probability of nearby cells
+						// in direction of the wind
+						// decrease burn probability of cells not in directin path
+						double chance = probCatch();
+						if (currentCell.getCellWeather().equals(Cell.WEATHER.WINDY))
+							// for now just checking eastern wind flow
+							chance *= nearbyCells[3].getBurnMultiplier();
+							// if fire spreads to this cell
+							if (chance <= CATCHPROBABILITY){
+								// set the next step cell to be on fire
+								Cell cellNearbyNextStep = new Cell();
+								cellNearbyNextStep.coordinates = nearbyCells[3].coordinates;
+								cellNearbyNextStep.setState(Cell.STATES.BURNING);
+								cellNearbyNextStep.SetCellColor();
+								cellNearbyNextStep.setRelativePosition(nearbyCellPosition[3]);
+								String position = cellNearbyNextStep.getRelativePosition();
+								// assign correct matrix spot
+								setPosition(cellNearbyNextStep, position, north, south, east, west, i, j);
+							}
+
 						for (int index = 0 ; index < nearbyCells.length ; index ++)	{
 							Cell nearbyCell = nearbyCells[index];
-							// assign cell for the next step its relative position
-							Cell cellNearbyNextStep = new Cell();
-							cellNearbyNextStep.coordinates = nearbyCell.coordinates;
-							cellNearbyNextStep.setRelativePosition(nearbyCellPosition[index]);
-							// if cell is a tree, see if catches on fire
-							if (nearbyCell.getState() == Cell.STATES.TREE){
-								double chance = probCatch();
+							if (! nearbyCell.equals(nearbyCells[3])){
+								// assign cell for the next step its relative position
+								Cell cellNearbyNextStep = new Cell();
+								cellNearbyNextStep.coordinates = nearbyCell.coordinates;
+								cellNearbyNextStep.setRelativePosition(nearbyCellPosition[index]);
+								// if cell is a tree, and burning cell next to it not windy:
+								if (nearbyCell.getState() == Cell.STATES.TREE && ! currentCell.getCellWeather().equals(Cell.WEATHER.WINDY)){
+									chance = probCatch();
+								}
+								// if cell is a tree and burning cell next to it is windy (blowing away from this cell)
+								// decrease prob of fire catch
+								else {
+
+									chance = probCatch() + 1;
+								}
 								// if fire spreads to this cell
 								if (chance <= CATCHPROBABILITY){
 									// set the next step cell to be on fire
@@ -174,29 +203,11 @@ public class World {
 									// place new cell in nextStep matrix
 									String position = cellNearbyNextStep.getRelativePosition();
 									// assign correct matrix spot
-									switch (position){
-
-										case "north" 	: 	nextStep[north][j] 		= cellNearbyNextStep;
-														break;
-										case "south"	: 	nextStep[south][j]		= cellNearbyNextStep;
-														break;
-										case "west" 	: 	nextStep[i][west] 		= cellNearbyNextStep;
-														break;
-										case "east" 	: 	nextStep[i][east] 		= cellNearbyNextStep;
-														break;
-										case "noreast" 	: 	nextStep[north][east] 	= cellNearbyNextStep;
-														break;
-										case "norwest" 	: 	nextStep[north][west] 	= cellNearbyNextStep;
-														break;
-										case "southwest" : 	nextStep[south][west] 	= cellNearbyNextStep;
-														break;
-										case "southeast" : 	nextStep[south][east] 	= cellNearbyNextStep;
-														break;
-									}
+									setPosition(cellNearbyNextStep, position, north, south, east, west, i, j);
 								}
 							}
 						}
-					}
+					}	
 				}
 			}
 			if (! stillBurning()) burning = false;	
@@ -204,7 +215,7 @@ public class World {
 		trackSteps();
 	}
 
-	private void copyNextStepMatrix(){
+	private static void copyNextStepMatrix(){
 		for(int g = 0 ; g < worldMatrix.length ; g ++){
 			for(int h = 0 ; h < worldMatrix.length ; h ++){
 				worldMatrix[g][h] = nextStep[g][h];
@@ -212,7 +223,7 @@ public class World {
 		}
 	}
 
-	private void copyWorldMatrix(){
+	private static void copyWorldMatrix(){
 		for(int g = 0 ; g < worldMatrix.length ; g ++){
 			for(int h = 0 ; h < worldMatrix.length ; h ++){
 				nextStep[g][h] = worldMatrix[g][h];
@@ -220,7 +231,7 @@ public class World {
 		}
 	}
 
-	private void displayWorld(){
+	private static void displayWorld(){
 		// for displaying the matrices in terminal
 		Terminal_Graphics graphics = new Terminal_Graphics();
 		// display the world
@@ -233,14 +244,14 @@ public class World {
 		graphics.displayWorld();
 	}
 
-	private void trackSteps(){
+	private static void trackSteps(){
 		// track steps
 		timeStep += 1;
 		System.out.println();
 		System.out.println("Steps: " + timeStep);
 	}
 
-	private boolean stillBurning(){
+	private static boolean stillBurning(){
 		// checks to see if any fires still burning
 		for(int x = 0; x < worldMatrix.length; x ++){
 			for (int y = 0; y < worldMatrix.length; y ++){
@@ -248,5 +259,52 @@ public class World {
 			}
 		}
 		return false;
+	}
+	/**
+	 * Method to set the position of the updated cell for the next iteration of the matrix
+	 * 
+	 * @param cellNearbyNextStep
+	 * @param position
+	 * @param north
+	 * @param south
+	 * @param east
+	 * @param west
+	 * @param i
+	 * @param j
+	 */
+	private static void setPosition(Cell cellNearbyNextStep, String position, 
+		int north, int south, int east, int west, int i, int j) {
+	
+		switch (position){
+
+			case "north" 	: 	nextStep[north][j] 		= cellNearbyNextStep;
+							break;
+			case "south"	: 	nextStep[south][j]		= cellNearbyNextStep;
+							break;
+			case "west" 	: 	nextStep[i][west] 		= cellNearbyNextStep;
+							break;
+			case "east" 	: 	nextStep[i][east] 		= cellNearbyNextStep;
+							break;
+			case "noreast" 	: 	nextStep[north][east] 	= cellNearbyNextStep;
+							break;
+			case "norwest" 	: 	nextStep[north][west] 	= cellNearbyNextStep;
+							break;
+			case "southwest" : 	nextStep[south][west] 	= cellNearbyNextStep;
+							break;
+			case "southeast" : 	nextStep[south][east] 	= cellNearbyNextStep;
+							break;
+		}
+	}
+
+	private static void setCenterCellonFire(){
+		// find center
+		int center = size / 2;
+		// set center after the loop complete
+		Cell centerCell = new Cell();
+		//middle cell on fire
+		centerCell.setState(Cell.STATES.BURNING);
+		centerCell.SetCellColor();
+		worldMatrix[center][center] =  centerCell;
+		centerCell.coordinates = center + "," + center;
 	}
 }
