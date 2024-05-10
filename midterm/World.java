@@ -18,8 +18,7 @@ public class World {
 	 * Method to fill in a matrix with Cell objects
 	 */
 	public void fillWorld(){
-		// find center
-		int center = size / 2;
+
 		// fill the matrix with cells
 		for (int i = 0 ; i < worldMatrix.length ; i ++){
 			for (int j = 0 ; j < worldMatrix.length; j++){
@@ -48,12 +47,7 @@ public class World {
 			}
 		}
 		// set center after the loop complete
-		Cell centerCell = new Cell();
-		//middle cell on fire
-		centerCell.setState(Cell.STATES.BURNING);
-		centerCell.SetCellColor();
-		worldMatrix[center][center] =  centerCell;
-		centerCell.coordinates = center + "," + center;
+        setCenterCellonFire();
 	}
 	/**
 	 * Method to get a random percetage 1-100%
@@ -70,7 +64,7 @@ public class World {
 	 * Method to model the spread of a fire
 	 *
 	 */
-	public static void applySpread(){
+	public void applySpread(){
 		
 		boolean burning = true;
 		
@@ -191,10 +185,10 @@ public class World {
 								}
 								// if cell is a tree and burning cell next to it is windy (blowing away from this cell)
 								// decrease prob of fire catch
-								else {
+								else 
 
-									chance = probCatch() + 1;
-								}
+									chance = probCatch() + .25;
+								
 								// if fire spreads to this cell
 								if (chance <= CATCHPROBABILITY){
 									// set the next step cell to be on fire
@@ -210,6 +204,7 @@ public class World {
 					}	
 				}
 			}
+            borderCheck();
 			if (! stillBurning()) burning = false;	
 		}
 		trackSteps();
@@ -296,7 +291,7 @@ public class World {
 		}
 	}
 
-	private static void setCenterCellonFire(){
+	private void setCenterCellonFire(){
 		// find center
 		int center = size / 2;
 		// set center after the loop complete
@@ -307,4 +302,20 @@ public class World {
 		worldMatrix[center][center] =  centerCell;
 		centerCell.coordinates = center + "," + center;
 	}
+
+    private static void borderCheck() {
+        for (int i = 0 ; i < worldMatrix.length ; i ++){
+			for (int j = 0 ; j < worldMatrix.length; j++){
+				if (i == 0 || i == worldMatrix.length - 1){
+					worldMatrix[i][j].setState(Cell.STATES.EMPTY);
+					worldMatrix[i][j].SetCellColor();
+				}
+				// if at edge left/right
+				else if ( j == 0 || j == worldMatrix.length - 1){
+					worldMatrix[i][j].setState(Cell.STATES.EMPTY);
+					worldMatrix[i][j].SetCellColor();
+                }
+            }    
+        }
+    }
 }

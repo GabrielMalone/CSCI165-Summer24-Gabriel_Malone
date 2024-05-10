@@ -1,5 +1,4 @@
 
-
 public class Driver {
 
 	public static int size;
@@ -9,5 +8,5 @@ public class Driver {
 		World neWorld = new World();
 		neWorld.fillWorld();
 		neWorld.applySpread();
-	}
+    }
 }

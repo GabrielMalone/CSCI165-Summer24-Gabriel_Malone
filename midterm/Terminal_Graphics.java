@@ -1,5 +1,4 @@
 
-
 public class Terminal_Graphics {
     
 	// RBG Colors

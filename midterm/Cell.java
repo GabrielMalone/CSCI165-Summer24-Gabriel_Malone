@@ -1,6 +1,4 @@
 
-
-
 public class Cell {
 
 	// static means these are availabe for any method to use 
@@ -92,4 +90,3 @@ public class Cell {
 		else return false;
 	}
 }
-
