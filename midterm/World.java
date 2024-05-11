@@ -12,9 +12,11 @@ public class World {
 	// timestep recorder
 	public static int timeStep = 0;
 	// probability of a tree catching on fire
-	private static double CATCHPROBABILITY = .25;
+	public static double catchprobability = Driver.catchprobability;
+	// for terminating loop
 	private static boolean burning = true;
-	Weather todaysWeather = new Weather();
+	// get weather for world map
+	public static Weather todaysWeather = Driver.todaysWeather;
 
 
 	/**
@@ -77,8 +79,6 @@ public class World {
 		// this way the changes dont affect the current iteration
 		// of the world map
 		copyWorldMatrix();
-		todaysWeather.pattern();
-		todaysWeather.setDirection(Weather.DIRECTION.EAST);
 		while (burning){
 			if (timeStep > 0) clearPreviousFire();
 			applyChangesToWorld();
@@ -184,7 +184,7 @@ public class World {
             if(	cell.getState().equals(Cell.STATES.TREE) 
 			&& 	cell.getCellWeather().equals(Cell.WEATHER.CALM)){
 				double chanceToBurn = probCatch();
-				if 	(chanceToBurn < CATCHPROBABILITY){
+				if 	(chanceToBurn < catchprobability){
 					setMapOnFire(cell);
                 }
             }
@@ -193,7 +193,7 @@ public class World {
 			&& 	cell.getCellWeather().equals(Cell.WEATHER.WINDY)){
 				double chanceToBurn = probCatch();
 				chanceToBurn = windDirectionEffect(homeCell, cell, chanceToBurn);
-				if 	(chanceToBurn < CATCHPROBABILITY){
+				if 	(chanceToBurn < catchprobability){
 					setMapOnFire(cell);
 					
                 }
@@ -269,5 +269,4 @@ public class World {
 		Cell [] neighboringCells = {north, south, east, west, northeast, northwest, southeast, southwest};
 		return neighboringCells;
 	}
-
 }

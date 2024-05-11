@@ -55,7 +55,7 @@ public class Terminal_Graphics {
 				Cell cell = World.worldMatrix[i][j];
 				String color = cell.cellColor;
 			
-				if (cell.getCellWeather() == Cell.WEATHER.WINDY){
+				if (cell.getCellWeather() == Cell.WEATHER.WINDY && World.todaysWeather.windDirection.equals("EAST")){
 					// conditional for animation
 					if (World.timeStep % 2 == 0){
 					if (color.equals(YELLOW)) 		System.out.print(ANSI_YELLOW + "-->");
