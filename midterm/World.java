@@ -113,7 +113,7 @@ public class World {
         
 		// display the world
 		try{
-			Thread.sleep(50);
+			Thread.sleep(10);
 			}
 		catch (InterruptedException iException){
 			}
