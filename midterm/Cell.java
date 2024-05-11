@@ -17,7 +17,6 @@ public class Cell {
 	}
 	private STATES state;
 	private WEATHER weather = WEATHER.CALM;
-	private String position;
 	double burnMultiplier = 1.0;
 	String cellColor;
 	String coordinates;
@@ -50,14 +49,6 @@ public class Cell {
 		return this.state;
 	}
 
-	public void setRelativePosition(String position){
-		this.position = position;
-	}
-
-	public String getRelativePosition(){
-		return this.position;
-	}
-
 	public void setWeather(WEATHER weather){
 		this.weather = weather;
 	}
@@ -66,7 +57,7 @@ public class Cell {
 		return this.weather;
 	}
 
-	public double getBurnMultiplier(){
+	public double burnMultiplier(){
 		// if cell burning and windy, increase burn chance of cell in path of wind
 		if (this.weather.equals(WEATHER.WINDY)){
 			this.burnMultiplier *= -1;

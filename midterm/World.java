@@ -1,4 +1,5 @@
 
+import java.util.HashMap;
 import java.util.Random;
 
 public class World {
@@ -8,19 +9,18 @@ public class World {
 	public static Cell[][] worldMatrix = new Cell[size][size];
 	// matrix to hold the upcoming iteration of world
 	public static Cell [][] nextStep = new Cell [size][size];
-    // list of all the current burning cells (used in loop)
-    
 	// timestep recorder
 	public static int timeStep = 0;
 	// probability of a tree catching on fire
 	private static double CATCHPROBABILITY = .25;
-   
+	private static boolean burning = true;
+	Weather todaysWeather = new Weather();
+
 
 	/**
 	 * Method to fill in a matrix with Cell objects
 	 */
 	public void fillWorld(){
-        
 		// fill the matrix with cells
 		for (int i = 0 ; i < worldMatrix.length ; i ++){
 			for (int j = 0 ; j < worldMatrix.length; j++){
@@ -53,6 +53,7 @@ public class World {
 		}
 		// set center after the loop complete
         setCenterCellonFire();
+
 	}
 	/**
 	 * Method to get a random percetage 1-100%
@@ -64,35 +65,33 @@ public class World {
 		// random value from  0.0 - 1.0
 		double catchProb = rand.nextDouble(1);
 		return catchProb;
+
 	}
 	/**
 	 * Method to model the spread of a fire
 	 *
 	 */
 	public void applySpread(){
-		
-		boolean burning = true;
-		
 		// worldMatrix decides what happens next
 		// nextStep matrix applies those changes
 		// this way the changes dont affect the current iteration
 		// of the world map
 		copyWorldMatrix();
-		//applies weather conditions to map in sinewave pattern
-		Weather.sinewave();	
+		todaysWeather.pattern();
+		todaysWeather.setDirection(Weather.DIRECTION.EAST);
 		while (burning){
 			if (timeStep > 0) clearPreviousFire();
-			copyNextStepMatrix();
+			applyChangesToWorld();
 			trackSteps();
             displayWorld();
-            Weather.setSineWave();
+            todaysWeather.setWeatherPattern();
             designatetNeighborsOnFire();
             if (! stillBurning()) burning = false;
 		}
 		trackSteps();
 	}
 
-	private static void copyNextStepMatrix(){
+	private static void applyChangesToWorld(){
 		for(int g = 0 ; g < worldMatrix.length ; g ++){
 			for(int h = 0 ; h < worldMatrix.length ; h ++){
 				worldMatrix[g][h] = nextStep[g][h];
@@ -124,7 +123,8 @@ public class World {
 
 	private static void trackSteps(){
 		// track steps
-		timeStep += 1;
+		if (burning)
+			timeStep += 1;
 		System.out.println();
 		System.out.println("Steps: " + timeStep);
 	}
@@ -146,21 +146,58 @@ public class World {
 		centerCell.coordinates = center + "," + center;
 	}
 
-    private void seeWhatBurns(Cell[] neighboringcells){
+	private double windDirectionEffect(Cell homeCell, Cell currentCell, double chanceToBurn){
+	
+		int [] homeCoords = homeCell.convertCoordsToInteger();
+		Cell[] neighbors = findNeighbors(homeCoords[0], homeCoords[1]);
+		
+		Cell north = neighbors[0];
+		Cell south = neighbors[1];
+		Cell east = neighbors[2];
+		Cell west = neighbors[3];
+		Cell northeast = neighbors[4];
+		Cell northwest = neighbors[5];
+		Cell southeast = neighbors[6];
+		Cell southwest = neighbors[7];
+
+		HashMap<Cell, String> directions = new HashMap<>();
+
+		directions.put(north, "NORTH");
+		directions.put(south, "SOUTH");
+		directions.put(east, "EAST");
+		directions.put(west, "WEST");
+		directions.put(northeast, "northeast");
+		directions.put(northwest, "northwest");
+		directions.put(southeast, "southeast");
+		directions.put(southwest, "southwest");
+
+		if (directions.get(currentCell).equals(todaysWeather.windDirection)){
+			chanceToBurn *= currentCell.burnMultiplier();
+			return chanceToBurn;
+		} 
+		else chanceToBurn += .1;
+		return chanceToBurn;
+	}
+	
+	private void seeWhatBurns(Cell[] neighboringcells, Cell homeCell){
         for (Cell cell : neighboringcells){
-            if(cell.getState().equals(Cell.STATES.TREE)){
-                double catchProbability = probCatch();
-                if (catchProbability < CATCHPROBABILITY){
-					int [] coordinates = cell.convertCoordsToInteger();
-					int rows = coordinates   [0];
-					int columns = coordinates[1];
-					Cell nextCell = new Cell();
-					nextCell.coordinates = cell.coordinates;
-					nextCell.setState(Cell.STATES.BURNING);
-					nextCell.SetCellColor();
-					nextStep[rows][columns] = nextCell;
+            if(	cell.getState().equals(Cell.STATES.TREE) 
+			&& 	cell.getCellWeather().equals(Cell.WEATHER.CALM)){
+				double chanceToBurn = probCatch();
+				if 	(chanceToBurn < CATCHPROBABILITY){
+					setMapOnFire(cell);
                 }
             }
+			
+			else if (cell.getState().equals(Cell.STATES.TREE)
+			&& 	cell.getCellWeather().equals(Cell.WEATHER.WINDY)){
+				double chanceToBurn = probCatch();
+				chanceToBurn = windDirectionEffect(homeCell, cell, chanceToBurn);
+				if 	(chanceToBurn < CATCHPROBABILITY){
+					setMapOnFire(cell);
+					
+                }
+			}
         }
     }
 
@@ -168,24 +205,18 @@ public class World {
         
         for (int f = 0 ; f < worldMatrix.length - 1; f ++ ){
             for(int g = 0 ; g < worldMatrix.length - 1; g ++){    
-                if (somethingBurning(worldMatrix[f][g])){
+                
+				Cell currentCell = worldMatrix[f][g];
+				if (somethingBurning(currentCell)){
 
-                    int row     = f;
-                    int column  = g; 
-                    
-                    Cell north      = worldMatrix   [row + 1]   [column];
-                    Cell south      = worldMatrix   [row - 1]   [column];
-                    Cell east       = worldMatrix   [row]       [column + 1];
-                    Cell west       = worldMatrix   [row]       [column - 1];
-                    Cell northeast  = worldMatrix   [row + 1]   [column + 1];
-                    Cell northwest  = worldMatrix   [row + 1]   [column - 1];
-                    Cell southeast  = worldMatrix   [row - 1]   [column + 1];
-                    Cell southwest  = worldMatrix   [row - 1]   [column - 1];
-
-                    Cell [] neighboringCells = {north, south, east, west, northeast, northwest, southeast, southwest};
-                    
-                    seeWhatBurns(neighboringCells);
-                    
+					if (currentCell.getCellWeather().equals(Cell.WEATHER.CALM)){
+                    	Cell [] neighboringCells = findNeighbors(f, g);
+                    	seeWhatBurns(neighboringCells, currentCell);
+					}
+					else if (currentCell.getCellWeather().equals(Cell.WEATHER.WINDY)){
+						Cell [] neighboringCells = findNeighbors(f, g);
+                    	seeWhatBurns(neighboringCells, currentCell);
+					}
                 }
             }
         }     
@@ -214,5 +245,29 @@ public class World {
 		}
 	}
 
+	private void setMapOnFire(Cell cell){
+		int [] coordinates = cell.convertCoordsToInteger();
+		int rows = coordinates   [0];
+		int columns = coordinates[1];
+		Cell nextCell = new Cell();
+		nextCell.coordinates = cell.coordinates;
+		nextCell.setState(Cell.STATES.BURNING);
+		nextCell.SetCellColor();
+		nextStep[rows][columns] = nextCell;
+	}
+
+	private Cell [] findNeighbors(int row, int column){
+		Cell north      = worldMatrix   [row - 1]   [column];
+		Cell south      = worldMatrix   [row + 1]   [column];
+		Cell east       = worldMatrix   [row]       [column + 1];
+		Cell west       = worldMatrix   [row]       [column - 1];
+		Cell northeast  = worldMatrix   [row + 1]   [column + 1];
+		Cell northwest  = worldMatrix   [row + 1]   [column - 1];
+		Cell southeast  = worldMatrix   [row - 1]   [column + 1];
+		Cell southwest  = worldMatrix   [row - 1]   [column - 1];
+
+		Cell [] neighboringCells = {north, south, east, west, northeast, northwest, southeast, southwest};
+		return neighboringCells;
+	}
 
 }
