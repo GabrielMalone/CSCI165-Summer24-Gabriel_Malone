@@ -25,15 +25,15 @@ public class Weather {
 	public static void sinewave(){
 		// will be able to randomize these values in a range
 		// modified sinewave output from stackoverflow
-		Terminal_Graphics.clearSequence();
-		double midlinea  	=   7;	//doubleProb(World.worldMatrix.length/3);
-		double midlineb  	=  -15;	//doubleProb(World.worldMatr ix.length/3) * -1;
+		
+		double midlinea  	=  World.worldMatrix.length / 8;	//doubleProb(World.worldMatrix.length/3);
+		double midlineb  	=  World.worldMatrix.length / 5 * -1;	//doubleProb(World.worldMatr ix.length/3) * -1;
 		double amplitude 	=  .5;	//doubleProb(1.0);
 		double frequency 	=  .5;	//doubleProb(1.0);
-		double bottomwidth	=   3;
-		double topwidth		=   3;
-		double phaseShift	=   0;
-		int period 			= World.worldMatrix.length;
+		double bottomwidth	=   World.worldMatrix.length / 11;
+		double topwidth		=   World.worldMatrix.length / 11;
+		double phaseShift	=   3;
+		int period 			= World.worldMatrix.length - 1;
 		// create the wave
 		int a =0;  // index positions for map
 		int b = 0; // index positions for map
