@@ -6,7 +6,8 @@ import java.util.Random;
 
 public class Weather {
 
-
+	
+	public int minus = 0;
 	public static ArrayList<String> windCoordinates = new ArrayList<>();
     public static enum DIRECTION {
 		NORTH, 
@@ -22,9 +23,9 @@ public class Weather {
 	 * @param range
 	 * @return
 	 */
-	public static double doubleProb(double range){
+	public static double doubleProb(double rangea, double rangeb){
 		Random rand = new Random();
-		double doubleResult = rand.nextDouble(range);
+		double doubleResult = rand.nextDouble(rangea, rangeb);
 		return doubleResult;
 	}
 
@@ -36,14 +37,13 @@ public class Weather {
 		if (this.windDirection.equals("WEST") || this.windDirection.equals("EAST")){
 		// will be able to randomize these values in a range
 		// modified sinewave output from stackoverflow
-		
-			double midlinea  	=   World.worldMatrix.length / 8;	//doubleProb(World.worldMatrix.length/3);
-			double midlineb  	=   World.worldMatrix.length / 5 * -1;	//doubleProb(World.worldMatr ix.length/3) * -1;
-			double amplitude 	=   .5;	//doubleProb(1.0);
-			double frequency 	=   .5;	//doubleProb(1.0);
-			double bottomwidth	=   World.worldMatrix.length / 11;
-			double topwidth		=   World.worldMatrix.length / 11;
-			double phaseShift	=   3;
+			double midlinea  	=   doubleProb(.1, World.worldMatrix.length/8);
+			double midlineb  	=   doubleProb(.11, World.worldMatrix.length/5) * -1;
+			double amplitude 	=   doubleProb(0, .5);
+			double frequency 	=   doubleProb(0, .5);
+			double bottomwidth	=   doubleProb(.1, World.worldMatrix.length/11);
+			double topwidth		=   doubleProb(.1, World.worldMatrix.length/8);
+			double phaseShift	=   doubleProb(.01, 1);
 			int period 			=   World.worldMatrix.length - 1;
 			// create the wave
 			int a =0;  // index positions for map
@@ -78,19 +78,19 @@ public class Weather {
 			// will be able to randomize these values in a range
 			// modified sinewave output from stackoverflow
 			
-				double midlinea  	=   World.worldMatrix.length / 8;	//doubleProb(World.worldMatrix.length/3);
-				double midlineb  	=   World.worldMatrix.length / 5 * -1;	//doubleProb(World.worldMatr ix.length/3) * -1;
-				double amplitude 	=   .5;	//doubleProb(1.0);
-				double frequency 	=   .5;	//doubleProb(1.0);
-				double bottomwidth	=   World.worldMatrix.length / 11;
-				double topwidth		=   World.worldMatrix.length / 11;
-				double phaseShift	=   3;
+				double midlinea  	=   doubleProb(.1, World.worldMatrix.length/8);
+				double midlineb  	=   doubleProb(.11, World.worldMatrix.length/5) * -1;
+				double amplitude 	=   doubleProb(0, .5);
+				double frequency 	=   doubleProb(0, .5);
+				double bottomwidth	=   doubleProb(.1, World.worldMatrix.length/11);
+				double topwidth		=   doubleProb(.1, World.worldMatrix.length/8);
+				double phaseShift	=   doubleProb(.01, 1);
 				int period 			=   World.worldMatrix.length - 1;
 				// create the wave
 				int a =0;  // index positions for map
 				int b = 0; // index positions for map
 	
-				for (double x = phaseShift; x <= period; x+=frequency) {
+				for (double x = phaseShift - minus; x <= period; x+= frequency) {
 					a += 1;
 					b  = 0;
 					for (double y = midlinea; y > midlineb; y-= amplitude) {
@@ -115,9 +115,6 @@ public class Weather {
 				System.out.println();
 				}
 			}	
-
-
-
 	}
 
 	/**
@@ -148,6 +145,16 @@ public class Weather {
 
     public DIRECTION getDirection(){
 		return this.direction;
+	}
+
+	public String getStringDirection(){
+		switch (this.direction) {
+            case NORTH: return 	"NORTH";
+            case SOUTH: return 	"SOUTH";
+            case EAST: 	return 	"EAST";
+            case WEST: 	return 	"WEST";
+	    }
+		return "";
 	}
 }
 

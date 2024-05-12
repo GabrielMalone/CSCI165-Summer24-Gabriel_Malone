@@ -17,6 +17,8 @@ public class World {
 	private static boolean burning = true;
 	// get weather for world map
 	public static Weather todaysWeather = Driver.todaysWeather;
+	// get wildlife
+	public static Wildlife wildlife = new Wildlife();
 
 
 	/**
@@ -78,17 +80,18 @@ public class World {
 		// nextStep matrix applies those changes
 		// this way the changes dont affect the current iteration
 		// of the world map
+		todaysWeather.pattern();
+		wildlife.placeObject();
 		copyWorldMatrix();
 		while (burning){
 			if (timeStep > 0) clearPreviousFire();
 			applyChangesToWorld();
-			trackSteps();
             displayWorld();
             todaysWeather.setWeatherPattern();
             designatetNeighborsOnFire();
             if (! stillBurning()) burning = false;
+			displayData();
 		}
-		trackSteps();
 	}
 
 	private static void applyChangesToWorld(){
@@ -113,7 +116,7 @@ public class World {
         
 		// display the world
 		try{
-			Thread.sleep(10);
+			Thread.sleep(20);
 			}
 		catch (InterruptedException iException){
 			}
@@ -121,12 +124,12 @@ public class World {
 		graphics.displayWorld();
 	}
 
-	private static void trackSteps(){
+	private static int trackSteps(){
 		// track steps
 		if (burning)
 			timeStep += 1;
-		System.out.println();
-		System.out.println("Steps: " + timeStep);
+			return timeStep;
+	
 	}
 
 	private static boolean somethingBurning(Cell currentCell){
@@ -250,13 +253,16 @@ public class World {
 		int rows = coordinates   [0];
 		int columns = coordinates[1];
 		Cell nextCell = new Cell();
+		nextCell.setState(cell.getState());
 		nextCell.coordinates = cell.coordinates;
 		nextCell.setState(Cell.STATES.BURNING);
 		nextCell.SetCellColor();
+		//wildlife.evadeFire();
+		wildlife.checkIfDead(cell, nextCell);
 		nextStep[rows][columns] = nextCell;
 	}
 
-	private Cell [] findNeighbors(int row, int column){
+	public static Cell [] findNeighbors(int row, int column){
 		Cell north      = worldMatrix   [row - 1]   [column];
 		Cell south      = worldMatrix   [row + 1]   [column];
 		Cell east       = worldMatrix   [row]       [column + 1];
@@ -268,5 +274,51 @@ public class World {
 
 		Cell [] neighboringCells = {north, south, east, west, northeast, northwest, southeast, southwest};
 		return neighboringCells;
+	}
+
+	private double burnPercetage(){
+		double total_area = worldMatrix.length * worldMatrix.length;
+		double burned_area = 0;
+		for(int j = 0 ; j < worldMatrix.length - 1; j ++){
+			for (int i = 0 ; i < worldMatrix.length - 1 ; i ++)	{
+				if (worldMatrix[j][i].getState() == Cell.STATES.EMPTY){
+					burned_area += 1;
+				}
+			}
+		}
+		double percetage_burned = (burned_area / total_area) * 100;
+		return percetage_burned;
+	}
+
+	private double mortalityRate(){
+		double total_wildlife = wildlife.activeWildlifeCells.size();
+		double total_dead = totalDead();
+		double mortality_rate = (total_dead / total_wildlife) * 100;
+		return mortality_rate;
+		}
+
+	private double totalDead(){
+		double total_dead = 0;
+		for (int i = 0;  i < worldMatrix.length - 1; i ++){
+			for (int j = 0 ; j < worldMatrix.length - 1; j ++){
+				if (worldMatrix[i][j].getObject() == Cell.OBJECTS.WILDLIFEDEAD){
+					total_dead += 1;
+					wildlife.deadanimals += 1;
+					}	
+				}
+			}
+			return total_dead;
+		}
+		
+	private void displayData(){
+		int steps = trackSteps();
+		double percentage = burnPercetage();
+		double mortality_rate = mortalityRate();
+		String direction = todaysWeather.getStringDirection();
+		double animal_pop = wildlife.animal_pop - totalDead();
+		long pop = Math.round(animal_pop);
+		
+		System.out.printf("%nSteps:          %d%nBurn area:      %.2f%%%nAnimal pop:     %d%nMortality rate: %.2f%%%nWind direction: %s%nMap Size:       %dx%d acres%n", steps, percentage, pop, mortality_rate, direction, worldMatrix.length, worldMatrix.length);
+
 	}
 }

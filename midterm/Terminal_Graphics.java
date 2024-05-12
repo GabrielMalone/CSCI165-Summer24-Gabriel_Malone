@@ -44,36 +44,72 @@ public class Terminal_Graphics {
 		for (int i = 0 ; i < World.worldMatrix.length ; i++){
 			System.out.println();
 
-			// number markers on grid
-			/* 
-			if (i > 0 && i < World.worldMatrix.length-1)
-				System.out.printf("%s%3d%s", ANSI_YELLOW, i, ANSI_RESET); 
-			*/
-			
 			for (int j = 0 ; j < World.worldMatrix[i].length; j++){
 				
 				Cell cell = World.worldMatrix[i][j];
 				String color = cell.cellColor;
 			
-				if (cell.getCellWeather() == Cell.WEATHER.WINDY && Driver.todaysWeather.windDirection.equals("EAST")){
+				if (cell.getCellWeather() == Cell.WEATHER.WINDY && Driver.todaysWeather.windDirection.equals("EAST") && cell.getObject() == Cell.OBJECTS.WILDLIFEALIVE){
+					// conditional for animation
+					if (World.timeStep % 2 == 0){
+					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + ">-O");
+					else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + ">-O");
+					else if (color.equals(RED))   			System.out.print(ANSI_RED	 + ">-O");
+					
+					}// conditional for animation
+					else if (World.timeStep % 3 == 0){
+						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + "->O");
+						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + "->O");
+						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + "->O");
+						
+					}
+					else{// conditional for animation
+						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + ">-O");
+						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + ">-O");
+						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + ">-O");
+						
+					}
+				}
+				else if (cell.getCellWeather() == Cell.WEATHER.WINDY && Driver.todaysWeather.windDirection.equals("EAST") && cell.getObject() == Cell.OBJECTS.WILDLIFEDEAD){
+					// conditional for animation
+					if (World.timeStep % 2 == 0){
+						if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + ">-X");
+						else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + ">-x");
+						else if (color.equals(RED))   			System.out.print(ANSI_RED	 + ">-X");
+						
+						}// conditional for animation
+						else if (World.timeStep % 3 == 0){
+							if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + "->x");
+							else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + "->X");
+							else if (color.equals(RED))   		System.out.print(ANSI_RED	 + "->X");
+							
+						}
+						else{// conditional for animation
+							if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + ">-X");
+							else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + ">-X");
+							else if (color.equals(RED))   		System.out.print(ANSI_RED	 + ">-X");
+							
+						}
+				}
+				else if (cell.getCellWeather() == Cell.WEATHER.WINDY && Driver.todaysWeather.windDirection.equals("EAST")){
 					// conditional for animation
 					if (World.timeStep % 2 == 0){
 					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + "-->");
 					else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + "-->");
 					else if (color.equals(RED))   			System.out.print(ANSI_RED	 + "-->");
-					System.out.print(ANSI_RESET);
+					
 					}// conditional for animation
 					else if (World.timeStep % 3 == 0){
 						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + "->-");
 						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + "->-");
 						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + "->-");
-						System.out.print(ANSI_RESET);
+						
 					}
 					else{// conditional for animation
 						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + ">--");
 						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + ">--");
 						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + ">--");
-						System.out.print(ANSI_RESET);
+						
 					}
 				}
 				else if (cell.getCellWeather() == Cell.WEATHER.WINDY && Driver.todaysWeather.windDirection.equals("WEST")){
@@ -82,19 +118,19 @@ public class Terminal_Graphics {
 						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + "<--");
 						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + "<--");
 						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + "<--");
-						System.out.print(ANSI_RESET);
+						
 						}// conditional for animation
 						else if (World.timeStep % 3 == 0){
 							if (color.equals(YELLOW)) 		System.out.print(ANSI_YELLOW + "-<-");
 							else if (color.equals(GREEN)) 	System.out.print(ANSI_GREEN  + "-<-");
 							else if (color.equals(RED))   	System.out.print(ANSI_RED	 + "-<-");
-							System.out.print(ANSI_RESET);
+							
 						}
 						else{// conditional for animation
 							if (color.equals(YELLOW)) 		System.out.print(ANSI_YELLOW + "--<");
 							else if (color.equals(GREEN)) 	System.out.print(ANSI_GREEN  + "--<");
 							else if (color.equals(RED))   	System.out.print(ANSI_RED	 + "--<");
-							System.out.print(ANSI_RESET);
+							
 						}
 				}
 				else if(cell.getCellWeather() == Cell.WEATHER.WINDY && Driver.todaysWeather.windDirection.equals("SOUTH")){
@@ -103,19 +139,19 @@ public class Terminal_Graphics {
 						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + "<--");
 						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + "<--");
 						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + "<--");
-						System.out.print(ANSI_RESET);
+						
 						}// conditional for animation
 						else if (World.timeStep % 3 == 0){
 							if (color.equals(YELLOW)) 		System.out.print(ANSI_YELLOW + "-<-");
 							else if (color.equals(GREEN)) 	System.out.print(ANSI_GREEN  + "-<-");
 							else if (color.equals(RED))   	System.out.print(ANSI_RED	 + "-<-");
-							System.out.print(ANSI_RESET);
+							
 						}
 						else{// conditional for animation
 							if (color.equals(YELLOW)) 		System.out.print(ANSI_YELLOW + "--<");
 							else if (color.equals(GREEN)) 	System.out.print(ANSI_GREEN  + "--<");
 							else if (color.equals(RED))   	System.out.print(ANSI_RED	 + "--<");
-							System.out.print(ANSI_RESET);
+							
 						}
 				}
 				else if(cell.getCellWeather() == Cell.WEATHER.WINDY && Driver.todaysWeather.windDirection.equals("NORTH")){
@@ -124,21 +160,31 @@ public class Terminal_Graphics {
 						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + "<--");
 						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + "<--");
 						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + "<--");
-						System.out.print(ANSI_RESET);
+						
 						}// conditional for animation
 						else if (World.timeStep % 3 == 0){
 							if (color.equals(YELLOW)) 		System.out.print(ANSI_YELLOW + "-<-");
 							else if (color.equals(GREEN)) 	System.out.print(ANSI_GREEN  + "-<-");
 							else if (color.equals(RED))   	System.out.print(ANSI_RED	 + "-<-");
-							System.out.print(ANSI_RESET);
+							
 						}
 						else{// conditional for animation
 							if (color.equals(YELLOW)) 		System.out.print(ANSI_YELLOW + "--<");
 							else if (color.equals(GREEN)) 	System.out.print(ANSI_GREEN  + "--<");
 							else if (color.equals(RED))   	System.out.print(ANSI_RED	 + "--<");
-							System.out.print(ANSI_RESET);
+							
 						}
+				}
+				else if (cell.getObject().equals(Cell.OBJECTS.WILDLIFEALIVE)){
+					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + " O ");
+					else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + " O ");
+					else if (color.equals(RED))   			System.out.print(ANSI_RED	 + " O ");
 				}		
+				else if (cell.getObject().equals(Cell.OBJECTS.WILDLIFEDEAD)){
+					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + " X ");
+					else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + " X ");
+					else if (color.equals(RED))   			System.out.print(ANSI_RED	 + " X ");
+				}	
 				else
 					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + "   ");
 					else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + "   ");

@@ -8,7 +8,7 @@ public class Driver {
 
 	public static void main(String[] args) {
 		// map size
-        size = 50;
+        size = 20;
         // base probability of trees catching on fire
         catchprobability = .25;
         // map size adjustment for center positioning
@@ -18,8 +18,7 @@ public class Driver {
         // fill matrix with cells
 		neWorld.fillWorld();
         // set weather pattern direction
-		todaysWeather.setDirection(Weather.DIRECTION.NORTH);
-        todaysWeather.pattern();
+		todaysWeather.setDirection(Weather.DIRECTION.EAST);
         // start fire
 		neWorld.applySpread();
     }

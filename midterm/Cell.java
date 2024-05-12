@@ -9,14 +9,22 @@ public class Cell {
 		EMPTY, 
 		TREE, 
 		BURNING,
-		NULL;
 	}
+
 	public static enum WEATHER {
 		WINDY,
 		CALM;
 	}
+
+	public static enum OBJECTS{
+		VOID,
+		WILDLIFEALIVE,
+		WILDLIFEDEAD;
+	}
+	
 	private STATES state;
 	private WEATHER weather = WEATHER.CALM;
+	private OBJECTS object = OBJECTS.VOID;
 	double burnMultiplier = 1.0;
 	String cellColor;
 	String coordinates;
@@ -33,19 +41,24 @@ public class Cell {
 							break;
 			case EMPTY: 	this.cellColor = Terminal_Graphics.YELLOW;
 							break;
-			case NULL: 	this.cellColor = Terminal_Graphics.PINK;
-							break;
 			default:
 							break;
 		}
 	}
 
+	public void setObject (OBJECTS object){
+		this.object = object;
+	}
+
+	public OBJECTS getObject(){
+		return this.object;
+	}
+	
 	public void setState (STATES state){
 		this.state = state;
 		}
 
 	public STATES getState(){
-		if (this.state == null) return Cell.STATES.NULL;
 		return this.state;
 	}
 
