@@ -7,7 +7,7 @@ public class Wildlife {
 	// track active wildlife on map
 	public ArrayList<Cell> activeWildlifeCells = new ArrayList<>();
 	double deadanimals = 0;
-	double animal_pop = Weather.doubleProb(World.worldMatrix.length / 2, World.worldMatrix.length);
+	double animal_pop = Weather.doubleProb(World.worldMatrix.length / 4, World.worldMatrix.length / 2);
 
 	public void placeObject(){
 		
@@ -31,30 +31,28 @@ public class Wildlife {
 		}
 	}
 	
-	public void evadeFire(){
-		// iterate through the cells that have wildlife
-		for (Cell wildlife : activeWildlifeCells){
-			// if wildlife alive
-			if (wildlife.getObject() == Cell.OBJECTS.WILDLIFEALIVE){
-				int[] coords = wildlife.convertCoordsToInteger();
-				Cell [] neighborCells = World.findNeighbors(coords[0], coords[1]);
-				ArrayList<Cell> calmCells = new ArrayList<>();
-				ArrayList<Cell> fireCells = new ArrayList<>();
-				// iterate through the neighbors and see which cells burning
-				// and which ones calm
-				for (Cell cell : neighborCells){
-					if (cell.getState().equals(Cell.STATES.BURNING)){
-						fireCells.add(cell);
+	public void makeAnEscape(){
+	
+		for( int i = 0 ; i < World.worldMatrix.length - 1 ; i ++){
+			for (int j = 0 ; j < World.worldMatrix.length - 1 ; j ++){
+				Cell location = World.worldMatrix[i][j];
+				if (location.getObject() == (Cell.OBJECTS.WILDLIFEALIVE)){
+					Cell [] neighbors = World.findNeighbors(location.row, location.column);
+					for (Cell neighboring_cell : neighbors){
+						if (neighboring_cell.getState() != Cell.STATES.BURNING && neighboring_cell.row > 0 && neighboring_cell.column > 0){
+							location.setObject(Cell.OBJECTS.VOID);
+							neighboring_cell.setObject(Cell.OBJECTS.WILDLIFEALIVE);
+							break;
+						}
 					}
-					else calmCells.add(cell);
 				}
-			}
+			}	
 		}
-	}
-
-
-
-
-
+	}	
 
 }
+
+
+
+
+

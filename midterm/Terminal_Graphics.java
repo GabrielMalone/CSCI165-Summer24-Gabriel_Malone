@@ -34,11 +34,19 @@ public class Terminal_Graphics {
 			} 
 		} 
 	}
+	
 	/**
 	 * Method to test results of the matrix creators
 	 */
 	public void displayWorld(){
         
+		String arrow_step1_east = "-->";
+		String arrow_step2_east = "->-";
+		String arrow_step3_east = ">--";
+		String arrow_step1_west = "<--";
+		String arrow_step2_west = "-<-";
+		String arrow_step3_west = "--<";
+
 		clearSequence();
 		
 		for (int i = 0 ; i < World.worldMatrix.length ; i++){
@@ -52,84 +60,84 @@ public class Terminal_Graphics {
 				if (cell.getCellWeather() == Cell.WEATHER.WINDY && Driver.todaysWeather.windDirection.equals("EAST") && cell.getObject() == Cell.OBJECTS.WILDLIFEALIVE){
 					// conditional for animation
 					if (World.timeStep % 2 == 0){
-					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + ">-O");
-					else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + ">-O");
-					else if (color.equals(RED))   			System.out.print(ANSI_RED	 + ">-O");
+					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + ">-.");
+					else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + ">-.");
+					else if (color.equals(RED))   			System.out.print(ANSI_RED	 + ">-.");
 					
 					}// conditional for animation
 					else if (World.timeStep % 3 == 0){
-						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + "->O");
-						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + "->O");
-						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + "->O");
+						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + "->.");
+						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + "->.");
+						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + "->.");
 						
 					}
 					else{// conditional for animation
-						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + ">-O");
-						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + ">-O");
-						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + ">-O");
+						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + ">-.");
+						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + ">-.");
+						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + ">-.");
 						
 					}
 				}
 				else if (cell.getCellWeather() == Cell.WEATHER.WINDY && Driver.todaysWeather.windDirection.equals("EAST") && cell.getObject() == Cell.OBJECTS.WILDLIFEDEAD){
 					// conditional for animation
 					if (World.timeStep % 2 == 0){
-						if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + ">-X");
+						if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + ">-x");
 						else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + ">-x");
-						else if (color.equals(RED))   			System.out.print(ANSI_RED	 + ">-X");
+						else if (color.equals(RED))   			System.out.print(ANSI_RED	 + ">-x");
 						
 						}// conditional for animation
 						else if (World.timeStep % 3 == 0){
 							if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + "->x");
-							else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + "->X");
-							else if (color.equals(RED))   		System.out.print(ANSI_RED	 + "->X");
+							else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + "->x");
+							else if (color.equals(RED))   		System.out.print(ANSI_RED	 + "->x");
 							
 						}
 						else{// conditional for animation
-							if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + ">-X");
-							else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + ">-X");
-							else if (color.equals(RED))   		System.out.print(ANSI_RED	 + ">-X");
+							if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + ">-x");
+							else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + ">-x");
+							else if (color.equals(RED))   		System.out.print(ANSI_RED	 + ">-x");
 							
 						}
 				}
 				else if (cell.getCellWeather() == Cell.WEATHER.WINDY && Driver.todaysWeather.windDirection.equals("EAST")){
 					// conditional for animation
 					if (World.timeStep % 2 == 0){
-					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + "-->");
-					else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + "-->");
-					else if (color.equals(RED))   			System.out.print(ANSI_RED	 + "-->");
+					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + arrow_step1_east);
+					else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + arrow_step1_east);
+					else if (color.equals(RED))   			System.out.print(ANSI_RED	 + arrow_step1_east);
 					
 					}// conditional for animation
 					else if (World.timeStep % 3 == 0){
-						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + "->-");
-						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + "->-");
-						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + "->-");
+						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + arrow_step2_east);
+						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + arrow_step2_east);
+						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + arrow_step2_east);
 						
 					}
 					else{// conditional for animation
-						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + ">--");
-						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + ">--");
-						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + ">--");
+						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + arrow_step3_east);
+						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + arrow_step3_east);
+						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + arrow_step3_east);
 						
 					}
 				}
 				else if (cell.getCellWeather() == Cell.WEATHER.WINDY && Driver.todaysWeather.windDirection.equals("WEST")){
 						// conditional for animation
 						if (World.timeStep % 2 == 0){
-						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + "<--");
-						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + "<--");
-						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + "<--");
+						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + arrow_step1_west);
+						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + arrow_step1_west);
+						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + arrow_step1_west);
 						
 						}// conditional for animation
 						else if (World.timeStep % 3 == 0){
-							if (color.equals(YELLOW)) 		System.out.print(ANSI_YELLOW + "-<-");
-							else if (color.equals(GREEN)) 	System.out.print(ANSI_GREEN  + "-<-");
-							else if (color.equals(RED))   	System.out.print(ANSI_RED	 + "-<-");
+							if (color.equals(YELLOW)) 		System.out.print(ANSI_YELLOW + arrow_step2_west);
+							else if (color.equals(GREEN)) 	System.out.print(ANSI_GREEN  + arrow_step2_west);
+							else if (color.equals(RED))   	System.out.print(ANSI_RED	 + arrow_step2_west);
 							
 						}
 						else{// conditional for animation
-							if (color.equals(YELLOW)) 		System.out.print(ANSI_YELLOW + "--<");
-							else if (color.equals(GREEN)) 	System.out.print(ANSI_GREEN  + "--<");
-							else if (color.equals(RED))   	System.out.print(ANSI_RED	 + "--<");
+							if (color.equals(YELLOW)) 		System.out.print(ANSI_YELLOW + arrow_step3_west);
+							else if (color.equals(GREEN)) 	System.out.print(ANSI_GREEN  + arrow_step3_west);
+							else if (color.equals(RED))   	System.out.print(ANSI_RED	 + arrow_step3_west);
 							
 						}
 				}
@@ -176,14 +184,14 @@ public class Terminal_Graphics {
 						}
 				}
 				else if (cell.getObject().equals(Cell.OBJECTS.WILDLIFEALIVE)){
-					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + " O ");
-					else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + " O ");
-					else if (color.equals(RED))   			System.out.print(ANSI_RED	 + " O ");
+					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + " . ");
+					else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + " . ");
+					else if (color.equals(RED))   			System.out.print(ANSI_RED	 + " . ");
 				}		
 				else if (cell.getObject().equals(Cell.OBJECTS.WILDLIFEDEAD)){
-					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + " X ");
-					else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + " X ");
-					else if (color.equals(RED))   			System.out.print(ANSI_RED	 + " X ");
+					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + " x ");
+					else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + " x ");
+					else if (color.equals(RED))   			System.out.print(ANSI_RED	 + " x ");
 				}	
 				else
 					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + "   ");

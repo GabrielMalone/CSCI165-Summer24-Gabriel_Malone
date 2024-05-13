@@ -8,7 +8,7 @@ public class Driver {
 
 	public static void main(String[] args) {
 		// map size
-        size = 20;
+        size = 30;
         // base probability of trees catching on fire
         catchprobability = .25;
         // map size adjustment for center positioning

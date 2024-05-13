@@ -30,24 +30,32 @@ public class World {
 			for (int j = 0 ; j < worldMatrix.length; j++){
 				// create new cell object for each step
 				Cell newCell = new Cell();
+				newCell.row = i;
+				newCell.column = j;
 				newCell.coordinates = i + "," + j;
 				// conditions for empty and tree
 				// if at edge tops/bottom
 				if (i == 0 || i == worldMatrix.length - 1){
 					newCell.setState(Cell.STATES.EMPTY);
 					newCell.SetCellColor();
+					newCell.row = i;
+					newCell.column = j;
 					newCell.coordinates = i + "," + j;
 				}
 				// if at edge left/right
 				else if ( j == 0 || j == worldMatrix.length - 1){
 					newCell.setState(Cell.STATES.EMPTY);
 					newCell.SetCellColor();
+					newCell.row = i;
+					newCell.column = j;
 					newCell.coordinates = i + "," + j;
 				}
 				// if not at edge - tree
 				else {
 					newCell.setState(Cell.STATES.TREE);
 					newCell.SetCellColor();
+					newCell.row = i;
+					newCell.column = j;
 					newCell.coordinates = i + "," + j;
 				}
 				// put the appropriate cell in the matrix
@@ -71,6 +79,7 @@ public class World {
 		return catchProb;
 
 	}
+	
 	/**
 	 * Method to model the spread of a fire
 	 *
@@ -89,6 +98,7 @@ public class World {
             displayWorld();
             todaysWeather.setWeatherPattern();
             designatetNeighborsOnFire();
+			wildlife.makeAnEscape();
             if (! stillBurning()) burning = false;
 			displayData();
 		}
@@ -147,12 +157,14 @@ public class World {
 		centerCell.SetCellColor();
 		worldMatrix[center][center] =  centerCell;
 		centerCell.coordinates = center + "," + center;
+		centerCell.row = center;
+		centerCell.column = center;
 	}
 
 	private double windDirectionEffect(Cell homeCell, Cell currentCell, double chanceToBurn){
 	
 		int [] homeCoords = homeCell.convertCoordsToInteger();
-		Cell[] neighbors = findNeighbors(homeCoords[0], homeCoords[1]);
+		Cell[] neighbors = findNeighbors(homeCell.row, homeCell.column);
 		
 		Cell north = neighbors[0];
 		Cell south = neighbors[1];
@@ -249,17 +261,16 @@ public class World {
 	}
 
 	private void setMapOnFire(Cell cell){
-		int [] coordinates = cell.convertCoordsToInteger();
-		int rows = coordinates   [0];
-		int columns = coordinates[1];
 		Cell nextCell = new Cell();
 		nextCell.setState(cell.getState());
 		nextCell.coordinates = cell.coordinates;
+		nextCell.row = cell.row;
+		nextCell.column = cell.column;
 		nextCell.setState(Cell.STATES.BURNING);
 		nextCell.SetCellColor();
 		//wildlife.evadeFire();
 		wildlife.checkIfDead(cell, nextCell);
-		nextStep[rows][columns] = nextCell;
+		nextStep[nextCell.row][nextCell.column] = nextCell;
 	}
 
 	public static Cell [] findNeighbors(int row, int column){
@@ -317,8 +328,8 @@ public class World {
 		String direction = todaysWeather.getStringDirection();
 		double animal_pop = wildlife.animal_pop - totalDead();
 		long pop = Math.round(animal_pop);
-		
-		System.out.printf("%nSteps:          %d%nBurn area:      %.2f%%%nAnimal pop:     %d%nMortality rate: %.2f%%%nWind direction: %s%nMap Size:       %dx%d acres%n", steps, percentage, pop, mortality_rate, direction, worldMatrix.length, worldMatrix.length);
+		System.out.printf("%nSteps:          %d%nBurn area:      %.2f%%%nAnimal pop:     %d%nMortality rate: %.2f%%%nWind direction: %s%nMap Size:       %dx%d acres%n", 
+		steps, percentage, pop, mortality_rate, direction, worldMatrix.length, worldMatrix.length);
 
 	}
 }

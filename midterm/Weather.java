@@ -77,7 +77,6 @@ public class Weather {
 		if (this.windDirection.equals("NORTH") || this.windDirection.equals("SOUTH")){
 			// will be able to randomize these values in a range
 			// modified sinewave output from stackoverflow
-			
 				double midlinea  	=   doubleProb(.1, World.worldMatrix.length/8);
 				double midlineb  	=   doubleProb(.11, World.worldMatrix.length/5) * -1;
 				double amplitude 	=   doubleProb(0, .5);
@@ -89,7 +88,6 @@ public class Weather {
 				// create the wave
 				int a =0;  // index positions for map
 				int b = 0; // index positions for map
-	
 				for (double x = phaseShift - minus; x <= period; x+= frequency) {
 					a += 1;
 					b  = 0;
@@ -132,13 +130,13 @@ public class Weather {
     public void setDirection (DIRECTION direction){
 		this.direction = direction;
         switch (this.direction) {
-            case NORTH: this.windDirection = "NORTH";
+            case NORTH: this.windDirection 	= "NORTH";
                 break;
-            case SOUTH: this.windDirection = "SOUTH";
+            case SOUTH: this.windDirection	= "SOUTH";
                 break;
-            case EAST: this.windDirection = "EAST";
+            case EAST: this.windDirection 	= "EAST";
                 break;
-            case WEST: this.windDirection = "WEST";
+            case WEST: this.windDirection 	= "WEST";
                 break;
 	    }
     }

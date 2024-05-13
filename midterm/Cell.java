@@ -21,25 +21,28 @@ public class Cell {
 		WILDLIFEALIVE,
 		WILDLIFEDEAD;
 	}
-	
+
 	private STATES state;
 	private WEATHER weather = WEATHER.CALM;
 	private OBJECTS object = OBJECTS.VOID;
 	double burnMultiplier = 1.0;
 	String cellColor;
+	int row;
+	int column;
 	String coordinates;
-	
+
 	/**
 	 * Method to assign a color to a cell object
 	 * 
 	 */
 	public void SetCellColor(){
 		switch (this.state) {
-			case BURNING: 	this.cellColor = Terminal_Graphics.RED;
+
+			case BURNING: 		this.cellColor = Terminal_Graphics.RED;
 							break;
-			case TREE: 		this.cellColor = Terminal_Graphics.GREEN;
+			case TREE: 			this.cellColor = Terminal_Graphics.GREEN;
 							break;
-			case EMPTY: 	this.cellColor = Terminal_Graphics.YELLOW;
+			case EMPTY: 		this.cellColor = Terminal_Graphics.YELLOW;
 							break;
 			default:
 							break;
@@ -77,6 +80,7 @@ public class Cell {
 		}
 		return this.burnMultiplier;
 	}
+	
 	/**
 	 * Method to return the cell's coordinates in integer form
 	 * @return array of integers
