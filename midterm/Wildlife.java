@@ -32,22 +32,41 @@ public class Wildlife {
 	}
 	
 	public void makeAnEscape(){
-	
+		// iterate through world
 		for( int i = 0 ; i < World.worldMatrix.length - 1 ; i ++){
 			for (int j = 0 ; j < World.worldMatrix.length - 1 ; j ++){
 				Cell location = World.worldMatrix[i][j];
+				// if wildife present
 				if (location.getObject() == (Cell.OBJECTS.WILDLIFEALIVE)){
+					// get the wildlife's neighbors
 					Cell [] neighbors = World.findNeighbors(location.row, location.column);
 					for (Cell neighboring_cell : neighbors){
-						if (neighboring_cell.getState() != Cell.STATES.BURNING && neighboring_cell.row > 0 && neighboring_cell.column > 0){
+						// see if next to any fire
+						if (neighboring_cell.getState() == Cell.STATES.BURNING){
+							// vacate current spot
 							location.setObject(Cell.OBJECTS.VOID);
-							neighboring_cell.setObject(Cell.OBJECTS.WILDLIFEALIVE);
-							break;
+							// find a clear spot to go to
+							// if no fire or other animals , go to random clear spot nearby	
+							for (Cell option : neighbors){
+								if (escapeChoice(option, neighboring_cell)){
+									option.setObject(Cell.OBJECTS.WILDLIFEALIVE);
+									break;
+								}
+								// otherwise stay put
+								location.setObject(Cell.OBJECTS.WILDLIFEALIVE);
+							}	
 						}
 					}
 				}
-			}	
-		}
+			}
+		}	
+	}
+		
+
+	private boolean escapeChoice(Cell option, Cell neighboring_cell){
+		if (option.getState() != Cell.STATES.BURNING && neighboring_cell.getObject() == Cell.OBJECTS.VOID && option.row > 0 && option.column > 0)
+			return true;
+		return false;
 	}	
 
 }

@@ -97,8 +97,8 @@ public class World {
 			applyChangesToWorld();
             displayWorld();
             todaysWeather.setWeatherPattern();
-            designatetNeighborsOnFire();
 			wildlife.makeAnEscape();
+            designatetNeighborsOnFire();
             if (! stillBurning()) burning = false;
 			displayData();
 		}
@@ -126,7 +126,7 @@ public class World {
         
 		// display the world
 		try{
-			Thread.sleep(20);
+			Thread.sleep(50);
 			}
 		catch (InterruptedException iException){
 			}
@@ -163,7 +163,6 @@ public class World {
 
 	private double windDirectionEffect(Cell homeCell, Cell currentCell, double chanceToBurn){
 	
-		int [] homeCoords = homeCell.convertCoordsToInteger();
 		Cell[] neighbors = findNeighbors(homeCell.row, homeCell.column);
 		
 		Cell north = neighbors[0];
