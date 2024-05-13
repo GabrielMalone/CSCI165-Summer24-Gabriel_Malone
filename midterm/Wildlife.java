@@ -37,7 +37,7 @@ public class Wildlife {
 			for (int j = 0 ; j < World.worldMatrix.length - 1 ; j ++){
 				Cell location = World.worldMatrix[i][j];
 				// if wildife present
-				if (location.getObject() == (Cell.OBJECTS.WILDLIFEALIVE)){
+				if (location.getObject() == (Cell.OBJECTS.WILDLIFEALIVE) && location.row != 0 && location.column != 0){
 					// get the wildlife's neighbors
 					Cell [] neighbors = World.findNeighbors(location.row, location.column);
 					for (Cell neighboring_cell : neighbors){
@@ -64,7 +64,7 @@ public class Wildlife {
 		
 
 	private boolean escapeChoice(Cell option, Cell neighboring_cell){
-		if (option.getState() != Cell.STATES.BURNING && neighboring_cell.getObject() == Cell.OBJECTS.VOID && option.row > 0 && option.column > 0)
+		if (option.getState() != Cell.STATES.BURNING && neighboring_cell.getObject() == Cell.OBJECTS.VOID && option.row >= 0 && option.column > 0)
 			return true;
 		return false;
 	}	

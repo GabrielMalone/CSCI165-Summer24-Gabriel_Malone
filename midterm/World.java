@@ -162,7 +162,7 @@ public class World {
 	}
 
 	private double windDirectionEffect(Cell homeCell, Cell currentCell, double chanceToBurn){
-	
+		
 		Cell[] neighbors = findNeighbors(homeCell.row, homeCell.column);
 		
 		Cell north = neighbors[0];
