@@ -90,17 +90,19 @@ public class World {
 		// this way the changes dont affect the current iteration
 		// of the world map
 		todaysWeather.pattern();
-		wildlife.placeObject();
+		wildlife.placeWildlife();
 		copyWorldMatrix();
 		while (burning){
+			
 			if (timeStep > 0) clearPreviousFire();
+			
 			applyChangesToWorld();
             displayWorld();
             todaysWeather.setWeatherPattern();
 			wildlife.makeAnEscape();
             designatetNeighborsOnFire();
-            if (! stillBurning()) burning = false;
 			displayData();
+            if (! stillBurning()) burning = false;
 		}
 	}
 
@@ -259,8 +261,9 @@ public class World {
 		}
 	}
 
-	private void setMapOnFire(Cell cell){
+	public static void setMapOnFire(Cell cell){
 		Cell nextCell = new Cell();
+		wildlife.checkIfDead(cell, nextCell);
 		nextCell.setState(cell.getState());
 		nextCell.coordinates = cell.coordinates;
 		nextCell.row = cell.row;
@@ -268,7 +271,6 @@ public class World {
 		nextCell.setState(Cell.STATES.BURNING);
 		nextCell.SetCellColor();
 		//wildlife.evadeFire();
-		wildlife.checkIfDead(cell, nextCell);
 		nextStep[nextCell.row][nextCell.column] = nextCell;
 	}
 
@@ -307,10 +309,10 @@ public class World {
 		return mortality_rate;
 		}
 
-	private double totalDead(){
-		double total_dead = 0;
-		for (int i = 0;  i < worldMatrix.length - 1; i ++){
-			for (int j = 0 ; j < worldMatrix.length - 1; j ++){
+	private int totalDead(){
+		int total_dead = 0;
+		for (int i = 1;  i < worldMatrix.length - 1; i ++){
+			for (int j = 1 ; j < worldMatrix.length - 1; j ++){
 				if (worldMatrix[i][j].getObject() == Cell.OBJECTS.WILDLIFEDEAD){
 					total_dead += 1;
 					wildlife.deadanimals += 1;
@@ -325,7 +327,7 @@ public class World {
 		double percentage = burnPercetage();
 		double mortality_rate = mortalityRate();
 		String direction = todaysWeather.getStringDirection();
-		double animal_pop = wildlife.animal_pop - totalDead();
+		int animal_pop = wildlife.activeWildlifeCells.size() - totalDead();
 		long pop = Math.round(animal_pop);
 		System.out.printf("%nSteps:          %d%nBurn area:      %.2f%%%nAnimal pop:     %d%nMortality rate: %.2f%%%nWind direction: %s%nMap Size:       %dx%d acres%n", 
 		steps, percentage, pop, mortality_rate, direction, worldMatrix.length, worldMatrix.length);

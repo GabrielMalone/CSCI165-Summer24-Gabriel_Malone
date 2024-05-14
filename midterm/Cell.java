@@ -19,7 +19,8 @@ public class Cell {
 	public static enum OBJECTS{
 		VOID,
 		WILDLIFEALIVE,
-		WILDLIFEDEAD;
+		WILDLIFEDEAD,
+		BOMB;
 	}
 
 	private STATES state;

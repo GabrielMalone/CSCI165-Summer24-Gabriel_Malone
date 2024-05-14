@@ -10,8 +10,12 @@ public class Terminal_Graphics {
 	// text // graphic colors
 	public static final String ANSI_RESET           = "\u001B[0m"; 
 	public static final String ANSI_GREEN          	= "\u001B[42m";
+	public static final String ANSI_green          	= "\u001B[32m";
 	public static final String ANSI_YELLOW          = "\u001B[43m";
+	public static final String ANSI_yellow          = "\u001B[33m";
 	public static final String ANSI_RED				= "\u001B[41m";
+	public static final String ANSI_red				= "\u001B[31m";
+	public static final String ANSI_PINK			= "\u001B[40m";
     // create blank Color matrix
 	public static int [][] rgbWorld = new int[World.size][World.size*3];
 
@@ -46,6 +50,7 @@ public class Terminal_Graphics {
 		String arrow_step1_west = "<--";
 		String arrow_step2_west = "-<-";
 		String arrow_step3_west = "--<";
+		
 
 		clearSequence();
 		
@@ -63,18 +68,21 @@ public class Terminal_Graphics {
 					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + ">-.");
 					else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + ">-.");
 					else if (color.equals(RED))   			System.out.print(ANSI_RED	 + ">-.");
+					else if (color.equals(PINK))   			System.out.print(ANSI_PINK	 + ">-.");
 					
 					}// conditional for animation
 					else if (World.timeStep % 3 == 0){
 						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + "->.");
 						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + "->.");
 						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + "->.");
+						else if (color.equals(PINK))   		System.out.print(ANSI_PINK	 + "->.");
 						
 					}
 					else{// conditional for animation
 						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + ">-.");
 						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + ">-.");
 						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + ">-.");
+						else if (color.equals(PINK))   		System.out.print(ANSI_PINK	 + ">-.");
 						
 					}
 				}
@@ -84,39 +92,45 @@ public class Terminal_Graphics {
 						if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + ">-x");
 						else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + ">-x");
 						else if (color.equals(RED))   			System.out.print(ANSI_RED	 + ">-x");
+						else if (color.equals(PINK))   			System.out.print(ANSI_PINK	 + ">-x");
 						
 						}// conditional for animation
 						else if (World.timeStep % 3 == 0){
 							if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + "->x");
 							else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + "->x");
 							else if (color.equals(RED))   		System.out.print(ANSI_RED	 + "->x");
+							else if (color.equals(PINK))   		System.out.print(ANSI_PINK	 + "->x");
 							
 						}
 						else{// conditional for animation
 							if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + ">-x");
 							else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + ">-x");
 							else if (color.equals(RED))   		System.out.print(ANSI_RED	 + ">-x");
+							else if (color.equals(PINK))   		System.out.print(ANSI_PINK	 + ">-x");
 							
 						}
 				}
 				else if (cell.getCellWeather() == Cell.WEATHER.WINDY && Driver.todaysWeather.windDirection.equals("EAST")){
 					// conditional for animation
 					if (World.timeStep % 2 == 0){
-					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + arrow_step1_east);
-					else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + arrow_step1_east);
-					else if (color.equals(RED))   			System.out.print(ANSI_RED	 + arrow_step1_east);
+					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + ANSI_yellow + arrow_step1_east);
+					else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + ANSI_green + arrow_step1_east);
+					else if (color.equals(RED))   			System.out.print(ANSI_RED	 + ANSI_red + arrow_step1_east);
+					else if (color.equals(PINK))   			System.out.print(ANSI_PINK	 + ANSI_red + arrow_step1_east);
 					
 					}// conditional for animation
 					else if (World.timeStep % 3 == 0){
-						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + arrow_step2_east);
-						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + arrow_step2_east);
-						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + arrow_step2_east);
+						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + ANSI_yellow +arrow_step2_east);
+						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + ANSI_green + arrow_step2_east);
+						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + ANSI_red + arrow_step2_east);
+						else if (color.equals(PINK))   		System.out.print(ANSI_PINK	 + ANSI_red + arrow_step2_east);
 						
 					}
 					else{// conditional for animation
-						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + arrow_step3_east);
-						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + arrow_step3_east);
-						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + arrow_step3_east);
+						if (color.equals(YELLOW)) 			System.out.print(ANSI_YELLOW + ANSI_yellow +arrow_step3_east);
+						else if (color.equals(GREEN)) 		System.out.print(ANSI_GREEN  + ANSI_green + arrow_step3_east);
+						else if (color.equals(RED))   		System.out.print(ANSI_RED	 + ANSI_red + arrow_step3_east);
+						else if (color.equals(PINK))   		System.out.print(ANSI_PINK	 + ANSI_red + arrow_step3_east);
 						
 					}
 				}
@@ -197,6 +211,7 @@ public class Terminal_Graphics {
 					if (color.equals(YELLOW)) 				System.out.print(ANSI_YELLOW + "   ");
 					else if (color.equals(GREEN)) 			System.out.print(ANSI_GREEN  + "   ");
 					else if (color.equals(RED))   			System.out.print(ANSI_RED	 + "   ");
+					else if (color.equals(PINK))   			System.out.print(ANSI_PINK	 + "   ");
 					System.out.print(ANSI_RESET);
 				}
 			}
