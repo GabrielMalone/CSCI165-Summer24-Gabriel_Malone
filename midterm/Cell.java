@@ -1,5 +1,9 @@
 
+import java.util.Random;
+import java.awt.image.BufferedImage;
+
 public class Cell {
+
 
 	// static means these are availabe for any method to use 
 	// and that these variables do not change when a new instance of 
@@ -55,6 +59,7 @@ public class Cell {
 	int row;
 	int column;
 	String coordinates;
+	public BufferedImage treeImage;
 
 	/**
 	 * Method to assign a color to a cell object
@@ -99,8 +104,25 @@ public class Cell {
 	}
 	
 	public void setState (STATES state){
+
 		this.state = state;
+
+		Random rand = new Random();
+		int randindex = rand.nextInt(5);
+
+		switch (this.state) {
+
+			case BURNING: 		this.cellColor = Terminal_Graphics.RED;
+							break;
+			case TREE: 			this.treeImage = World.trees[randindex];
+							break;
+			case EMPTY: 		this.cellColor = Terminal_Graphics.YELLOW;
+							break;
+			default:
+							break;
 		}
+		
+	}
 
 	public STATES getState(){
 		return this.state;

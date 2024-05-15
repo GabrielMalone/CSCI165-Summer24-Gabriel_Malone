@@ -1,9 +1,10 @@
 
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
-
-
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
 
 public class World {
@@ -26,6 +27,7 @@ public class World {
 	// get wildlife
 	public static Wildlife wildlife = new Wildlife();
 	// graphics
+	public static BufferedImage [] trees = new BufferedImage[5];
 	
 	
 	/**
@@ -395,4 +397,25 @@ public class World {
 		steps, percentage, pop, mortality_rate, direction, worldMatrix.length, worldMatrix.length);
 
 	}
+
+	public void createTrees(){
+        	
+		try{
+
+            BufferedImage tree1 = ImageIO.read(getClass().getResourceAsStream("/trees/tree1.png"));
+			BufferedImage tree2 = ImageIO.read(getClass().getResourceAsStream("/trees/tree2.png"));
+			BufferedImage tree3 = ImageIO.read(getClass().getResourceAsStream("/trees/tree3.png"));
+			BufferedImage tree4 = ImageIO.read(getClass().getResourceAsStream("/trees/tree4.png"));
+			BufferedImage tree5 = ImageIO.read(getClass().getResourceAsStream("/trees/tree5.png"));
+
+			trees[0] = tree1;
+			trees[1] = tree2;
+			trees[2] = tree3;
+			trees[3] = tree4;
+			trees[4] = tree5;
+	
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

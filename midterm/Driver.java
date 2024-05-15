@@ -6,7 +6,7 @@ public class Driver {
     public static double catchprobability;
     public static Weather todaysWeather = new Weather();
     
-    
+
 	public static void main(String[] args) {
         // map size
         size = 50;
@@ -31,8 +31,10 @@ public class Driver {
 
     public static World createWorld(){
         World neWorld = new World();
+        neWorld.createTrees();
 		neWorld.fillWorld();
         return neWorld;
     }
+
 
 }
