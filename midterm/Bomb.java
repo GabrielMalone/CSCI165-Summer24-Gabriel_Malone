@@ -24,10 +24,10 @@ public class Bomb {
                 Cell [] neighbors = World.findNeighbors(currentCell.row, currentCell.column);
                 for (Cell cell : neighbors){
                     if (cell.getObject() == Cell.OBJECTS.BOMB){
-                        World.setMapOnFire(cell);
+                        World.setMapOnFire(cell, currentCell);
                         Cell [] bombNeighbors = World.findNeighbors(cell.row, cell.column);
                         for (Cell bombcells: bombNeighbors){
-                            World.setMapOnFire(bombcells);
+                            World.setMapOnFire(bombcells, currentCell);
                         }
                     }
                 }

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Random;
 
 
+
+
 public class World {
 
 	public static int size = Driver.size;
@@ -24,7 +26,6 @@ public class World {
 	// get wildlife
 	public static Wildlife wildlife = new Wildlife();
 	// graphics
-	Simple_Graphics graphics = new Simple_Graphics();
 	
 	
 	/**
@@ -38,16 +39,14 @@ public class World {
 		// of the world map
 		todaysWeather.pattern();
 		wildlife.placeWildlife();
-		
 		copyWorldMatrix();
 		while (burning){
 			if (timeStep > 0) clearPreviousFire();
 			applyChangesToWorld();
             displayWorld();
-            todaysWeather.setWeatherPattern();
+        	todaysWeather.setWeatherPattern();
 			wildlife.makeAnEscape();
             designatetNeighborsOnFire();
-			graphics.actionPerformed(null);
 			displayData();
             if (! stillBurning()) burning = false;
 		}
@@ -140,7 +139,7 @@ public class World {
         
 		// display the world
 		try{
-			Thread.sleep(80);
+			Thread.sleep(50);
 			}
 		catch (InterruptedException iException){
 			}

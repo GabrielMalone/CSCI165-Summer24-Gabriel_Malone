@@ -24,7 +24,6 @@ public class Wildlife {
 			}
 		}
 	
-	
 	public void checkIfDead(Cell current_cell, Cell burningCell){
 		// if caught in fire, deadd
 		if (current_cell.getObject() == (Cell.OBJECTS.WILDLIFEALIVE)){
