@@ -1,14 +1,18 @@
 
+
 import java.util.HashMap;
 import java.util.Random;
+
 
 public class World {
 
 	public static int size = Driver.size;
 	// create blank Cell matrix
-	public static Cell[][] worldMatrix = new Cell[size][size];
+	public static Cell[][] worldMatrix = new Cell [size][size];
 	// matrix to hold the upcoming iteration of world
 	public static Cell [][] nextStep = new Cell [size][size];
+	// matrix to hold Cell colors
+	public static String [][] rgbWorld = new String [size][size];
 	// timestep recorder
 	public static int timeStep = 0;
 	// probability of a tree catching on fire
@@ -19,7 +23,35 @@ public class World {
 	public static Weather todaysWeather = Driver.todaysWeather;
 	// get wildlife
 	public static Wildlife wildlife = new Wildlife();
-
+	// graphics
+	Simple_Graphics graphics = new Simple_Graphics();
+	
+	
+	/**
+	 * Method to model the spread of a fire
+	 *
+	 */
+	public void applySpread(){
+		// worldMatrix decides what happens next
+		// nextStep matrix applies those changes
+		// this way the changes dont affect the current iteration
+		// of the world map
+		todaysWeather.pattern();
+		wildlife.placeWildlife();
+		
+		copyWorldMatrix();
+		while (burning){
+			if (timeStep > 0) clearPreviousFire();
+			applyChangesToWorld();
+            displayWorld();
+            todaysWeather.setWeatherPattern();
+			wildlife.makeAnEscape();
+            designatetNeighborsOnFire();
+			graphics.actionPerformed(null);
+			displayData();
+            if (! stillBurning()) burning = false;
+		}
+	}
 
 	/**
 	 * Method to fill in a matrix with Cell objects
@@ -38,6 +70,7 @@ public class World {
 				if (i == 0 || i == worldMatrix.length - 1){
 					newCell.setState(Cell.STATES.EMPTY);
 					newCell.SetCellColor();
+					rgbWorld[i][j] = newCell.cellColor;
 					newCell.row = i;
 					newCell.column = j;
 					newCell.coordinates = i + "," + j;
@@ -46,6 +79,7 @@ public class World {
 				else if ( j == 0 || j == worldMatrix.length - 1){
 					newCell.setState(Cell.STATES.EMPTY);
 					newCell.SetCellColor();
+					rgbWorld[i][j] = newCell.cellColor;
 					newCell.row = i;
 					newCell.column = j;
 					newCell.coordinates = i + "," + j;
@@ -54,6 +88,7 @@ public class World {
 				else {
 					newCell.setState(Cell.STATES.TREE);
 					newCell.SetCellColor();
+					rgbWorld[i][j] = newCell.cellColor;
 					newCell.row = i;
 					newCell.column = j;
 					newCell.coordinates = i + "," + j;
@@ -65,8 +100,8 @@ public class World {
 		}
 		// set center after the loop complete
         setCenterCellonFire();
-
 	}
+
 	/**
 	 * Method to get a random percetage 1-100%
 	 *
@@ -78,32 +113,6 @@ public class World {
 		double catchProb = rand.nextDouble(1);
 		return catchProb;
 
-	}
-	
-	/**
-	 * Method to model the spread of a fire
-	 *
-	 */
-	public void applySpread(){
-		// worldMatrix decides what happens next
-		// nextStep matrix applies those changes
-		// this way the changes dont affect the current iteration
-		// of the world map
-		todaysWeather.pattern();
-		wildlife.placeWildlife();
-		copyWorldMatrix();
-		while (burning){
-			
-			if (timeStep > 0) clearPreviousFire();
-			
-			applyChangesToWorld();
-            displayWorld();
-            todaysWeather.setWeatherPattern();
-			wildlife.makeAnEscape();
-            designatetNeighborsOnFire();
-			displayData();
-            if (! stillBurning()) burning = false;
-		}
 	}
 
 	private static void applyChangesToWorld(){
@@ -123,17 +132,19 @@ public class World {
 	}
 
 	private static void displayWorld(){
+		
 		// for displaying the matrices in terminal
-        Terminal_Graphics graphics = new Terminal_Graphics();
+        Terminal_Graphics t_graphics = new Terminal_Graphics();
+		// JFrame
+		
         
 		// display the world
 		try{
-			Thread.sleep(50);
+			Thread.sleep(80);
 			}
 		catch (InterruptedException iException){
 			}
-		graphics.rgbWorld();
-		graphics.displayWorld();
+		t_graphics.displayWorld();
 	}
 
 	private static int trackSteps(){
@@ -157,6 +168,7 @@ public class World {
 		//middle cell on fire
 		centerCell.setState(Cell.STATES.BURNING);
 		centerCell.SetCellColor();
+		rgbWorld[center][center] = centerCell.cellColor;
 		worldMatrix[center][center] =  centerCell;
 		centerCell.coordinates = center + "," + center;
 		centerCell.row = center;
@@ -201,7 +213,7 @@ public class World {
 			&& 	cell.getCellWeather().equals(Cell.WEATHER.CALM)){
 				double chanceToBurn = probCatch();
 				if 	(chanceToBurn < catchprobability){
-					setMapOnFire(cell);
+					setMapOnFire(cell, homeCell);
                 }
             }
 			
@@ -210,7 +222,7 @@ public class World {
 				double chanceToBurn = probCatch();
 				chanceToBurn = windDirectionEffect(homeCell, cell, chanceToBurn);
 				if 	(chanceToBurn < catchprobability){
-					setMapOnFire(cell);
+					setMapOnFire(cell, homeCell);
 					
                 }
 			}
@@ -261,20 +273,62 @@ public class World {
 		}
 	}
 
-	public static void setMapOnFire(Cell cell){
+	public static void setMapOnFire(Cell cell, Cell homeCell){
+		// for determining direction of fire
+		int homerow = homeCell.row;
+		int hoomecolumn = homeCell.column;
+		// create new cell for next step
 		Cell nextCell = new Cell();
+		// see if any wildlife present to kill
 		wildlife.checkIfDead(cell, nextCell);
 		nextCell.setState(cell.getState());
+		// set coordinates of new cell
 		nextCell.coordinates = cell.coordinates;
 		nextCell.row = cell.row;
 		nextCell.column = cell.column;
+		// calculate direction of fire
+		Cell.FIREMOVING direction = fireDirection(homerow, hoomecolumn, nextCell.row, nextCell.column);
+		// set fire direction
+		nextCell.setFireMoving(direction);
+		// set it on fire
 		nextCell.setState(Cell.STATES.BURNING);
 		nextCell.SetCellColor();
-		//wildlife.evadeFire();
+		// place it on next map iteration
 		nextStep[nextCell.row][nextCell.column] = nextCell;
 	}
 
+	private static Cell.FIREMOVING fireDirection(int homerow, int hoomecolumn, int nextCellrow, int nextCellcolumn){
+		Cell.FIREMOVING direction = Cell.FIREMOVING.VOID;
+		if (nextCellrow - homerow > 0 && nextCellcolumn - hoomecolumn == 0){
+			direction = Cell.FIREMOVING.SOUTH;
+		}
+		else if (nextCellrow - homerow < 0 && nextCellcolumn - hoomecolumn == 0){
+			direction = Cell.FIREMOVING.NORTH;
+		}
+		else if (nextCellrow - homerow == 0 && nextCellcolumn - hoomecolumn < 0 ){
+			direction = Cell.FIREMOVING.WEST;
+		}
+		else if (nextCellrow - homerow == 0 && nextCellcolumn - hoomecolumn > 0 ){
+			direction = Cell.FIREMOVING.EAST;
+		}
+		else if (nextCellrow - homerow < 0 && nextCellcolumn - hoomecolumn < 0 ){
+			direction = Cell.FIREMOVING.NORTHWEST;
+		}
+		else if (nextCellrow - homerow < 0 && nextCellcolumn - hoomecolumn > 0 ){
+			direction = Cell.FIREMOVING.NORTHEAST;
+		}
+		else if (nextCellrow - homerow > 0 && nextCellcolumn - hoomecolumn > 0 ){
+			direction = Cell.FIREMOVING.SOUTHEAST;
+		}
+		else if (nextCellrow - homerow > 0 && nextCellcolumn - hoomecolumn < 0 ){
+			direction = Cell.FIREMOVING.SOUTHWEST;
+		}
+
+		return direction;
+	}
+
 	public static Cell [] findNeighbors(int row, int column){
+		
 		Cell north      = worldMatrix   [row - 1]   [column];
 		Cell south      = worldMatrix   [row + 1]   [column];
 		Cell east       = worldMatrix   [row]       [column + 1];
@@ -283,6 +337,15 @@ public class World {
 		Cell northwest  = worldMatrix   [row + 1]   [column - 1];
 		Cell southeast  = worldMatrix   [row - 1]   [column + 1];
 		Cell southwest  = worldMatrix   [row - 1]   [column - 1];
+
+		southwest.setPositionAsNeighbor(Cell.POSITIONASNEIGHBOR.SOUTHWEST);
+		north.setPositionAsNeighbor(Cell.POSITIONASNEIGHBOR.NORTH);
+		south.setPositionAsNeighbor(Cell.POSITIONASNEIGHBOR.SOUTH);
+		east.setPositionAsNeighbor(Cell.POSITIONASNEIGHBOR.EAST);
+		west.setPositionAsNeighbor(Cell.POSITIONASNEIGHBOR.WEST);
+		northeast.setPositionAsNeighbor(Cell.POSITIONASNEIGHBOR.NORTHEAST);
+		northwest.setPositionAsNeighbor(Cell.POSITIONASNEIGHBOR.NORTHWEST);
+		southeast.setPositionAsNeighbor(Cell.POSITIONASNEIGHBOR.SOUTHEAST);
 
 		Cell [] neighboringCells = {north, south, east, west, northeast, northwest, southeast, southwest};
 		return neighboringCells;

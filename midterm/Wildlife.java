@@ -49,29 +49,55 @@ public class Wildlife {
 							// vacate current spot
 							location.setObject(Cell.OBJECTS.VOID);
 							// find a clear spot to go to
-							// if no fire or other animals , go to random clear spot nearby	
+							// if no fire or other animals , go to clear spot
 							// next need to pick a spot opposite the direction the fire came from
+							// need to record fire direction
 							for (Cell option : neighbors){
-								if (escapeChoice(option)){
+								if (oppositeDirection(neighboring_cell) == option.getPosition() && clearEscapeChoice(option)){
 									option.setObject(Cell.OBJECTS.WILDLIFEALIVE);
 									break myBreakLabel;
 								}
-							}	
+							}
 							// otherwise stay put
 							location.setObject(Cell.OBJECTS.WILDLIFEALIVE);
 						}
 					}
-				}
-			}
-		}	
-	}
+				}	
+			}	
+		}
+	}	
 		
-
-	private boolean escapeChoice(Cell option){
+	private boolean clearEscapeChoice(Cell option){
 		if (option.getState() != Cell.STATES.BURNING && option.getObject() == Cell.OBJECTS.VOID && option.row >= 0 && option.column >= 0)
 			return true;
 		return false;
-	}	
+	}
+	
+	private Cell.POSITIONASNEIGHBOR oppositeDirection(Cell neighboringCell){
+		Cell.POSITIONASNEIGHBOR oppositeDirection = Cell.POSITIONASNEIGHBOR.NORTH;
+		
+		switch (neighboringCell.getFireMoving()) {
+
+			case NORTH: 	return Cell.POSITIONASNEIGHBOR.NORTH;
+		
+			case SOUTH:		return Cell.POSITIONASNEIGHBOR.SOUTH;
+			
+			case EAST: 		return Cell.POSITIONASNEIGHBOR.EAST;
+			
+			case WEST: 		return Cell.POSITIONASNEIGHBOR.WEST;
+		
+			case NORTHEAST:	return Cell.POSITIONASNEIGHBOR.NORTH;
+
+			case NORTHWEST: return Cell.POSITIONASNEIGHBOR.NORTH;
+		
+			case SOUTHEAST: return Cell.POSITIONASNEIGHBOR.SOUTH;
+			
+			case SOUTHWEST: return Cell.POSITIONASNEIGHBOR.SOUTH;
+			// shouldn't come up
+			case VOID: return Cell.POSITIONASNEIGHBOR.NORTH;
+		}
+		return oppositeDirection;
+	}
 
 }
 

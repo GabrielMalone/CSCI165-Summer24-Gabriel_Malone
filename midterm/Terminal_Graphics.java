@@ -17,21 +17,21 @@ public class Terminal_Graphics {
 	public static final String ANSI_red				= "\u001B[31m";
 	public static final String ANSI_PINK			= "\u001B[40m";
     // create blank Color matrix
-	public static int [][] rgbWorld = new int[World.size][World.size*3];
+	public static int [][] rgbWorld2 = new int[World.size][World.size];
 
 	/**
 	 * Method to fill in a matrix with color values (given by each Cell object)
 	 */
-	public void rgbWorld(){
+	public static void rgbWorld(){
 		for(int i = 0; i < World.worldMatrix.length; i++){ 
 			// inner loop processes the number of "columns"
 			int r = 0, g = 1, b = 2;
-			for(int j = 0; j < World.worldMatrix[i].length; j++){
+			for(int j = 0; j < World.worldMatrix[i].length/3; j++){
 				// split at the dash
 				String[] rgbArray = World.worldMatrix[i][j].cellColor.split("-");
-				rgbWorld[i][r] = Integer.parseInt(rgbArray[0]); // index 0 is "red"	
-				rgbWorld[i][g] = Integer.parseInt(rgbArray[1]); // index 1 is "green"
-				rgbWorld[i][b] = Integer.parseInt(rgbArray[2]); // index 2 is "blue"
+				rgbWorld2[i][r] = Integer.parseInt(rgbArray[0]); // index 0 is "red"	
+				rgbWorld2[i][g] = Integer.parseInt(rgbArray[1]); // index 1 is "green"
+				rgbWorld2[i][b] = Integer.parseInt(rgbArray[2]); // index 2 is "blue"
 				r += 3;
 				g += 3;
 				b += 3;

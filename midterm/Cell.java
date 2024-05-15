@@ -22,12 +22,36 @@ public class Cell {
 		WILDLIFEDEAD,
 		BOMB;
 	}
+	public static enum FIREMOVING{
+		VOID,
+		NORTH,
+		SOUTH,
+		EAST,
+		WEST,
+		NORTHEAST,
+		NORTHWEST,
+		SOUTHEAST,
+		SOUTHWEST;
+	}
+
+	public static enum POSITIONASNEIGHBOR{
+		NORTH,
+		SOUTH,
+		EAST,
+		WEST,
+		NORTHEAST,
+		NORTHWEST,
+		SOUTHEAST,
+		SOUTHWEST;
+	}
 
 	private STATES state;
 	private WEATHER weather = WEATHER.CALM;
 	private OBJECTS object = OBJECTS.VOID;
+	private FIREMOVING firemoving = FIREMOVING.VOID;
+	private POSITIONASNEIGHBOR position;
 	double burnMultiplier = 1.0;
-	String cellColor;
+	public String cellColor;
 	int row;
 	int column;
 	String coordinates;
@@ -48,6 +72,22 @@ public class Cell {
 			default:
 							break;
 		}
+	}
+
+	public void setPositionAsNeighbor (POSITIONASNEIGHBOR position){
+		this.position = position;
+	}
+
+	public POSITIONASNEIGHBOR getPosition(){
+		return this.position;
+	}
+
+	public void setFireMoving(FIREMOVING firemoving){
+		this.firemoving = firemoving;
+	}
+
+	public FIREMOVING getFireMoving(){
+		return this.firemoving;
 	}
 
 	public void setObject (OBJECTS object){
