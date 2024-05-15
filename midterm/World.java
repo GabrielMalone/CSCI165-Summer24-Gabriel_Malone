@@ -30,6 +30,8 @@ public class World {
 	public static BufferedImage [] trees = new BufferedImage[4];
 	public static BufferedImage [] fires = new BufferedImage[4];
 	public static BufferedImage [] burnt = new BufferedImage[4];
+	public static BufferedImage [] anima = new BufferedImage[4];
+	public static String [] output = new String[6];
 	
 	/**
 	 * Method to model the spread of a fire
@@ -40,14 +42,14 @@ public class World {
 		// nextStep matrix applies those changes
 		// this way the changes dont affect the current iteration
 		// of the world map
-		todaysWeather.pattern();
+		//todaysWeather.pattern();
 		wildlife.placeWildlife();
 		copyWorldMatrix();
 		while (burning){
 			if (timeStep > 0) clearPreviousFire();
 			applyChangesToWorld();
             displayWorld();
-        	todaysWeather.setWeatherPattern();
+        	//todaysWeather.setWeatherPattern();
 			wildlife.makeAnEscape();
             designatetNeighborsOnFire();
 			displayData();
@@ -136,17 +138,18 @@ public class World {
 	private static void displayWorld(){
 		
 		// for displaying the matrices in terminal
-        Terminal_Graphics t_graphics = new Terminal_Graphics();
+        //Terminal_Graphics t_graphics = new Terminal_Graphics();
 		// JFrame
 		
         
 		// display the world
 		try{
-			Thread.sleep(50);
+			Thread.sleep(100);
 			}
 		catch (InterruptedException iException){
 			}
-		t_graphics.displayWorld();
+		// turn off to prevent slow down of bigger maps
+		//t_graphics.displayWorld();
 	}
 
 	private static int trackSteps(){
@@ -387,7 +390,8 @@ public class World {
 			return total_dead;
 		}
 		
-	private void displayData(){
+	public void displayData(){
+		
 		int steps = trackSteps();
 		double percentage = burnPercetage();
 		double mortality_rate = mortalityRate();
@@ -396,7 +400,12 @@ public class World {
 		long pop = Math.round(animal_pop);
 		System.out.printf("%nSteps:          %d%nBurn area:      %.2f%%%nAnimal pop:     %d%nMortality rate: %.2f%%%nWind direction: %s%nMap Size:       %dx%d acres%n", 
 		steps, percentage, pop, mortality_rate, direction, worldMatrix.length, worldMatrix.length);
-
+		output[0] = String.valueOf(steps);
+		output[1] = String.valueOf(percentage);
+		output[2] = String.valueOf(mortality_rate);
+		output[3] = direction;
+		output[4] = String.valueOf(animal_pop);
+		output[5] = String.valueOf(pop);
 	}
 
 	public void createTrees(){
@@ -445,6 +454,20 @@ public class World {
 			burnt[0] = burnt1;
 		
 	
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+	public void createAnimals(){
+        	
+		try{
+
+			BufferedImage animal1 = ImageIO.read(getClass().getResourceAsStream("/animals/dino.png"));
+			BufferedImage animal2 = ImageIO.read(getClass().getResourceAsStream("/animals/dino2.png"));
+			anima[0] = animal1;
+			anima[1] = animal2; 
+		
         } catch (IOException e) {
             e.printStackTrace();
         }

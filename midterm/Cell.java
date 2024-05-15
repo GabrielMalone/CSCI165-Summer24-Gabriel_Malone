@@ -4,8 +4,8 @@ import java.awt.image.BufferedImage;
 
 public class Cell {
 
-
-	// static means these are availabe for any method to use 
+	
+	// static means being availabe for any method to use 
 	// and that these variables do not change when a new instance of 
 	// this class is created
 
@@ -59,7 +59,8 @@ public class Cell {
 	int row;
 	int column;
 	String coordinates;
-	public BufferedImage image;
+	public BufferedImage stateimage;
+	public BufferedImage animalimage;
 
 	/**
 	 * Method to assign a color to a cell object
@@ -97,6 +98,9 @@ public class Cell {
 
 	public void setObject (OBJECTS object){
 		this.object = object;
+		//Random rand = new Random();
+		//int randindex = rand.nextInt(2);
+		if (this.object == Cell.OBJECTS.WILDLIFEALIVE) 	this.animalimage = World.anima[1];
 	}
 
 	public OBJECTS getObject(){
@@ -111,27 +115,43 @@ public class Cell {
 		int randindex = rand.nextInt(4);
 
 		if (this.state == Cell.STATES.TREE){
-			this.image = World.trees[randindex];
+			this.stateimage = World.trees[randindex];
 		}
 
 		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.EAST){
-			this.image = World.fires[0];
+			this.stateimage = World.fires[0];
 		}
 
 		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.NORTH){
-			this.image = World.fires[1];
+			this.stateimage = World.fires[1];
+		}
+
+		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.NORTHWEST){
+			this.stateimage = World.fires[1];
+		}
+
+		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.NORTHEAST){
+			this.stateimage = World.fires[1];
 		}
 
 		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.WEST){
-			this.image = World.fires[2];
+			this.stateimage = World.fires[2];
 		}
 
 		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.SOUTH){
-			this.image = World.fires[3];
+			this.stateimage = World.fires[3];
+		}
+
+		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.SOUTHWEST){
+			this.stateimage = World.fires[3];
+		}
+
+		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.SOUTHEAST){
+			this.stateimage = World.fires[3];
 		}
 
 		else if (this.state == Cell.STATES.EMPTY){
-			this.image = World.burnt[0];
+			this.stateimage = World.burnt[0];
 		}
 
 	}
