@@ -58,7 +58,15 @@ public class Simple_Graphics extends JPanel{
 				Cell currentCell = World.worldMatrix[i][j];
 				if (currentCell.getState() == Cell.STATES.TREE){
 					// display scaled versions of trees depending on map size
-					graphics2d.drawImage(currentCell.treeImage, x, y, 20, 20, null);
+					graphics2d.drawImage(currentCell.image, x, y, 20, 20, null);
+				}
+				if (currentCell.getState() == Cell.STATES.BURNING){
+					// display scaled versions of trees depending on map size
+					graphics2d.drawImage(currentCell.image, x, y, 20, 20, null);
+				}
+				if (currentCell.getState() == Cell.STATES.EMPTY){
+					// display scaled versions of trees depending on map size
+					graphics2d.drawImage(currentCell.image, x, y, 20, 20, null);
 				}
 				x += 20;	// move x position to the right by "rectangle width"	
 			} 

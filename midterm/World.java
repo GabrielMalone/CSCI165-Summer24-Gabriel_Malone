@@ -27,8 +27,9 @@ public class World {
 	// get wildlife
 	public static Wildlife wildlife = new Wildlife();
 	// graphics
-	public static BufferedImage [] trees = new BufferedImage[5];
-	
+	public static BufferedImage [] trees = new BufferedImage[4];
+	public static BufferedImage [] fires = new BufferedImage[4];
+	public static BufferedImage [] burnt = new BufferedImage[4];
 	
 	/**
 	 * Method to model the spread of a fire
@@ -402,20 +403,52 @@ public class World {
         	
 		try{
 
-            BufferedImage tree1 = ImageIO.read(getClass().getResourceAsStream("/trees/tree1.png"));
-			BufferedImage tree2 = ImageIO.read(getClass().getResourceAsStream("/trees/tree2.png"));
+			BufferedImage tree2 = ImageIO.read(getClass().getResourceAsStream("/trees/tree1.png"));
 			BufferedImage tree3 = ImageIO.read(getClass().getResourceAsStream("/trees/tree3.png"));
 			BufferedImage tree4 = ImageIO.read(getClass().getResourceAsStream("/trees/tree4.png"));
 			BufferedImage tree5 = ImageIO.read(getClass().getResourceAsStream("/trees/tree5.png"));
-
-			trees[0] = tree1;
-			trees[1] = tree2;
-			trees[2] = tree3;
-			trees[3] = tree4;
-			trees[4] = tree5;
+			
+			trees[0] = tree2;
+			trees[1] = tree3;
+			trees[2] = tree4;
+			trees[3] = tree5;
 	
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+	public void createFires(){
+        	
+		try{
+
+			BufferedImage fire1 = ImageIO.read(getClass().getResourceAsStream("/fires/fireEast.png"));
+			BufferedImage fire2 = ImageIO.read(getClass().getResourceAsStream("/fires/fireNorth.png"));
+			BufferedImage fire3 = ImageIO.read(getClass().getResourceAsStream("/fires/fireWest.png"));
+			BufferedImage fire4 = ImageIO.read(getClass().getResourceAsStream("/fires/fireSouth.png"));
+			
+			fires[0] = fire1;
+			fires[1] = fire2;
+			fires[2] = fire3;
+			fires[3] = fire4;
+	
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+	public void createBurnt(){
+        	
+		try{
+
+			BufferedImage burnt1 = ImageIO.read(getClass().getResourceAsStream("/burnt/bunt1.png"));
+			burnt[0] = burnt1;
+		
+	
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

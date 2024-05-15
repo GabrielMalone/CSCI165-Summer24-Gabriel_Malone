@@ -59,7 +59,7 @@ public class Cell {
 	int row;
 	int column;
 	String coordinates;
-	public BufferedImage treeImage;
+	public BufferedImage image;
 
 	/**
 	 * Method to assign a color to a cell object
@@ -108,20 +108,32 @@ public class Cell {
 		this.state = state;
 
 		Random rand = new Random();
-		int randindex = rand.nextInt(5);
+		int randindex = rand.nextInt(4);
 
-		switch (this.state) {
-
-			case BURNING: 		this.cellColor = Terminal_Graphics.RED;
-							break;
-			case TREE: 			this.treeImage = World.trees[randindex];
-							break;
-			case EMPTY: 		this.cellColor = Terminal_Graphics.YELLOW;
-							break;
-			default:
-							break;
+		if (this.state == Cell.STATES.TREE){
+			this.image = World.trees[randindex];
 		}
-		
+
+		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.EAST){
+			this.image = World.fires[0];
+		}
+
+		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.NORTH){
+			this.image = World.fires[1];
+		}
+
+		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.WEST){
+			this.image = World.fires[2];
+		}
+
+		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.SOUTH){
+			this.image = World.fires[3];
+		}
+
+		else if (this.state == Cell.STATES.EMPTY){
+			this.image = World.burnt[0];
+		}
+
 	}
 
 	public STATES getState(){

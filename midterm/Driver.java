@@ -32,6 +32,8 @@ public class Driver {
     public static World createWorld(){
         World neWorld = new World();
         neWorld.createTrees();
+        neWorld.createFires();
+        neWorld.createBurnt();
 		neWorld.fillWorld();
         return neWorld;
     }
