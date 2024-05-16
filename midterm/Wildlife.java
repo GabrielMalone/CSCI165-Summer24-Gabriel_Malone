@@ -66,7 +66,7 @@ public class Wildlife {
 	}	
 		
 	private boolean clearEscapeChoice(Cell option){
-		if (option.getState() != Cell.STATES.BURNING && option.getObject() == Cell.OBJECTS.VOID && option.row >= 0 && option.column >= 0)
+		if (option.getState() != Cell.STATES.BURNING && option.getObject() == Cell.OBJECTS.VOID && option.getState() != Cell.STATES.BURNT && option.row >= 0 && option.column >= 0)
 			return true;
 		return false;
 	}

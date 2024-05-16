@@ -13,6 +13,7 @@ public class Cell {
 		EMPTY, 
 		TREE, 
 		BURNING,
+		BURNT;
 	}
 
 	public static enum WEATHER {
@@ -118,41 +119,35 @@ public class Cell {
 		if (this.state == Cell.STATES.TREE){
 			this.stateimage = World.trees[randindex];
 		}
-
 		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.EAST){
 			this.stateimage = World.fires[0];
 		}
-
 		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.NORTH){
 			this.stateimage = World.fires[1];
 		}
-
 		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.NORTHWEST){
 			this.stateimage = World.fires[1];
 		}
-
 		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.NORTHEAST){
 			this.stateimage = World.fires[1];
 		}
-
 		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.WEST){
 			this.stateimage = World.fires[2];
 		}
-
 		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.SOUTH){
 			this.stateimage = World.fires[3];
 		}
-
 		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.SOUTHWEST){
 			this.stateimage = World.fires[3];
 		}
-
 		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.SOUTHEAST){
 			this.stateimage = World.fires[3];
 		}
-
 		else if (this.state == Cell.STATES.EMPTY){
 			this.stateimage = World.burnt[0];
+		}	
+		else if (this.state == Cell.STATES.BURNT){
+				this.stateimage = World.burnt[0];
 		}
 
 	}

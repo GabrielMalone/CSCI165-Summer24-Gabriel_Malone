@@ -31,7 +31,6 @@ public class World {
 	public static BufferedImage [] fires = new BufferedImage[4];
 	public static BufferedImage [] burnt = new BufferedImage[4];
 	public static BufferedImage [] anima = new BufferedImage[4];
-	public static String [] output = new String[6];
 	
 	public World(){
 
@@ -277,7 +276,7 @@ public class World {
             for(int g = 0 ; g < worldMatrix.length - 1; g ++){    
 				Cell currentCell = worldMatrix[f][g];
 				if (somethingBurning(currentCell)){
-					currentCell.setState(Cell.STATES.EMPTY);
+					currentCell.setState(Cell.STATES.BURNT);
 					currentCell.SetCellColor();
 				}
 			}
@@ -305,7 +304,6 @@ public class World {
 		// set it on fire
 		nextCell.setState(Cell.STATES.BURNING);
 		nextCell.SetCellColor();
-
 		// place it on next map iteration
 		nextStep[nextCell.row][nextCell.column] = nextCell;
 	}
@@ -364,28 +362,33 @@ public class World {
 		return neighboringCells;
 	}
 
-	private double burnPercetage(){
-		double total_area = worldMatrix.length * worldMatrix.length;
+	private static double totalBurned(){
 		double burned_area = 0;
 		for(int j = 0 ; j < worldMatrix.length - 1; j ++){
 			for (int i = 0 ; i < worldMatrix.length - 1 ; i ++)	{
-				if (worldMatrix[j][i].getState() == Cell.STATES.EMPTY){
+				if (worldMatrix[j][i].getState() == Cell.STATES.BURNT){
 					burned_area += 1;
 				}
 			}
 		}
-		double percetage_burned = (burned_area / total_area) * 100;
+		return burned_area;
+	}
+
+	public static double burnPercentage(){
+		double burn_area = totalBurned();
+		double total_cells = (worldMatrix.length-1) * (worldMatrix.length-1);
+		double percetage_burned = (burn_area / total_cells) * 100;
 		return percetage_burned;
 	}
 
-	private double mortalityRate(){
+	public static double mortalityRate(){
 		double total_wildlife = wildlife.activeWildlifeCells.size();
 		double total_dead = totalDead();
 		double mortality_rate = (total_dead / total_wildlife) * 100;
 		return mortality_rate;
 		}
 
-	private int totalDead(){
+	public static int totalDead(){
 		int total_dead = 0;
 		for (int i = 1;  i < worldMatrix.length - 1; i ++){
 			for (int j = 1 ; j < worldMatrix.length - 1; j ++){
@@ -399,21 +402,14 @@ public class World {
 		}
 		
 	public void displayData(){
-		
 		int steps = trackSteps();
-		double percentage = burnPercetage();
+		double percentage = burnPercentage();
 		double mortality_rate = mortalityRate();
 		String direction = todaysWeather.getStringDirection();
 		int animal_pop = wildlife.activeWildlifeCells.size() - totalDead();
 		long pop = Math.round(animal_pop);
 		System.out.printf("%nSteps:          %d%nBurn area:      %.2f%%%nAnimal pop:     %d%nMortality rate: %.2f%%%nWind direction: %s%nMap Size:       %dx%d acres%n", 
 		steps, percentage, pop, mortality_rate, direction, worldMatrix.length, worldMatrix.length);
-		output[0] = String.valueOf(steps);
-		output[1] = String.valueOf(percentage);
-		output[2] = String.valueOf(mortality_rate);
-		output[3] = direction;
-		output[4] = String.valueOf(animal_pop);
-		output[5] = String.valueOf(pop);
 	}
 
 	public void createTrees(){

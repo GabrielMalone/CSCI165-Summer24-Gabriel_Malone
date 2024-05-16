@@ -6,22 +6,16 @@ public class Driver {
     public static double catchprobability;
     public static Weather todaysWeather = new Weather();
     public static World_Graphics world;
+    public static World neWorld;
  
 	public static void main(String[] args) {
-        // map size
-        size = 60;
-        // base probability of trees catching on fire
-        catchprobability = .25;
-        // map size adjustment for center positioning
-        size = worldResize(size);		
-        // fill matrix with cells
-        World neWorld = new World();
-        // set weather pattern direction
-        todaysWeather.setDirection(Weather.DIRECTION.NORTH);
-        // Jpanel
-        world = new World_Graphics();
-        // start fire
-        neWorld.applySpread();
+        size = 100;                                         // map size
+        catchprobability = .25;                             // base probability of trees catching on fire
+        size = worldResize(size);		                    // map size adjustment for center positioning
+        neWorld = new World();
+        todaysWeather.setDirection(Weather.DIRECTION.WEST); // set weather pattern direction
+        world = new World_Graphics();                       // Jpanel
+        neWorld.applySpread();                              // start fire
     }
 
     public static int worldResize(int size){

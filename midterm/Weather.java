@@ -2,11 +2,8 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-
-
 public class Weather {
 
-	
 	public int minus = 0;
 	public static ArrayList<String> windCoordinates = new ArrayList<>();
     public static enum DIRECTION {
@@ -37,25 +34,25 @@ public class Weather {
 		if (this.windDirection.equals("WEST") || this.windDirection.equals("EAST")){
 		// will be able to randomize these values in a range
 		// modified sinewave output from stackoverflow
-			double midlinea  	=   doubleProb(.1, World.worldMatrix.length/8);
-			double midlineb  	=   doubleProb(.11, World.worldMatrix.length/5) * -1;
-			double amplitude 	=   doubleProb(0, .5);
-			double frequency 	=   doubleProb(0, .5);
-			double bottomwidth	=   doubleProb(.1, World.worldMatrix.length/11);
-			double topwidth		=   doubleProb(.1, World.worldMatrix.length/8);
-			double phaseShift	=   doubleProb(.01, 1);
-			int period 			=   World.worldMatrix.length - 1;
-			// create the wave
-			int a =0;  // index positions for map
-			int b = 0; // index positions for map
+		double midlinea  	=   World.worldMatrix.length/8;
+		double midlineb  	=   (World.worldMatrix.length/5) * -1;
+		double amplitude 	=   .25;
+		double frequency 	=   .25;
+		double bottomwidth	=   doubleProb(.1, World.worldMatrix.length/11);
+		double topwidth		=   doubleProb(.1, World.worldMatrix.length/8);
+		double phaseShift	=   .01;
+		int period 			=   World.worldMatrix.length - 1;
+		// create the wave
+		int a =0;  // index positions for map
+		int b = 0; // index positions for map
 
-			for (double y = midlinea; y > midlineb; y-= amplitude) {
-				a += 1;
-				b  = 0;
-				for (double x = phaseShift; x <= period; x+=frequency) {
-					double sin = Math.sin(x);
-					if ((bottomwidth+y) >= sin && (y-topwidth) <= sin){
-					// if cell in path of sinewayve:
+		for (double y = midlinea; y > midlineb; y-= amplitude) {
+			a += 1;
+			b  = 0;
+			for (double x = phaseShift; x <= period; x+=frequency) {
+				double sin = Math.sin(x);
+				if ((bottomwidth+y) >= sin && (y-topwidth) <= sin){
+				// if cell in path of sinewayve:
 					if (b < World.worldMatrix.length-1 && b > 0){
 						// update cells in worldmap to be windy
 						String coordinate = a + "," + b;
@@ -64,36 +61,36 @@ public class Weather {
 					// checking purposes
 					//System.out.print("*");
 		
-					}
-					else
-						// why does this need to stay for the world map to graph properly??
-						System.out.print(" ");
-						b+=1;
 				}
-				// checking purposes
+				else
+					// why does this need to stay for the world map to graph properly??
+					System.out.print(" ");
+					b+=1;
+			}
+			// checking purposes
 			System.out.println();
 			}
 		}
 		if (this.windDirection.equals("NORTH") || this.windDirection.equals("SOUTH")){
-			// will be able to randomize these values in a range
-			// modified sinewave output from stackoverflow
-				double midlinea  	=   doubleProb(.1, World.worldMatrix.length/8);
-				double midlineb  	=   doubleProb(.11, World.worldMatrix.length/5) * -1;
-				double amplitude 	=   doubleProb(0, .5);
-				double frequency 	=   doubleProb(0, .5);
-				double bottomwidth	=   doubleProb(.1, World.worldMatrix.length/11);
-				double topwidth		=   doubleProb(.1, World.worldMatrix.length/8);
-				double phaseShift	=   doubleProb(.01, 1);
-				int period 			=   World.worldMatrix.length - 1;
-				// create the wave
-				int a =0;  // index positions for map
-				int b = 0; // index positions for map
-				for (double x = phaseShift - minus; x <= period; x+= frequency) {
-					a += 1;
-					b  = 0;
-					for (double y = midlinea; y > midlineb; y-= amplitude) {
-						double sin = Math.sin(x);
-						if ((bottomwidth+y) >= sin && (y-topwidth) <= sin){
+		// will be able to randomize these values in a range
+		// modified sinewave output from stackoverflow
+		double midlinea  	=   World.worldMatrix.length/8;
+		double midlineb  	=   (World.worldMatrix.length/5) * -1;
+		double amplitude 	=   .25;
+		double frequency 	=   .25;
+		double bottomwidth	=   doubleProb(.1, World.worldMatrix.length/11);
+		double topwidth		=   doubleProb(.1, World.worldMatrix.length/8);
+		double phaseShift	=   .01;
+		int period 			=   World.worldMatrix.length - 1;
+			// create the wave
+			int a =0;  // index positions for map
+			int b = 0; // index positions for map
+			for (double x = phaseShift - minus; x <= period; x+= frequency) {
+				a += 1;
+				b  = 0;
+				for (double y = midlinea; y > midlineb; y-= amplitude) {
+					double sin = Math.sin(x);
+					if ((bottomwidth+y) >= sin && (y-topwidth) <= sin){
 						// if cell in path of sinewayve:
 						if (b < World.worldMatrix.length-1 && b > 0){
 							// update cells in worldmap to be windy
@@ -103,16 +100,16 @@ public class Weather {
 						// checking purposes
 						//System.out.print("*");
 			
-						}
-						else
-							// why does this need to stay for the world map to graph properly??
-							System.out.print(" ");
-							b+=1;
 					}
-					// checking purposes
-				System.out.println();
+					else
+						// why does this need to stay for the world map to graph properly??
+						System.out.print(" ");
+						b+=1;
 				}
-			}	
+				// checking purposes
+			System.out.println();
+			}
+		}	
 	}
 
 	/**
