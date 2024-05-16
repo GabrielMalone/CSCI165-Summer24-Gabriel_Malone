@@ -17,7 +17,7 @@ public class Driver {
         // fill matrix with cells
         World neWorld = new World();
         // set weather pattern direction
-        todaysWeather.setDirection(Weather.DIRECTION.EAST);
+        todaysWeather.setDirection(Weather.DIRECTION.NORTH);
         // Jpanel
         world = new World_Graphics();
         // start fire

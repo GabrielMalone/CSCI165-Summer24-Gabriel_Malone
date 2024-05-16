@@ -54,11 +54,11 @@ public class World {
 		todaysWeather.pattern();
 		wildlife.placeWildlife();
 		copyWorldMatrix();
+		todaysWeather.setWeatherPattern();
 		while (burning){
 			if (timeStep > 0) clearPreviousFire();
 			applyChangesToWorld();
             displayWorld();
-        	todaysWeather.setWeatherPattern();
 			wildlife.makeAnEscape();
             designatetNeighborsOnFire();
 			displayData();
@@ -290,6 +290,7 @@ public class World {
 		int hoomecolumn = homeCell.column;
 		// create new cell for next step
 		Cell nextCell = new Cell();
+		nextCell.setWeather(cell.getCellWeather());
 		// see if any wildlife present to kill
 		wildlife.checkIfDead(cell, nextCell);
 		nextCell.setState(cell.getState());
@@ -304,6 +305,7 @@ public class World {
 		// set it on fire
 		nextCell.setState(Cell.STATES.BURNING);
 		nextCell.SetCellColor();
+
 		// place it on next map iteration
 		nextStep[nextCell.row][nextCell.column] = nextCell;
 	}

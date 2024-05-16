@@ -26,6 +26,7 @@ public class World_Graphics extends JPanel{
 		super.paintComponent(g);
 		baseMap(g);
 		animalMap(g);
+		windMap(g);
 		this.repaint();
 	}
 
@@ -87,6 +88,23 @@ public class World_Graphics extends JPanel{
                 if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEDEAD){
                     // display scaled versions of trees depending on map size
 					graphics2d.setColor(Color.red);graphics2d.fillOval(x, y, IMAGE_HEIGHT, IMAGE_WIDTH);
+                }
+                x += IMAGE_WIDTH;
+            } 
+            y += IMAGE_HEIGHT;	
+            x = 1;						
+        } 
+    }
+
+	public static void windMap(Graphics g) {
+        Graphics2D graphics2d = (Graphics2D) g;
+        int x = 1, y = 1;
+        for(int i = 0; i < World.worldMatrix.length; i++){ 
+            for(int j = 0; j < World.worldMatrix.length; j++){
+                Cell currentCell = World.worldMatrix[i][j];
+                if (currentCell.getCellWeather() == Cell.WEATHER.WINDY){
+                    graphics2d.setColor(Color.white);
+					graphics2d.drawArc(x, y, 5, 5, y, x);
                 }
                 x += IMAGE_WIDTH;
             } 
