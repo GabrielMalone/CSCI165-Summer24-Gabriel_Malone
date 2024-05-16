@@ -9,7 +9,8 @@ public class Driver {
     public static World neWorld;
  
 	public static void main(String[] args) {
-        size = 100;                                         // map size
+                                                            // 20, 50, 100, 150. 200. 500 all have window settings
+        size = 50;                                          // map size
         catchprobability = .25;                             // base probability of trees catching on fire
         size = worldResize(size);		                    // map size adjustment for center positioning
         neWorld = new World();
