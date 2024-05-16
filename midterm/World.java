@@ -33,6 +33,15 @@ public class World {
 	public static BufferedImage [] anima = new BufferedImage[4];
 	public static String [] output = new String[6];
 	
+	public World(){
+
+		createAnimals();
+        createTrees();
+        createFires();
+        createBurnt();
+		fillWorld();
+	}
+
 	/**
 	 * Method to model the spread of a fire
 	 *
@@ -42,14 +51,14 @@ public class World {
 		// nextStep matrix applies those changes
 		// this way the changes dont affect the current iteration
 		// of the world map
-		//todaysWeather.pattern();
+		todaysWeather.pattern();
 		wildlife.placeWildlife();
 		copyWorldMatrix();
 		while (burning){
 			if (timeStep > 0) clearPreviousFire();
 			applyChangesToWorld();
             displayWorld();
-        	//todaysWeather.setWeatherPattern();
+        	todaysWeather.setWeatherPattern();
 			wildlife.makeAnEscape();
             designatetNeighborsOnFire();
 			displayData();
@@ -138,10 +147,7 @@ public class World {
 	private static void displayWorld(){
 		
 		// for displaying the matrices in terminal
-        //Terminal_Graphics t_graphics = new Terminal_Graphics();
-		// JFrame
-		
-        
+        // Terminal_Graphics t_graphics = new Terminal_Graphics();
 		// display the world
 		try{
 			Thread.sleep(50);
@@ -149,7 +155,7 @@ public class World {
 		catch (InterruptedException iException){
 			}
 		// turn off to prevent slow down of bigger maps
-		//t_graphics.displayWorld();
+		// t_graphics.displayWorld();
 	}
 
 	private static int trackSteps(){
@@ -474,6 +480,5 @@ public class World {
             e.printStackTrace();
         }
     }
-
 
 }

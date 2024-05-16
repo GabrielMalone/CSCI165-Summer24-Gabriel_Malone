@@ -11,11 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JFrame;
 // GUI apps should be added to the JRE event queue
 
-
-
 public class World_Graphics extends JPanel{
 	
-
 	// create a JFrame instance to contain the JPanel	
 	private JFrame window = new JFrame();
 	
@@ -28,19 +25,14 @@ public class World_Graphics extends JPanel{
 		
 		super.paintComponent(g);
 		baseMap(g);
-		Animal_Graphics.animalMap(g);
+		animalMap(g);
 		this.repaint();
 	}
 
-	/**
-	 * Constructor
-	 * @param grid - the World object to be rendered
-	 */
 	public World_Graphics() {
 
 		// add "this" JPanel to the JFrame			
-		window.add(this);
-			
+		window.add(this);	
 		// give it a title bar							
 		window.setTitle("Forest Fire Simulation");
 		// how big is the window?					
@@ -53,7 +45,6 @@ public class World_Graphics extends JPanel{
 						
 		}
 
-	// method to render the world in Java 2D Graphics
 	public static void baseMap(Graphics g) {
 		Graphics2D graphics2d = (Graphics2D) g;
 		// cartesian points, to control where rectangles are drawn
@@ -81,6 +72,29 @@ public class World_Graphics extends JPanel{
 		} 
 	}
 
+	public static void animalMap(Graphics g) {
+        Graphics2D graphics2d = (Graphics2D) g;
+        // cartesian points, to control where rectangles are drawn
+        int x = 1, y = 1;
+        for(int i = 0; i < World.worldMatrix.length; i++){ 
+            // inner loop processes the number of "columns"
+            for(int j = 0; j < World.worldMatrix.length; j++){
+                Cell currentCell = World.worldMatrix[i][j];
+                if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEALIVE){
+                    // display scaled versions of trees depending on map size
+                    graphics2d.setColor(Color.yellow);graphics2d.fillOval(x, y, IMAGE_HEIGHT, IMAGE_WIDTH);
+                }
+                if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEDEAD){
+                    // display scaled versions of trees depending on map size
+					graphics2d.setColor(Color.red);graphics2d.fillOval(x, y, IMAGE_HEIGHT, IMAGE_WIDTH);
+                }
+                x += IMAGE_WIDTH;
+            } 
+            y += IMAGE_HEIGHT;	
+            x = 1;						
+        } 
+    }
+
 
 	private static int setImageSize(){
 		int size = 0;
@@ -107,6 +121,6 @@ public class World_Graphics extends JPanel{
 		int size;
 		size = (Driver.size * IMAGE_HEIGHT);
 		return size;
-
 	}
+
 }
