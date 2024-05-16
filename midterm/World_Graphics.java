@@ -44,7 +44,7 @@ public class World_Graphics extends JPanel{
 		window.setTitle("Forest Fire Simulation");
 		// how big is the window?		
 		window.getSize();			
-		window.setSize(WINDOW_HEIGHT, (int)(WINDOW_HEIGHT * 1.05 + 150));
+		window.setSize(WINDOW_HEIGHT, (int)(WINDOW_HEIGHT * 1.05));
 		// place window in the middle of the screen, not relative to any other GUI object						
 		window.setLocationRelativeTo(null);			
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -131,49 +131,51 @@ public class World_Graphics extends JPanel{
 
         Graphics2D graphics2d = (Graphics2D) g;
 		
-		// DEATH TOLL BOX AND INFO
-
-		graphics2d.setColor(Color.black);
-		graphics2d.drawRoundRect(20, (int)(WINDOW_HEIGHT) + 20, 100, 100, 10, 10);
-		
-		Font Fonta = new Font("SansSerif", Font.BOLD, 12);
-		graphics2d.setFont(Fonta);
-		graphics2d.drawString("MORT RATE", 32, (int)(WINDOW_HEIGHT) + 40);
-		Font Fontb = new Font("SansSerif", Font.BOLD, 44);
-		graphics2d.setFont(Fontb);
-		String death_output = String.format("%.0f%%", World.mortalityRate());
-		if (World.mortalityRate() < 9) graphics2d.drawString(death_output, 37, (int)(WINDOW_HEIGHT) + 90);
-		else if (World.mortalityRate() < 99) graphics2d.drawString(death_output, 25, (int)(WINDOW_HEIGHT) + 90);
-		else graphics2d.drawString(death_output, 10, (int)(WINDOW_HEIGHT) + 90);
-
 		// STEPS BOX AND INFO
-
-		graphics2d.setColor(Color.black);
-		graphics2d.drawRoundRect(150, (int)(WINDOW_HEIGHT) + 20, 100, 100, 10, 10);
+		graphics2d.setColor(Color.white);
+		graphics2d.drawRoundRect(WINDOW_HEIGHT - 150, 20, 100, 100, 10, 10);
 		
 		Font Fontc = new Font("SansSerif", Font.BOLD, 12);
 		graphics2d.setFont(Fontc);
-		graphics2d.drawString("HOURS", 178, (int)(WINDOW_HEIGHT) + 40);
+		
+		graphics2d.drawString("STEPS", WINDOW_HEIGHT - 120,40);
 		Font Fontd = new Font("SansSerif", Font.BOLD, 44);
 		graphics2d.setFont(Fontd);
-		if (World.timeStep < 10) graphics2d.drawString(String.valueOf(World.timeStep), 185, (int)(WINDOW_HEIGHT) + 90);
-		else if (World.timeStep < 100) graphics2d.drawString(String.valueOf(World.timeStep), 170, (int)(WINDOW_HEIGHT) + 90);
-		else graphics2d.drawString(String.valueOf(World.timeStep), 157, (int)(WINDOW_HEIGHT) + 90);
+		
+		if (World.timeStep < 10) graphics2d.drawString(String.valueOf(World.timeStep), WINDOW_HEIGHT - 115, 95);
+		else if (World.timeStep < 100) graphics2d.drawString(String.valueOf(World.timeStep), WINDOW_HEIGHT - 130,95);
+		else graphics2d.drawString(String.valueOf(World.timeStep), WINDOW_HEIGHT - 143, 95);
 		
 		// BURN AREA BOX AND INFO
 
-		graphics2d.setColor(Color.black);
-		graphics2d.drawRoundRect(280, (int)(WINDOW_HEIGHT) + 20, 100, 100, 10, 10);
+		graphics2d.setColor(Color.white);
+		graphics2d.drawRoundRect(WINDOW_HEIGHT - 150, 125, 100, 100, 10, 10);
 		
 		Font Fonte = new Font("SansSerif", Font.BOLD, 12);
 		graphics2d.setFont(Fonte);
-		graphics2d.drawString("BURN AREA", 293, (int)(WINDOW_HEIGHT) + 40);
+		graphics2d.drawString("BURN AREA", WINDOW_HEIGHT - 135, 145);
 		Font Fontf = new Font("SansSerif", Font.BOLD, 44);
 		graphics2d.setFont(Fontf);
 		String burn_output = String.format("%.0f%%", World.burnPercentage());
-		if (World.burnPercentage() < 9) graphics2d.drawString(burn_output, 300, (int)(WINDOW_HEIGHT) + 90);
-		else if (World.burnPercentage() < 100) graphics2d.drawString(burn_output, 285, (int)(WINDOW_HEIGHT) + 90);
-		else graphics2d.drawString(burn_output, 277, (int)(WINDOW_HEIGHT) + 90);
+		if (World.burnPercentage() < 9) graphics2d.drawString(burn_output, WINDOW_HEIGHT - 130, 200);
+		else if (World.burnPercentage() < 100) graphics2d.drawString(burn_output, WINDOW_HEIGHT - 145, 200);
+		else graphics2d.drawString(burn_output, WINDOW_HEIGHT - 158, 200);
+
+		// DEATH TOLL BOX AND INFO
+
+		graphics2d.setColor(Color.white);
+		graphics2d.drawRoundRect(WINDOW_HEIGHT - 150, 230, 100, 100, 10, 10);
+		
+		Font Fonta = new Font("SansSerif", Font.BOLD, 12);
+		graphics2d.setFont(Fonta);
+		graphics2d.drawString("MORT RATE", WINDOW_HEIGHT - 135, 250);
+		Font Fontb = new Font("SansSerif", Font.BOLD, 44);
+		graphics2d.setFont(Fontb);
+		String death_output = String.format("%.0f%%", World.mortalityRate());
+		if (World.mortalityRate() < 9) graphics2d.drawString(death_output, WINDOW_HEIGHT - 125, 305);
+		else if (World.mortalityRate() < 99) graphics2d.drawString(death_output, WINDOW_HEIGHT - 145, 305);
+		else graphics2d.drawString(death_output, WINDOW_HEIGHT - 145, 305);
+
     }
 
 	private static int setImageSize(){
