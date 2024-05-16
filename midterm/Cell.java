@@ -101,6 +101,7 @@ public class Cell {
 		//Random rand = new Random();
 		//int randindex = rand.nextInt(2);
 		if (this.object == Cell.OBJECTS.WILDLIFEALIVE) 	this.animalimage = World.anima[1];
+		//if (this.object == Cell.OBJECTS.WILDLIFEDEAD) 	this.animalimage = World.anima[0];
 	}
 
 	public OBJECTS getObject(){

@@ -144,7 +144,7 @@ public class World {
         
 		// display the world
 		try{
-			Thread.sleep(100);
+			Thread.sleep(50);
 			}
 		catch (InterruptedException iException){
 			}
@@ -451,7 +451,9 @@ public class World {
 		try{
 
 			BufferedImage burnt1 = ImageIO.read(getClass().getResourceAsStream("/burnt/bunt1.png"));
+			BufferedImage burnt2 = ImageIO.read(getClass().getResourceAsStream("/burnt/burnt2.png"));
 			burnt[0] = burnt1;
+			burnt[1] = burnt2;
 		
 	
         } catch (IOException e) {
@@ -463,7 +465,7 @@ public class World {
         	
 		try{
 
-			BufferedImage animal1 = ImageIO.read(getClass().getResourceAsStream("/animals/dino.png"));
+			BufferedImage animal1 = ImageIO.read(getClass().getResourceAsStream("/animals/deaddino.png"));
 			BufferedImage animal2 = ImageIO.read(getClass().getResourceAsStream("/animals/dino2.png"));
 			anima[0] = animal1;
 			anima[1] = animal2; 

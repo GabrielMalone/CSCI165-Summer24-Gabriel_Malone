@@ -22,7 +22,11 @@ public class Animal_Graphics{
                 Cell currentCell = World.worldMatrix[i][j];
                 if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEALIVE){
                     // display scaled versions of trees depending on map size
-                    graphics2d.drawImage(currentCell.animalimage, x, y, 50, 50, null);
+                    graphics2d.drawImage(currentCell.animalimage, x, y, IMAGE_HEIGHT*2, IMAGE_WIDTH*2, null);
+                }
+                if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEDEAD){
+                    // display scaled versions of trees depending on map size
+                    graphics2d.drawImage(currentCell.animalimage, x, y, IMAGE_HEIGHT, IMAGE_WIDTH, null);
                 }
                 x += IMAGE_WIDTH;
             } 

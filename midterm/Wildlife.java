@@ -7,7 +7,7 @@ public class Wildlife {
 	// track active wildlife on map
 	public ArrayList<Cell> activeWildlifeCells = new ArrayList<>();
 	int deadanimals = 0;
-	int animal_pop = 10;
+	int animal_pop = World.worldMatrix.length;
 
 	public void placeWildlife(){
 		
