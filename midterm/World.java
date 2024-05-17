@@ -72,7 +72,7 @@ public class World {
 			wildlife.resetMoveState();
 			wildlife.makeAnEscape();
 			wildlife.clearEscaped();
-			wildlife.moveAround();
+			//wildlife.moveAround();
             designatetNeighborsOnFire();
 			displayData();
             if (! stillBurning()) {

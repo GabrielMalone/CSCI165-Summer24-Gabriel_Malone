@@ -31,7 +31,7 @@ public class World_Graphics extends JPanel{
 		baseMap(g);
 		animalMap(g);
 		windMap(g);
-		//dataOverlay(g);
+		dataOverlay(g);
 		this.repaint();
 	}
 
@@ -52,7 +52,7 @@ public class World_Graphics extends JPanel{
 		window.setBackground(Color.black);
 		menu.add(size);
 		menuBar.add(menu);
-		window.setJMenuBar(menuBar);
+		//window.setJMenuBar(menuBar);
 	
 		}
 
@@ -139,65 +139,66 @@ public class World_Graphics extends JPanel{
 		Color transparentback = new Color(0f, 1f, .5f, .7f);
 		Color transparenttitle = new Color(0f, 0f, 0f, .9f);
 		Color transparentinfo = new Color(1f, 1f, 1f, .9f);
-		Font FontTitle = new Font("SansSerif", Font.BOLD, 12);
-		Font FontData = new Font("SansSerif", Font.BOLD, 44);
+		Font FontTitle = new Font("SansSerif", Font.BOLD, 8);
+		Font FontData = new Font("SansSerif", Font.BOLD, 17);
 		
 		graphics2d.setColor(transparentback);
-		graphics2d.fillRoundRect(WINDOW_HEIGHT - 150, 20, 100, 100, 10, 10);
+		graphics2d.fillRoundRect(WINDOW_HEIGHT - 60, 20, 50, 50, 10, 10);
 		graphics2d.setColor(transparenttitle);
 		graphics2d.setFont(FontTitle);
-		graphics2d.drawString("STEPS", WINDOW_HEIGHT - 120,40);
+		graphics2d.drawString("STEPS", WINDOW_HEIGHT - 48,35);
 		graphics2d.setFont(FontData);
 		graphics2d.setColor(transparentinfo);
-		if (World.timeStep < 9) graphics2d.drawString(String.valueOf(World.timeStep), WINDOW_HEIGHT - 115, 95);
-		else if (World.timeStep < 100) graphics2d.drawString(String.valueOf(World.timeStep), WINDOW_HEIGHT - 130,95);
-		else graphics2d.drawString(String.valueOf(World.timeStep), WINDOW_HEIGHT - 143, 95);
+		if (World.timeStep < 9) 			graphics2d.drawString(String.valueOf(World.timeStep), WINDOW_HEIGHT - 40, 55);
+		else if (World.timeStep < 100) 		graphics2d.drawString(String.valueOf(World.timeStep), WINDOW_HEIGHT - 45,55);
+		else if (World.timeStep < 1000 ) 	graphics2d.drawString(String.valueOf(World.timeStep), WINDOW_HEIGHT - 52, 55);
+		else 								graphics2d.drawString(String.valueOf(World.timeStep), WINDOW_HEIGHT - 57, 55);
 		
 		// BURN AREA BOX AND INFO
 
 		graphics2d.setColor(transparentback);
-		graphics2d.fillRoundRect(WINDOW_HEIGHT - 150, 125, 100, 100, 10, 10);
+		graphics2d.fillRoundRect(WINDOW_HEIGHT - 60, 75, 50, 50, 10, 10);
 		graphics2d.setColor(transparenttitle);
 		graphics2d.setFont(FontTitle);
-		graphics2d.drawString("BURN AREA", WINDOW_HEIGHT - 135, 145);
+		graphics2d.drawString("BURN %", WINDOW_HEIGHT - 52, 90);
 		graphics2d.setColor(transparentinfo);
 		graphics2d.setFont(FontData);
 		String burn_output = String.format("%.0f%%", World.burnPercentage());
-		if (World.burnPercentage() < 9) graphics2d.drawString(burn_output, WINDOW_HEIGHT - 130, 200);
-		else if (World.burnPercentage() < 100) graphics2d.drawString(burn_output, WINDOW_HEIGHT - 148, 200);
-		else graphics2d.drawString(burn_output, WINDOW_HEIGHT - 158, 200);
+		if (World.burnPercentage() < 10.001) graphics2d.drawString(burn_output, WINDOW_HEIGHT - 45, 110);
+		else if (World.burnPercentage() < 100) graphics2d.drawString(burn_output, WINDOW_HEIGHT - 50, 110);
+		else graphics2d.drawString(burn_output, WINDOW_HEIGHT - 57, 110);
 
 		// DEATH TOLL BOX AND INFO
 
 		graphics2d.setColor(transparentback);
-		graphics2d.fillRoundRect(WINDOW_HEIGHT - 150, 230, 100, 100, 10, 10);
+		graphics2d.fillRoundRect(WINDOW_HEIGHT - 60, 130, 50, 50, 10, 10);
 		graphics2d.setFont(FontTitle);
 		graphics2d.setColor(transparenttitle);
-		graphics2d.drawString("MORT RATE", WINDOW_HEIGHT - 135, 250);
+		graphics2d.drawString("MORT %", WINDOW_HEIGHT - 52, 145);
 		graphics2d.setFont(FontData);
 		graphics2d.setColor(transparentinfo);
 		String death_output = String.format("%.0f%%", World.mortalityRate());
-		if (World.mortalityRate() < 9) graphics2d.drawString(death_output, WINDOW_HEIGHT - 127, 305);
-		else if (World.mortalityRate() < 99) graphics2d.drawString(death_output, WINDOW_HEIGHT - 148, 305);
-		else graphics2d.drawString(death_output, WINDOW_HEIGHT - 155, 305);
+		if (World.mortalityRate() < 10.001) graphics2d.drawString(death_output, WINDOW_HEIGHT - 45, 165);
+		else if (World.mortalityRate() < 99) graphics2d.drawString(death_output, WINDOW_HEIGHT - 50, 165);
+		else graphics2d.drawString(death_output, WINDOW_HEIGHT - 57, 165);
 
 		// WIND DIRECTION
 
 		graphics2d.setColor(transparentback);
-		graphics2d.fillRoundRect(WINDOW_HEIGHT - 150, 335, 100, 100, 10, 10);
+		graphics2d.fillRoundRect(WINDOW_HEIGHT - 60, 185, 50, 50, 10, 10);
 		graphics2d.setFont(FontTitle);
 		graphics2d.setColor(transparenttitle);
-		graphics2d.drawString("WIND DIR", WINDOW_HEIGHT - 130, 355);
+		graphics2d.drawString("WIND  ", WINDOW_HEIGHT - 47, 200);
 		graphics2d.setFont(FontData);
 		graphics2d.setColor(transparentinfo);
 		switch (Driver.todaysWeather.getStringDirection()) {
-			case "NORTH": 	graphics2d.drawString("N", WINDOW_HEIGHT - 115, 405);
+			case "NORTH": 	graphics2d.drawString("N", WINDOW_HEIGHT - 43, 220);
 				break;
-			case "SOUTH": 	graphics2d.drawString("S", WINDOW_HEIGHT - 115, 405);
+			case "SOUTH": 	graphics2d.drawString("S", WINDOW_HEIGHT - 40, 220);
 				break;
-			case "EAST": 	graphics2d.drawString("E", WINDOW_HEIGHT - 115, 405);
+			case "EAST": 	graphics2d.drawString("E", WINDOW_HEIGHT - 43, 220);
 				break;
-			case "WEST": 	graphics2d.drawString("W", WINDOW_HEIGHT - 120, 405);
+			case "WEST": 	graphics2d.drawString("W", WINDOW_HEIGHT - 43, 220);
 				break;
 			default:
 				break;
@@ -223,6 +224,9 @@ public class World_Graphics extends JPanel{
 			}
 		else if (Driver.size == 501){
 			return size = (int)(Driver.size / 500); 
+			}
+		else if (Driver.size == 1001){
+			return size = (int)(Driver.size / 1000); 
 			}
 		return size;
 		
