@@ -31,7 +31,7 @@ public class World_Graphics extends JPanel{
 		baseMap(g);
 		animalMap(g);
 		windMap(g);
-		dataOverlay(g);
+		//dataOverlay(g);
 		this.repaint();
 	}
 

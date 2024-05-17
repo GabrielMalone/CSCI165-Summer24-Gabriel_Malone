@@ -31,6 +31,8 @@ public class World {
 	public static BufferedImage [] fires = new BufferedImage[4];
 	public static BufferedImage [] burnt = new BufferedImage[4];
 	public static BufferedImage [] anima = new BufferedImage[4];
+
+	public static Random rand = new Random();
 	
 	public World(){
 
@@ -40,6 +42,9 @@ public class World {
         createBurnt();
 		fillWorld();
 	}
+
+
+	// MAIN LOOP
 
 	/**
 	 * Method to model the spread of a fire
@@ -54,16 +59,30 @@ public class World {
 		wildlife.placeWildlife();
 		copyWorldMatrix();
 		todaysWeather.setWeatherPattern();
-		while (burning){
+		while (true){
 			if (timeStep > 0) clearPreviousFire();
+			if (burning == false) {
+				randomFireSpot(); burning = true; 
+				wildlife.repopulate();
+				wildlife.clearDead(); 
+			}
 			applyChangesToWorld();
             displayWorld();
+			regrowTrees();
+			wildlife.resetMoveState();
 			wildlife.makeAnEscape();
+			wildlife.clearEscaped();
+			wildlife.moveAround();
             designatetNeighborsOnFire();
 			displayData();
-            if (! stillBurning()) burning = false;
+            if (! stillBurning()) {
+				burning = false;
+			}
 		}
 	}
+
+
+	// WORLD LOGIC
 
 	/**
 	 * Method to fill in a matrix with Cell objects
@@ -120,7 +139,6 @@ public class World {
 	 * @return
 	 */
 	public static double probCatch(){
-		Random rand = new Random();
 		// random value from  0.0 - 1.0
 		double catchProb = rand.nextDouble(1);
 		return catchProb;
@@ -149,7 +167,7 @@ public class World {
         // Terminal_Graphics t_graphics = new Terminal_Graphics();
 		// display the world
 		try{
-			Thread.sleep(50);
+			Thread.sleep(20);
 			}
 		catch (InterruptedException iException){
 			}
@@ -189,14 +207,14 @@ public class World {
 		
 		Cell[] neighbors = findNeighbors(homeCell.row, homeCell.column);
 		
-		Cell north = neighbors[0];
-		Cell south = neighbors[1];
-		Cell east = neighbors[2];
-		Cell west = neighbors[3];
-		Cell northeast = neighbors[4];
-		Cell northwest = neighbors[5];
-		Cell southeast = neighbors[6];
-		Cell southwest = neighbors[7];
+		Cell north 		= neighbors[0];
+		Cell south 		= neighbors[1];
+		Cell east 		= neighbors[2];
+		Cell west		= neighbors[3];
+		Cell northeast 	= neighbors[4];
+		Cell northwest 	= neighbors[5];
+		Cell southeast 	= neighbors[6];
+		Cell southwest 	= neighbors[7];
 
 		HashMap<Cell, String> directions = new HashMap<>();
 
@@ -362,6 +380,36 @@ public class World {
 		return neighboringCells;
 	}
 
+
+	private static void regrowTrees(){
+		for(int j = 0 ; j < worldMatrix.length - 1; j ++){
+			for (int i = 0 ; i < worldMatrix.length - 1 ; i ++)	{
+				Cell currentCell = worldMatrix[j][i];
+				if (currentCell.getState() == Cell.STATES.BURNT){
+					double chance_to_regorw = rand.nextDouble(1);
+					if (chance_to_regorw < .01){
+						currentCell.setState(Cell.STATES.TREE);
+					}
+				}
+			}
+		}
+	}
+
+	private static void randomFireSpot(){
+		// set 3 random fires after main fire goes out
+		for (int i = 0 ; i < 5 ; i ++){
+			int rand_index = rand.nextInt(1, worldMatrix.length-1);
+			int rand_index_b = rand.nextInt(1, worldMatrix.length-1);
+			Cell currentCell = worldMatrix[rand_index][rand_index_b];
+			if (currentCell.getState() == Cell.STATES.TREE){
+				currentCell.setState(Cell.STATES.BURNING);
+				currentCell.SetCellColor();
+			}	
+		}
+	}
+
+	// METRICS FUNCTIONS 
+
 	private static double totalBurned(){
 		double burned_area = 0;
 		for(int j = 0 ; j < worldMatrix.length - 1; j ++){
@@ -411,6 +459,8 @@ public class World {
 		System.out.printf("%nSteps:          %d%nBurn area:      %.2f%%%nAnimal pop:     %d%nMortality rate: %.2f%%%nWind direction: %s%nMap Size:       %dx%d acres%n", 
 		steps, percentage, pop, mortality_rate, direction, worldMatrix.length, worldMatrix.length);
 	}
+
+	// WORLD IMAGES
 
 	public void createTrees(){
         	

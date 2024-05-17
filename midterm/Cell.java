@@ -62,6 +62,7 @@ public class Cell {
 	String coordinates;
 	public BufferedImage stateimage;
 	public BufferedImage animalimage;
+	public boolean moved = false;
 
 	/**
 	 * Method to assign a color to a cell object
