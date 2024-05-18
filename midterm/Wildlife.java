@@ -9,12 +9,11 @@ public class Wildlife {
 	
 	int deadanimals = 0;
 	int escapedanimals = 0;
-	int animal_pop = World.worldMatrix.length;
 	Random rand = new Random();
 
 	public void placeWildlife(){
 		
-		for (int i = 0; i < animal_pop; i++){
+		for (int i = 0; i < Driver.startingPop; i++){
 			// find location on map for object
 			int row_location = rand.nextInt(1, World.worldMatrix.length - 1);
 			int column_location = rand.nextInt(1, World.worldMatrix.length - 1);
@@ -28,7 +27,7 @@ public class Wildlife {
 
 	public void repopulate(){
 	
-		for (int i = 0; i < animal_pop / 20; i++){
+		for (int i = 0; i < Driver.popRegrowth ; i++){
 			// find location on map for object
 			int row_location = rand.nextInt(1, World.worldMatrix.length - 1);
 			int column_location = rand.nextInt(1, World.worldMatrix.length - 1);

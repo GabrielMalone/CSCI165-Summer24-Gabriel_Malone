@@ -7,23 +7,41 @@ import java.awt.Graphics2D;
 import java.awt.Font;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 
 
 public class World_Graphics extends JPanel{
 	
 	// create a JFrame instance to contain the JPanel	
 	private JFrame window = new JFrame();
-	private JMenuBar menuBar = new JMenuBar();
-	private JMenu menu = new JMenu("size");
-	private JMenuItem size = new JMenuItem("size");
+	Menu menu = new Menu();
 
+	
+	// MAP SIZE DRAW SETTINGS
 	public static int IMAGE_HEIGHT 		= setImageSize();
 	public static int IMAGE_WIDTH 		= setImageSize();
-	public static int WINDOW_HEIGHT 	= setWindowSize(IMAGE_HEIGHT);
+	public static int WINDOW_HEIGHT 	= setWindowSize(IMAGE_HEIGHT) ;
 
+	
+	
+
+	public World_Graphics() {
+		window.add(this);
+		window.setJMenuBar(menu.menuBar);
+		// MAIN WINDOW	
+		window.isOpaque();
+		// give it a title bar							
+		window.setTitle("Goobs Fire Sim");
+		// how big is the window?		
+		window.getSize();			
+		window.setSize( WINDOW_HEIGHT, (int)(WINDOW_HEIGHT * 1.09));
+		// place window in the middle of the screen, not relative to any other GUI object						
+		window.setLocationRelativeTo(null);		
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setVisible(true);
+		window.setBackground(Color.BLACK);
+		
+	}
+	
 	@Override
 	public void paintComponent(Graphics g){
 		
@@ -35,26 +53,6 @@ public class World_Graphics extends JPanel{
 		this.repaint();
 	}
 
-	public World_Graphics() {
-
-		// add "this" JPanel to the JFrame			
-		window.add(this);	
-		window.isOpaque();
-		// give it a title bar							
-		window.setTitle("Forest Fire Simulation");
-		// how big is the window?		
-		window.getSize();			
-		window.setSize(WINDOW_HEIGHT, (int)(WINDOW_HEIGHT * 1.05));
-		// place window in the middle of the screen, not relative to any other GUI object						
-		window.setLocationRelativeTo(null);			
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setVisible(true);
-		window.setBackground(Color.black);
-		menu.add(size);
-		menuBar.add(menu);
-		//window.setJMenuBar(menuBar);
-	
-		}
 
 	public static void baseMap(Graphics g) {
 		Graphics2D graphics2d = (Graphics2D) g;

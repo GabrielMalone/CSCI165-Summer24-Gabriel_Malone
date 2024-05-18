@@ -58,7 +58,7 @@ public class World {
 		todaysWeather.pattern();
 		wildlife.placeWildlife();
 		copyWorldMatrix();
-		todaysWeather.setWeatherPattern();
+		//todaysWeather.setWeatherPattern();
 		while (true){
 			if (timeStep > 0) clearPreviousFire();
 			if (burning == false) {
@@ -161,13 +161,13 @@ public class World {
 		}
 	}
 
-	private static void displayWorld(){
+	public static void displayWorld(){
 		
 		// for displaying the matrices in terminal
         // Terminal_Graphics t_graphics = new Terminal_Graphics();
 		// display the world
 		try{
-			Thread.sleep(20);
+			Thread.sleep(Driver.speed);
 			}
 		catch (InterruptedException iException){
 			}
@@ -387,7 +387,7 @@ public class World {
 				Cell currentCell = worldMatrix[j][i];
 				if (currentCell.getState() == Cell.STATES.BURNT){
 					double chance_to_regorw = rand.nextDouble(1);
-					if (chance_to_regorw < .01){
+					if (chance_to_regorw < Driver.chanceToRegrow){
 						currentCell.setState(Cell.STATES.TREE);
 					}
 				}
@@ -396,8 +396,8 @@ public class World {
 	}
 
 	private static void randomFireSpot(){
-		// set 3 random fires after main fire goes out
-		for (int i = 0 ; i < 5 ; i ++){
+		// set random fires after main fire goes out
+		for (int i = 0 ; i < Driver.numberOfFires ; i ++){
 			int rand_index = rand.nextInt(1, worldMatrix.length-1);
 			int rand_index_b = rand.nextInt(1, worldMatrix.length-1);
 			Cell currentCell = worldMatrix[rand_index][rand_index_b];
