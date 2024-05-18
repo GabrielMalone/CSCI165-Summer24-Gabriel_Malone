@@ -42,7 +42,6 @@ public class Driver {
         numberOfFires = numFires(input);
         size = worldResize(size);	      
         simMode(input);
-        numberOfFires = numFires(input);
         dataOverlay(input);
         popRegrowth = size / 2; 
         if (size == 21)   
