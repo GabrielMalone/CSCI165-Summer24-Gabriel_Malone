@@ -1,39 +1,40 @@
 
-// import the Graphics class
-
+	
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+//import java.awt.event.ActionEvent;
+//import java.awt.event.ActionListener;
 import java.awt.Font;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 
 
+
+
 public class World_Graphics extends JPanel{
-	
+	// private Timer timer = new Timer(0, this); 
 	// create a JFrame instance to contain the JPanel	
 	private JFrame window = new JFrame();
-	Menu menu = new Menu();
+	// private Menu menu = new Menu();
 
-	
 	// MAP SIZE DRAW SETTINGS
 	public static int IMAGE_HEIGHT 		= setImageSize();
 	public static int IMAGE_WIDTH 		= setImageSize();
 	public static int WINDOW_HEIGHT 	= setWindowSize(IMAGE_HEIGHT) ;
 
 	
-	
-
 	public World_Graphics() {
+		//timer.start();
+		//this.add(menu.menuBar);
 		window.add(this);
-		window.setJMenuBar(menu.menuBar);
 		// MAIN WINDOW	
 		window.isOpaque();
 		// give it a title bar							
 		window.setTitle("Goobs Fire Sim");
 		// how big is the window?		
 		window.getSize();			
-		window.setSize( WINDOW_HEIGHT, (int)(WINDOW_HEIGHT * 1.09));
+		window.setSize( WINDOW_HEIGHT, (int)(WINDOW_HEIGHT * 1.045));
 		// place window in the middle of the screen, not relative to any other GUI object						
 		window.setLocationRelativeTo(null);		
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -41,20 +42,18 @@ public class World_Graphics extends JPanel{
 		window.setBackground(Color.BLACK);
 		
 	}
-	
-	@Override
+
 	public void paintComponent(Graphics g){
-		
-		super.paintComponent(g);
+		//super.paintComponent(g);
 		baseMap(g);
 		animalMap(g);
 		windMap(g);
 		dataOverlay(g);
 		this.repaint();
+		
 	}
 
-
-	public static void baseMap(Graphics g) {
+	public void baseMap(Graphics g) {
 		Graphics2D graphics2d = (Graphics2D) g;
 		// cartesian points, to control where rectangles are drawn
 		int x = 1, y = 1;
@@ -81,11 +80,11 @@ public class World_Graphics extends JPanel{
 				x += IMAGE_WIDTH;	
 			} 
 			y += IMAGE_HEIGHT;		
-			x = 1;						
+			x = 1;					
 		} 
 	}
 
-	public static void animalMap(Graphics g) {
+	public void animalMap(Graphics g) {
         Graphics2D graphics2d = (Graphics2D) g;
         // cartesian points, to control where rectangles are drawn
         int x = 1, y = 1;
@@ -108,7 +107,7 @@ public class World_Graphics extends JPanel{
         } 
     }
 
-	public static void windMap(Graphics g) {
+	public void windMap(Graphics g) {
         Graphics2D graphics2d = (Graphics2D) g;
 		Color wind_small_map = new Color(255, 255, 255, 150);
 		Color wind_large_map = new Color(255, 255, 255, 50);
@@ -129,7 +128,7 @@ public class World_Graphics extends JPanel{
         } 
     }
 
-	public static void dataOverlay(Graphics g) {
+	public void dataOverlay(Graphics g) {
 
         Graphics2D graphics2d = (Graphics2D) g;
 		
