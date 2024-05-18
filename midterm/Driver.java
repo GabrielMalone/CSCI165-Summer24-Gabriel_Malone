@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Driver {
     
     // DEFAULTS
-    public static boolean displayMode = true;
+    public static boolean displayMode = false;
     public static boolean weatherOn = true;
     public static boolean metricsOn = false;
     public static boolean centerStart;
@@ -128,9 +128,9 @@ public class Driver {
     } 
 
     public static void dataOverlay(Scanner input){
-        System.out.print("Show Data Overlay: - On (1) / Off (2) (Default On): ");
+        System.out.print("Show Data Overlay: - On (1) / Off (2) (Default Off): ");
         String mode = input.nextLine();
-        if (mode.equals("2")) displayMode = false;
+        if (mode.equals("1")) displayMode = true;
     } 
 
     public static int numFires(Scanner input){

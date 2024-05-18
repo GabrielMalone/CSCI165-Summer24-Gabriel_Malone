@@ -64,6 +64,7 @@ public class World {
 				if (! burning){
 					randomFireSpot();
 					wildlife.repopulate();
+					wildlife.clearDead();
 					burning = true;
 				}
 			}
@@ -76,8 +77,6 @@ public class World {
 				wildlife.makeAnEscape();
 				if (Driver.endlessMode)
 					wildlife.clearEscaped();
-					
-					wildlife.clearDead();
 				if (Driver.animalsWander)
 					wildlife.moveAround();
 			}
@@ -177,7 +176,7 @@ public class World {
 	private static void displayWorld(){
 		
 		// for displaying the matrices in terminal
-        // Terminal_Graphics t_graphics = new Terminal_Graphics();
+        //Terminal_Graphics t_graphics = new Terminal_Graphics();
 		// display the world
 		try{
 			Thread.sleep(Driver.speed);
@@ -185,7 +184,7 @@ public class World {
 		catch (InterruptedException iException){
 			}
 		// turn off to prevent slow down of bigger maps
-		// t_graphics.displayWorld();
+		//t_graphics.displayWorld();
 	}
 
 	private static int trackSteps(){
@@ -463,6 +462,7 @@ public class World {
 		}
 		
 	public void displayData(){
+		Terminal_Graphics.clearSequence();
 		int steps = trackSteps();
 		double percentage = burnPercentage();
 		double mortality_rate = mortalityRate();
