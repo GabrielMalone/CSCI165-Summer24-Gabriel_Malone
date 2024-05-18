@@ -131,9 +131,10 @@ public class Weather {
                 break;
             case SOUTH: this.windDirection	= "SOUTH";
                 break;
-            case EAST: this.windDirection 	= "EAST";
+            case EAST: 	this.windDirection 	= "EAST";
                 break;
-            case WEST: this.windDirection 	= "WEST";
+            case WEST: 	this.windDirection 	= "WEST";
+			default: 	this.windDirection 	= "X";
                 break;
 	    }
     }
@@ -143,13 +144,14 @@ public class Weather {
 	}
 
 	public String getStringDirection(){
+		if (this.direction == null) return "X";
 		switch (this.direction) {
             case NORTH: return 	"NORTH";
             case SOUTH: return 	"SOUTH";
             case EAST: 	return 	"EAST";
             case WEST: 	return 	"WEST";
+			default:	return 	"x";
 	    }
-		return "";
 	}
 }
 

@@ -10,8 +10,6 @@ import javax.swing.JPanel;
 import javax.swing.JFrame;
 
 
-
-
 public class World_Graphics extends JPanel{
 	// private Timer timer = new Timer(0, this); 
 	// create a JFrame instance to contain the JPanel	
@@ -48,7 +46,8 @@ public class World_Graphics extends JPanel{
 		baseMap(g);
 		animalMap(g);
 		windMap(g);
-		dataOverlay(g);
+		if (Driver.displayMode) 
+			dataOverlay(g);
 		this.repaint();
 		
 	}
@@ -109,17 +108,24 @@ public class World_Graphics extends JPanel{
 
 	public void windMap(Graphics g) {
         Graphics2D graphics2d = (Graphics2D) g;
-		Color wind_small_map = new Color(255, 255, 255, 150);
-		Color wind_large_map = new Color(255, 255, 255, 50);
-		Color wind_medium_map = new Color(255, 255, 255, 100);
+		Color map20  = new Color(255, 255, 255, 150);
+		Color map50  = new Color(255, 255, 255, 50);
+		Color map100 = new Color(255, 255, 255, 40);
+		Color map150 = new Color(255, 255, 255, 30);
+		Color map200 = new Color(255, 255, 255, 10);
+		Color map500 = new Color(255, 255, 255, 5);
         int x = 1, y = 1;
         for(int i = 0; i < World.worldMatrix.length; i++){ 
             for(int j = 0; j < World.worldMatrix.length; j++){
                 Cell currentCell = World.worldMatrix[i][j];
                 if (currentCell.getCellWeather() == Cell.WEATHER.WINDY){
-					if (Driver.size <= 51) {graphics2d.setColor(wind_small_map); graphics2d.drawArc(x, y, 10, 10, y, x);}
-					if (Driver.size <= 101) {graphics2d.setColor(wind_medium_map); graphics2d.drawArc(x, y, 10, 10, y, x);}
-					else if (Driver.size <= 501){graphics2d.setColor(wind_large_map); graphics2d.drawArc(x, y, 5, 5, y, x);}
+					if (Driver.size == 51) 	{graphics2d.setColor(map50); 	graphics2d.drawArc(x, y, 10, 10, y, x);}
+					else if (Driver.size == 101) 	{graphics2d.setColor(map100); 	graphics2d.drawArc(x, y, 10, 10, y, x);}
+					else if (Driver.size == 151) 	{graphics2d.setColor(map150); 	graphics2d.drawArc(x, y, 5, 5, y, x);}
+					else if (Driver.size == 201) 	{graphics2d.setColor(map200); 	graphics2d.drawArc(x, y, 10, 10, y, x);}
+					else if (Driver.size == 501)	{graphics2d.setColor(map500);	graphics2d.drawArc(x, y, 5, 5, y, x);}
+					else 							{graphics2d.setColor(map20); 	graphics2d.drawArc(x, y, 15, 15, y, x);}
+
                 }
                 x += IMAGE_WIDTH;
             } 
@@ -129,9 +135,8 @@ public class World_Graphics extends JPanel{
     }
 
 	public void dataOverlay(Graphics g) {
-
+	
         Graphics2D graphics2d = (Graphics2D) g;
-		
 		// STEPS BOX AND INFO
 		Color transparentback = new Color(0f, 1f, .5f, .7f);
 		Color transparenttitle = new Color(0f, 0f, 0f, .9f);
@@ -152,7 +157,6 @@ public class World_Graphics extends JPanel{
 		else 								graphics2d.drawString(String.valueOf(World.timeStep), WINDOW_HEIGHT - 57, 55);
 		
 		// BURN AREA BOX AND INFO
-
 		graphics2d.setColor(transparentback);
 		graphics2d.fillRoundRect(WINDOW_HEIGHT - 60, 75, 50, 50, 10, 10);
 		graphics2d.setColor(transparenttitle);
@@ -166,39 +170,41 @@ public class World_Graphics extends JPanel{
 		else graphics2d.drawString(burn_output, WINDOW_HEIGHT - 57, 110);
 
 		// DEATH TOLL BOX AND INFO
-
-		graphics2d.setColor(transparentback);
-		graphics2d.fillRoundRect(WINDOW_HEIGHT - 60, 130, 50, 50, 10, 10);
-		graphics2d.setFont(FontTitle);
-		graphics2d.setColor(transparenttitle);
-		graphics2d.drawString("MORT %", WINDOW_HEIGHT - 52, 145);
-		graphics2d.setFont(FontData);
-		graphics2d.setColor(transparentinfo);
-		String death_output = String.format("%.0f%%", World.mortalityRate());
-		if (World.mortalityRate() < 10.001) graphics2d.drawString(death_output, WINDOW_HEIGHT - 45, 165);
-		else if (World.mortalityRate() < 99) graphics2d.drawString(death_output, WINDOW_HEIGHT - 50, 165);
-		else graphics2d.drawString(death_output, WINDOW_HEIGHT - 57, 165);
+		if (Driver.animalsOn){
+			graphics2d.setColor(transparentback);
+			graphics2d.fillRoundRect(WINDOW_HEIGHT - 60, 130, 50, 50, 10, 10);
+			graphics2d.setFont(FontTitle);
+			graphics2d.setColor(transparenttitle);
+			graphics2d.drawString("MORT %", WINDOW_HEIGHT - 52, 145);
+			graphics2d.setFont(FontData);
+			graphics2d.setColor(transparentinfo);
+			String death_output = String.format("%.0f%%", World.mortalityRate());
+			if (World.mortalityRate() < 10.001) graphics2d.drawString(death_output, WINDOW_HEIGHT - 45, 165);
+			else if (World.mortalityRate() < 99) graphics2d.drawString(death_output, WINDOW_HEIGHT - 50, 165);
+			else graphics2d.drawString(death_output, WINDOW_HEIGHT - 57, 165);
+		}
 
 		// WIND DIRECTION
-
-		graphics2d.setColor(transparentback);
-		graphics2d.fillRoundRect(WINDOW_HEIGHT - 60, 185, 50, 50, 10, 10);
-		graphics2d.setFont(FontTitle);
-		graphics2d.setColor(transparenttitle);
-		graphics2d.drawString("WIND  ", WINDOW_HEIGHT - 47, 200);
-		graphics2d.setFont(FontData);
-		graphics2d.setColor(transparentinfo);
-		switch (Driver.todaysWeather.getStringDirection()) {
-			case "NORTH": 	graphics2d.drawString("N", WINDOW_HEIGHT - 43, 220);
-				break;
-			case "SOUTH": 	graphics2d.drawString("S", WINDOW_HEIGHT - 40, 220);
-				break;
-			case "EAST": 	graphics2d.drawString("E", WINDOW_HEIGHT - 43, 220);
-				break;
-			case "WEST": 	graphics2d.drawString("W", WINDOW_HEIGHT - 43, 220);
-				break;
-			default:
-				break;
+		if (Driver.weatherOn){
+			graphics2d.setColor(transparentback);
+			graphics2d.fillRoundRect(WINDOW_HEIGHT - 60, 185, 50, 50, 10, 10);
+			graphics2d.setFont(FontTitle);
+			graphics2d.setColor(transparenttitle);
+			graphics2d.drawString("WIND  ", WINDOW_HEIGHT - 47, 200);
+			graphics2d.setFont(FontData);
+			graphics2d.setColor(transparentinfo);
+			switch (Driver.todaysWeather.getStringDirection()) {
+				case "NORTH": 	graphics2d.drawString("N", WINDOW_HEIGHT - 43, 220);
+					break;
+				case "SOUTH": 	graphics2d.drawString("S", WINDOW_HEIGHT - 40, 220);
+					break;
+				case "EAST": 	graphics2d.drawString("E", WINDOW_HEIGHT - 43, 220);
+					break;
+				case "WEST": 	graphics2d.drawString("W", WINDOW_HEIGHT - 43, 220);
+					break;
+				default:		graphics2d.drawString("X", WINDOW_HEIGHT - 43, 220);
+					break;
+			}
 		}
     }
 

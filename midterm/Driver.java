@@ -1,38 +1,55 @@
 import java.util.Scanner;
 
+
 public class Driver {
-	public static int size;
-    public static int speed;
-    public static int startingPop;
-    public static double chanceToRegrow;
-    public static double catchprobability;
+    
+    // DEFAULTS
+    public static boolean displayMode = true;
+    public static boolean weatherOn = true;
+    public static boolean metricsOn = false;
+    public static boolean centerStart;
+    public static boolean endlessMode = true;
+    public static boolean animalsOn = true;
+    public static boolean animalsWander = false;
+    public static int size = 150; 
+    public static int speed = 50;
+    public static int startingPop = size;
     public static int popRegrowth;
-    public static int numberOfFires;
-    public static Weather todaysWeather = new Weather();
+    public static int numberOfFires = 3;
+    public static double chanceToRegrow =.01;
+    public static double catchprobability = .25;
     public static World_Graphics world;
     public static World neWorld;
-    public static boolean weatherOn;
-    public static boolean metricsOn;
-    public static boolean centerStart;
- 
-
+    public static Weather todaysWeather = new Weather();
  
 	public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        size = getMapSize(input);                           // map size
-        speed = getMapSpeed(input);                         // step rate ms
-        catchprobability = getBurnProb(input);                             // base probability of trees catching on fire
-        chanceToRegrow = .01;                               // chance for tree to regrow after burning
-        startingPop = size;                                 // starting populatin (map size gives good ratio of space to animals)
-        popRegrowth = size;                                 // number of animals to return after fire goes out
-        numberOfFires = 5;
-        size = worldResize(size);		                    // map size adjustment for center positioning
-        neWorld = new World();
-        todaysWeather.setDirection(Weather.DIRECTION.EAST); // set weather pattern direction
+        initializer();
         world = new World_Graphics();
         neWorld.applySpread();  
     }
 
+    public static void initializer(){
+        System.out.println("Sim options / 'Enter' to use defaults");
+        Scanner input = new Scanner(System.in);
+        size = getMapSize(input);  
+        speed = getMapSpeed(input);                        
+        catchprobability = getBurnProb(input); 
+        animalsOn(input);   
+        startingPop = animalPop(input);  
+        animalsMove(input);                             
+        windOn(input);
+        if (weatherOn) windDirection(input);;                                              
+        numberOfFires = numFires(input);
+        size = worldResize(size);	      
+        simMode(input);
+        numberOfFires = numFires(input);
+        dataOverlay(input);
+        popRegrowth = size / 2; 
+        if (size == 21)   
+            chanceToRegrow = .05;
+        neWorld = new World();      
+    }
+    
     public static int worldResize(int size){
         if (size % 2 == 0) return size += 1;	
         return size;
@@ -43,25 +60,88 @@ public class Driver {
     }
 
     public static int getMapSize(Scanner input){
-        System.out.print("Enter Map Size (20, 50, 100, 150, 200, 500)");
+        System.out.print("Enter Map Size (20, 50, 100, 150, 200, 500) (Default 150) ");
         String size_string = input.nextLine();
+        if (size_string.equals("")) return size;
         int size = Integer.valueOf(size_string);
         return size;
     }
 
     public static int getMapSpeed(Scanner input){
-        System.out.print("Enter Map Speed (ms)");
+        System.out.print("Enter Map Speed (ms) (Default 50ms) ");
         String speed_string = input.nextLine();
+        if (speed_string.equals("")) return speed;
         int speed = Integer.valueOf(speed_string);
         return speed;
     }
 
     public static double getBurnProb(Scanner input){
-        System.out.print("Enter burn probability (0-1) (e.g. .5 for 50%)");
+        System.out.print("Enter burn probability (0-1) (e.g. .5 for 50%) (Default .25) ");
         String burn_string = input.nextLine();
-        double speed = Double.valueOf(burn_string);
-        return speed;
+        if (burn_string.equals("")) return catchprobability;
+        double catchprobability = Double.valueOf(burn_string);
+        return catchprobability;
     }
 
+    public static void animalsOn(Scanner input){
+        System.out.print("Animals On - (1) / Off (2) (Default On): ");
+        String animals_string = input.nextLine();
+        if (animals_string.equals("2"))  animalsOn = false;
+    }
+
+    public static void animalsMove(Scanner input){
+        System.out.print("Animals Wander Randomly - On (1) / Off (2) (Default Off): ");
+        String animals_wander = input.nextLine();
+        if (animals_wander.equals("2"))  animalsWander = false;
+    }
+
+    public static int animalPop(Scanner input){
+        System.out.print("Starting populaion (Default sqrt map area) ");
+        String pop_string = input.nextLine();
+        if (pop_string.equals("")) return startingPop;
+        int startingPop = Integer.valueOf(pop_string);
+        return startingPop;
+    }
+
+    public static void windOn(Scanner input){
+        System.out.print("Wind On - (1) / Off (2) (Default On): ");
+        String burn_string = input.nextLine();
+        if (burn_string.equals("1"))  weatherOn = true;
+    }
+
+    public static void windDirection(Scanner input){
+        System.out.print("Weather Direction (N, E, S, W) (Default East): ");
+        String direction = input.nextLine();
+        if (direction.equals("")) todaysWeather.setDirection(Weather.DIRECTION.EAST);
+        if (weatherOn){
+            if (direction.equals("N")) todaysWeather.setDirection(Weather.DIRECTION.NORTH);
+            if (direction.equals("E")) todaysWeather.setDirection(Weather.DIRECTION.EAST);
+            if (direction.equals("S")) todaysWeather.setDirection(Weather.DIRECTION.SOUTH);
+            if (direction.equals("W")) todaysWeather.setDirection(Weather.DIRECTION.WEST);
+        }
+    } 
+
+    public static void simMode(Scanner input){
+        System.out.print("(S)tandard / (E)ndless Mode (Default Endless) ");
+        String mode = input.nextLine();
+        if (mode.equals("S")) endlessMode = false;
+    } 
+
+    public static void dataOverlay(Scanner input){
+        System.out.print("Show Data Overlay: - On (1) / Off (2) (Default On): ");
+        String mode = input.nextLine();
+        if (mode.equals("2")) displayMode = false;
+    } 
+
+    public static int numFires(Scanner input){
+        if (endlessMode){
+            System.out.print("Number of regenerating fires: (Defaul 3) " );
+            String num_fires_string = input.nextLine();
+            if (num_fires_string.equals("")) return numberOfFires;
+            numberOfFires = Integer.valueOf(num_fires_string);
+            return numberOfFires;
+        }
+        return numberOfFires;
+    }
 }
 

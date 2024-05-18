@@ -43,40 +43,53 @@ public class World {
 		fillWorld();
 	}
 
-
-	// MAIN LOOP
-
+	
 	/**
 	 * Method to model the spread of a fire
 	 *
 	 */
 	public void applySpread(){
-		// worldMatrix decides what happens next
-		// nextStep matrix applies those changes
-		// this way the changes dont affect the current iteration
-		// of the world map
-		todaysWeather.pattern();
-		wildlife.placeWildlife();
+		// SET WEATHER AND ANIMALS
+		if (Driver.weatherOn){
+			todaysWeather.pattern();
+			todaysWeather.setWeatherPattern();
+		} 	
+		if (Driver.animalsOn)	
+			wildlife.placeWildlife();
 		copyWorldMatrix();
-		todaysWeather.setWeatherPattern();
+		// SIMULATION LOOP
 		while (true){
-			if (timeStep > 0) clearPreviousFire();
-			if (burning == false) {
-				randomFireSpot(); burning = true; 
-				wildlife.repopulate();
-				wildlife.clearDead(); 
+			if (timeStep > 0) {
+				clearPreviousFire();
+				if (! burning){
+					randomFireSpot();
+					wildlife.repopulate();
+					burning = true;
+				}
 			}
 			applyChangesToWorld();
             displayWorld();
-			regrowTrees();
-			wildlife.resetMoveState();
-			wildlife.makeAnEscape();
-			wildlife.clearEscaped();
-			wildlife.moveAround();
+			if (Driver.endlessMode)
+				regrowTrees();
+			if (Driver.animalsOn){
+				wildlife.resetMoveState();
+				wildlife.makeAnEscape();
+				if (Driver.endlessMode)
+					wildlife.clearEscaped();
+					
+					wildlife.clearDead();
+				if (Driver.animalsWander)
+					wildlife.moveAround();
+			}
             designatetNeighborsOnFire();
 			displayData();
-            if (! stillBurning()) {
-				burning = false;
+			if (timeStep > 0){
+				if (! stillBurning()){ 
+					burning = false;
+					if (! Driver.endlessMode){
+							break;
+					}
+				}	
 			}
 		}
 	}
@@ -387,7 +400,7 @@ public class World {
 				Cell currentCell = worldMatrix[j][i];
 				if (currentCell.getState() == Cell.STATES.BURNT){
 					double chance_to_regorw = rand.nextDouble(1);
-					if (chance_to_regorw < .01){
+					if (chance_to_regorw < Driver.chanceToRegrow){
 						currentCell.setState(Cell.STATES.TREE);
 					}
 				}
@@ -397,7 +410,7 @@ public class World {
 
 	private static void randomFireSpot(){
 		// set 3 random fires after main fire goes out
-		for (int i = 0 ; i < 5 ; i ++){
+		for (int i = 0 ; i < Driver.numberOfFires ; i ++){
 			int rand_index = rand.nextInt(1, worldMatrix.length-1);
 			int rand_index_b = rand.nextInt(1, worldMatrix.length-1);
 			Cell currentCell = worldMatrix[rand_index][rand_index_b];
