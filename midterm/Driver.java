@@ -5,17 +5,17 @@ public class Driver {
     
     // DEFAULTS
     public static boolean displayMode = false;
-    public static boolean weatherOn = false;
-    public static boolean metricsOn = false;
+    public static boolean weatherOn = true;
+    public static boolean metricsOn = true;
     public static boolean centerStart;
     public static boolean endlessMode = true;
     public static boolean animalsOn = true;
     public static boolean animalsWander = false;
-    public static int size = 150; 
-    public static int speed = 50;
-    public static int startingPop = size;
+    public static int size = 200; 
+    public static int speed = 20;
+    public static int startingPop = size * 10;
     public static int popRegrowth;
-    public static int numberOfFires = 3;
+    public static int numberOfFires = 6;
     public static double chanceToRegrow =.01;
     public static double catchprobability = .25;
     public static World_Graphics world;
@@ -38,11 +38,12 @@ public class Driver {
         startingPop = animalPop(input);  
         animalsMove(input);                             
         windOn(input);
-        if (weatherOn) windDirection(input);;                                              
-        numberOfFires = numFires(input);
-        size = worldResize(size);	      
+        if (weatherOn) windDirection(input);                                            
         simMode(input);
+        if (endlessMode)
+            numberOfFires = numFires(input);
         dataOverlay(input);
+        size = worldResize(size);
         popRegrowth = size / 2; 
         if (size == 21)   
             chanceToRegrow = .05;

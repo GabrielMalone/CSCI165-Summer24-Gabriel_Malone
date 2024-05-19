@@ -1,8 +1,9 @@
 
-	
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 //import java.awt.event.ActionEvent;
 //import java.awt.event.ActionListener;
 import java.awt.Font;
@@ -14,7 +15,7 @@ public class World_Graphics extends JPanel{
 	// private Timer timer = new Timer(0, this); 
 	// create a JFrame instance to contain the JPanel	
 	private JFrame window = new JFrame();
-	// private Menu menu = new Menu();
+	
 
 	// MAP SIZE DRAW SETTINGS
 	public static int IMAGE_HEIGHT 		= setImageSize();
@@ -23,8 +24,29 @@ public class World_Graphics extends JPanel{
 
 	
 	public World_Graphics() {
+		// mouse clicks to place bombs
+		addMouseMotionListener(new MouseAdapter(){
+			public void mouseDragged(MouseEvent e){
+				int column = e.getX() / IMAGE_HEIGHT;
+				int row = e.getY() / IMAGE_HEIGHT;
+				if (column > 1 && row > 1 && World.worldMatrix[row][column].getState() == Cell.STATES.TREE){
+					//World.worldMatrix[row][column].setState(Cell.STATES.BURNING);
+					Bomb.placeBomb(row, column);
+				}
+			}
+		});
+		// mouse movement to trail with fire
+		addMouseListener(new MouseAdapter(){
+			public void mousePressed(MouseEvent e){
+				int column = e.getX() / IMAGE_HEIGHT;
+				int row = e.getY() / IMAGE_HEIGHT;
+				if (World.worldMatrix[row][column].getState() == Cell.STATES.TREE){
+					//World.worldMatrix[row][column].setState(Cell.STATES.BURNING);
+					Bomb.nuke(row, column);
+				}
+			}
+		});
 		//timer.start();
-		//this.add(menu.menuBar);
 		window.add(this);
 		// MAIN WINDOW	
 		window.isOpaque();
@@ -123,7 +145,7 @@ public class World_Graphics extends JPanel{
 					else if (Driver.size == 101) 	{graphics2d.setColor(map100); 	graphics2d.drawArc(x, y, 10, 10, y, x);}
 					else if (Driver.size == 151) 	{graphics2d.setColor(map150); 	graphics2d.drawArc(x, y, 5, 5, y, x);}
 					else if (Driver.size == 201) 	{graphics2d.setColor(map200); 	graphics2d.drawArc(x, y, 10, 10, y, x);}
-					else if (Driver.size == 501)	{graphics2d.setColor(map500);	graphics2d.drawArc(x, y, 5, 5, y, x);}
+					else if (Driver.size <= 501)	{graphics2d.setColor(map500);	graphics2d.drawArc(x, y, 5, 5, y, x);}
 					else 							{graphics2d.setColor(map20); 	graphics2d.drawArc(x, y, 15, 15, y, x);}
 
                 }
@@ -223,7 +245,7 @@ public class World_Graphics extends JPanel{
 			return size = (int)(Driver.size / 35); 
 			}
 		else if (Driver.size == 201){
-			return size = (int)(Driver.size / 80); 
+			return size = (int)(Driver.size / 100); 
 			}
 		else if (Driver.size == 401){
 			return size = (int)(Driver.size / 200); 

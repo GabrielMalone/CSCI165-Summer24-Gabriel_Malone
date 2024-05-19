@@ -7,7 +7,10 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
 
+
 public class World {
+
+	
 	public static double total_alive = 0;
 	public static double total_dead = 0;
 	public static int size = Driver.size;
@@ -33,10 +36,12 @@ public class World {
 	public static BufferedImage [] burnt = new BufferedImage[4];
 	public static BufferedImage [] anima = new BufferedImage[4];
 
+
+
 	public static Random rand = new Random();
 	
 	public World(){
-
+		
 		createAnimals();
         createTrees();
         createFires();
@@ -44,7 +49,6 @@ public class World {
 		fillWorld();
 	}
 
-	
 	/**
 	 * Method to model the spread of a fire
 	 *
@@ -60,8 +64,9 @@ public class World {
 			wildlife.placeWildlife();
 		copyWorldMatrix();
 		// initial fire
-		setCenterCellonFire();
+		//setCenterCellonFire();
 		designatetNeighborsOnFire();
+
 		// SIMULATION LOOP
 		while (true){
 			displayData();
@@ -70,7 +75,7 @@ public class World {
 				clearPreviousFire();
 				if (! burning){
 					wildlife.repopulate();
-					randomFireSpot();
+					//randomFireSpot();
 					burning = true;
 				}
 			}
@@ -86,6 +91,7 @@ public class World {
 				if (Driver.animalsWander)
 					wildlife.moveAround();
 			}
+			Bomb.explodeBomb();
             designatetNeighborsOnFire();
 			if (timeStep > 0){
 				if (! stillBurning()){ 
@@ -140,6 +146,7 @@ public class World {
 					newCell.row = i;
 					newCell.column = j;
 					newCell.coordinates = i + "," + j;
+					
 				}
 				// put the appropriate cell in the matrix
 				worldMatrix[i][j] = newCell;
@@ -410,7 +417,7 @@ public class World {
 		}
 	}
 
-	private static void randomFireSpot(){
+	public void randomFireSpot(){
 		// set 3 random fires after main fire goes out
 		for (int i = 0 ; i < Driver.numberOfFires ; i ++){
 			int rand_index = rand.nextInt(1, worldMatrix.length-1);
@@ -484,8 +491,9 @@ public class World {
 		String direction = todaysWeather.getStringDirection();
 		double animal_pop = totalAlive();
 		long pop = Math.round(animal_pop);
-		System.out.printf("%nSteps:          %d%nBurn area:      %.2f%%%nAnimal pop:     %d%nMortality rate: %.2f%%%nWind direction: %s%nMap Size:       %dx%d acres%n", 
-		steps, percentage, pop, mortality_rate, direction, worldMatrix.length, worldMatrix.length);
+		int area = worldMatrix.length * worldMatrix.length;
+		System.out.printf("%nSteps:          %d%nBurn area:      %.2f%%%nAnimal pop:     %d%nMortality rate: %.2f%%%nWind direction: %s%nMap Size:       %d SQ acres%n", 
+		steps, percentage, pop, mortality_rate, direction, area);
 	}
 
 	// WORLD IMAGES
