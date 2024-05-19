@@ -223,7 +223,10 @@ public class World_Graphics extends JPanel{
 			return size = (int)(Driver.size / 35); 
 			}
 		else if (Driver.size == 201){
-			return size = (int)(Driver.size / 60); 
+			return size = (int)(Driver.size / 80); 
+			}
+		else if (Driver.size == 401){
+			return size = (int)(Driver.size / 200); 
 			}
 		else if (Driver.size == 501){
 			return size = (int)(Driver.size / 500); 

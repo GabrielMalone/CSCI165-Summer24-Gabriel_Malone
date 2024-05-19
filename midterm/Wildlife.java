@@ -6,8 +6,8 @@ import java.util.Random;
 public class Wildlife {
 	// track active wildlife on map
 	public ArrayList<Cell> activeWildlifeCells = new ArrayList<>();
-	
-	int deadanimals = 0;
+	public ArrayList<Cell> deadanimals = new ArrayList<>();
+
 	int escapedanimals = 0;
 	Random rand = new Random();
 
@@ -33,16 +33,19 @@ public class Wildlife {
 			int column_location = rand.nextInt(1, World.worldMatrix.length - 1);
 			// get cell at this location
 			Cell cell_at_this_location = World.worldMatrix[row_location][column_location];
-			// update cell
-			cell_at_this_location.setObject(Cell.OBJECTS.WILDLIFEALIVE);
-			activeWildlifeCells.add(cell_at_this_location);	
+			if (cell_at_this_location.getObject() != Cell.OBJECTS.WILDLIFEALIVE){
+				// update cell
+				cell_at_this_location.setObject(Cell.OBJECTS.WILDLIFEALIVE);
+				activeWildlifeCells.add(cell_at_this_location);	
 			}
 		}
+	}
 	
 	public void checkIfDead(Cell current_cell, Cell burningCell){
 		// if caught in fire, deadd
 		if (current_cell.getObject() == (Cell.OBJECTS.WILDLIFEALIVE)){
 			burningCell.setObject(Cell.OBJECTS.WILDLIFEDEAD);
+			deadanimals.add(burningCell);
 		}
 	}
 	
@@ -150,15 +153,16 @@ public class Wildlife {
             for(int g = 0 ; g < World.worldMatrix.length - 1; g ++){    
 				Cell currentCell = World.worldMatrix[f][g];
 				double chance_to_decay = rand.nextDouble(1);
-				if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEDEAD){
-					if (chance_to_decay < .7){
+				if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEDEAD && chance_to_decay < .1){
 					currentCell.setObject(Cell.OBJECTS.VOID);
 					currentCell.SetCellColor();
-					}
+			
 				}
 			}
 		}
 	}
+
+	
 	
 	private Cell.POSITIONASNEIGHBOR oppositeDirection(Cell neighboringCell){
 		// default

@@ -8,7 +8,8 @@ import java.awt.image.BufferedImage;
 
 
 public class World {
-
+	public static double total_alive = 0;
+	public static double total_dead = 0;
 	public static int size = Driver.size;
 	// create blank Cell matrix
 	public static Cell[][] worldMatrix = new Cell [size][size];
@@ -49,6 +50,7 @@ public class World {
 	 *
 	 */
 	public void applySpread(){
+		
 		// SET WEATHER AND ANIMALS
 		if (Driver.weatherOn){
 			todaysWeather.pattern();
@@ -57,14 +59,18 @@ public class World {
 		if (Driver.animalsOn)	
 			wildlife.placeWildlife();
 		copyWorldMatrix();
+		// initial fire
+		setCenterCellonFire();
+		designatetNeighborsOnFire();
 		// SIMULATION LOOP
 		while (true){
+			displayData();
+			wildlife.clearDead();
 			if (timeStep > 0) {
 				clearPreviousFire();
 				if (! burning){
-					randomFireSpot();
 					wildlife.repopulate();
-					wildlife.clearDead();
+					randomFireSpot();
 					burning = true;
 				}
 			}
@@ -81,7 +87,6 @@ public class World {
 					wildlife.moveAround();
 			}
             designatetNeighborsOnFire();
-			displayData();
 			if (timeStep > 0){
 				if (! stillBurning()){ 
 					burning = false;
@@ -141,8 +146,6 @@ public class World {
 				// also write to color file
 			}
 		}
-		// set center after the loop complete
-        setCenterCellonFire();
 	}
 
 	/**
@@ -248,7 +251,7 @@ public class World {
 	}
 	
 	private void seeWhatBurns(Cell[] neighboringcells, Cell homeCell){
-        for (Cell cell : neighboringcells){
+		for (Cell cell : neighboringcells){
             if(	cell.getState().equals(Cell.STATES.TREE) 
 			&& 	cell.getCellWeather().equals(Cell.WEATHER.CALM)){
 				double chanceToBurn = probCatch();
@@ -442,32 +445,44 @@ public class World {
 	}
 
 	public static double mortalityRate(){
-		double total_wildlife = wildlife.activeWildlifeCells.size();
-		double total_dead = totalDead();
-		double mortality_rate = (total_dead / total_wildlife) * 100;
-		return mortality_rate;
+		double mortality_rate = 0.1;
+		if (wildlife.deadanimals.size()> 0){
+			mortality_rate = ((double)wildlife.deadanimals.size() / (double)wildlife.activeWildlifeCells.size() ) * 100;
 		}
+		return mortality_rate;
+	}
 
-	public static int totalDead(){
+	public static double totalDead(){
 		int total_dead = 0;
 		for (int i = 1;  i < worldMatrix.length - 1; i ++){
 			for (int j = 1 ; j < worldMatrix.length - 1; j ++){
 				if (worldMatrix[i][j].getObject() == Cell.OBJECTS.WILDLIFEDEAD){
 					total_dead += 1;
-					wildlife.deadanimals += 1;
 					}	
 				}
 			}
 			return total_dead;
 		}
-		
+
+	public static double totalAlive(){
+		double total_alive = 0;
+		for (int i = 1;  i < worldMatrix.length - 1; i ++){
+			for (int j = 1 ; j < worldMatrix.length - 1; j ++){
+				if (worldMatrix[i][j].getObject() == Cell.OBJECTS.WILDLIFEALIVE){
+					total_alive ++;
+					}	
+				}
+			}
+			return total_alive;
+		}
+
 	public void displayData(){
 		Terminal_Graphics.clearSequence();
 		int steps = trackSteps();
 		double percentage = burnPercentage();
 		double mortality_rate = mortalityRate();
 		String direction = todaysWeather.getStringDirection();
-		int animal_pop = wildlife.activeWildlifeCells.size() - totalDead();
+		double animal_pop = totalAlive();
 		long pop = Math.round(animal_pop);
 		System.out.printf("%nSteps:          %d%nBurn area:      %.2f%%%nAnimal pop:     %d%nMortality rate: %.2f%%%nWind direction: %s%nMap Size:       %dx%d acres%n", 
 		steps, percentage, pop, mortality_rate, direction, worldMatrix.length, worldMatrix.length);

@@ -25,6 +25,7 @@ public class Cell {
 		VOID,
 		WILDLIFEALIVE,
 		WILDLIFEDEAD,
+		DECAYING,
 		BOMB;
 	}
 	public static enum FIREMOVING{

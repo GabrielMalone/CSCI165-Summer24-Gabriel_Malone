@@ -5,7 +5,7 @@ public class Driver {
     
     // DEFAULTS
     public static boolean displayMode = false;
-    public static boolean weatherOn = true;
+    public static boolean weatherOn = false;
     public static boolean metricsOn = false;
     public static boolean centerStart;
     public static boolean endlessMode = true;
@@ -103,7 +103,7 @@ public class Driver {
     }
 
     public static void windOn(Scanner input){
-        System.out.print("Wind On - (1) / Off (2) (Default On): ");
+        System.out.print("Wind On - (1) / Off (2) (Default Off): ");
         String burn_string = input.nextLine();
         if (burn_string.equals("1"))  weatherOn = true;
     }
@@ -143,4 +143,3 @@ public class Driver {
         return numberOfFires;
     }
 }
-
