@@ -5,15 +5,15 @@ import java.util.Random;
 public class Weather {
 
 	public int minus = 0;
-	public static ArrayList<String> windCoordinates = new ArrayList<>();
+	public  ArrayList<String> windCoordinates = new ArrayList<>();
     public static enum DIRECTION {
 		NORTH, 
 		EAST, 
 		SOUTH,
 		WEST;
 	}
-    private DIRECTION direction;
-    String windDirection;
+    public DIRECTION direction;
+    public String windDirection;
 
 	/**
 	 * Method to create appropriate random variables for the sinewave

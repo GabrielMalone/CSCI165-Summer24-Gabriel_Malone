@@ -1,148 +1,104 @@
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import java.awt.*;  
 
 public class Menu extends JPanel implements ActionListener {
-
-	public  JFrame optionsWindow = new JFrame();
-    public  JMenuBar menuBar     = new JMenuBar();
-	public  JMenuBar startMenu   = new JMenuBar();
-
-	// MENU OPTIONS
 	
+	JFrame optionsWindow = new JFrame();
 	//start button
-	private JButton start           = new JButton("Start");
-	// map menu
-	private JMenu map               = new JMenu("Map");
-	private JMenu size_option 		= new JMenu("Map Size");
-	private JMenuItem size_1 		= new JMenuItem("20");
-	private JMenuItem size_2 		= new JMenuItem("50");
-	private JMenuItem size_3 		= new JMenuItem("100");
-	private JMenuItem size_4 		= new JMenuItem("150");
-	private JMenuItem size_5 		= new JMenuItem("200");
-	private JMenuItem size_6 		= new JMenuItem("500");
-	private JMenu speed 			= new JMenu("Map Speed");
-	private JMenuItem slow 			= new JMenuItem("Slow");
-	private JMenuItem medium		= new JMenuItem("Medium");
-	private JMenuItem fast 			= new JMenuItem("Fast");
-	//fire menus
-	private JMenu fire 				= new JMenu("Fire");
-	private JMenuItem center		= new JMenuItem("Center Start");
-	private JMenuItem random		= new JMenuItem("Random Start");
-	private JMenu catch_prob 		= new JMenu("Burn Probability");
-	// wind menus
-	private JMenu wind 				= new JMenu("Wind");
-	private JMenuItem wind_on 		= new JMenuItem("Wind On / Off");
-	private JMenu wind_direction 	= new JMenu("Wind Direction");
-	private JMenuItem north 		= new JMenuItem("North");
-	private JMenuItem east 			= new JMenuItem("East");
-	private JMenuItem south 		= new JMenuItem("South");
-	private JMenuItem west 			= new JMenuItem("West");
-	// animal menus
-	private JMenu animal            = new JMenu("Animals");
-	private JMenuItem animals_on 	= new JMenuItem("Toggle Animals");
-	private JMenuItem animals_num 	= new JMenuItem("Starting Pop");
-	private JMenuItem animals_move 	= new JMenuItem("Animals Wander");
-	private JMenuItem animals_evade = new JMenuItem("Animals Evade Fire");
-	private JMenuItem animals_repop = new JMenuItem("Animals Repopulate");
-	// mode menus
-	private JMenu mode              = new JMenu("Mode");
-	private JMenuItem single_run 	= new JMenuItem("Single Run");
-	private JMenuItem endless_mode	= new JMenuItem("Endless Mode");
+	JPanel startMenu = new JPanel(new FlowLayout());
+	JButton start = new JButton("Start");
 
+	// map combo box
+	String [] mapchoices = {
+		"200 (Default)", "20", "50", "100", 
+		"150", "400", "500", "1000"
+		};
+	JComboBox<String> map_box 	= new JComboBox<String>(mapchoices);
+	JPanel map_panel 		= new JPanel(new FlowLayout());
+	JLabel size_option 		= new JLabel("Map Size (m/sq)");
 
+	// speed combo box
+	String [] speedchoices = {
+		"20  (Default)", "50", "100", "150", 
+		"200","500", "1000"
+		};
+	JComboBox<String> speed_box = new JComboBox<String>(speedchoices);
+	JPanel speed_panel 		= new JPanel(new FlowLayout());
+	JLabel speed_options 	= new JLabel("Sim Speed (ms)  ");
+	
+	// animals on/off buttons
+	ButtonGroup animals_group 	= new ButtonGroup();
+	JRadioButton animals_on 	= new JRadioButton("On");
+	JRadioButton animals_off	= new JRadioButton("Off");
+	JPanel animals_panel		= new JPanel();
+	JLabel animals_on_off_label	= new JLabel("Animals");
+
+	// animals wander
+	ButtonGroup  wander_group 	= new ButtonGroup();
+	JRadioButton wander_on 		= new JRadioButton("On");
+	JRadioButton wander_off		= new JRadioButton("Off");
+	JPanel wanders_panel		= new JPanel();
+	JLabel wanders_label		= new JLabel("Animals Wander");
 
     public Menu(){
-
-		
-		optionsWindow.add(this);
-		// MAIN WINDOW	
-		// give it a title bar							
-		optionsWindow.setTitle("FireSim Options");
-		// how big is the window?		
-		optionsWindow.getSize();			
-		optionsWindow.setSize( 200, 200);
-		optionsWindow.add(startMenu);
-		// place window in the middle of the screen, not relative to any other GUI object						
-		optionsWindow.setLocationRelativeTo(null);		
-		optionsWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		optionsWindow.setVisible(true);
-		
         // MENU ACTIONS
-        menuBar.add(map);
-        map.setMnemonic('M');
-        map.add(size_option);
-        size_option.add(size_1);
-        size_option.add(size_2);
-        size_option.add(size_3);
-        size_option.add(size_4);
-        size_option.add(size_5);
-        size_option.add(size_6);
-        size_1.addActionListener(this);
-        size_2.addActionListener(this);
-        size_3.addActionListener(this);
-        size_4.addActionListener(this);
-        size_5.addActionListener(this);
-        size_6.addActionListener(this);
-
-        map.add(speed);
-        speed.add(slow);
-        speed.add(medium);
-        speed.add(fast);
-        slow.addActionListener(this);
-        medium.addActionListener(this);
-        fast.addActionListener(this);
-
-        menuBar.add(fire);
-        fire.setMnemonic('F');
-        fire.add(center);
-        fire.add(random);
-        fire.add(catch_prob);
-        center.addActionListener(this);
-        random.addActionListener(this);
-        catch_prob.addActionListener(this);
-
-        menuBar.add(wind);
-        wind.setMnemonic('W');
-        wind.add(wind_on);
-        wind.add(wind_direction);
-        wind_direction.add(north);
-        wind_direction.add(east);
-        wind_direction.add(south);
-        wind_direction.add(west);
-        north.addActionListener(this);
-        east.addActionListener(this);
-        south.addActionListener(this);
-        west.addActionListener(this);
-        
-        menuBar.add(animal);
-        animal.setMnemonic('A');
-        animal.add(animals_on);
-        animal.add(animals_num);
-        animal.add(animals_move);
-        animal.add(animals_evade);
-        animal.add(animals_repop);
-        animals_on.addActionListener(this);
-        animals_num.addActionListener(this);
-        animals_move.addActionListener(this);
-        animals_evade.addActionListener(this);
-        animals_repop.addActionListener(this);
-
-        menuBar.add(mode);
-        mode.setMnemonic('O');
-        mode.add(single_run);
-        mode.add(endless_mode);
-        single_run.addActionListener(this);
-        endless_mode.addActionListener(this);
-
-        startMenu.add(start);
-        start.addActionListener(this);
+		// construct 	map combo box
+		this.map_box.addActionListener(this);
+		this.map_panel.add(size_option);
+        this.map_panel.add(map_box);
+		this.map_panel.setOpaque(false);
+		// construct speed combo box
+		this.speed_box.addActionListener(this);
+		this.speed_panel.add(speed_options);
+		this.speed_panel.add(speed_box);
+		this.speed_panel.setOpaque(false);
+		// animals select
+		this.animals_on.addActionListener(this);
+		this.animals_off.addActionListener(this);
+		this.animals_panel.add(animals_on_off_label);
+		this.animals_group.add(animals_on);
+		this.animals_group.add(animals_off);
+		this.animals_panel.add(animals_on);
+		this.animals_panel.add(animals_off);
+		// wanders select
+		this.wander_on.addActionListener(this);
+		this.wander_off.addActionListener(this);
+		this.wanders_panel.add(wanders_label);
+		this.wander_group.add(wander_on);
+		this.wander_group.add(wander_off);
+		this.wanders_panel.add(wander_on);
+		this.wanders_panel.add(wander_off);
+		// construct start button
+        this.start.addActionListener(this);
+		this.size_option.setLabelFor(map_box);
+		// add above to JFrame
+		this.startMenu.add(this.map_panel);
+		this.startMenu.add(this.speed_panel);
+		this.startMenu.add(this.animals_panel);
+		this.startMenu.add(this.wanders_panel);
+		this.startMenu.add(this.start);
+		// MAIN WINDOW	
+		this.optionsWindow.add(this);						
+		this.optionsWindow.setTitle("Options");
+		this.optionsWindow.getSize();			
+		this.optionsWindow.setSize( 260, 500);
+		this.optionsWindow.setLocationRelativeTo(null);	
+		this.optionsWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// start button
+		this.startMenu.setLayout(new FlowLayout(FlowLayout.LEADING, 5, 5));
+		this.optionsWindow.add(startMenu);
+		// map size options
+		optionsWindow.setVisible(true);
     }
 
 
@@ -150,87 +106,73 @@ public class Menu extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent evt){
 
 		if (evt.getSource() == start){
-			Driver.world = new World_Graphics();
+			Driver.size = Driver.worldResize(Driver.size);
+			Driver.popRegrowth = Driver.size / 2; 
+			if (Driver.size == 21)   
+				Driver.chanceToRegrow = .05;
+			Driver.neWorld = new World(); 
+			Driver.world = new World_Graphics();   
 		}
-		// RUN MODES
-		if (evt.getSource() == endless_mode){
+		// map combo box actions
+		if (evt.getSource() == map_box){
+			int index = map_box.getSelectedIndex();
+			switch (index) {
+				case 0:	Driver.size = 200;
+					break;
+				case 1: Driver.size = 20;
+					break;
+				case 2: Driver.size = 50;
+					break;
+				case 3: Driver.size = 100;
+					break;
+				case 4: Driver.size = 150;
+					break;
+				case 5: Driver.size = 400;
+					break;
+				case 6: Driver.size = 500;
+					break;
+				case 7: Driver.size = 1000;
+					break;
+				default:
+					break;
+			}
+		} 
+		// speed combo box actions
+		if (evt.getSource() == speed_box){
+			int index = speed_box.getSelectedIndex();
+			switch (index) {
+				case 0:	Driver.speed = 20;
+					break;
+				case 1: Driver.speed = 50;
+					break;
+				case 2: Driver.speed = 100;
+					break;
+				case 3: Driver.speed = 150;
+					break;
+				case 4: Driver.speed = 200;
+					break;
+				case 5: Driver.speed = 500;
+					break;
+				case 6: Driver.speed = 1000;
+					break;
+				default:
+					break;
+			}
 		}
-		if (evt.getSource() == single_run){
-
-		}
-
-		// MAP SIZES
-		if ( evt.getSource() == size_1){
-			Driver.size = 20;
-		}
-		if (evt.getSource() == size_2){
-			Driver.size = 50;
-		}
-		if (evt.getSource() == size_3){
-			Driver.size = 100;
-		}
-		if (evt.getSource() == size_4){
-			Driver.size = 150;
-		}
-		if (evt.getSource() == size_5){
-			Driver.size = 200;
-		}
-		if (evt.getSource() == size_6){
-			Driver.size = 500;
-		}
-
-		// STEP SPEED
-		if (evt.getSource() == slow){
-			Driver.speed = 200;
-		}
-		if (evt.getSource() == medium){
-			Driver.speed = 70;
-		}
-		if (evt.getSource() == fast){
-			Driver.speed = 20;
-		}
-
-		// FIRE SETTINGS
-		if (evt.getSource() == center){
-			
-		}
-		if (evt.getSource() == random){
-			
-		}
-		if (evt.getSource() == catch_prob){
-			
-		}
-
-		// WIND SETTINGS
-		if (evt.getSource() == wind_on){
-			
-		}
-		if (evt.getSource() == north){
-			Driver.todaysWeather.setDirection(Weather.DIRECTION.NORTH);
-		}
-		if (evt.getSource() == east){
-			Driver.todaysWeather.setDirection(Weather.DIRECTION.EAST);
-		}
-		if (evt.getSource() == west){
-			Driver.todaysWeather.setDirection(Weather.DIRECTION.WEST);
-		}
-		if (evt.getSource() == south){
-			Driver.todaysWeather.setDirection(Weather.DIRECTION.SOUTH);
-		}
-
-		// ANIMAL SETTINGS
+		// animal radio buttons
 		if (evt.getSource() == animals_on){
-			
-		}
-		if (evt.getSource() == animals_num){
-
-		}
-		if (evt.getSource() == animals_evade){
-			
-		}
-		if (evt.getSource() == animals_repop){
-			
-		}
+			Driver.animalsOn = true;
+			}
+		if (evt.getSource() == animals_off){
+			Driver.animalsOn = false;
+			}
+		// animal radio buttons
+		if (evt.getSource() == wander_on){
+			Driver.animalsWander = true;
+			}
+		if (evt.getSource() == wander_off){
+			Driver.animalsWander = false;
+			}
 	}
-	
+
 }

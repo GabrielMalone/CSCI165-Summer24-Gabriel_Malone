@@ -21,7 +21,7 @@ public class Wildlife {
 			Cell cell_at_this_location = Driver.neWorld.worldMatrix[row_location][column_location];
 			// update cell
 			cell_at_this_location.setObject(Cell.OBJECTS.WILDLIFEALIVE);
-			activeWildlifeCells.add(cell_at_this_location);	
+			this.activeWildlifeCells.add(cell_at_this_location);	
 			}
 		}
 
@@ -36,7 +36,7 @@ public class Wildlife {
 			if (cell_at_this_location.getObject() != Cell.OBJECTS.WILDLIFEALIVE){
 				// update cell
 				cell_at_this_location.setObject(Cell.OBJECTS.WILDLIFEALIVE);
-				activeWildlifeCells.add(cell_at_this_location);	
+				this.activeWildlifeCells.add(cell_at_this_location);	
 			}
 		}
 	}
@@ -45,7 +45,7 @@ public class Wildlife {
 		// if caught in fire, deadd
 		if (current_cell.getObject() == (Cell.OBJECTS.WILDLIFEALIVE)){
 			burningCell.setObject(Cell.OBJECTS.WILDLIFEDEAD);
-			deadanimals.add(burningCell);
+			this.deadanimals.add(burningCell);
 		}
 	}
 	

@@ -37,7 +37,7 @@ public class World {
 
 
 
-	public static Random rand = new Random();
+	private Random rand = new Random();
 	
 	public World(){
 		
@@ -49,12 +49,7 @@ public class World {
 
 	}
 
-	/**
-	 * Method to model the spread of a fire
-	 *
-	 */
-	public void applySpread(){
-		
+	public void initializeFire(){
 		// SET WEATHER AND ANIMALS
 		if (Driver.weatherOn){
 			this.todaysWeather.pattern();
@@ -66,42 +61,45 @@ public class World {
 		// initial fire
 		setCenterCellonFire();
 		designatetNeighborsOnFire();
-
+	}
+	
+	
+	public void spreadFire(){
+		
 		// SIMULATION LOOP
-		while (true){
-			displayData();
-			this.wildlife.clearDead();
-			if (this.timeStep > 0) {
-				clearPreviousFire();
-				if (! this.burning){
-					this.wildlife.repopulate();
-					randomFireSpot();
-					this.burning = true;
-				}
-			}
-			applyChangesToWorld();
-            displayWorld();
-			if (Driver.endlessMode)
-				regrowTrees();
-			if (Driver.animalsOn){
-				this.wildlife.resetMoveState();
-				this.wildlife.makeAnEscape();
-				if (Driver.endlessMode)
-					this.wildlife.clearEscaped();
-				if (Driver.animalsWander)
-					this.wildlife.moveAround();
-			}
-			Bomb.explodeBomb();
-            designatetNeighborsOnFire();
-			if (this.timeStep > 0){
-				if (! stillBurning()){ 
-					this.burning = false;
-					if (! Driver.endlessMode){
-							break;
-					}
-				}	
+	
+		displayData();
+		this.wildlife.clearDead();
+		if (this.timeStep > 0) {
+			clearPreviousFire();
+			if (! this.burning){
+				this.wildlife.repopulate();
+				randomFireSpot();
+				this.burning = true;
 			}
 		}
+		applyChangesToWorld();
+		if (Driver.endlessMode)
+			regrowTrees();
+		if (Driver.animalsOn){
+			this.wildlife.resetMoveState();
+			this.wildlife.makeAnEscape();
+			if (Driver.endlessMode)
+				this.wildlife.clearEscaped();
+			if (Driver.animalsWander)
+				this.wildlife.moveAround();
+		}
+		Bomb.explodeBomb();
+		designatetNeighborsOnFire();
+		if (this.timeStep > 0){
+			if (! stillBurning()){ 
+				this.burning = false;
+				if (! Driver.endlessMode){
+						Driver.world.timer.stop();
+				}
+			}	
+		}
+	
 	}
 
 
@@ -183,6 +181,7 @@ public class World {
 		}
 	}
 
+	/* 
 	private void displayWorld(){
 		
 		// for displaying the matrices in terminal
@@ -196,7 +195,8 @@ public class World {
 		// turn off to prevent slow down of bigger maps
 		//t_graphics.displayWorld();
 	}
-
+	*/
+	
 	private int trackSteps(){
 		// track steps
 		if (this.burning)

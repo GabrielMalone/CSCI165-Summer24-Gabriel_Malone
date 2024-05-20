@@ -13,11 +13,10 @@ import javax.swing.Timer;
 
 
 public class World_Graphics extends JPanel implements ActionListener{
-	private final int DELAY = 0;
-	private Timer timer;
+	private final int DELAY = Driver.speed;
+	public Timer timer;
 	private  World world = Driver.neWorld;
 	
-
 	// create a JFrame instance to contain the JPanel	
 	public  JFrame window = new JFrame();
 	// MAP SIZE DRAW SETTINGS
@@ -27,63 +26,18 @@ public class World_Graphics extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e){
+		world.spreadFire();
 		this.repaint();
-		// SIMULATION LOOP
-		world.displayData();
-		world.wildlife.clearDead();
-		if (world.timeStep > 0) {
-			world.clearPreviousFire();
-			if (! world.burning){
-				world.wildlife.repopulate();
-				world.randomFireSpot();
-				world.burning = true;
-			}
-		}
-		world.applyChangesToWorld();
-		//world.displayWorld();
-		if (Driver.endlessMode)
-			world.regrowTrees();
-		if (Driver.animalsOn){
-			world.wildlife.resetMoveState();
-			world.wildlife.makeAnEscape();
-			if (Driver.endlessMode)
-				world.wildlife.clearEscaped();
-			if (Driver.animalsWander)
-				world.wildlife.moveAround();
-		}
-		Bomb.explodeBomb();
-		world.designatetNeighborsOnFire();
-		if (world.timeStep > 0){
-			if (! world.stillBurning()){ 
-				world.burning = false;
-				if (! Driver.endlessMode){
-						timer.stop();
-						
-				}
-			}	
-		}
-
 	}
 
 	private void initTimer() {
-		timer = new Timer(DELAY, this);	
-		timer.start();					
+		this.timer = new Timer(DELAY, this);	
+		this.timer.start();					
 	}
 
 	public World_Graphics() {
-		if (Driver.weatherOn){
-			world.todaysWeather.pattern();
-			world.todaysWeather.setWeatherPattern();
-			} 	
-			if (Driver.animalsOn)	
-			world.wildlife.placeWildlife();
-			world.copyWorldMatrix();
-			// initial fire
-			world.setCenterCellonFire();
-			world.designatetNeighborsOnFire();
-		
+		world.initializeFire();
 		initTimer();
-
 		// mouse clicks to place bombs
 		addMouseMotionListener(new MouseAdapter(){
 			public void mouseDragged(MouseEvent e){
@@ -107,22 +61,21 @@ public class World_Graphics extends JPanel implements ActionListener{
 			}
 		});
 		//timer.start();
-		window.add(this);
+		this.window.add(this);
 		// MAIN WINDOW	
-		window.isOpaque();
+		this.window.isOpaque();
 		// give it a title bar							
-		window.setTitle("Goobs Fire Sim");
+		this.window.setTitle("Goobs Fire Sim");
 		// how big is the window?		
-		window.getSize();			
-		window.setSize( WINDOW_HEIGHT, (int)(WINDOW_HEIGHT * 1.045));
-		// place window in the middle of the screen, not relative to any other GUI object						
-		window.setLocationRelativeTo(null);		
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setVisible(true);
-		window.setBackground(Color.BLACK);
-		
+		this.window.getSize();			
+		this.window.setSize( WINDOW_HEIGHT, (int)(WINDOW_HEIGHT * 1.045));
+		// place window in the middle of the screen, not relative to any other GUI object			
+		this.window.setLocation(0,0);				
+		this.window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.window.setVisible(true);
 		
 	}
+	
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
