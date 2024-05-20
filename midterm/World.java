@@ -73,7 +73,8 @@ public class World {
 		if (this.timeStep > 0) {
 			clearPreviousFire();
 			if (! this.burning){
-				this.wildlife.repopulate();
+				if (Driver.animalsOn)
+					this.wildlife.repopulate();
 				randomFireSpot();
 				this.burning = true;
 			}

@@ -56,7 +56,7 @@ public class World_Graphics extends JPanel implements ActionListener{
 				int row = e.getY() / IMAGE_HEIGHT;
 				if (Driver.neWorld.worldMatrix[row][column].getState() == Cell.STATES.TREE){
 					//World.worldMatrix[row][column].setState(Cell.STATES.BURNING);
-					Bomb.nuke(row, column);
+					Bomb.placeBomb(row, column);
 				}
 			}
 		});
@@ -257,13 +257,13 @@ public class World_Graphics extends JPanel implements ActionListener{
 			return size = (int)(Driver.size / 35); 
 			}
 		else if (Driver.size == 201){
-			return size = (int)(Driver.size / 100); 
+			return size = (int)(Driver.size / 60); 
 			}
 		else if (Driver.size == 401){
 			return size = (int)(Driver.size / 200); 
 			}
 		else if (Driver.size == 501){
-			return size = (int)(Driver.size / 500); 
+			return size = (int)(Driver.size / 250); 
 			}
 		else if (Driver.size == 1001){
 			return size = (int)(Driver.size / 1000); 

@@ -161,6 +161,16 @@ public class Wildlife {
 		}
 	}
 
+	public void clearAnimals(){
+		for (int f = 0 ; f < Driver.neWorld.worldMatrix.length - 1; f ++ ){
+            for(int g = 0 ; g < Driver.neWorld.worldMatrix.length - 1; g ++){ 
+				Cell currentCell = Driver.neWorld.worldMatrix[f][g];
+				if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEALIVE)
+					currentCell.setObject(Cell.OBJECTS.VOID);
+			}
+		}
+	}
+
 	
 	
 	private Cell.POSITIONASNEIGHBOR oppositeDirection(Cell neighboringCell){
