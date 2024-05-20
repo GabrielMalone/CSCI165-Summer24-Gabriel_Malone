@@ -1,57 +1,79 @@
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 
-public class Menu extends JMenu implements ActionListener {
-    
-    JMenuBar menuBar        = new JMenuBar();
-	
+public class Menu extends JPanel implements ActionListener {
+
+	public  JFrame optionsWindow = new JFrame();
+    public  JMenuBar menuBar     = new JMenuBar();
+	public  JMenuBar startMenu   = new JMenuBar();
+
 	// MENU OPTIONS
+	
 	//start button
-	JButton start           = new JButton("Start");
+	private JButton start           = new JButton("Start");
 	// map menu
-	JMenu map               = new JMenu("Map");
-	JMenu size_option 		= new JMenu("Map Size");
-	JMenuItem size_1 		= new JMenuItem("20");
-	JMenuItem size_2 		= new JMenuItem("50");
-	JMenuItem size_3 		= new JMenuItem("100");
-	JMenuItem size_4 		= new JMenuItem("150");
-	JMenuItem size_5 		= new JMenuItem("200");
-	JMenuItem size_6 		= new JMenuItem("500");
-	JMenu speed 			= new JMenu("Map Speed");
-	JMenuItem slow 			= new JMenuItem("Slow");
-	JMenuItem medium		= new JMenuItem("Medium");
-	JMenuItem fast 			= new JMenuItem("Fast");
+	private JMenu map               = new JMenu("Map");
+	private JMenu size_option 		= new JMenu("Map Size");
+	private JMenuItem size_1 		= new JMenuItem("20");
+	private JMenuItem size_2 		= new JMenuItem("50");
+	private JMenuItem size_3 		= new JMenuItem("100");
+	private JMenuItem size_4 		= new JMenuItem("150");
+	private JMenuItem size_5 		= new JMenuItem("200");
+	private JMenuItem size_6 		= new JMenuItem("500");
+	private JMenu speed 			= new JMenu("Map Speed");
+	private JMenuItem slow 			= new JMenuItem("Slow");
+	private JMenuItem medium		= new JMenuItem("Medium");
+	private JMenuItem fast 			= new JMenuItem("Fast");
 	//fire menus
-	JMenu fire 				= new JMenu("Fire");
-	JMenuItem center		= new JMenuItem("Center Start");
-	JMenuItem random		= new JMenuItem("Random Start");
-	JMenu catch_prob 		= new JMenu("Burn Probability");
+	private JMenu fire 				= new JMenu("Fire");
+	private JMenuItem center		= new JMenuItem("Center Start");
+	private JMenuItem random		= new JMenuItem("Random Start");
+	private JMenu catch_prob 		= new JMenu("Burn Probability");
 	// wind menus
-	JMenu wind 				= new JMenu("Wind");
-	JMenuItem wind_on 		= new JMenuItem("Wind On / Off");
-	JMenu wind_direction 	= new JMenu("Wind Direction");
-	JMenuItem north 		= new JMenuItem("North");
-	JMenuItem east 			= new JMenuItem("East");
-	JMenuItem south 		= new JMenuItem("South");
-	JMenuItem west 			= new JMenuItem("West");
+	private JMenu wind 				= new JMenu("Wind");
+	private JMenuItem wind_on 		= new JMenuItem("Wind On / Off");
+	private JMenu wind_direction 	= new JMenu("Wind Direction");
+	private JMenuItem north 		= new JMenuItem("North");
+	private JMenuItem east 			= new JMenuItem("East");
+	private JMenuItem south 		= new JMenuItem("South");
+	private JMenuItem west 			= new JMenuItem("West");
 	// animal menus
-	JMenu animal            = new JMenu("Animals");
-	JMenuItem animals_on 	= new JMenuItem("Toggle Animals");
-	JMenuItem animals_num 	= new JMenuItem("Starting Pop");
-	JMenuItem animals_move 	= new JMenuItem("Animals Wander");
-	JMenuItem animals_evade = new JMenuItem("Animals Evade Fire");
-	JMenuItem animals_repop = new JMenuItem("Animals Repopulate");
+	private JMenu animal            = new JMenu("Animals");
+	private JMenuItem animals_on 	= new JMenuItem("Toggle Animals");
+	private JMenuItem animals_num 	= new JMenuItem("Starting Pop");
+	private JMenuItem animals_move 	= new JMenuItem("Animals Wander");
+	private JMenuItem animals_evade = new JMenuItem("Animals Evade Fire");
+	private JMenuItem animals_repop = new JMenuItem("Animals Repopulate");
 	// mode menus
-	JMenu mode              = new JMenu("Mode");
-	JMenuItem single_run 	= new JMenuItem("Single Run");
-	JMenuItem endless_mode	= new JMenuItem("Endless Mode");
+	private JMenu mode              = new JMenu("Mode");
+	private JMenuItem single_run 	= new JMenuItem("Single Run");
+	private JMenuItem endless_mode	= new JMenuItem("Endless Mode");
+
+
 
     public Menu(){
-      
+
+		
+		optionsWindow.add(this);
+		// MAIN WINDOW	
+		// give it a title bar							
+		optionsWindow.setTitle("FireSim Options");
+		// how big is the window?		
+		optionsWindow.getSize();			
+		optionsWindow.setSize( 200, 200);
+		optionsWindow.add(startMenu);
+		// place window in the middle of the screen, not relative to any other GUI object						
+		optionsWindow.setLocationRelativeTo(null);		
+		optionsWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		optionsWindow.setVisible(true);
+		
         // MENU ACTIONS
         menuBar.add(map);
         map.setMnemonic('M');
@@ -119,7 +141,7 @@ public class Menu extends JMenu implements ActionListener {
         single_run.addActionListener(this);
         endless_mode.addActionListener(this);
 
-        menuBar.add(start);
+        startMenu.add(start);
         start.addActionListener(this);
     }
 
@@ -128,7 +150,7 @@ public class Menu extends JMenu implements ActionListener {
 	public void actionPerformed(ActionEvent evt){
 
 		if (evt.getSource() == start){
-			Driver.startSequence();
+			Driver.world = new World_Graphics();
 		}
 		// RUN MODES
 		if (evt.getSource() == endless_mode){
@@ -210,6 +232,5 @@ public class Menu extends JMenu implements ActionListener {
 			
 		}
 	}
-
-
+	
 }

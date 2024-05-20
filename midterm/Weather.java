@@ -34,14 +34,14 @@ public class Weather {
 		if (this.windDirection.equals("WEST") || this.windDirection.equals("EAST")){
 		// will be able to randomize these values in a range
 		// modified sinewave output from stackoverflow
-		double midlinea  	=   World.worldMatrix.length/8;
-		double midlineb  	=   (World.worldMatrix.length/5) * -1;
+		double midlinea  	=   Driver.neWorld.worldMatrix.length/8;
+		double midlineb  	=   (Driver.neWorld.worldMatrix.length/5) * -1;
 		double amplitude 	=   .25;
 		double frequency 	=   .25;
-		double bottomwidth	=   doubleProb(.1, World.worldMatrix.length/11);
-		double topwidth		=   doubleProb(.1, World.worldMatrix.length/8);
+		double bottomwidth	=   doubleProb(.1, Driver.neWorld.worldMatrix.length/11);
+		double topwidth		=   doubleProb(.1, Driver.neWorld.worldMatrix.length/8);
 		double phaseShift	=   .01;
-		int period 			=   World.worldMatrix.length - 1;
+		int period 			=   Driver.neWorld.worldMatrix.length - 1;
 		// create the wave
 		int a =0;  // index positions for map
 		int b = 0; // index positions for map
@@ -53,7 +53,7 @@ public class Weather {
 				double sin = Math.sin(x);
 				if ((bottomwidth+y) >= sin && (y-topwidth) <= sin){
 				// if cell in path of sinewayve:
-					if (b < World.worldMatrix.length-1 && b > 0){
+					if (b < Driver.neWorld.worldMatrix.length-1 && b > 0){
 						// update cells in worldmap to be windy
 						String coordinate = a + "," + b;
 						windCoordinates.add(coordinate);
@@ -74,14 +74,14 @@ public class Weather {
 		if (this.windDirection.equals("NORTH") || this.windDirection.equals("SOUTH")){
 		// will be able to randomize these values in a range
 		// modified sinewave output from stackoverflow
-		double midlinea  	=   World.worldMatrix.length/8;
-		double midlineb  	=   (World.worldMatrix.length/5) * -1;
+		double midlinea  	=   Driver.neWorld.worldMatrix.length/8;
+		double midlineb  	=   (Driver.neWorld.worldMatrix.length/5) * -1;
 		double amplitude 	=   .25;
 		double frequency 	=   .25;
-		double bottomwidth	=   doubleProb(.1, World.worldMatrix.length/11);
-		double topwidth		=   doubleProb(.1, World.worldMatrix.length/8);
+		double bottomwidth	=   doubleProb(.1, Driver.neWorld.worldMatrix.length/11);
+		double topwidth		=   doubleProb(.1, Driver.neWorld.worldMatrix.length/8);
 		double phaseShift	=   .01;
-		int period 			=   World.worldMatrix.length - 1;
+		int period 			=   Driver.neWorld.worldMatrix.length - 1;
 			// create the wave
 			int a =0;  // index positions for map
 			int b = 0; // index positions for map
@@ -92,7 +92,7 @@ public class Weather {
 					double sin = Math.sin(x);
 					if ((bottomwidth+y) >= sin && (y-topwidth) <= sin){
 						// if cell in path of sinewayve:
-						if (b < World.worldMatrix.length-1 && b > 0){
+						if (b < Driver.neWorld.worldMatrix.length-1 && b > 0){
 							// update cells in worldmap to be windy
 							String coordinate = a + "," + b;
 							windCoordinates.add(coordinate);
@@ -117,9 +117,9 @@ public class Weather {
 	 * 
 	 */
 	public void setWeatherPattern(){
-		for (int i = 0; i < World.worldMatrix.length ; i ++ ){
-			for (int j = 0; j < World.worldMatrix.length ; j ++ ){
-				if (windCoordinates.contains(World.worldMatrix[i][j].coordinates)) World.worldMatrix[i][j].setWeather(Cell.WEATHER.WINDY);
+		for (int i = 0; i < Driver.neWorld.worldMatrix.length ; i ++ ){
+			for (int j = 0; j < Driver.neWorld.worldMatrix.length ; j ++ ){
+				if (windCoordinates.contains(Driver.neWorld.worldMatrix[i][j].coordinates)) Driver.neWorld.worldMatrix[i][j].setWeather(Cell.WEATHER.WINDY);
 			}
 		}
 	}

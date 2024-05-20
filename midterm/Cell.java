@@ -65,23 +65,6 @@ public class Cell {
 	public BufferedImage animalimage;
 	public boolean moved = false;
 
-	/**
-	 * Method to assign a color to a cell object
-	 * 
-	 */
-	public void SetCellColor(){
-		switch (this.state) {
-
-			case BURNING: 		this.cellColor = Terminal_Graphics.RED;
-							break;
-			case TREE: 			this.cellColor = Terminal_Graphics.GREEN;
-							break;
-			case EMPTY: 		this.cellColor = Terminal_Graphics.YELLOW;
-							break;
-			default:
-							break;
-		}
-	}
 
 	public void setPositionAsNeighbor (POSITIONASNEIGHBOR position){
 		this.position = position;

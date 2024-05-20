@@ -1,3 +1,4 @@
+
 import java.util.Scanner;
 
 
@@ -5,13 +6,13 @@ public class Driver {
     
     // DEFAULTS
     public static boolean displayMode = false;
-    public static boolean weatherOn = true;
+    public static boolean weatherOn = false;
     public static boolean metricsOn = true;
     public static boolean centerStart;
     public static boolean endlessMode = true;
     public static boolean animalsOn = true;
     public static boolean animalsWander = false;
-    public static int size = 200; 
+    public static int size = 400; 
     public static int speed = 20;
     public static int startingPop = size * 10;
     public static int popRegrowth;
@@ -20,15 +21,21 @@ public class Driver {
     public static double catchprobability = .25;
     public static World_Graphics world;
     public static World neWorld;
+    public static Menu options;
     public static Weather todaysWeather = new Weather();
+    public static boolean start = false;
+
  
 	public static void main(String[] args) {
         initializer();
-        world = new World_Graphics();
-        neWorld.applySpread();  
-    }
+        options = new Menu();
+        //world = new World_Graphics();
+        //neWorld.applySpread();
 
+    }
+  
     public static void initializer(){
+        /* 
         System.out.println("Sim options / 'Enter' to use defaults");
         Scanner input = new Scanner(System.in);
         size = getMapSize(input);  
@@ -43,6 +50,7 @@ public class Driver {
         if (endlessMode)
             numberOfFires = numFires(input);
         dataOverlay(input);
+        */
         size = worldResize(size);
         popRegrowth = size / 2; 
         if (size == 21)   
@@ -60,7 +68,7 @@ public class Driver {
     }
 
     public static int getMapSize(Scanner input){
-        System.out.print("Enter Map Size (20, 50, 100, 150, 200, 500) (Default 150) ");
+        System.out.print("Enter Map Size (20, 50, 100, 150, 200, 400, 500, 1000) (Default 150) ");
         String size_string = input.nextLine();
         if (size_string.equals("")) return size;
         int size = Integer.valueOf(size_string);

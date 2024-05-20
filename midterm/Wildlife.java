@@ -15,10 +15,10 @@ public class Wildlife {
 		
 		for (int i = 0; i < Driver.startingPop; i++){
 			// find location on map for object
-			int row_location = rand.nextInt(1, World.worldMatrix.length - 1);
-			int column_location = rand.nextInt(1, World.worldMatrix.length - 1);
+			int row_location = rand.nextInt(1, Driver.neWorld.worldMatrix.length - 1);
+			int column_location = rand.nextInt(1, Driver.neWorld.worldMatrix.length - 1);
 			// get cell at this location
-			Cell cell_at_this_location = World.worldMatrix[row_location][column_location];
+			Cell cell_at_this_location = Driver.neWorld.worldMatrix[row_location][column_location];
 			// update cell
 			cell_at_this_location.setObject(Cell.OBJECTS.WILDLIFEALIVE);
 			activeWildlifeCells.add(cell_at_this_location);	
@@ -29,10 +29,10 @@ public class Wildlife {
 	
 		for (int i = 0; i < Driver.popRegrowth ; i++){
 			// find location on map for object
-			int row_location = rand.nextInt(1, World.worldMatrix.length - 1);
-			int column_location = rand.nextInt(1, World.worldMatrix.length - 1);
+			int row_location = rand.nextInt(1, Driver.neWorld.worldMatrix.length - 1);
+			int column_location = rand.nextInt(1, Driver.neWorld.worldMatrix.length - 1);
 			// get cell at this location
-			Cell cell_at_this_location = World.worldMatrix[row_location][column_location];
+			Cell cell_at_this_location = Driver.neWorld.worldMatrix[row_location][column_location];
 			if (cell_at_this_location.getObject() != Cell.OBJECTS.WILDLIFEALIVE){
 				// update cell
 				cell_at_this_location.setObject(Cell.OBJECTS.WILDLIFEALIVE);
@@ -51,13 +51,13 @@ public class Wildlife {
 	
 	public void makeAnEscape(){
 		// iterate through world
-		for( int i = 0 ; i < World.worldMatrix.length - 1 ; i ++){
-			for (int j = 0 ; j < World.worldMatrix.length - 1 ; j ++){
-				Cell current_location = World.worldMatrix[i][j];
+		for( int i = 0 ; i < Driver.neWorld.worldMatrix.length - 1 ; i ++){
+			for (int j = 0 ; j < Driver.neWorld.worldMatrix.length - 1 ; j ++){
+				Cell current_location = Driver.neWorld.worldMatrix[i][j];
 				// if wildife present
 				if (current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.row != 0 && current_location.column != 0){
 					// get the wildlife's neighbors
-					Cell [] neighbors = World.findNeighbors(current_location.row, current_location.column);
+					Cell [] neighbors = Driver.neWorld.findNeighbors(current_location.row, current_location.column);
 					myBreakLabel:
 					for (Cell neighboring_cell : neighbors){
 						// see if next to any fire
@@ -83,12 +83,12 @@ public class Wildlife {
 
 	public void moveAround(){
 		// if not fleeing a fire - randomly move to a nearby cell if all clear
-		for( int i = 0 ; i < World.worldMatrix.length - 1 ; i ++){
-			for (int j = 0 ; j < World.worldMatrix.length - 1 ; j ++){
-				Cell current_location = World.worldMatrix[i][j];
+		for( int i = 0 ; i < Driver.neWorld.worldMatrix.length - 1 ; i ++){
+			for (int j = 0 ; j < Driver.neWorld.worldMatrix.length - 1 ; j ++){
+				Cell current_location = Driver.neWorld.worldMatrix[i][j];
 				if (current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && ! current_location.moved && current_location.row != 0 && current_location.column != 0){
 					ArrayList<Cell> neighborArray = new ArrayList<>();
-					Cell [] neighbors = World.findNeighbors(current_location.row, current_location.column);
+					Cell [] neighbors = Driver.neWorld.findNeighbors(current_location.row, current_location.column);
 					for (Cell neighbor : neighbors){
 						neighborArray.add(neighbor);
 					}
@@ -109,9 +109,9 @@ public class Wildlife {
 	}
 
 	public void resetMoveState(){
-		for( int i = 0 ; i < World.worldMatrix.length - 1 ; i ++){
-			for (int j = 0 ; j < World.worldMatrix.length - 1 ; j ++){
-				Cell current_location = World.worldMatrix[i][j];
+		for( int i = 0 ; i < Driver.neWorld.worldMatrix.length - 1 ; i ++){
+			for (int j = 0 ; j < Driver.neWorld.worldMatrix.length - 1 ; j ++){
+				Cell current_location = Driver.neWorld.worldMatrix[i][j];
 				if (current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE){
 					current_location.moved = false;
 				}
@@ -120,13 +120,13 @@ public class Wildlife {
 	}
 
 	public void clearEscaped(){
-		for( int i = 0 ; i < World.worldMatrix.length; i ++){
-			for (int j = 0 ; j < World.worldMatrix.length; j ++){
-				Cell current_location = World.worldMatrix[i][j];
+		for( int i = 0 ; i < Driver.neWorld.worldMatrix.length; i ++){
+			for (int j = 0 ; j < Driver.neWorld.worldMatrix.length; j ++){
+				Cell current_location = Driver.neWorld.worldMatrix[i][j];
 				if (current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.row 		== 0 || 
 					current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.column 	== 0 || 
-					current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.row 		== World.worldMatrix.length - 1 || 
-					current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.column 	== World.worldMatrix.length - 1){
+					current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.row 		== Driver.neWorld.worldMatrix.length - 1 || 
+					current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.column 	== Driver.neWorld.worldMatrix.length - 1){
 						current_location.setObject(Cell.OBJECTS.VOID);
 						escapedanimals ++ ;
 				}
@@ -143,19 +143,18 @@ public class Wildlife {
 
 	private boolean clearMoveChoice(Cell option){
 		// can only escape map if running from fire
-		if (option.getState() != Cell.STATES.BURNING && option.getObject() == Cell.OBJECTS.VOID && option.getState() != Cell.STATES.BURNT && option.row > 0 && option.column > 0 && option.row < World.worldMatrix.length - 1 && option.column < World.worldMatrix.length - 1)
+		if (option.getState() != Cell.STATES.BURNING && option.getObject() == Cell.OBJECTS.VOID && option.getState() != Cell.STATES.BURNT && option.row > 0 && option.column > 0 && option.row < Driver.neWorld.worldMatrix.length - 1 && option.column < Driver.neWorld.worldMatrix.length - 1)
 			return true;
 		return false;
 	}
 
 	public void clearDead(){
-		for (int f = 0 ; f < World.worldMatrix.length - 1; f ++ ){
-            for(int g = 0 ; g < World.worldMatrix.length - 1; g ++){    
-				Cell currentCell = World.worldMatrix[f][g];
+		for (int f = 0 ; f < Driver.neWorld.worldMatrix.length - 1; f ++ ){
+            for(int g = 0 ; g < Driver.neWorld.worldMatrix.length - 1; g ++){    
+				Cell currentCell = Driver.neWorld.worldMatrix[f][g];
 				double chance_to_decay = rand.nextDouble(1);
 				if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEDEAD && chance_to_decay < .1){
 					currentCell.setObject(Cell.OBJECTS.VOID);
-					currentCell.SetCellColor();
 			
 				}
 			}
