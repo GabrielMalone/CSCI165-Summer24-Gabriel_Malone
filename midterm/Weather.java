@@ -153,6 +153,15 @@ public class Weather {
 			default:	return 	"x";
 	    }
 	}
+
+	public void clearWeatherPattern(){
+		for (int i = 0; i < Driver.neWorld.worldMatrix.length ; i ++ ){
+			for (int j = 0; j < Driver.neWorld.worldMatrix.length ; j ++ ){
+			if (windCoordinates.contains(Driver.neWorld.worldMatrix[i][j].coordinates)) Driver.neWorld.worldMatrix[i][j].setWeather(Cell.WEATHER.CALM);
+			}
+		}
+	}
+	
 }
 
    

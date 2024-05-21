@@ -11,7 +11,7 @@ public class Driver {
     public static boolean animalsWander = false;
     public static int size = 200;
     public static int speed = 20;
-    public static int startingPop = 1;
+    public static int startingPop = 0;
     public static int popRegrowth;
     public static int numberOfFires = 6;
     public static double chanceToRegrow =.01;
@@ -25,7 +25,7 @@ public class Driver {
  
 	public static void main(String[] args) {
         options = new Menu();
-        todaysWeather.setDirection(Weather.DIRECTION.EAST);
+        todaysWeather.setDirection(Weather.DIRECTION.NORTH);
     }
   
     public static int worldResize(int size){

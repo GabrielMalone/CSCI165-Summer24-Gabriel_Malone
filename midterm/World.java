@@ -12,6 +12,7 @@ public class World {
 	public  double total_alive = 0;
 	public  double total_dead = 0;
 	public  int size = Driver.size;
+	public  boolean weatherSet = false;
 	// create blank Cell matrix
 	public  Cell[][] worldMatrix = new Cell [size][size];
 	// matrix to hold the upcoming iteration of world
@@ -50,10 +51,7 @@ public class World {
 	
 	public void initializeFire(){
 		// SET WEATHER AND ANIMALS
-		if (Driver.weatherOn){
-			this.todaysWeather.pattern();
-			this.todaysWeather.setWeatherPattern();
-		} 	
+
 		if (Driver.animalsOn)	
 			this.wildlife.placeWildlife();
 		copyWorldMatrix();
@@ -68,6 +66,11 @@ public class World {
 		// SIMULATION LOOP
 
 		displayData();
+		if (weatherSet){
+			this.todaysWeather.pattern();
+			this.todaysWeather.setWeatherPattern();
+			weatherSet = false;
+		} 	
 		this.wildlife.clearDead();
 		if (this.timeStep > 0) {
 			clearPreviousFire();

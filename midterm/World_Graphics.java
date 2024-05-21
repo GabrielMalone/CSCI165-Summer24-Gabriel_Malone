@@ -27,6 +27,8 @@ public class World_Graphics extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e){
+		this.timer.stop();
+		initTimer();
 		world.spreadFire();
 		this.repaint();
 	}
@@ -37,6 +39,7 @@ public class World_Graphics extends JPanel implements ActionListener{
 	}
 
 	public World_Graphics() {
+		
 		world.initializeFire();
 		initTimer();
 		// mouse clicks to place bombs
