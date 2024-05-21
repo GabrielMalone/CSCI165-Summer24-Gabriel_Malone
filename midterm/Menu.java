@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
@@ -22,7 +23,6 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 	
 	JFrame optionsWindow 		= new JFrame();
 	//start button
-	JPanel startMenu 			= new JPanel(new FlowLayout());
 	JButton start 				= new JButton("Start");
 	// pause button
 	JButton pause 				= new JButton("  ||  ");
@@ -34,7 +34,6 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		"150", "400", "500", "1000"
 		};
 	JComboBox<String> map_box 	= new JComboBox<String>(mapchoices);
-	JPanel map_panel 			= new JPanel(new FlowLayout());
 	JLabel size_option 			= new JLabel("Map Size (m/sq)");
 	// speed combo box
 	String [] speedchoices = {
@@ -42,40 +41,39 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		"200","500", "1000"
 		};
 	JComboBox<String> speed_box = new JComboBox<String>(speedchoices);
-	JPanel speed_panel 			= new JPanel(new FlowLayout());
 	JLabel speed_options 		= new JLabel("Sim Speed (ms)  ");
 	// animals on/off buttons
 	ButtonGroup animals_group 	= new ButtonGroup();
 	JRadioButton animals_on 	= new JRadioButton("On");
 	JRadioButton animals_off	= new JRadioButton("Off");
-	JPanel animals_panel		= new JPanel();
 	JLabel animals_on_off_label	= new JLabel("Animals");
 	// animals wander
 	ButtonGroup  wander_group 	= new ButtonGroup();
 	JRadioButton wander_on 		= new JRadioButton("On");
 	JRadioButton wander_off		= new JRadioButton("Off");
-	JPanel wanders_panel		= new JPanel();
 	JLabel wanders_label		= new JLabel("Meander");
 	// animal pop
-	JPanel animal_pop_panel 	= new JPanel();
 	JButton set_pop_button		= new JButton("Set");
 	JTextField animal_pop_Field	= new JTextField("",5);
-	JLabel animal_pop_label		= new JLabel("Animal Pop     ");
+	JLabel animal_pop_label		= new JLabel("Enter starting population");
+	String startng_pop_string 	= "Starting pop: ";
+	JLabel animal_confirm_label	= new JLabel(startng_pop_string);
 	// pop confirmation
-	JPanel pop_confirm_panel 	= new JPanel();
-	JLabel confirm_label		= new JLabel("                       ");
 	JTextField pop_displayField = new JTextField(String.valueOf(Driver.startingPop), 5);
 	// Burn rate
-	JPanel burn_rate_panel		= new JPanel();
 	JSlider burn_slider			= new JSlider();
-	JLabel burn_Label			= new JLabel("% chance to burn");
+	double burn_percent			= (double)burn_slider.getValue() / 100;
+	String slider_string 		= burn_percent + "% burn rate";
+	JLabel burn_Label			= new JLabel(slider_string);
 	// weather on/off
 	ButtonGroup weather_group 	= new ButtonGroup();
 	JRadioButton wind_on 		= new JRadioButton("On");
 	JRadioButton wind_off		= new JRadioButton("Off");
-	JPanel weather_panel		= new JPanel();
-	JLabel wind_on_off_label	= new JLabel("Wind     ");
-
+	JLabel wind_on_off_label	= new JLabel("Wind");
+	Font labelfont 				= new Font("SansSerif", Font.PLAIN, 10);
+	JSeparator separator		= new JSeparator();
+	JSeparator separator2		= new JSeparator();
+	JSeparator separator3		= new JSeparator();
 	
 
     public Menu(){
@@ -83,25 +81,22 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		
 		// map combo box
 		this.map_box.addActionListener(this);
-		this.map_panel.add(this.size_option);
-        this.map_panel.add(this.map_box);
-		this.map_panel.setOpaque(false);
-		
+		this.size_option.setFont(labelfont);
+	
 		// speed combo box
 		this.speed_box.addActionListener(this);
-		this.speed_panel.add(this.speed_options);
-		this.speed_panel.add(this.speed_box);
-		this.speed_panel.setOpaque(false);
-		
+		this.speed_options.setFont(labelfont);
+
 		// animals select
 		this.animals_on.addActionListener(this);
 		this.animals_off.addActionListener(this);
 		this.animals_off.setSelected(true);
-		this.animals_panel.add(this.animals_on_off_label);
+		this.animals_on.setFont(labelfont);
+		this.animals_off.setFont(labelfont);
+		this.animal_confirm_label.setFont(labelfont);
 		this.animals_group.add(this.animals_on);
 		this.animals_group.add(this.animals_off);
-		this.animals_panel.add(this.animals_on);
-		this.animals_panel.add(this.animals_off);
+
 		
 		// wanders select
 		this.wander_on.addActionListener(this);
@@ -109,30 +104,30 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.wander_off.setSelected(true);
 		this.wander_off.setEnabled(false);
 		this.wander_on.setEnabled(false);
+		this.wander_on.setFont(labelfont);
+		this.wander_off.setFont(labelfont);
 		this.wanders_label.setForeground(Color.GRAY);
-		this.wanders_panel.add(this.wanders_label);
+	
 		this.wander_group.add(this.wander_on);
 		this.wander_group.add(this.wander_off);
-		this.wanders_panel.add(this.wander_on);
-		this.wanders_panel.add(this.wander_off);
+	
 		
 		// animal pop input
 		this.animal_pop_Field.addActionListener(this);
 		this.set_pop_button.addActionListener(this);
 		this.set_pop_button.setEnabled(false);
+		this.animal_pop_Field.setBackground(Color.GRAY);
 		this.animal_pop_Field.setEnabled(false);
-		this.animal_pop_label.setForeground(Color.GRAY);
-		this.animal_pop_panel.add(this.animal_pop_label);
-		this.animal_pop_panel.add(this.animal_pop_Field);
-		this.animal_pop_panel.add(set_pop_button);
+		this.animal_pop_label.setFont(labelfont);
+
 		
 		// animal data display
-		this.pop_confirm_panel.add(confirm_label);
+	
 		this.pop_displayField.setEnabled(true);
 		this.pop_displayField.setForeground(Color.GRAY);
 		this.pop_displayField.setBackground(Color.GRAY);
 		this.pop_displayField.setEditable(false);
-		this.pop_confirm_panel.add(pop_displayField);
+		
 		
 		// start / pause button 
         this.start.addActionListener(this);
@@ -140,49 +135,90 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.pause.setEnabled(false);
 		this.reset_button.addActionListener(this);
 		this.reset_button.setEnabled(false);
-		this.size_option.setLabelFor(this.map_box);
-
+		
 		// weather on / off
 		this.wind_on.addActionListener(this);
 		this.wind_off.addActionListener(this);
 		this.wind_off.setSelected(true);
-		this.weather_panel.add(this.wind_on_off_label);
 		this.weather_group.add(this.wind_on);
 		this.weather_group.add(this.wind_off);
-		this.weather_panel.add(this.wind_on);
-		this.weather_panel.add(this.wind_off);
 
 		// burn rate slider
 		this.burn_slider.addChangeListener(this);
 		this.burn_slider.setValue(25);
-		this.burn_slider.add(burn_Label);
-		this.burn_rate_panel.add(burn_slider);
+		this.burn_Label.setFont(labelfont);
 		
-
-		// add all of the above to JFrame
-		this.startMenu.add(this.start);
-		this.startMenu.add(this.pause);
-		this.startMenu.add(this.reset_button);
-		this.startMenu.add(this.map_panel);
-		this.startMenu.add(this.speed_panel);
-		this.startMenu.add(this.burn_rate_panel);
-		this.startMenu.add(this.animals_panel);
-		this.startMenu.add(this.wanders_panel);
-		this.startMenu.add(this.animal_pop_panel);
-		this.startMenu.add(this.pop_confirm_panel);
-		this.startMenu.add(this.weather_panel);
+	
 		
 		// MAIN WINDOW	
-		this.optionsWindow.add(this);						
+		this.optionsWindow.add(this);		
 		this.optionsWindow.setTitle("Options");
 		this.optionsWindow.getSize();			
-		this.optionsWindow.setSize( 260, 500);
+		this.optionsWindow.setSize( 195, 500);
+		this.optionsWindow.setLayout(null);
 		this.optionsWindow.setLocationRelativeTo(null);	
 		this.optionsWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.startMenu.setLayout(new FlowLayout(FlowLayout.LEADING, 5, 5));
-		this.optionsWindow.add(this.startMenu);
 		this.optionsWindow.setResizable(false);
+		
+		this.start.setBounds(10,10,50,20);
+		this.pause.setBounds(70, 10, 50, 20);
+		this.reset_button.setBounds(130, 10, 50, 20);
+		this.separator2.setBounds(0, 35, 200, 10);
+
+		this.size_option.setBounds(90, 50, 150, 20);
+		this.map_box.setBounds(5, 70, 180, 25);
+		
+		this.speed_options.setBounds(97, 110, 150, 20);
+		this.speed_box.setBounds(5, 130, 180, 25);
+		
+	
+		this.burn_Label.setBounds(65, 200, 150, 20);
+		this.burn_slider.setBounds(5, 180, 180, 20);
+
+		this.separator.setBounds(0, 220, 200, 10);
+		this.animals_on_off_label.setBounds(30, 230, 150, 20);
+		this.animals_on.setBounds(30, 240, 50, 50);
+		this.animals_off.setBounds(30, 260, 60, 60);
+		this.wanders_label.setBounds(110, 230, 150, 20);
+		this.wander_on.setBounds(110, 240, 50, 50);
+		this.wander_off.setBounds(110, 260, 60, 60);
+		this.animal_pop_label.setBounds(33, 310, 150, 20);
+		this.animal_pop_Field.setBounds(30, 330, 90, 20);
+		this.set_pop_button.setBounds(120, 331, 40, 19);
+		this.animal_confirm_label.setBounds(33, 351, 200, 20);
+		this.separator3.setBounds(0, 370, 200, 10);
+
+		
+		this.optionsWindow.add(start);
+		this.optionsWindow.add(pause);
+		this.optionsWindow.add(reset_button);
+		this.optionsWindow.add(map_box);
+		this.optionsWindow.add(size_option);
+		this.optionsWindow.add(speed_box);
+		this.optionsWindow.add(speed_options);
+		this.optionsWindow.add(burn_Label);
+		this.optionsWindow.add(burn_slider);
+		this.optionsWindow.add(animals_on_off_label);
+		this.optionsWindow.add(animals_on);
+		this.optionsWindow.add(animals_off);
+		this.optionsWindow.add(wanders_label);
+		this.optionsWindow.add(animal_pop_label);
+		this.optionsWindow.add(wander_on);
+		this.optionsWindow.add(wander_off);
+		this.optionsWindow.add(animal_pop_Field);
+		this.optionsWindow.add(pop_displayField);
+		this.optionsWindow.add(set_pop_button);
+		this.optionsWindow.add(animal_confirm_label);
+		this.optionsWindow.add(separator);
+		this.optionsWindow.add(separator2);
+		this.optionsWindow.add(separator3);
+		
+
 		this.optionsWindow.setVisible(true);
+
+
+
+		
     }
 
 	public void stateChanged(ChangeEvent e){
@@ -190,6 +226,8 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			double burn_percent = (double)burn_slider.getValue() / 100;
 			Driver.catchprobability = burn_percent;
 			if (finished_start_up) Driver.neWorld.catchprobability = burn_percent;
+			slider_string = (int)(burn_percent * 100) + "% burn rate";
+			burn_Label.setText(slider_string);
 			
 		}
 	}
@@ -307,6 +345,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			this.wander_off.setEnabled(true);
 			this.wanders_label.setForeground(Color.BLACK);
 			this.animal_pop_Field.setEnabled(true);
+			this.animal_pop_Field.setBackground(Color.WHITE);
 			this.set_pop_button.setEnabled(true);
 			this.animal_pop_label.setForeground(Color.BLACK);
 			Driver.neWorld.wildlife.placeWildlife();
@@ -317,6 +356,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			this.wander_off.setEnabled(false);
 			this.wanders_label.setForeground(Color.GRAY);
 			this.animal_pop_Field.setEnabled(false);
+			this.animal_pop_Field.setBackground(Color.GRAY);
 			this.set_pop_button.setEnabled(false);
 			this.animal_pop_label.setForeground(Color.GRAY);
 			Driver.neWorld.wildlife.clearAnimals();
@@ -328,6 +368,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		else if (evt.getSource() == wander_off){
 			Driver.animalsWander = false;
 			}
+		// animal pop field	
 		else if (evt.getSource() == set_pop_button){
 			int pop_number = Integer.valueOf(animal_pop_Field.getText());
 				Driver.startingPop = pop_number;
@@ -340,7 +381,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			this.animal_pop_Field.setText("");
 			this.pop_displayField.setForeground(Color.WHITE);
 			this.pop_displayField.setText(String.valueOf(Driver.startingPop));
-			this.finished_start_up = true;
+			this.animal_confirm_label.setText("Starting pop: " + pop_number);
 
 		}
 		else if (evt.getSource() == wind_on){
