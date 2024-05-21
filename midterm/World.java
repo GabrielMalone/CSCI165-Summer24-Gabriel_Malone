@@ -73,7 +73,7 @@ public class World {
 			clearPreviousFire();
 			if (! this.burning){
 				if (Driver.animalsOn)
-					this.wildlife.repopulate();
+					this.wildlife.regrowWildlife();
 				randomFireSpot();
 				this.burning = true;
 			}
@@ -85,6 +85,7 @@ public class World {
 			this.wildlife.resetMoveState();
 			this.wildlife.makeAnEscape();
 			if (Driver.endlessMode)
+				this.wildlife.regrowWildlife();
 				this.wildlife.clearEscaped();
 			if (Driver.animalsWander)
 				this.wildlife.moveAround();
@@ -403,8 +404,8 @@ public class World {
 
 
 	public void regrowTrees(){
-		for(int j = 0 ; j < this.worldMatrix .length - 1; j ++){
-			for (int i = 0 ; i < this.worldMatrix .length - 1 ; i ++)	{
+		for(int j = 0 ; j < this.worldMatrix.length - 1; j ++){
+			for (int i = 0 ; i < this.worldMatrix.length - 1 ; i ++)	{
 				Cell currentCell = this.worldMatrix [j][i];
 				if (currentCell.getState() == Cell.STATES.BURNT){
 					double chance_to_regorw = rand.nextDouble(1);

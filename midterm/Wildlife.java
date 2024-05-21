@@ -40,6 +40,20 @@ public class Wildlife {
 			}
 		}
 	}
+
+	public void regrowWildlife(){
+		for(int j = 0 ; j < Driver.size - 1; j ++){
+			for (int i = 0 ; i < Driver.size - 1 ; i ++)	{
+				Cell currentCell = Driver.neWorld.worldMatrix [j][i];
+				if (currentCell.getState() == Cell.STATES.TREE && currentCell.getObject() == Cell.OBJECTS.VOID){
+					double chance_to_regorw = rand.nextDouble(1);
+					if (chance_to_regorw < .0001){
+						currentCell.setObject(Cell.OBJECTS.WILDLIFEALIVE);
+					}
+				}
+			}
+		}
+	}
 	
 	public void checkIfDead(Cell current_cell, Cell burningCell){
 		// if caught in fire, deadd
