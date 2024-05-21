@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 
 public class World {
 
-	
 	public  double total_alive = 0;
 	public  double total_dead = 0;
 	public  int size = Driver.size;
@@ -48,7 +47,7 @@ public class World {
 		fillWorld();
 
 	}
-
+	
 	public void initializeFire(){
 		// SET WEATHER AND ANIMALS
 		if (Driver.weatherOn){
@@ -67,7 +66,7 @@ public class World {
 	public void spreadFire(){
 		
 		// SIMULATION LOOP
-	
+
 		displayData();
 		this.wildlife.clearDead();
 		if (this.timeStep > 0) {
@@ -100,7 +99,6 @@ public class World {
 				}
 			}	
 		}
-	
 	}
 
 
@@ -493,6 +491,7 @@ public class World {
 		String direction = todaysWeather.getStringDirection();
 		double animal_pop = totalAlive();
 		long pop = Math.round(animal_pop);
+		//if (animal_pop == 0) wildlife.repopulate();
 		int area = worldMatrix.length * worldMatrix.length;
 		System.out.printf("%nSteps:          %d%nBurn area:      %.2f%%%nAnimal pop:     %d%nMortality rate: %.2f%%%nWind direction: %s%nMap Size:       %d SQ acres%n", 
 		steps, percentage, pop, mortality_rate, direction, area);

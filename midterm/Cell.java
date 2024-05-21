@@ -5,9 +5,7 @@ import java.awt.image.BufferedImage;
 public class Cell {
 
 	
-	// static means being availabe for any method to use 
-	// and that these variables do not change when a new instance of 
-	// this class is created
+	// static means that variable will be the same value for all isntances of that class
 
 	public static enum STATES {
 		EMPTY, 

@@ -8,10 +8,10 @@ public class Driver {
     public static boolean centerStart;
     public static boolean endlessMode = true;
     public static boolean animalsOn = false;
-    public static boolean animalsWander = true;
+    public static boolean animalsWander = false;
     public static int size = 200;
     public static int speed = 20;
-    public static int startingPop = 1000;
+    public static int startingPop = 1;
     public static int popRegrowth;
     public static int numberOfFires = 6;
     public static double chanceToRegrow =.01;

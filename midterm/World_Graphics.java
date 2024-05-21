@@ -13,7 +13,8 @@ import javax.swing.Timer;
 
 
 public class World_Graphics extends JPanel implements ActionListener{
-	private final int DELAY = Driver.speed;
+
+	public int DELAY = Driver.speed;
 	public Timer timer;
 	private  World world = Driver.neWorld;
 	
@@ -21,7 +22,7 @@ public class World_Graphics extends JPanel implements ActionListener{
 	public  JFrame window = new JFrame();
 	// MAP SIZE DRAW SETTINGS
 	public  int IMAGE_HEIGHT 		= setImageSize();
-	public  int IMAGE_WIDTH 		= setImageSize();
+	public  int IMAGE_WIDTH 		= IMAGE_HEIGHT;
 	public  int WINDOW_HEIGHT 		= setWindowSize(IMAGE_HEIGHT) ;
 
 	@Override
@@ -30,7 +31,7 @@ public class World_Graphics extends JPanel implements ActionListener{
 		this.repaint();
 	}
 
-	private void initTimer() {
+	public void initTimer() {
 		this.timer = new Timer(DELAY, this);	
 		this.timer.start();					
 	}
@@ -60,7 +61,6 @@ public class World_Graphics extends JPanel implements ActionListener{
 				}
 			}
 		});
-		//timer.start();
 		this.window.add(this);
 		// MAIN WINDOW	
 		this.window.isOpaque();
@@ -78,12 +78,15 @@ public class World_Graphics extends JPanel implements ActionListener{
 	
 	@Override
 	public void paintComponent(Graphics g){
+	
 		super.paintComponent(g);
 		baseMap(g);
 		animalMap(g);
 		windMap(g);
 		if (Driver.displayMode) 
 			dataOverlay(g);
+	
+	
 	}
 
 	public void baseMap(Graphics g) {
@@ -242,7 +245,7 @@ public class World_Graphics extends JPanel implements ActionListener{
 		}
     }
 
-	private int setImageSize(){
+	public int setImageSize(){
 		int size = 0;
 		if (Driver.size == 21) {
 			return size = 30;
@@ -272,7 +275,7 @@ public class World_Graphics extends JPanel implements ActionListener{
 		
 	}
 
-	private int setWindowSize(int IMAGE_HEIGHT){
+	public int setWindowSize(int IMAGE_HEIGHT){
 		int size;
 		size = (Driver.size * IMAGE_HEIGHT);
 		return size;
