@@ -22,22 +22,19 @@ public class Weather {
 	public void pattern(){
 
 		if (this.windDirection.equals("WEST") || this.windDirection.equals("EAST")){
-			// get width of wind vein randomly // repeat randomly
-			int repeat = rand.nextInt(0, Driver.neWorld.worldMatrix.length);
-			for (int x = 0; x < repeat ; x ++){
-				int point1 = rand.nextInt(0, Driver.neWorld.worldMatrix.length);
-				int point2 = rand.nextInt(0, Driver.neWorld.worldMatrix.length);
-				for (int i = point1; i < point2 ; i ++ ){
-					for (int j = 0; j < Driver.neWorld.worldMatrix.length ; j ++ ){
-						Driver.neWorld.worldMatrix[i][j].setWeather(Cell.WEATHER.WINDY);
-					}
+			int point1 = rand.nextInt(0 , Driver.neWorld.worldMatrix.length);
+			int point2 = rand.nextInt(point1, Driver.neWorld.worldMatrix.length);
+			for (int i  = point1; i < point2 ; i ++ ){
+				for (int j = 0; j < Driver.neWorld.worldMatrix.length ; j ++ ){
+					Driver.neWorld.worldMatrix[i][j].setWeather(Cell.WEATHER.WINDY);
 				}
-			}	
+			}
+			
 		}
 		else if (this.windDirection.equals("NORTH") || this.windDirection.equals("SOUTH")){
 			// get width of wind vein 
-			int point1 = rand.nextInt(0, Driver.neWorld.worldMatrix.length);
-			int point2 = rand.nextInt(0, Driver.neWorld.worldMatrix.length);
+			int point1 = rand.nextInt(0 , Driver.neWorld.worldMatrix.length);
+			int point2 = rand.nextInt(point1, Driver.neWorld.worldMatrix.length);
 			for (int i = 0; i < Driver.neWorld.worldMatrix.length ; i ++ ){
 				for (int j = point1; j < point2 ; j ++ ){
 					Driver.neWorld.worldMatrix[i][j].setWeather(Cell.WEATHER.WINDY);

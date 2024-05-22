@@ -112,7 +112,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 	
 	
     public Menu(){
-		Driver.neWorld = new World(); 
+		
 		timer = new Timer(1, this);
 		timer.start();
 		// map combo box
@@ -383,7 +383,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			Driver.popRegrowth = Driver.startingPop / 4; 
 			if (Driver.size == 21)   
 				Driver.chanceToRegrow = .05;
-			
+			Driver.neWorld = new World(); 
 			Driver.world = new World_Graphics();
 			this.finished_start_up = true;
 			
@@ -523,6 +523,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			Driver.neWorld.todaysWeather.clearWeatherPattern();
 			this.windBox.setEnabled(false);
 			this.wind_direction_Label.setForeground(Color.GRAY);
+			this.windBox.setSelectedIndex(0);
 			Driver.neWorld.weatherSet = false;
 			}
 		else if (evt.getSource() == windBox){
