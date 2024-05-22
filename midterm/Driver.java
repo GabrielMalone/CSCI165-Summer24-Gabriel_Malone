@@ -12,7 +12,7 @@ public class Driver {
     public static int size = 200;
     public static int speed = 20;
     public static int startingPop = 0;
-    public static int popRegrowth;
+    public static double popRegrowth = 0;
     public static int numberOfFires = 6;
     public static double chanceToRegrow =.01;
     public static double catchprobability = .25;

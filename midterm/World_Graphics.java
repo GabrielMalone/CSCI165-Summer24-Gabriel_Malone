@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 
 
-public class World_Graphics extends JPanel implements ActionListener{
+public class World_Graphics extends JPanel implements ActionListener {
 
 	public int DELAY = Driver.speed;
 	public Timer timer;
@@ -25,22 +25,8 @@ public class World_Graphics extends JPanel implements ActionListener{
 	public  int IMAGE_WIDTH 		= IMAGE_HEIGHT;
 	public  int WINDOW_HEIGHT 		= setWindowSize(IMAGE_HEIGHT) ;
 
-	@Override
-	public void actionPerformed(ActionEvent e){
-		// stop and restart timer for live update purpose
-		this.timer.stop();
-		initTimer();
-		world.spreadFire();
-		this.repaint();
-	}
-
-	public void initTimer() {
-		this.timer = new Timer(DELAY, this);	
-		this.timer.start();					
-	}
 
 	public World_Graphics() {
-		
 		world.initializeFire();
 		initTimer();
 		// mouse clicks to place bombs
@@ -64,7 +50,8 @@ public class World_Graphics extends JPanel implements ActionListener{
 					Bomb.placeBomb(row, column);
 				}
 			}
-		});
+		});	
+		
 		this.window.add(this);
 		// MAIN WINDOW	
 		// give it a title bar							
@@ -78,7 +65,21 @@ public class World_Graphics extends JPanel implements ActionListener{
 		this.window.setVisible(true);
 		
 	}
-	
+
+	@Override
+	public void actionPerformed(ActionEvent e){
+		// stop and restart timer for live update purpose
+		this.timer.stop();
+		initTimer();
+		world.spreadFire();
+		this.repaint();
+	}
+
+	public void initTimer() {
+		this.timer = new Timer(DELAY, this);	
+		this.timer.start();					
+	}
+
 	@Override
 	public void paintComponent(Graphics g){
 	
@@ -88,8 +89,6 @@ public class World_Graphics extends JPanel implements ActionListener{
 		//windMap(g);
 		if (Driver.displayMode) 
 			dataOverlay(g);
-	
-	
 	}
 
 	public void baseMap(Graphics g) {

@@ -16,6 +16,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;  
 import javax.swing.Timer;
+import java.awt.event.KeyEvent;
+
 
 public class Menu extends JPanel implements ActionListener, ChangeListener{
 	// MENU INITIALIZERS
@@ -86,11 +88,14 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 	JLabel wanders_label		= new JLabel("Meander");
 	// animal pop
 	JSlider animal_pop_slider 	= new JSlider();
-	JButton set_pop_button		= new JButton("Set");
-	JTextField animal_pop_Field	= new JTextField("",5);
 	String startng_pop_string 	= "animals: ";
 	JLabel animal_pop_label		= new JLabel(startng_pop_string);
 	JLabel animal_confirm_label	= new JLabel(startng_pop_string);
+	// animal repop
+	JSlider animal_repop_slider = new JSlider();
+	double animal_grow_percent	= (double)animal_repop_slider.getValue() / 100;
+	String animal_repop_String	= "repopulate rate";
+	JLabel animal_repop_label 	= new JLabel(animal_repop_String);
 	// pop confirmation
 	JTextField pop_displayField = new JTextField(String.valueOf(Driver.startingPop), 5);
 	// weather on/off
@@ -114,9 +119,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 	JLabel data_steps_output	= new JLabel("");
 	JLabel data_burn_area_title	= new JLabel("Burn Area:");
 	JLabel data_burn_area_output= new JLabel("");
-	
-	
-	
+		
     public Menu(){
 		
 		timer = new Timer(1, this);
@@ -148,14 +151,17 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.wanders_label.setForeground(Color.GRAY);
 		this.wander_group.add(this.wander_on);
 		this.wander_group.add(this.wander_off);
-		// animal pop input
-		this.animal_pop_label.setForeground(Color.GRAY);
-		this.animal_pop_label.setFont(labelfont);
 		// animal data display
 		this.animal_pop_slider.addChangeListener(this);
 		this.animal_pop_slider.setValue(0);
 		this.animal_pop_slider.setEnabled(false);
 		this.animal_confirm_label.setForeground(Color.GRAY);
+		// animal repop
+		this.animal_repop_slider.addChangeListener(this);
+		this.animal_repop_slider.setValue(0);
+		this.animal_repop_slider.setEnabled(false);
+		this.animal_repop_label.setForeground(Color.GRAY);
+		this.animal_repop_label.setFont(popFont);
 		// start / pause button 
         this.start.addActionListener(this);
 		this.pause.addActionListener(this);
@@ -178,7 +184,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		// tree rate slider
 		this.tree_Slider.addChangeListener(this);
 		this.tree_slider_Label.setFont(labelfont);
-		this.tree_Slider.setValue(1);
+		this.tree_Slider.setValue(5);
 		this.tree_slider_Label.setForeground(Color.BLACK);
 		// modes
 		this.endless.addActionListener(this);
@@ -197,7 +203,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.optionsWindow.add(this);	
 		this.optionsWindow.setTitle("Options");
 		this.optionsWindow.getSize();			
-		this.optionsWindow.setSize( 195, 700);
+		this.optionsWindow.setSize( 195, 800);
 		this.optionsWindow.setLayout(null);
 		this.optionsWindow.setLocationRelativeTo(null);	
 		this.optionsWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -231,40 +237,40 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.wander_off.setBounds(110, 315, 60, 60);
 		this.separator6.setBounds(30, 355, 50, 10);
 		this.separator8.setBounds(110, 355, 50, 10);
-		this.animal_confirm_label.setBounds(60, 371, 200, 20);
+		this.animal_confirm_label.setBounds(70, 371, 200, 20);
 		this.animal_pop_slider.setBounds(5, 395, 180, 20);
-		//this.animal_pop_label.setBounds(33, 335, 150, 20);
-		//this.animal_pop_Field.setBounds(30, 355, 90, 20);
-		//this.set_pop_button.setBounds(120, 356, 40, 19);
-		this.separator3.setBounds(0, 425, 200, 10);
+		this.animal_repop_label.setBounds(45, 415, 150, 20);
+		this.animal_repop_slider.setBounds(5, 439, 180, 20);
+		this.separator3.setBounds(0, 465, 200, 10);
 		// wind section
-		this.wind_on_off_label.setBounds(40, 437, 150, 20);
-		this.wind_on.setBounds(70, 417, 50, 60);
+		this.wind_on_off_label.setBounds(40, 487, 150, 20);
+		this.wind_on.setBounds(70, 467, 50, 60);
 		this.wind_on.setFont(labelfont);
-		this.wind_off.setBounds(110, 417, 50, 60);
+		this.wind_off.setBounds(110, 467, 50, 60);
 		this.wind_off.setFont(labelfont);
 		this.wind_direction_Label.setFont(labelfont);
-		this.wind_direction_Label.setBounds(102, 467, 150, 20);
-		this.windBox.setBounds(25, 487, 140, 25);
-		this.separator4.setBounds(0, 517, 200, 20);
+		this.wind_direction_Label.setBounds(102, 517, 150, 20);
+		this.windBox.setBounds(25, 537, 140, 25); 
+		this.separator4.setBounds(0, 567, 200, 20);
 		// modes
-		this.endless.setBounds(15, 524, 90, 30);
-		this.single_run.setBounds(90, 524, 90, 30);
-		this.separator9.setBounds(0, 550, 200, 20);
+		this.endless.setBounds(15, 574, 90, 30);
+		this.single_run.setBounds(90, 574, 90, 30);
+		this.separator9.setBounds(0, 600, 200, 20);
 		// data
-		this.data_title.setBounds(25, 560, 90, 30);
-		this.separator10.setBounds(0, 585, 200, 20);
-		this.data_steps_title.setBounds(25, 590, 90, 20);
-		this.data_steps_output.setBounds(120, 590, 90, 20);
-		this.separator11.setBounds(0, 605, 200, 20);
-		this.data_pop_title.setBounds(25, 610, 90, 20);
-		this.data_pop_output.setBounds(120, 610, 90, 20);
-		this.separator12.setBounds(0, 625, 200, 20);
-		this.data_burn_area_title.setBounds(25, 630, 90, 20);
-		this.data_burn_area_output.setBounds(120, 630, 90, 20);
-		this.separator13.setBounds(0, 645, 200, 20);
+		this.data_title.setBounds(25, 610, 90, 30);
+		this.separator10.setBounds(0, 635, 200, 20);
+		this.data_steps_title.setBounds(25, 640, 90, 20);
+		this.data_steps_output.setBounds(120, 640, 90, 20);
+		this.separator11.setBounds(0, 655, 200, 20);
+		this.data_pop_title.setBounds(25, 660, 90, 20);
+		this.data_pop_output.setBounds(120, 660, 90, 20);
+		this.separator12.setBounds(0, 675, 200, 20);
+		this.data_burn_area_title.setBounds(25, 680, 90, 20);
+		this.data_burn_area_output.setBounds(120, 680, 90, 20);
+		this.separator13.setBounds(0, 695, 200, 20);
 	
 		// put everything in the frame
+		this.optionsWindow.add(this);
 		this.optionsWindow.add(start);
 		this.optionsWindow.add(pause);
 		this.optionsWindow.add(reset_button);
@@ -283,7 +289,6 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.optionsWindow.add(animal_pop_label);
 		this.optionsWindow.add(wander_on);
 		this.optionsWindow.add(wander_off);
-		this.optionsWindow.add(animal_pop_Field);
 		this.optionsWindow.add(animal_pop_slider);
 		this.optionsWindow.add(animal_confirm_label);
 		this.optionsWindow.add(wind_on_off_label);
@@ -301,6 +306,8 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.optionsWindow.add(data_steps_output);
 		this.optionsWindow.add(data_burn_area_title);
 		this.optionsWindow.add(data_burn_area_output);
+		this.optionsWindow.add(animal_repop_label);
+		this.optionsWindow.add(animal_repop_slider);
 		this.optionsWindow.add(separator);
 		this.optionsWindow.add(separator2);
 		this.optionsWindow.add(separator3);
@@ -318,6 +325,10 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.optionsWindow.setVisible(true);
 
     }
+
+	public void keyPressed (KeyEvent e){
+		System.out.println("test");
+	}
 
 	public void stateChanged(ChangeEvent e){
 		if (e.getSource() == burn_slider){
@@ -342,7 +353,6 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			Driver.startingPop = this.animal_pop_slider.getValue();
 			this.animal_confirm_label.setText(this.startng_pop_string + this.pop_number);
 			Driver.startingPop = Integer.valueOf(pop_number);
-			Driver.popRegrowth = Integer.valueOf(pop_number);
 		if (this.finished_start_up){
 			Driver.neWorld.wildlife.clearAnimals();
 			Driver.neWorld.wildlife.placeWildlife();
@@ -354,6 +364,12 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			this.tree_slider_string  = (int)this.tree_Slider.getValue() + "% tree regrow rate";
 			this.tree_slider_Label.setText(tree_slider_string);
 		}
+		else if (e.getSource() == animal_repop_slider){
+			this.animal_grow_percent = (double)this.animal_repop_slider.getValue();
+			Driver.popRegrowth 		 = (double)this.animal_repop_slider.getValue() / 10000;
+			this.animal_repop_String = "repopulation rate " + (int)this.animal_repop_slider.getValue() + "%";
+			this.animal_repop_label.setText(animal_repop_String);
+		}
 	}
 
 	@Override
@@ -363,7 +379,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			this.data_pop_output.setText(String.valueOf((int)Driver.neWorld.totalAlive()));
 			if (! paused)
 			this.data_steps_output.setText(String.valueOf(Driver.neWorld.trackSteps()));
-			this.data_burn_area_output.setText(String.valueOf(Driver.neWorld.burnPercentage()) + "%");
+			this.data_burn_area_output.setText(String.valueOf((int)Driver.neWorld.burnPercentage()) + "%");
 			
 		}
 
@@ -388,9 +404,6 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 				this.burn_slider.setEnabled(false);
 				this.animals_off.setEnabled(false);
 				this.animals_on.setEnabled(false);
-				this.animal_pop_Field.setEnabled(false);
-				this.animal_pop_Field.setBackground(Color.GRAY);
-				this.set_pop_button.setEnabled(false);
 				this.wander_off.setEnabled(false);
 				this.wander_on.setEnabled(false);
 				this.wind_on_off_label.setForeground(Color.GRAY);
@@ -508,13 +521,12 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			this.wander_on.setEnabled(true);
 			this.wander_off.setEnabled(true);
 			this.wanders_label.setForeground(Color.BLACK);
-			this.animal_pop_Field.setEnabled(true);
-			this.animal_pop_Field.setBackground(Color.WHITE);
-			this.set_pop_button.setEnabled(true);
 			this.animal_pop_label.setForeground(Color.BLACK);
 			this.animal_confirm_label.setForeground(Color.BLACK);
 			this.pop_displayField.setForeground(Color.BLACK);
 			this.animal_pop_slider.setEnabled(true);
+			this.animal_repop_label.setForeground(Color.BLACK);
+			this.animal_repop_slider.setEnabled(true);
 			if (finished_start_up) Driver.neWorld.wildlife.placeWildlife();
 			}
 		else if (evt.getSource() == animals_off){
@@ -522,8 +534,6 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			this.wander_on.setEnabled(false);
 			this.wander_off.setEnabled(false);
 			this.wanders_label.setForeground(Color.GRAY);
-			this.animal_pop_Field.setEnabled(false);
-			this.set_pop_button.setEnabled(false);
 			this.animal_pop_label.setForeground(Color.GRAY);
 			this.animal_pop_slider.setEnabled(false);
 			this.animal_pop_slider.setValue(0);
@@ -538,22 +548,6 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		else if (evt.getSource() == wander_off){
 			Driver.animalsWander = false;
 			}
-		// animal pop field	
-		else if (evt.getSource() == set_pop_button){
-			pop_number = animal_pop_Field.getText();
-				Driver.startingPop = Integer.valueOf(pop_number);
-				Driver.popRegrowth = Integer.valueOf(pop_number);
-			if (this.finished_start_up){
-				Driver.neWorld.wildlife.clearAnimals();
-				Driver.neWorld.wildlife.placeWildlife();
-				
-			}
-			this.animal_pop_Field.setText("");
-			this.pop_displayField.setForeground(Color.WHITE);
-			this.pop_displayField.setText(String.valueOf(Driver.startingPop));
-			this.animal_pop_label.setText("Starting pop: " + pop_number);
-
-		}
 		else if (evt.getSource() == wind_on){
 			this.windBox.setEnabled(true);
 			this.windBox.setSelectedIndex(0);
@@ -616,6 +610,4 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			
 		}
 	}
-	
-
 }

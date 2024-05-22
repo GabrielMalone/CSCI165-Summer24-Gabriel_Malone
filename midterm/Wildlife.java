@@ -25,29 +25,13 @@ public class Wildlife {
 			}
 		}
 
-	public void repopulate(){
-	
-		for (int i = 0; i < Driver.popRegrowth ; i++){
-			// find location on map for object
-			int row_location = rand.nextInt(1, Driver.neWorld.worldMatrix.length - 1);
-			int column_location = rand.nextInt(1, Driver.neWorld.worldMatrix.length - 1);
-			// get cell at this location
-			Cell cell_at_this_location = Driver.neWorld.worldMatrix[row_location][column_location];
-			if (cell_at_this_location.getObject() != Cell.OBJECTS.WILDLIFEALIVE){
-				// update cell
-				cell_at_this_location.setObject(Cell.OBJECTS.WILDLIFEALIVE);
-				this.activeWildlifeCells.add(cell_at_this_location);	
-			}
-		}
-	}
-
 	public void regrowWildlife(){
 		for(int j = 0 ; j < Driver.size - 1; j ++){
 			for (int i = 0 ; i < Driver.size - 1 ; i ++)	{
 				Cell currentCell = Driver.neWorld.worldMatrix [j][i];
 				if (currentCell.getState() == Cell.STATES.TREE && currentCell.getObject() == Cell.OBJECTS.VOID){
 					double chance_to_regorw = rand.nextDouble(1);
-					if (chance_to_regorw < .0001){
+					if (chance_to_regorw <Driver.popRegrowth){
 						currentCell.setObject(Cell.OBJECTS.WILDLIFEALIVE);
 					}
 				}
