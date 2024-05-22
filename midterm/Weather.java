@@ -1,11 +1,10 @@
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Weather {
 
-	public int minus = 0;
-	public  ArrayList<String> windCoordinates = new ArrayList<>();
+	Random rand = new Random();
+
     public static enum DIRECTION {
 		NORTH, 
 		EAST, 
@@ -15,111 +14,34 @@ public class Weather {
     public DIRECTION direction;
     public String windDirection;
 
-	/**
-	 * Method to create appropriate random variables for the sinewave
-	 * @param range
-	 * @return
-	 */
-	public static double doubleProb(double rangea, double rangeb){
-		Random rand = new Random();
-		double doubleResult = rand.nextDouble(rangea, rangeb);
-		return doubleResult;
-	}
 
 	/**
-	 * Method to create a sinewave and overlay it onto the world matrix
+	 * Method to create wind pattern
 	 * 
 	 */
 	public void pattern(){
+
 		if (this.windDirection.equals("WEST") || this.windDirection.equals("EAST")){
-		// will be able to randomize these values in a range
-		// modified sinewave output from stackoverflow
-		double midlinea  	=   Driver.neWorld.worldMatrix.length/8;
-		double midlineb  	=   (Driver.neWorld.worldMatrix.length/5) * -1;
-		double amplitude 	=   .25;
-		double frequency 	=   .25;
-		double bottomwidth	=   doubleProb(.1, Driver.neWorld.worldMatrix.length/11);
-		double topwidth		=   doubleProb(.1, Driver.neWorld.worldMatrix.length/8);
-		double phaseShift	=   .01;
-		int period 			=   Driver.neWorld.worldMatrix.length - 1;
-		// create the wave
-		int a =0;  // index positions for map
-		int b = 0; // index positions for map
-
-		for (double y = midlinea; y > midlineb; y-= amplitude) {
-			a += 1;
-			b  = 0;
-			for (double x = phaseShift; x <= period; x+=frequency) {
-				double sin = Math.sin(x);
-				if ((bottomwidth+y) >= sin && (y-topwidth) <= sin){
-				// if cell in path of sinewayve:
-					if (b < Driver.neWorld.worldMatrix.length-1 && b > 0){
-						// update cells in worldmap to be windy
-						String coordinate = a + "," + b;
-						windCoordinates.add(coordinate);
-					} 
-					// checking purposes
-					//System.out.print("*");
-		
-				}
-				else
-					// why does this need to stay for the world map to graph properly??
-					System.out.print(" ");
-					b+=1;
-			}
-			// checking purposes
-			System.out.println();
-			}
-		}
-		if (this.windDirection.equals("NORTH") || this.windDirection.equals("SOUTH")){
-		// will be able to randomize these values in a range
-		// modified sinewave output from stackoverflow
-		double midlinea  	=   Driver.neWorld.worldMatrix.length/8;
-		double midlineb  	=   (Driver.neWorld.worldMatrix.length/5) * -1;
-		double amplitude 	=   .25;
-		double frequency 	=   .25;
-		double bottomwidth	=   doubleProb(.1, Driver.neWorld.worldMatrix.length/11);
-		double topwidth		=   doubleProb(.1, Driver.neWorld.worldMatrix.length/8);
-		double phaseShift	=   .01;
-		int period 			=   Driver.neWorld.worldMatrix.length - 1;
-			// create the wave
-			int a =0;  // index positions for map
-			int b = 0; // index positions for map
-			for (double x = phaseShift - minus; x <= period; x+= frequency) {
-				a += 1;
-				b  = 0;
-				for (double y = midlinea; y > midlineb; y-= amplitude) {
-					double sin = Math.sin(x);
-					if ((bottomwidth+y) >= sin && (y-topwidth) <= sin){
-						// if cell in path of sinewayve:
-						if (b < Driver.neWorld.worldMatrix.length-1 && b > 0){
-							// update cells in worldmap to be windy
-							String coordinate = a + "," + b;
-							windCoordinates.add(coordinate);
-						} 
-						// checking purposes
-						//System.out.print("*");
-			
+			// get width of wind vein randomly // repeat randomly
+			int repeat = rand.nextInt(0, Driver.neWorld.worldMatrix.length);
+			for (int x = 0; x < repeat ; x ++){
+				int point1 = rand.nextInt(0, Driver.neWorld.worldMatrix.length);
+				int point2 = rand.nextInt(0, Driver.neWorld.worldMatrix.length);
+				for (int i = point1; i < point2 ; i ++ ){
+					for (int j = 0; j < Driver.neWorld.worldMatrix.length ; j ++ ){
+						Driver.neWorld.worldMatrix[i][j].setWeather(Cell.WEATHER.WINDY);
 					}
-					else
-						// why does this need to stay for the world map to graph properly??
-						System.out.print(" ");
-						b+=1;
 				}
-				// checking purposes
-			System.out.println();
-			}
-		}	
-	}
-
-	/**
-	 * Method to set the cell in the coordinates within the path of the sinewave as windy
-	 * 
-	 */
-	public void setWeatherPattern(){
-		for (int i = 0; i < Driver.neWorld.worldMatrix.length ; i ++ ){
-			for (int j = 0; j < Driver.neWorld.worldMatrix.length ; j ++ ){
-				if (windCoordinates.contains(Driver.neWorld.worldMatrix[i][j].coordinates)) Driver.neWorld.worldMatrix[i][j].setWeather(Cell.WEATHER.WINDY);
+			}	
+		}
+		else if (this.windDirection.equals("NORTH") || this.windDirection.equals("SOUTH")){
+			// get width of wind vein 
+			int point1 = rand.nextInt(0, Driver.neWorld.worldMatrix.length);
+			int point2 = rand.nextInt(0, Driver.neWorld.worldMatrix.length);
+			for (int i = 0; i < Driver.neWorld.worldMatrix.length ; i ++ ){
+				for (int j = point1; j < point2 ; j ++ ){
+					Driver.neWorld.worldMatrix[i][j].setWeather(Cell.WEATHER.WINDY);
+				}
 			}
 		}
 	}
@@ -134,6 +56,7 @@ public class Weather {
             case EAST: 	this.windDirection 	= "EAST";
                 break;
             case WEST: 	this.windDirection 	= "WEST";
+				break;
 			default: 	this.windDirection 	= "X";
                 break;
 	    }
@@ -157,7 +80,7 @@ public class Weather {
 	public void clearWeatherPattern(){
 		for (int i = 0; i < Driver.neWorld.worldMatrix.length ; i ++ ){
 			for (int j = 0; j < Driver.neWorld.worldMatrix.length ; j ++ ){
-			if (windCoordinates.contains(Driver.neWorld.worldMatrix[i][j].coordinates)) Driver.neWorld.worldMatrix[i][j].setWeather(Cell.WEATHER.CALM);
+				Driver.neWorld.worldMatrix[i][j].setWeather(Cell.WEATHER.CALM);
 			}
 		}
 	}

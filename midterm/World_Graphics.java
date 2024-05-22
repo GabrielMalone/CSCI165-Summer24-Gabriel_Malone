@@ -27,6 +27,7 @@ public class World_Graphics extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e){
+		// stop and restart timer for live update purpose
 		this.timer.stop();
 		initTimer();
 		world.spreadFire();
@@ -66,7 +67,6 @@ public class World_Graphics extends JPanel implements ActionListener{
 		});
 		this.window.add(this);
 		// MAIN WINDOW	
-		this.window.isOpaque();
 		// give it a title bar							
 		this.window.setTitle("Goobs Fire Sim");
 		// how big is the window?		
@@ -166,7 +166,7 @@ public class World_Graphics extends JPanel implements ActionListener{
 					else if (Driver.size <= 501)	{graphics2d.setColor(map500);	graphics2d.drawArc(x, y, 5, 5, y, x);}
 					else 							{graphics2d.setColor(map20); 	graphics2d.drawArc(x, y, 15, 15, y, x);}
 
-                }
+                }	
                 x += IMAGE_WIDTH;
             } 
             y += IMAGE_HEIGHT;	
@@ -257,7 +257,7 @@ public class World_Graphics extends JPanel implements ActionListener{
 		return size = (int)(Driver.size / 4); 
 		}
 		else if (Driver.size == 101){
-			return size = (int)(Driver.size / 15); 
+			return size = (int)(Driver.size / 35); 
 			}
 		else if (Driver.size == 151){
 			return size = (int)(Driver.size / 35); 

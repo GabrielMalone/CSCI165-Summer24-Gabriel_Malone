@@ -25,7 +25,6 @@ public class Driver {
  
 	public static void main(String[] args) {
         options = new Menu();
-        todaysWeather.setDirection(Weather.DIRECTION.NORTH);
     }
   
     public static int worldResize(int size){

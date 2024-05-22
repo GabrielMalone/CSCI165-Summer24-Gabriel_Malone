@@ -66,10 +66,10 @@ public class World {
 		// SIMULATION LOOP
 
 		displayData();
-		if (weatherSet){
+		if (this.weatherSet){
+			this.todaysWeather.clearWeatherPattern();
 			this.todaysWeather.pattern();
-			this.todaysWeather.setWeatherPattern();
-			weatherSet = false;
+			//this.weatherSet = false;
 		} 	
 		this.wildlife.clearDead();
 		if (this.timeStep > 0) {
@@ -200,7 +200,7 @@ public class World {
 	}
 	*/
 	
-	private int trackSteps(){
+	public int trackSteps(){
 		// track steps
 		if (this.burning)
 			this.timeStep += 1;
