@@ -23,7 +23,6 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 	public Timer timer;
 	public boolean paused = false;
 	public boolean finished_start_up = false;
-	public boolean weatherSet = false;
 	public String pop_number;
 	// main layout
 	JFrame optionsWindow 		= new JFrame();
@@ -46,7 +45,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 	JSeparator separator14		= new JSeparator();
 	// fonts
 	Font labelfont 				= new Font("SansSerif", Font.PLAIN, 10);
-	Font popFont 				= new Font("SansSerif", Font.BOLD, 10);
+	Font popFont 				= new Font("SansSerif", Font.PLAIN, 10);
 	Font infinityFont 			= new Font("SansSerif", Font.PLAIN, 12);
 	// pause button
 	Icon play_icon				= new ImageIcon("buttons/play.png");
@@ -79,10 +78,11 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 	JRadioButton wander_off		= new JRadioButton("Off");
 	JLabel wanders_label		= new JLabel("Meander");
 	// animal pop
+	JSlider animal_pop_slider 	= new JSlider();
 	JButton set_pop_button		= new JButton("Set");
 	JTextField animal_pop_Field	= new JTextField("",5);
 	
-	String startng_pop_string 	= "Starting pop:";
+	String startng_pop_string 	= "animals: ";
 	JLabel animal_pop_label		= new JLabel(startng_pop_string);
 	JLabel animal_confirm_label	= new JLabel(startng_pop_string);
 	// pop confirmation
@@ -144,15 +144,18 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.wander_group.add(this.wander_off);
 		// animal pop input
 		this.animal_pop_label.setForeground(Color.GRAY);
-		this.animal_pop_Field.addActionListener(this);
-		this.set_pop_button.addActionListener(this);
-		this.set_pop_button.setEnabled(false);
+		//this.animal_pop_Field.addActionListener(this);
+		//this.set_pop_button.addActionListener(this);
+		//this.set_pop_button.setEnabled(false);
 		//this.animal_pop_Field.setBackground(Color.GRAY);
-		this.animal_pop_Field.setEnabled(false);
+		//this.animal_pop_Field.setEnabled(false);
 		this.animal_pop_label.setFont(labelfont);
 		// animal data display
-		this.pop_displayField.setEnabled(false);
-		this.pop_displayField.setBackground(Color.LIGHT_GRAY);
+		//this.pop_displayField.setEnabled(false);
+		//this.pop_displayField.setBackground(Color.LIGHT_GRAY);
+		this.animal_pop_slider.addChangeListener(this);
+		this.animal_pop_slider.setValue(0);
+		this.animal_pop_slider.setEnabled(false);
 		this.animal_confirm_label.setForeground(Color.GRAY);
 		// start / pause button 
         this.start.addActionListener(this);
@@ -221,10 +224,11 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.wander_off.setBounds(110, 275, 60, 60);
 		this.separator6.setBounds(30, 315, 50, 10);
 		this.separator8.setBounds(110, 315, 50, 10);
-		this.animal_pop_label.setBounds(33, 335, 150, 20);
-		this.animal_pop_Field.setBounds(30, 355, 90, 20);
-		this.set_pop_button.setBounds(120, 356, 40, 19);
-		//this.animal_confirm_label.setBounds(33, 351, 200, 20);
+		this.animal_confirm_label.setBounds(60, 331, 200, 20);
+		this.animal_pop_slider.setBounds(5, 355, 180, 20);
+		//this.animal_pop_label.setBounds(33, 335, 150, 20);
+		//this.animal_pop_Field.setBounds(30, 355, 90, 20);
+		//this.set_pop_button.setBounds(120, 356, 40, 19);
 		this.separator3.setBounds(0, 385, 200, 10);
 		// wind section
 		this.wind_on_off_label.setBounds(40, 397, 150, 20);
@@ -271,8 +275,9 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.optionsWindow.add(wander_on);
 		this.optionsWindow.add(wander_off);
 		this.optionsWindow.add(animal_pop_Field);
-		this.optionsWindow.add(pop_displayField);
-		this.optionsWindow.add(set_pop_button);
+		//this.optionsWindow.add(pop_displayField);
+		//this.optionsWindow.add(set_pop_button);
+		this.optionsWindow.add(animal_pop_slider);
 		this.optionsWindow.add(animal_confirm_label);
 		this.optionsWindow.add(wind_on_off_label);
 		this.optionsWindow.add(wind_on);
@@ -306,13 +311,6 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.optionsWindow.setVisible(true);
 
     }
-	// can't get paint this.repaint() to call this. 
-	@Override
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
-		dataOverlay(g);
-	
-	}
 
 	public void stateChanged(ChangeEvent e){
 		if (e.getSource() == burn_slider){
@@ -331,6 +329,17 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			if (this.finished_start_up) Driver.world.DELAY = (int)this.speed_perctentage;
 			this.speed_string = "step delay: " + (int)(this.speed_perctentage)  + " m/s";
 			this.speed_label.setText(this.speed_string);
+		}
+		else if (e.getSource() == animal_pop_slider){
+			this.pop_number = String.valueOf(this.animal_pop_slider.getValue() * (Driver.size));
+			Driver.startingPop = this.animal_pop_slider.getValue();
+			this.animal_confirm_label.setText(this.startng_pop_string + this.pop_number);
+			Driver.startingPop = Integer.valueOf(pop_number);
+			Driver.popRegrowth = Integer.valueOf(pop_number);
+		if (this.finished_start_up){
+			Driver.neWorld.wildlife.clearAnimals();
+			Driver.neWorld.wildlife.placeWildlife();
+			}
 		}
 	}
 
@@ -460,6 +469,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 				case 7: Driver.size = 1000;
 					break;
 				default:
+					Driver.size = 200; 
 					break;
 			}
 		} 
@@ -475,7 +485,8 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			this.animal_pop_label.setForeground(Color.BLACK);
 			this.animal_confirm_label.setForeground(Color.BLACK);
 			this.pop_displayField.setForeground(Color.BLACK);
-			Driver.neWorld.wildlife.placeWildlife();
+			this.animal_pop_slider.setEnabled(true);
+			if (finished_start_up) Driver.neWorld.wildlife.placeWildlife();
 			}
 		else if (evt.getSource() == animals_off){
 			Driver.animalsOn = false;
@@ -485,6 +496,8 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			this.animal_pop_Field.setEnabled(false);
 			this.set_pop_button.setEnabled(false);
 			this.animal_pop_label.setForeground(Color.GRAY);
+			this.animal_pop_slider.setEnabled(false);
+			this.animal_pop_slider.setValue(0);
 			if (this.finished_start_up) Driver.neWorld.wildlife.clearAnimals();
 			Driver.startingPop = 0;
 			this.animal_pop_label.setText("Starting pop: " + Driver.startingPop);
@@ -514,40 +527,44 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		}
 		else if (evt.getSource() == wind_on){
 			this.windBox.setEnabled(true);
-			Driver.neWorld.todaysWeather.clearWeatherPattern();
-			Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.NORTH);
-			this.wind_direction_Label.setForeground(Color.BLACK);
-			if (finished_start_up)Driver.neWorld.weatherSet = true;
+			if (finished_start_up){
+				Driver.neWorld.todaysWeather.clearWeatherPattern();
+				Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.NORTH);
+				Driver.neWorld.weatherSet = true;
 			}
+			this.wind_direction_Label.setForeground(Color.BLACK);
+		}
 		else if (evt.getSource() == wind_off){
-			Driver.neWorld.todaysWeather.clearWeatherPattern();
+			if (finished_start_up){
+				Driver.neWorld.todaysWeather.clearWeatherPattern();
+				Driver.neWorld.weatherSet = false;
+			}
 			this.windBox.setEnabled(false);
 			this.wind_direction_Label.setForeground(Color.GRAY);
-			this.windBox.setSelectedIndex(0);
-			Driver.neWorld.weatherSet = false;
 			}
 		else if (evt.getSource() == windBox){
 			int index = windBox.getSelectedIndex();
-			switch (index){
-				case 0:		Driver.neWorld.todaysWeather.clearWeatherPattern();
-							Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.NORTH);
-							Driver.neWorld.weatherSet = true;
-							break;
-				case 1:		Driver.neWorld.todaysWeather.clearWeatherPattern();
-							Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.EAST);
-							Driver.neWorld.weatherSet = true;
-							break;
-				case 2:		Driver.neWorld.todaysWeather.clearWeatherPattern();
-							Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.SOUTH);
-							Driver.neWorld.weatherSet = true;
-							break;
-				case 3:		Driver.neWorld.todaysWeather.clearWeatherPattern();
-							Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.WEST);
-							Driver.neWorld.weatherSet = true;
-							break;
-			}
+			if (finished_start_up){
+				switch (index){
+					case 0:		Driver.neWorld.todaysWeather.clearWeatherPattern();
+								Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.NORTH);
+								Driver.neWorld.weatherSet = true;
+								break;
+					case 1:		Driver.neWorld.todaysWeather.clearWeatherPattern();
+								Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.EAST);
+								Driver.neWorld.weatherSet = true;
+								break;
+					case 2:		Driver.neWorld.todaysWeather.clearWeatherPattern();
+								Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.SOUTH);
+								Driver.neWorld.weatherSet = true;
+								break;
+					case 3:		Driver.neWorld.todaysWeather.clearWeatherPattern();
+								Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.WEST);
+								Driver.neWorld.weatherSet = true;
+								break;
+				}
+			}	
 		}
-	
 		else if (evt.getSource() == endless){
 			Driver.endlessMode = true;
 		}
@@ -557,24 +574,5 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		}
 	}
 	
-	public void dataOverlay(Graphics g) {
-	
-        Graphics2D graphics2d = (Graphics2D) g;
-		// STEPS BOX AND INFO
-		Color transparentback = new Color(0f, 1f, .5f, .7f);
-		Color transparenttitle = new Color(0f, 0f, 0f, .9f);
-		Color transparentinfo = new Color(1f, 1f, 1f, .9f);
-		Font FontTitle = new Font("SansSerif", Font.BOLD, 8);
-		Font FontData = new Font("SansSerif", Font.BOLD, 17);
-		
-		graphics2d.setColor(transparentback);
-		graphics2d.fillRoundRect(60, 20, 50, 50, 10, 10);
-		graphics2d.setColor(transparenttitle);
-		graphics2d.setFont(FontTitle);
-		graphics2d.drawString("STEPS", 48,35);
-		graphics2d.setFont(FontData);
-		graphics2d.setColor(transparentinfo);
-	
-	}
 
 }

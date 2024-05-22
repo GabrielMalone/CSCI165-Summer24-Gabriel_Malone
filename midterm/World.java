@@ -34,9 +34,6 @@ public class World {
 	public  static BufferedImage [] fires = new BufferedImage[4];
 	public  static BufferedImage [] burnt = new BufferedImage[4];
 	public  static BufferedImage [] anima = new BufferedImage[4];
-
-
-
 	private Random rand = new Random();
 	
 	public World(){
@@ -51,33 +48,33 @@ public class World {
 	
 	public void initializeFire(){
 		// SET WEATHER AND ANIMALS
-
 		if (Driver.animalsOn)	
 			this.wildlife.placeWildlife();
 		copyWorldMatrix();
 		// initial fire
 		setCenterCellonFire();
+		if (this.weatherSet)
+			this.todaysWeather.setCenterWindy();
 		designatetNeighborsOnFire();
 	}
 	
 	
 	public void spreadFire(){
-		
 		// SIMULATION LOOP
-
 		displayData();
 		if (this.weatherSet){
-			this.todaysWeather.clearWeatherPattern();
 			this.todaysWeather.pattern();
 			//this.weatherSet = false;
 		} 	
 		this.wildlife.clearDead();
 		if (this.timeStep > 0) {
+			
 			clearPreviousFire();
 			if (! this.burning){
 				if (Driver.animalsOn)
 					this.wildlife.regrowWildlife();
 				randomFireSpot();
+				
 				this.burning = true;
 			}
 		}
@@ -220,7 +217,6 @@ public class World {
 		Cell centerCell = new Cell();
 		//middle cell on fire
 		centerCell.setState(Cell.STATES.BURNING);
-	
 		this.rgbWorld[center][center] = centerCell.cellColor;
 		this.worldMatrix[center][center] =  centerCell;
 		centerCell.coordinates = center + "," + center;
@@ -283,25 +279,16 @@ public class World {
     }
 
     void designatetNeighborsOnFire(){
-        
         for (int f = 0 ; f < this.worldMatrix.length - 1; f ++ ){
             for(int g = 0 ; g < this.worldMatrix.length - 1; g ++){    
-                
 				Cell currentCell = this.worldMatrix[f][g];
 				if (somethingBurning(currentCell)){
-
-					if (currentCell.getCellWeather().equals(Cell.WEATHER.CALM)){
-                    	Cell [] neighboringCells = findNeighbors(f, g);
-                    	seeWhatBurns(neighboringCells, currentCell);
-					}
-					else if (currentCell.getCellWeather().equals(Cell.WEATHER.WINDY)){
-						Cell [] neighboringCells = findNeighbors(f, g);
-                    	seeWhatBurns(neighboringCells, currentCell);
+					Cell [] neighboringCells = findNeighbors(f, g);
+					seeWhatBurns(neighboringCells, currentCell);
 					}
                 }
             }
         }     
-    }
 
     public boolean stillBurning(){
         for (int f = 0 ; f < this.worldMatrix.length - 1; f ++ ){

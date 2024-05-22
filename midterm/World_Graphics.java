@@ -85,7 +85,7 @@ public class World_Graphics extends JPanel implements ActionListener{
 		super.paintComponent(g);
 		baseMap(g);
 		animalMap(g);
-		windMap(g);
+		//windMap(g);
 		if (Driver.displayMode) 
 			dataOverlay(g);
 	
@@ -152,7 +152,7 @@ public class World_Graphics extends JPanel implements ActionListener{
 		Color map50  = new Color(255, 255, 255, 50);
 		Color map100 = new Color(255, 255, 255, 40);
 		Color map150 = new Color(255, 255, 255, 30);
-		Color map200 = new Color(255, 255, 255, 10);
+		Color map200 = new Color(255, 255, 255, 50);
 		Color map500 = new Color(255, 255, 255, 5);
         int x = 1, y = 1;
         for(int i = 0; i < Driver.neWorld.worldMatrix.length; i++){ 
@@ -162,7 +162,7 @@ public class World_Graphics extends JPanel implements ActionListener{
 					if (Driver.size == 51) 	{graphics2d.setColor(map50); 	graphics2d.drawArc(x, y, 10, 10, y, x);}
 					else if (Driver.size == 101) 	{graphics2d.setColor(map100); 	graphics2d.drawArc(x, y, 10, 10, y, x);}
 					else if (Driver.size == 151) 	{graphics2d.setColor(map150); 	graphics2d.drawArc(x, y, 5, 5, y, x);}
-					else if (Driver.size == 201) 	{graphics2d.setColor(map200); 	graphics2d.drawArc(x, y, 10, 10, y, x);}
+					else if (Driver.size == 201) 	{graphics2d.setColor(map200); 	graphics2d.drawArc(x, y, 10, 10, 0, 50);}
 					else if (Driver.size <= 501)	{graphics2d.setColor(map500);	graphics2d.drawArc(x, y, 5, 5, y, x);}
 					else 							{graphics2d.setColor(map20); 	graphics2d.drawArc(x, y, 15, 15, y, x);}
 
