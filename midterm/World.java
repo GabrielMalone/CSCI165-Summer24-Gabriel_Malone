@@ -86,6 +86,7 @@ public class World {
 			if (Driver.animalsWander)
 				this.wildlife.moveAround();
 		}
+		Bomb.explodeBomb();
 		designatetNeighborsOnFire();
 		if (this.timeStep > 0){
 			if (! stillBurning()){ 
