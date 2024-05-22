@@ -24,6 +24,8 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 	public boolean paused = false;
 	public boolean finished_start_up = false;
 	public String pop_number;
+	public String weather_initializer = "";
+	
 	// main layout
 	JFrame optionsWindow 		= new JFrame();
 	//start button
@@ -62,11 +64,16 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 	double 	speed_perctentage	= (double)speed_slider.getValue();
 	String 	speed_string 		= "step delay: " + speed_perctentage + " m/s";
 	JLabel 	speed_label			= new JLabel(speed_string);
-	// Burn rate
+	// burn rate
 	JSlider burn_slider			= new JSlider();
 	double burn_percent			= (double)burn_slider.getValue() / 100;
-	String burn_slider_string 		= burn_percent + "% burn rate";
+	String burn_slider_string 	= burn_percent + "% burn rate";
 	JLabel burn_Label			= new JLabel(burn_slider_string);
+	// tree regrow rate
+	JSlider tree_Slider			= new JSlider();
+	double tree_regrow_percent	= (double)tree_Slider.getValue() / 100;
+	String	tree_slider_string 	= tree_regrow_percent + "% tree regrow rate";
+	JLabel	tree_slider_Label	= new JLabel(tree_slider_string);
 	// animals on/off buttons
 	ButtonGroup animals_group 	= new ButtonGroup();
 	JRadioButton animals_on 	= new JRadioButton("On");
@@ -81,7 +88,6 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 	JSlider animal_pop_slider 	= new JSlider();
 	JButton set_pop_button		= new JButton("Set");
 	JTextField animal_pop_Field	= new JTextField("",5);
-	
 	String startng_pop_string 	= "animals: ";
 	JLabel animal_pop_label		= new JLabel(startng_pop_string);
 	JLabel animal_confirm_label	= new JLabel(startng_pop_string);
@@ -101,7 +107,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 	JRadioButton endless 		= new JRadioButton("\u221e" + " mode");
 	JRadioButton single_run		= new JRadioButton("single run");
 	// Data
-	JLabel data_title 			= new JLabel("Data");
+	JLabel data_title 			= new JLabel("DATA");
 	JLabel data_pop_title		= new JLabel("Animal Pop:");
 	JLabel data_pop_output		= new JLabel("");
 	JLabel data_steps_title		= new JLabel("Steps:");
@@ -144,15 +150,8 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.wander_group.add(this.wander_off);
 		// animal pop input
 		this.animal_pop_label.setForeground(Color.GRAY);
-		//this.animal_pop_Field.addActionListener(this);
-		//this.set_pop_button.addActionListener(this);
-		//this.set_pop_button.setEnabled(false);
-		//this.animal_pop_Field.setBackground(Color.GRAY);
-		//this.animal_pop_Field.setEnabled(false);
 		this.animal_pop_label.setFont(labelfont);
 		// animal data display
-		//this.pop_displayField.setEnabled(false);
-		//this.pop_displayField.setBackground(Color.LIGHT_GRAY);
 		this.animal_pop_slider.addChangeListener(this);
 		this.animal_pop_slider.setValue(0);
 		this.animal_pop_slider.setEnabled(false);
@@ -176,6 +175,11 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.burn_slider.addChangeListener(this);
 		this.burn_slider.setValue(25);
 		this.burn_Label.setFont(labelfont);
+		// tree rate slider
+		this.tree_Slider.addChangeListener(this);
+		this.tree_slider_Label.setFont(labelfont);
+		this.tree_Slider.setValue(1);
+		this.tree_slider_Label.setForeground(Color.BLACK);
 		// modes
 		this.endless.addActionListener(this);
 		this.single_run.addActionListener(this);
@@ -210,52 +214,55 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.speed_label.setBounds(50, 110, 150, 20);
 		this.speed_slider.setBounds(5, 130, 180, 25);
 		// burn slider
-		this.burn_Label.setBounds(65, 200, 150, 20);
+		this.burn_Label.setBounds(65, 160, 150, 20);
 		this.burn_slider.setBounds(5, 180, 180, 20);
+		// tree slider
+		this.tree_slider_Label.setBounds(40, 210, 150, 20);
+		this.tree_Slider.setBounds(5, 230, 180, 20);
 		// animals section
-		this.separator.setBounds(0, 225, 200, 10);
-		this.animals_on_off_label.setBounds(30, 245, 150, 20);
-		this.separator5.setBounds(30, 260, 50, 10);
-		this.separator7.setBounds(110, 260, 50, 10);
-		this.animals_on.setBounds(30, 255, 50, 50);
-		this.animals_off.setBounds(30, 275, 60, 60);
-		this.wanders_label.setBounds(110, 245, 150, 20);
-		this.wander_on.setBounds(110, 255, 50, 50);
-		this.wander_off.setBounds(110, 275, 60, 60);
-		this.separator6.setBounds(30, 315, 50, 10);
-		this.separator8.setBounds(110, 315, 50, 10);
-		this.animal_confirm_label.setBounds(60, 331, 200, 20);
-		this.animal_pop_slider.setBounds(5, 355, 180, 20);
+		this.separator.setBounds(0, 265, 250, 10);
+		this.animals_on_off_label.setBounds(30, 285, 150, 20);
+		this.separator5.setBounds(30, 300, 50, 10);
+		this.separator7.setBounds(110, 300, 50, 10);
+		this.animals_on.setBounds(30, 295, 50, 50);
+		this.animals_off.setBounds(30, 315, 60, 60);
+		this.wanders_label.setBounds(110, 285, 150, 20);
+		this.wander_on.setBounds(110, 295, 50, 50);
+		this.wander_off.setBounds(110, 315, 60, 60);
+		this.separator6.setBounds(30, 355, 50, 10);
+		this.separator8.setBounds(110, 355, 50, 10);
+		this.animal_confirm_label.setBounds(60, 371, 200, 20);
+		this.animal_pop_slider.setBounds(5, 395, 180, 20);
 		//this.animal_pop_label.setBounds(33, 335, 150, 20);
 		//this.animal_pop_Field.setBounds(30, 355, 90, 20);
 		//this.set_pop_button.setBounds(120, 356, 40, 19);
-		this.separator3.setBounds(0, 385, 200, 10);
+		this.separator3.setBounds(0, 425, 200, 10);
 		// wind section
-		this.wind_on_off_label.setBounds(40, 397, 150, 20);
-		this.wind_on.setBounds(70, 377, 50, 60);
+		this.wind_on_off_label.setBounds(40, 437, 150, 20);
+		this.wind_on.setBounds(70, 417, 50, 60);
 		this.wind_on.setFont(labelfont);
-		this.wind_off.setBounds(110, 377, 50, 60);
+		this.wind_off.setBounds(110, 417, 50, 60);
 		this.wind_off.setFont(labelfont);
 		this.wind_direction_Label.setFont(labelfont);
-		this.wind_direction_Label.setBounds(102, 427, 150, 20);
-		this.windBox.setBounds(25, 447, 140, 25);
-		this.separator4.setBounds(0, 477, 200, 20);
+		this.wind_direction_Label.setBounds(102, 467, 150, 20);
+		this.windBox.setBounds(25, 487, 140, 25);
+		this.separator4.setBounds(0, 517, 200, 20);
 		// modes
-		this.endless.setBounds(15, 484, 90, 30);
-		this.single_run.setBounds(90, 484, 90, 30);
-		this.separator9.setBounds(0, 510, 200, 20);
+		this.endless.setBounds(15, 524, 90, 30);
+		this.single_run.setBounds(90, 524, 90, 30);
+		this.separator9.setBounds(0, 550, 200, 20);
 		// data
-		this.data_title.setBounds(25, 520, 90, 30);
-		this.separator10.setBounds(0, 545, 200, 20);
-		this.data_steps_title.setBounds(25, 550, 90, 20);
-		this.data_steps_output.setBounds(120, 550, 90, 20);
-		this.separator11.setBounds(0, 565, 200, 20);
-		this.data_pop_title.setBounds(25, 570, 90, 20);
-		this.data_pop_output.setBounds(120, 570, 90, 20);
-		this.separator12.setBounds(0, 585, 200, 20);
-		this.data_burn_area_title.setBounds(25, 590, 90, 20);
-		this.data_burn_area_output.setBounds(120, 590, 90, 20);
-		this.separator13.setBounds(0, 605, 200, 20);
+		this.data_title.setBounds(25, 560, 90, 30);
+		this.separator10.setBounds(0, 585, 200, 20);
+		this.data_steps_title.setBounds(25, 590, 90, 20);
+		this.data_steps_output.setBounds(120, 590, 90, 20);
+		this.separator11.setBounds(0, 605, 200, 20);
+		this.data_pop_title.setBounds(25, 610, 90, 20);
+		this.data_pop_output.setBounds(120, 610, 90, 20);
+		this.separator12.setBounds(0, 625, 200, 20);
+		this.data_burn_area_title.setBounds(25, 630, 90, 20);
+		this.data_burn_area_output.setBounds(120, 630, 90, 20);
+		this.separator13.setBounds(0, 645, 200, 20);
 	
 		// put everything in the frame
 		this.optionsWindow.add(start);
@@ -267,6 +274,8 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.optionsWindow.add(speed_label);
 		this.optionsWindow.add(burn_Label);
 		this.optionsWindow.add(burn_slider);
+		this.optionsWindow.add(tree_slider_Label);
+		this.optionsWindow.add(tree_Slider);
 		this.optionsWindow.add(animals_on_off_label);
 		this.optionsWindow.add(animals_on);
 		this.optionsWindow.add(animals_off);
@@ -275,8 +284,6 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.optionsWindow.add(wander_on);
 		this.optionsWindow.add(wander_off);
 		this.optionsWindow.add(animal_pop_Field);
-		//this.optionsWindow.add(pop_displayField);
-		//this.optionsWindow.add(set_pop_button);
 		this.optionsWindow.add(animal_pop_slider);
 		this.optionsWindow.add(animal_confirm_label);
 		this.optionsWindow.add(wind_on_off_label);
@@ -341,6 +348,12 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			Driver.neWorld.wildlife.placeWildlife();
 			}
 		}
+		else if (e.getSource() == tree_Slider){
+			this.tree_regrow_percent = (double)this.tree_Slider.getValue();
+			Driver.chanceToRegrow 	 = (double)this.tree_Slider.getValue() / 100;
+			this.tree_slider_string  = (int)this.tree_Slider.getValue() + "% tree regrow rate";
+			this.tree_slider_Label.setText(tree_slider_string);
+		}
 	}
 
 	@Override
@@ -394,6 +407,22 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 				Driver.chanceToRegrow = .05;
 			Driver.neWorld = new World(); 
 			Driver.world = new World_Graphics();
+			if (this.weather_initializer.equals("NORTH")){
+				Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.NORTH);
+				Driver.neWorld.weatherSet = true;
+			}
+			if (this.weather_initializer.equals("SOUTH")){
+				Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.SOUTH);
+				Driver.neWorld.weatherSet = true;
+			}
+			if (this.weather_initializer.equals("EAST")){
+				Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.EAST);
+				Driver.neWorld.weatherSet = true;
+			}
+			if (this.weather_initializer.equals("WEST")){
+				Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.WEST);
+				Driver.neWorld.weatherSet = true;
+			}
 			this.finished_start_up = true;
 			
 		}
@@ -527,10 +556,14 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		}
 		else if (evt.getSource() == wind_on){
 			this.windBox.setEnabled(true);
+			this.windBox.setSelectedIndex(0);
 			if (finished_start_up){
 				Driver.neWorld.todaysWeather.clearWeatherPattern();
 				Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.NORTH);
 				Driver.neWorld.weatherSet = true;
+			}
+			else{
+				this.weather_initializer = "NORTH";
 			}
 			this.wind_direction_Label.setForeground(Color.BLACK);
 		}
@@ -544,26 +577,36 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			}
 		else if (evt.getSource() == windBox){
 			int index = windBox.getSelectedIndex();
-			if (finished_start_up){
-				switch (index){
-					case 0:		Driver.neWorld.todaysWeather.clearWeatherPattern();
+			switch (index){
+				case 0:		if (! finished_start_up) this.weather_initializer = "NORTH";
+							else{
+								Driver.neWorld.todaysWeather.clearWeatherPattern();
 								Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.NORTH);
 								Driver.neWorld.weatherSet = true;
-								break;
-					case 1:		Driver.neWorld.todaysWeather.clearWeatherPattern();
+							}
+							break;
+				case 1:		if (! finished_start_up) this.weather_initializer = "EAST";
+							else{
+								Driver.neWorld.todaysWeather.clearWeatherPattern();
 								Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.EAST);
 								Driver.neWorld.weatherSet = true;
-								break;
-					case 2:		Driver.neWorld.todaysWeather.clearWeatherPattern();
+							}
+							break;
+				case 2:		if (! finished_start_up) this.weather_initializer = "SOUTH";
+							else{
+								Driver.neWorld.todaysWeather.clearWeatherPattern();
 								Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.SOUTH);
 								Driver.neWorld.weatherSet = true;
-								break;
-					case 3:		Driver.neWorld.todaysWeather.clearWeatherPattern();
-								Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.WEST);
-								Driver.neWorld.weatherSet = true;
-								break;
-				}
-			}	
+							}
+							break;
+				case 3:		if (! finished_start_up) this.weather_initializer = "WEST";
+							else{
+							Driver.neWorld.todaysWeather.clearWeatherPattern();
+							Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.WEST);
+							Driver.neWorld.weatherSet = true;
+							}
+							break;
+			}
 		}
 		else if (evt.getSource() == endless){
 			Driver.endlessMode = true;

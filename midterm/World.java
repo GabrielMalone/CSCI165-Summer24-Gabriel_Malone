@@ -68,13 +68,11 @@ public class World {
 		} 	
 		this.wildlife.clearDead();
 		if (this.timeStep > 0) {
-			
 			clearPreviousFire();
 			if (! this.burning){
 				if (Driver.animalsOn)
 					this.wildlife.regrowWildlife();
 				randomFireSpot();
-				
 				this.burning = true;
 			}
 		}
@@ -85,7 +83,7 @@ public class World {
 			this.wildlife.resetMoveState();
 			this.wildlife.makeAnEscape();
 			if (Driver.endlessMode)
-				this.wildlife.regrowWildlife();
+				//this.wildlife.regrowWildlife();
 				this.wildlife.clearEscaped();
 			if (Driver.animalsWander)
 				this.wildlife.moveAround();
@@ -96,7 +94,7 @@ public class World {
 			if (! stillBurning()){ 
 				this.burning = false;
 				if (! Driver.endlessMode){
-						Driver.world.timer.stop();
+					Driver.world.timer.stop();
 				}
 			}	
 		}
