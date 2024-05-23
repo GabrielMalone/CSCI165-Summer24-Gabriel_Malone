@@ -69,6 +69,7 @@ public class Cell_Test {
 	public void testEquals(){
 		// check to see if cellEquals checks true correctly with matching coordinates
         // check if cells not equal with different
+        cellOne = new Cell();
         cellTwo = new Cell();                           
         cellOne.coordinates = "10,20";
         cellTwo.coordinates = "10,20";

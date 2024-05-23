@@ -5,7 +5,9 @@ import java.awt.image.BufferedImage;
 
 public class Cell {
 
-	// static means that variable/method will be shared by all instances of that class
+	// static means that a variable/method will be shared by all instances of that class
+	// and that each instance of a class does not have a different value for that variable
+	// or logic for that method. 
 
 	// basic states for a cell
 	public static enum STATES {
@@ -158,6 +160,9 @@ public class Cell {
 			this.stateimage = World.fires[3];
 		}
 		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.SOUTHEAST){
+			this.stateimage = World.fires[3];
+		}
+		else if (this.state == Cell.STATES.BURNING && this.firemoving == Cell.FIREMOVING.VOID){
 			this.stateimage = World.fires[3];
 		}
 		else if (this.state == Cell.STATES.EMPTY){
