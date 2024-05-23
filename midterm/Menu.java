@@ -16,7 +16,7 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.*;  
+import java.awt.*;
 import javax.swing.Timer;
 import java.awt.event.KeyEvent;
 
@@ -29,7 +29,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 	public boolean finished_start_up = false;
 	public String pop_number;
 	public String weather_initializer = "";
-	
+
 	// main layout
 	JFrame optionsWindow 		= new JFrame();
 	//start button
@@ -121,9 +121,9 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 	JLabel data_steps_output	= new JLabel("");
 	JLabel data_burn_area_title	= new JLabel("Burn Area:");
 	JLabel data_burn_area_output= new JLabel("");
-		
-    public Menu(){
-		
+
+	public Menu(){
+
 		timer = new Timer(1, this);
 		timer.start();
 		// map combo box
@@ -164,8 +164,8 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.animal_repop_slider.setEnabled(false);
 		this.animal_repop_label.setForeground(Color.GRAY);
 		this.animal_repop_label.setFont(popFont);
-		// start / pause button 
-        this.start.addActionListener(this);
+		// start / pause button
+		this.start.addActionListener(this);
 		this.pause.addActionListener(this);
 		this.pause.setEnabled(false);
 		this.reset_button.addActionListener(this);
@@ -201,13 +201,13 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.data_steps_title.setForeground(Color.GRAY);
 		this.data_burn_area_title.setForeground(Color.GRAY);
 		this.data_burn_area_output.setForeground(Color.GRAY);
-		// MAIN WINDOW	
-		this.optionsWindow.add(this);	
+		// MAIN WINDOW
+		this.optionsWindow.add(this);
 		this.optionsWindow.setTitle("Options");
-		this.optionsWindow.getSize();			
+		this.optionsWindow.getSize();
 		this.optionsWindow.setSize( 195, 800);
 		this.optionsWindow.setLayout(null);
-		this.optionsWindow.setLocationRelativeTo(null);	
+		this.optionsWindow.setLocationRelativeTo(null);
 		this.optionsWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.optionsWindow.setResizable(false);
 		// start button
@@ -252,7 +252,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.wind_off.setFont(labelfont);
 		this.wind_direction_Label.setFont(labelfont);
 		this.wind_direction_Label.setBounds(102, 517, 150, 20);
-		this.windBox.setBounds(25, 537, 140, 25); 
+		this.windBox.setBounds(25, 537, 140, 25);
 		this.separator4.setBounds(0, 567, 200, 20);
 		// modes
 		this.endless.setBounds(15, 574, 90, 30);
@@ -270,7 +270,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.data_burn_area_title.setBounds(25, 680, 90, 20);
 		this.data_burn_area_output.setBounds(120, 680, 90, 20);
 		this.separator13.setBounds(0, 695, 200, 20);
-	
+
 		// put everything in the frame
 		this.optionsWindow.add(this);
 		this.optionsWindow.add(start);
@@ -326,7 +326,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.optionsWindow.add(separator14);
 		this.optionsWindow.setVisible(true);
 
-    }
+	}
 
 	public void keyPressed (KeyEvent e){
 		System.out.println("test");
@@ -340,7 +340,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			if (this.finished_start_up) Driver.neWorld.catchprobability = this.burn_percent;
 			this.burn_slider_string = (int)(burn_percent * 100) + "% burn rate";
 			this.burn_Label.setText(this.burn_slider_string);
-			
+
 		}
 		else if (e.getSource() == speed_slider){
 			this.speed_perctentage = (double)this.speed_slider.getValue();
@@ -382,7 +382,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			if (! paused)
 			this.data_steps_output.setText(String.valueOf(Driver.neWorld.trackSteps()));
 			this.data_burn_area_output.setText(String.valueOf((int)Driver.neWorld.burnPercentage()) + "%");
-			
+
 		}
 
 		// start button action
@@ -417,10 +417,10 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			}
 
 			Driver.size = Driver.worldResize(Driver.size);
-			Driver.popRegrowth = Driver.startingPop / 4; 
-			if (Driver.size == 21)   
+			Driver.popRegrowth = Driver.startingPop / 4;
+			if (Driver.size == 21)
 				Driver.chanceToRegrow = .05;
-			Driver.neWorld = new World(); 
+			Driver.neWorld = new World();
 			Driver.world = new World_Graphics();
 			if (this.weather_initializer.equals("NORTH")){
 				Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.NORTH);
@@ -439,11 +439,11 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 				Driver.neWorld.weatherSet = true;
 			}
 			this.finished_start_up = true;
-			
+
 		}
 		// pause button action
 		else if (evt.getSource() == pause){
-			
+
 			if (! this.paused){
 				this.paused = true;
 				Driver.world.timer.stop();
@@ -496,13 +496,13 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		else if (evt.getSource() == map_box){
 			int index = map_box.getSelectedIndex();
 			switch (index) {
-				case 0:	Driver.size = 200; 
+				case 0:	Driver.size = 200;
 					break;
 				case 1: Driver.size = 20;
 					break;
 				case 2: Driver.size = 50;
 					break;
-				case 3: Driver.size = 100; 
+				case 3: Driver.size = 100;
 					break;
 				case 4: Driver.size = 150;
 					break;
@@ -513,10 +513,10 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 				case 7: Driver.size = 1000;
 					break;
 				default:
-					Driver.size = 200; 
+					Driver.size = 200;
 					break;
 			}
-		} 
+		}
 		// animal radio buttons
 		else if (evt.getSource() == animals_on){
 			Driver.animalsOn = true;
@@ -609,7 +609,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		}
 		else if (evt.getSource() == single_run){
 			Driver.endlessMode = false;
-			
+
 		}
 	}
 }

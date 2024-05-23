@@ -18,12 +18,11 @@ public class World_Graphics extends JPanel implements ActionListener {
 	public int DELAY = Driver.speed;
 	public Timer timer;
 	private  World world = Driver.neWorld;
-	// create a JFrame instance to contain the JPanel	
+	// create a JFrame instance to contain the JPanel
 	public  JFrame window = new JFrame();
 	// MAP SIZE DRAW SETTINGS
-	public  int IMAGE_HEIGHT 		= setImageSize();
-	public  int IMAGE_WIDTH 		= IMAGE_HEIGHT;
-	public  int WINDOW_HEIGHT 		= setWindowSize(IMAGE_HEIGHT) ;
+	public  int IMAGE_SIZE 		= setImageSize();
+	public  int WINDOW_HEIGHT 	= setWindowSize(IMAGE_SIZE) ;
 
 	public World_Graphics() {
 		world.initializeFire();
@@ -31,8 +30,8 @@ public class World_Graphics extends JPanel implements ActionListener {
 		// mouse clicks to place bombs
 		addMouseMotionListener(new MouseAdapter(){
 			public void mouseDragged(MouseEvent e){
-				int column = e.getX() / IMAGE_HEIGHT;
-				int row = e.getY() /  IMAGE_HEIGHT;
+				int column = e.getX() / IMAGE_SIZE;
+				int row = e.getY() /  IMAGE_SIZE;
 				if (column > 1 && row > 1 && Driver.neWorld.worldMatrix[row][column].getState() == Cell.STATES.TREE){
 					//World.worldMatrix[row][column].setState(Cell.STATES.BURNING);
 					Bomb.placeBomb(row, column);
@@ -42,27 +41,28 @@ public class World_Graphics extends JPanel implements ActionListener {
 		// mouse movement to trail with fire
 		addMouseListener(new MouseAdapter(){
 			public void mousePressed(MouseEvent e){
-				int column = e.getX() / IMAGE_HEIGHT;
-				int row = e.getY() / IMAGE_HEIGHT;
+				int column = e.getX() / IMAGE_SIZE;
+				int row = e.getY() / IMAGE_SIZE;
 				if (Driver.neWorld.worldMatrix[row][column].getState() == Cell.STATES.TREE){
 					//World.worldMatrix[row][column].setState(Cell.STATES.BURNING);
 					Bomb.placeBomb(row, column);
 				}
 			}
-		});	
-		
+		});
+
 		this.window.add(this);
-		// MAIN WINDOW	
-		// give it a title bar							
+		this.window.setPreferredSize(getPreferredSize());
+		// MAIN WINDOW
+		// give it a title bar
 		this.window.setTitle("Goobs Fire Sim");
-		// set window size to 	
-		this.window.getSize();			
+		// set window size to
+		this.window.getSize();
 		this.window.setSize( WINDOW_HEIGHT, (int)(WINDOW_HEIGHT * 1.045));
-		// place window in the middle of the screen, not relative to any other GUI object			
-		this.window.setLocation(0,0);				
+		// place window in the middle of the screen, not relative to any other GUI object
+		this.window.setLocation(0,0);
 		this.window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.window.setVisible(true);
-		
+
 	}
 	/*
 	 * Method to loop the main logic
@@ -80,8 +80,8 @@ public class World_Graphics extends JPanel implements ActionListener {
 	 * Method to initialize the timer for calling the paint methods
 	 */
 	public void initTimer() {
-		this.timer = new Timer(DELAY, this);	
-		this.timer.start();					
+		this.timer = new Timer(DELAY, this);
+		this.timer.start();
 	}
 
 	/*
@@ -93,7 +93,7 @@ public class World_Graphics extends JPanel implements ActionListener {
 		baseMap(g);
 		animalMap(g);
 		//windMap(g);
-		if (Driver.displayMode) 
+		if (Driver.displayMode)
 			dataOverlay(g);
 	}
 	/*
@@ -103,31 +103,31 @@ public class World_Graphics extends JPanel implements ActionListener {
 		Graphics2D graphics2d = (Graphics2D) g;
 		// cartesian points, to control where rectangles are drawn
 		int x = 1, y = 1;
-		for(int i = 0; i < Driver.neWorld.worldMatrix.length; i++){ 
+		for(int i = 0; i < Driver.neWorld.worldMatrix.length; i++){
 			// inner loop processes the number of "columns"
 			for(int j = 0; j < Driver.neWorld.worldMatrix.length; j++){
 				Cell currentCell = Driver.neWorld.worldMatrix[i][j];
 				if (currentCell.getState() == Cell.STATES.TREE){
 					// display scaled versions of trees depending on map size
-					graphics2d.drawImage(currentCell.stateimage, x, y, IMAGE_WIDTH, IMAGE_HEIGHT, null);
+					graphics2d.drawImage(currentCell.stateimage, x, y, this.IMAGE_SIZE, this.IMAGE_SIZE, null);
 				}
 				if (currentCell.getState() == Cell.STATES.BURNING){
 					// display scaled versions of trees depending on map size
-					graphics2d.drawImage(currentCell.stateimage, x, y, IMAGE_WIDTH, IMAGE_HEIGHT, null);
+					graphics2d.drawImage(currentCell.stateimage, x, y, this.IMAGE_SIZE, this.IMAGE_SIZE, null);
 				}
 				if (currentCell.getState() == Cell.STATES.EMPTY){
 					// display scaled versions of trees depending on map size
-					graphics2d.drawImage(currentCell.stateimage, x, y, IMAGE_WIDTH, IMAGE_HEIGHT, null);
+					graphics2d.drawImage(currentCell.stateimage, x, y, this.IMAGE_SIZE, this.IMAGE_SIZE, null);
 				}
 				if (currentCell.getState() == Cell.STATES.BURNT){
 					// display scaled versions of trees depending on map size
-					graphics2d.drawImage(currentCell.stateimage, x, y, IMAGE_WIDTH, IMAGE_HEIGHT, null);
+					graphics2d.drawImage(currentCell.stateimage, x, y, this.IMAGE_SIZE, this.IMAGE_SIZE, null);
 				}
-				x += IMAGE_WIDTH;	
-			} 
-			y += IMAGE_HEIGHT;		
-			x = 1;					
-		} 
+				x += IMAGE_SIZE;
+			}
+			y += IMAGE_SIZE;
+			x = 1;
+		}
 	}
 
 	/*
@@ -137,23 +137,23 @@ public class World_Graphics extends JPanel implements ActionListener {
         Graphics2D graphics2d = (Graphics2D) g;
         // cartesian points, to control where rectangles are drawn
         int x = 1, y = 1;
-        for(int i = 0; i < Driver.neWorld.worldMatrix.length; i++){ 
+        for(int i = 0; i < Driver.neWorld.worldMatrix.length; i++){
             // inner loop processes the number of "columns"
             for(int j = 0; j < Driver.neWorld.worldMatrix.length; j++){
                 Cell currentCell = Driver.neWorld.worldMatrix[i][j];
                 if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEALIVE){
                     // display scaled versions of trees depending on map size
-                    graphics2d.setColor(Color.yellow);graphics2d.fillOval(x, y, IMAGE_HEIGHT, IMAGE_WIDTH);
+                    graphics2d.setColor(Color.yellow);graphics2d.fillOval(x, y, this.IMAGE_SIZE, this.IMAGE_SIZE);
                 }
                 if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEDEAD){
                     // display scaled versions of trees depending on map size
-					graphics2d.setColor(Color.red);graphics2d.fillOval(x, y, IMAGE_HEIGHT, IMAGE_WIDTH);
+					graphics2d.setColor(Color.red);graphics2d.fillOval(x, y, this.IMAGE_SIZE, this.IMAGE_SIZE);
                 }
-                x += IMAGE_WIDTH;
-            } 
-            y += IMAGE_HEIGHT;	
-            x = 1;						
-        } 
+                x += this.IMAGE_SIZE;
+            }
+            y += this.IMAGE_SIZE;
+            x = 1;
+        }
     }
 
 	/*
@@ -169,7 +169,7 @@ public class World_Graphics extends JPanel implements ActionListener {
 		Color map200 = new Color(255, 255, 255, 50);
 		Color map500 = new Color(255, 255, 255, 5);
         int x = 1, y = 1;
-        for(int i = 0; i < Driver.neWorld.worldMatrix.length; i++){ 
+        for(int i = 0; i < Driver.neWorld.worldMatrix.length; i++){
             for(int j = 0; j < Driver.neWorld.worldMatrix.length; j++){
                 Cell currentCell = Driver.neWorld.worldMatrix[i][j];
                 if (currentCell.getCellWeather() == Cell.WEATHER.WINDY){
@@ -181,11 +181,11 @@ public class World_Graphics extends JPanel implements ActionListener {
 					else 							{graphics2d.setColor(map20); 	graphics2d.drawArc(x, y, 15, 15, y, x);}
 
                 }
-                x += IMAGE_WIDTH;
-            } 
-            y += IMAGE_HEIGHT;	
-            x = 1;						
-        } 
+                x += IMAGE_SIZE;
+            }
+            y += IMAGE_SIZE;
+            x = 1;
+        }
     }
 	/*
 	 * Method to display metric data on map directly
@@ -198,7 +198,7 @@ public class World_Graphics extends JPanel implements ActionListener {
 		Color transparentinfo = new Color(1f, 1f, 1f, .9f);
 		Font FontTitle = new Font("SansSerif", Font.BOLD, 8);
 		Font FontData = new Font("SansSerif", Font.BOLD, 17);
-		
+
 		graphics2d.setColor(transparentback);
 		graphics2d.fillRoundRect(WINDOW_HEIGHT - 60, 20, 50, 50, 10, 10);
 		graphics2d.setColor(transparenttitle);
@@ -207,10 +207,10 @@ public class World_Graphics extends JPanel implements ActionListener {
 		graphics2d.setFont(FontData);
 		graphics2d.setColor(transparentinfo);
 		if (Driver.neWorld.timeStep < 9) 			graphics2d.drawString(String.valueOf(Driver.neWorld.timeStep), WINDOW_HEIGHT - 40, 55);
-		else if (Driver.neWorld.timeStep < 100) 		graphics2d.drawString(String.valueOf(Driver.neWorld.timeStep), WINDOW_HEIGHT - 45,55);
+		else if (Driver.neWorld.timeStep < 100) 	graphics2d.drawString(String.valueOf(Driver.neWorld.timeStep), WINDOW_HEIGHT - 45,55);
 		else if (Driver.neWorld.timeStep < 1000 ) 	graphics2d.drawString(String.valueOf(Driver.neWorld.timeStep), WINDOW_HEIGHT - 52, 55);
-		else 								graphics2d.drawString(String.valueOf(Driver.neWorld.timeStep), WINDOW_HEIGHT - 57, 55);
-		
+		else 										graphics2d.drawString(String.valueOf(Driver.neWorld.timeStep), WINDOW_HEIGHT - 57, 55);
+
 		// BURN AREA BOX AND INFO
 		graphics2d.setColor(transparentback);
 		graphics2d.fillRoundRect(WINDOW_HEIGHT - 60, 75, 50, 50, 10, 10);
@@ -272,36 +272,39 @@ public class World_Graphics extends JPanel implements ActionListener {
 			return size = 30;
 		}
 		else if (Driver.size == 51){
-		return size = (int)(Driver.size / 4); 
+		return size = (int)(Driver.size / 4);
 		}
 		else if (Driver.size == 101){
-			return size = (int)(Driver.size / 15); 
+			return size = (int)(Driver.size / 15);
 			}
 		else if (Driver.size == 151){
-			return size = (int)(Driver.size / 35); 
+			return size = (int)(Driver.size / 35);
 			}
 		else if (Driver.size == 201){
-			return size = (int)(Driver.size / 60); 
+			return size = (int)(Driver.size / 60);
 			}
+		else if (Driver.size == 301){
+				return size = (int)(Driver.size / 100);
+				}
 		else if (Driver.size == 401){
-			return size = (int)(Driver.size / 200); 
+			return size = (int)(Driver.size / 200);
 			}
 		else if (Driver.size == 501){
-			return size = (int)(Driver.size / 250); 
+			return size = (int)(Driver.size / 250);
 			}
 		else if (Driver.size == 1001){
-			return size = (int)(Driver.size / 1000); 
+			return size = (int)(Driver.size / 1000);
 			}
 		return size;
-		
+
 	}
 
 	/*
 	 * Method to set window size depending on size of world matrix
 	 */
-	public int setWindowSize(int IMAGE_HEIGHT){
+	public int setWindowSize(int IMAGE_SIZE){
 		int size;
-		size = (Driver.size * IMAGE_HEIGHT);
+		size = (Driver.size * IMAGE_SIZE);
 		return size;
 	}
 

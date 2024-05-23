@@ -18,16 +18,16 @@ public class Wildlife {
 	public void placeWildlife(){
 		for (int i = 0; i < Driver.startingPop; i++){
 			// find location on map for object
-			int row_location = rand.nextInt(1, Driver.neWorld.worldMatrix.length - 1);
-			int column_location = rand.nextInt(1, Driver.neWorld.worldMatrix.length - 1);
+			int row_location = rand.nextInt(1, Driver.neWorld.size - 1);
+			int column_location = rand.nextInt(1, Driver.neWorld.size - 1);
 			// get cell at this location
 			Cell cell_at_this_location = Driver.neWorld.worldMatrix[row_location][column_location];
 			// update cell
 			cell_at_this_location.setObject(Cell.OBJECTS.WILDLIFEALIVE);
-			this.activeWildlifeCells.add(cell_at_this_location);	
+			this.activeWildlifeCells.add(cell_at_this_location);
 		}
 	}
-	
+
 	/*
 	 * Method to repopulate a map steadily
 	 */
@@ -45,7 +45,7 @@ public class Wildlife {
 			}
 		}
 	}
-	
+
 	/*
 	 * Method to see if the current cell, which is on fire, has any wildlife.
 	 * If so, animal dies.
@@ -57,14 +57,14 @@ public class Wildlife {
 			this.deadanimals.add(burningCell);
 		}
 	}
-	
+
 	/*
 	 * Method to help animals flee from fire effectively
 	 */
 	public void makeAnEscape(){
 		// iterate through world
-		for( int i = 0 ; i < Driver.neWorld.worldMatrix.length - 1 ; i ++){
-			for (int j = 0 ; j < Driver.neWorld.worldMatrix.length - 1 ; j ++){
+		for( int i = 0 ; i < Driver.neWorld.size - 1 ; i ++){
+			for (int j = 0 ; j < Driver.neWorld.size - 1 ; j ++){
 				Cell current_location = Driver.neWorld.worldMatrix[i][j];
 				// if wildife present
 				if (current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.row != 0 && current_location.column != 0){
@@ -88,19 +88,19 @@ public class Wildlife {
 							}
 						}
 					}
-				}		
+				}
 			}
 		}
 	}
 
 	/*
-	 * Method to have animals move around randomly to open/safe spots while not 
+	 * Method to have animals move around randomly to open/safe spots while not
 	 * fleeing any fires.
 	 */
 	public void moveAround(){
 		// if not fleeing a fire - randomly move to a nearby cell if all clear
-		for( int i = 0 ; i < Driver.neWorld.worldMatrix.length - 1 ; i ++){
-			for (int j = 0 ; j < Driver.neWorld.worldMatrix.length - 1 ; j ++){
+		for( int i = 0 ; i < Driver.neWorld.size - 1 ; i ++){
+			for (int j = 0 ; j < Driver.neWorld.size - 1 ; j ++){
 				Cell current_location = Driver.neWorld.worldMatrix[i][j];
 				if (current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && ! current_location.moved && current_location.row != 0 && current_location.column != 0){
 					ArrayList<Cell> neighborArray = new ArrayList<>();
@@ -120,9 +120,9 @@ public class Wildlife {
 							break;
 						}
 						neighborArray.remove(neighboring_cell);
-					}	
-				}		
-			}	
+					}
+				}
+			}
 		}
 	}
 
@@ -130,8 +130,8 @@ public class Wildlife {
 	 * Method to reset cell's moved state from true to false (to prevent an animal from moving more than once per turn)
 	 */
 	public void resetMoveState(){
-		for( int i = 0 ; i < Driver.neWorld.worldMatrix.length - 1 ; i ++){
-			for (int j = 0 ; j < Driver.neWorld.worldMatrix.length - 1 ; j ++){
+		for( int i = 0 ; i < Driver.neWorld.size - 1 ; i ++){
+			for (int j = 0 ; j < Driver.neWorld.size - 1 ; j ++){
 				Cell current_location = Driver.neWorld.worldMatrix[i][j];
 				if (current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE){
 					current_location.moved = false;
@@ -144,20 +144,20 @@ public class Wildlife {
 	 *  Clear any animals who made it to the border safely when fleeing fire
 	 */
 	public void clearEscaped(){
-		for( int i = 0 ; i < Driver.neWorld.worldMatrix.length; i ++){
-			for (int j = 0 ; j < Driver.neWorld.worldMatrix.length; j ++){
+		for( int i = 0 ; i < Driver.neWorld.size; i ++){
+			for (int j = 0 ; j < Driver.neWorld.size; j ++){
 				Cell current_location = Driver.neWorld.worldMatrix[i][j];
-				if (current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.row 		== 0 || 
-					current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.column 	== 0 || 
-					current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.row 		== Driver.neWorld.worldMatrix.length - 1 || 
-					current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.column 	== Driver.neWorld.worldMatrix.length - 1){
+				if (current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.row 		== 0 ||
+					current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.column 	== 0 ||
+					current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.row 		== Driver.neWorld.size- 1 ||
+					current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.column 	== Driver.neWorld.size- 1){
 						current_location.setObject(Cell.OBJECTS.VOID);
 						escapedanimals ++ ;
 				}
 			}
 		}
 	}
-	
+
 	/*
 	 * Method to see if the current cell is a safe spot to move to.
 	 */
@@ -173,8 +173,8 @@ public class Wildlife {
 	 */
 	private boolean clearMoveChoice(Cell option){
 		// can only escape map if running from fire
-		// verbose conditional because wanted to be able tweak a lot of settings. 
-		if (option.getState() != Cell.STATES.BURNING && option.getObject() == Cell.OBJECTS.VOID && option.getState() != Cell.STATES.BURNT && option.row >= 0 && option.column >= 0 && option.row <= Driver.neWorld.worldMatrix.length && option.column <= Driver.neWorld.worldMatrix.length)
+		// verbose conditional because wanted to be able tweak a lot of settings.
+		if (option.getState() != Cell.STATES.BURNING && option.getObject() == Cell.OBJECTS.VOID && option.getState() != Cell.STATES.BURNT && option.row >= 0 && option.column >= 0 && option.row <= Driver.neWorld.size&& option.column <= Driver.neWorld.size)
 			return true;
 		return false;
 	}
@@ -183,13 +183,13 @@ public class Wildlife {
 	 * Method to randomly clear dead animals from the map
 	 */
 	public void clearDead(){
-		for (int f = 0 ; f < Driver.neWorld.worldMatrix.length - 1; f ++ ){
-            for(int g = 0 ; g < Driver.neWorld.worldMatrix.length - 1; g ++){    
+		for (int f = 0 ; f < Driver.neWorld.size - 1; f ++ ){
+            for(int g = 0 ; g < Driver.neWorld.size - 1; g ++){
 				Cell currentCell = Driver.neWorld.worldMatrix[f][g];
 				double chance_to_decay = rand.nextDouble(1);
 				if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEDEAD && chance_to_decay < .1){
 					currentCell.setObject(Cell.OBJECTS.VOID);
-			
+
 				}
 			}
 		}
@@ -199,8 +199,8 @@ public class Wildlife {
 	 * Method to clear all animals from a map
 	 */
 	public void clearAnimals(){
-		for (int f = 0 ; f < Driver.neWorld.worldMatrix.length - 1; f ++ ){
-            for(int g = 0 ; g < Driver.neWorld.worldMatrix.length - 1; g ++){ 
+		for (int f = 0 ; f < Driver.neWorld.size - 1; f ++ ){
+            for(int g = 0 ; g < Driver.neWorld.size - 1; g ++){
 				Cell currentCell = Driver.neWorld.worldMatrix[f][g];
 				if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEALIVE)
 					currentCell.setObject(Cell.OBJECTS.VOID);
@@ -209,28 +209,28 @@ public class Wildlife {
 	}
 
 	/*
-	 * Method to determine the opposite direction of a neighboring cell (using a cell's relative position info). Used in fleeing fires. 
+	 * Method to determine the opposite direction of a neighboring cell (using a cell's relative position info). Used in fleeing fires.
 	 */
 	private Cell.POSITIONASNEIGHBOR oppositeDirection(Cell neighboringCell){
 		// default
 		Cell.POSITIONASNEIGHBOR oppositeDirection = Cell.POSITIONASNEIGHBOR.NORTH;
-		
+
 		switch (neighboringCell.getFireMoving()) {
 
 			case NORTH: 	return Cell.POSITIONASNEIGHBOR.NORTH;
-		
+
 			case SOUTH:		return Cell.POSITIONASNEIGHBOR.SOUTH;
-			
+
 			case EAST: 		return Cell.POSITIONASNEIGHBOR.EAST;
-			
+
 			case WEST: 		return Cell.POSITIONASNEIGHBOR.WEST;
-		
+
 			case NORTHEAST:	return Cell.POSITIONASNEIGHBOR.NORTH;
 
 			case NORTHWEST: return Cell.POSITIONASNEIGHBOR.NORTH;
-		
+
 			case SOUTHEAST: return Cell.POSITIONASNEIGHBOR.SOUTH;
-			
+
 			case SOUTHWEST: return Cell.POSITIONASNEIGHBOR.SOUTH;
 			// shouldn't come up
 			case VOID: return Cell.POSITIONASNEIGHBOR.NORTH;

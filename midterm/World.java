@@ -21,6 +21,8 @@ public class World {
 	public  Cell [][] nextStep = new Cell [size][size];
 	// matrix to hold Cell colors
 	public  String [][] rgbWorld = new String [size][size];
+	// for unit testing purposes
+	public Cell centerCell;
 	// timestep recorder
 	public int timeStep = 0;
 	// probability of a tree catching on fire
@@ -36,17 +38,18 @@ public class World {
 	public  static BufferedImage [] fires = new BufferedImage[4];
 	public  static BufferedImage [] burnt = new BufferedImage[4];
 	public  static BufferedImage [] anima = new BufferedImage[4];
+	// for stochatic method
 	private Random rand = new Random();
-	
+
 	/*
 	 * Instance creator
 	 */
 	public World(){
 		// load images
 		createAnimals();
-        createTrees();
-        createFires();
-        createBurnt();
+  		createTrees();
+  		createFires();
+  		createBurnt();
 		// create base world
 		fillWorld();
 
@@ -58,9 +61,9 @@ public class World {
 	 */
 	public void initializeFire(){
 		// place animals if animals on
-		if (Driver.animalsOn)	
+		if (Driver.animalsOn)
 			this.wildlife.placeWildlife();
-		// creates next instance of the world	
+		// creates next instance of the world
 		copyWorldMatrix();
 		// initial fire
 		setCenterCellonFire();
@@ -71,20 +74,21 @@ public class World {
 	// MAIN LOOP
 	/*
 	 * Method to run the simulation logic
-	 * 
+	 *
 	 */
 	public void spreadFire(){
 		// SIMULATION LOOP
 		if (this.weatherSet){
 			// turn on the wind
+			//randomWeatherDirection();
 			this.todaysWeather.pattern();
 		}
-		// decay dead at each round 	
+		// decay dead at each round
 		this.wildlife.clearDead();
 		if (this.timeStep > 1) {
 			// snuff out anything that was on fire
 			clearPreviousFire();
-			// if fires go out and endless mode on 
+			// if fires go out and endless mode on
 			// reset the fires at random spots
 			if (! this.burning){
 				randomFireSpot();
@@ -110,16 +114,15 @@ public class World {
 		designatetNeighborsOnFire();
 		if (this.timeStep > 0){
 			// if single-run mode, end here
-			if (! stillBurning()){ 
+			if (! stillBurning()){
 				this.burning = false;
 				if (! Driver.endlessMode){
 					Driver.world.timer.stop();
 				}
-			}	
+			}
 		}
 		displayData();
 	}
-
 
 	// WORLD LOGIC
 
@@ -128,8 +131,8 @@ public class World {
 	 */
 	public void fillWorld(){
 		// fill the matrix with cells
-		for (int i = 0 ; i < this.worldMatrix.length ; i ++){
-			for (int j = 0 ; j < this.worldMatrix.length; j++){
+		for (int i = 0 ; i < this.size ; i ++){
+			for (int j = 0 ; j < this.size; j++){
 				// create new cell object for each step
 				Cell newCell = new Cell();
 				newCell.row = i;
@@ -137,7 +140,7 @@ public class World {
 				newCell.coordinates = i + "," + j;
 				// conditions for empty and tree
 				// if at edge tops/bottom
-				if (i == 0 || i == this.worldMatrix.length - 1){
+				if (i == 0 || i == this.size - 1){
 					newCell.setState(Cell.STATES.EMPTY);
 					this.rgbWorld[i][j] = newCell.cellColor;
 					newCell.row = i;
@@ -145,7 +148,7 @@ public class World {
 					newCell.coordinates = i + "," + j;
 				}
 				// if at edge left/right
-				else if ( j == 0 || j == this.worldMatrix.length - 1){
+				else if ( j == 0 || j == this.size - 1){
 					newCell.setState(Cell.STATES.EMPTY);
 					this.rgbWorld[i][j] = newCell.cellColor;
 					newCell.row = i;
@@ -183,8 +186,8 @@ public class World {
 	 * Method to copy the previous world iteration to the current one
 	 */
 	void applyChangesToWorld(){
-		for(int g = 0 ; g < this.worldMatrix.length ; g ++){
-			for(int h = 0 ; h < this.worldMatrix.length ; h ++){
+		for(int g = 0 ; g < this.size ; g ++){
+			for(int h = 0 ; h < this.size ; h ++){
 				worldMatrix[g][h] = nextStep[g][h];
 			}
 		}
@@ -194,16 +197,16 @@ public class World {
 	 * Method to copy the current world iteration to the next one
 	 */
 	void copyWorldMatrix(){
-		for(int g = 0 ; g < this.worldMatrix.length ; g ++){
-			for(int h = 0 ; h < this.worldMatrix.length ; h ++){
+		for(int g = 0 ; g < this.size ; g ++){
+			for(int h = 0 ; h < this.size ; h ++){
 				nextStep[g][h] = this.worldMatrix[g][h];
 			}
 		}
 	}
 
-	/* 
+	/*
 	private void displayWorld(){
-		
+
 		// for displaying the matrices in terminal
         //Terminal_Graphics t_graphics = new Terminal_Graphics();
 		// display the world
@@ -214,7 +217,7 @@ public class World {
 			}
 		// turn off to prevent slow down of bigger maps
 		//t_graphics.displayWorld();
-	
+
 	}
 
 	*/
@@ -226,7 +229,7 @@ public class World {
 		if (this.burning)
 			this.timeStep += 1;
 			return this.timeStep;
-	
+
 	}
 
 	/*
@@ -237,30 +240,41 @@ public class World {
 		return false;
 	}
 
+	/**
+	 * Method to find/set the center cell of the matrix
+	 */
+	void placeCenterCell(){
+		double size = this.size;
+		// find center (round up e.g. 5.5 --> 6.0)
+		double center = Math.ceil(size / 2);
+		// convert to an int (e.g. 6.0 --> 6) for matrix placement
+		int centered = (int)center;
+		// set center after the loop complete
+		this.centerCell = new Cell();
+		// for old graphics set up
+		this.rgbWorld[centered][centered] = centerCell.cellColor;
+		// place center cell and assign its coordinates for other logic
+		this.worldMatrix[centered][centered] =  this.centerCell;
+		centerCell.coordinates = centered + "," + centered;
+		centerCell.row = centered;
+		centerCell.column = centered;
+
+	}
 	/*
 	 * Method to set the cell at the center of a matrix on fire
 	 */
 	void setCenterCellonFire(){
-		// find center
-		int center = size / 2;
-		// set center after the loop complete
-		Cell centerCell = new Cell();
-		//middle cell on fire
-		centerCell.setState(Cell.STATES.BURNING);
-		this.rgbWorld[center][center] = centerCell.cellColor;
-		this.worldMatrix[center][center] =  centerCell;
-		centerCell.coordinates = center + "," + center;
-		centerCell.row = center;
-		centerCell.column = center;
+		placeCenterCell();
+		this.centerCell.setState(Cell.STATES.BURNING);
 	}
-	
+
 	/*
 	 * Method to change burn characteristics of a cell in path or near the path of wind
 	 */
 	private double windDirectionEffect(Cell homeCell, Cell currentCell, double chanceToBurn){
 		// array for all of a cell's direct neighbors
 		Cell[] neighbors = findNeighbors(homeCell.row, homeCell.column);
-		
+
 		Cell north 		= neighbors[0];
 		Cell south 		= neighbors[1];
 		Cell east 		= neighbors[2];
@@ -271,7 +285,7 @@ public class World {
 		Cell southwest 	= neighbors[7];
 
 		HashMap<Cell, String> directions = new HashMap<>();
-		
+
 		directions.put(north, "NORTH");
 		directions.put(south, "SOUTH");
 		directions.put(east, "EAST");
@@ -285,39 +299,39 @@ public class World {
 		if (directions.get(currentCell).equals(todaysWeather.windDirection)){
 			chanceToBurn *= currentCell.burnMultiplier();
 			return chanceToBurn;
-		} 
-		else chanceToBurn += .1;
+		}
+		else chanceToBurn += .025;
 		return chanceToBurn;
 	}
-	
+
 	/*
 	 * Method to see which neighbors of a burning cell catch on fire
 	 */
 	private void seeWhatBurns(Cell[] neighboringcells, Cell homeCell){
 		for (Cell cell : neighboringcells){
-            if(	cell.getState().equals(Cell.STATES.TREE) 
+            if(	cell.getState().equals(Cell.STATES.TREE)
 			&& 	cell.getCellWeather().equals(Cell.WEATHER.CALM)){
 				double chanceToBurn = probCatch();
-				if 	(chanceToBurn < catchprobability){
+				if 	(chanceToBurn < this.catchprobability){
 					setMapOnFire(cell, homeCell);
                 }
             }
-			
+
 			else if (cell.getState().equals(Cell.STATES.TREE)
 			&& 	cell.getCellWeather().equals(Cell.WEATHER.WINDY)){
 				double chanceToBurn = probCatch();
 				chanceToBurn = windDirectionEffect(homeCell, cell, chanceToBurn);
-				if 	(chanceToBurn < catchprobability){
+				if 	(chanceToBurn < this.catchprobability){
 					setMapOnFire(cell, homeCell);
-					
+
                 }
 			}
         }
     }
 
     void designatetNeighborsOnFire(){
-        for (int f = 0 ; f < this.worldMatrix.length - 1; f ++ ){
-            for(int g = 0 ; g < this.worldMatrix.length - 1; g ++){    
+        for (int f = 0 ; f < this.size - 1; f ++ ){
+            for(int g = 0 ; g < this.size - 1; g ++){
 				Cell currentCell = this.worldMatrix[f][g];
 				if (somethingBurning(currentCell)){
 					Cell [] neighboringCells = findNeighbors(f, g);
@@ -325,38 +339,38 @@ public class World {
 					}
                 }
             }
-        }   
+        }
 
 	/*
 	 * See if there are any burning cells anywhere in the matrix
 	 */
     public boolean stillBurning(){
-        for (int f = 0 ; f < this.worldMatrix.length - 1; f ++ ){
-            for(int g = 0 ; g < this.worldMatrix.length - 1; g ++){    
+        for (int f = 0 ; f < this.size - 1; f ++ ){
+            for(int g = 0 ; g < this.size - 1; g ++){
                 if (somethingBurning(worldMatrix[f][g])){
                     return true;
                 }
-            }     
+            }
         }
         return false;
-    }  
-	
+    }
+
 	/*
 	 * Clear any fires from the previous iteration
 	 */
 	void clearPreviousFire(){
-		for (int f = 0 ; f < this.worldMatrix.length - 1; f ++ ){
-            for(int g = 0 ; g < this.worldMatrix.length - 1; g ++){    
+		for (int f = 0 ; f < this.size - 1; f ++ ){
+            for(int g = 0 ; g < this.size - 1; g ++){
 				Cell currentCell = worldMatrix[f][g];
 				if (somethingBurning(currentCell)){
 					currentCell.setState(Cell.STATES.BURNT);
-		
+
 				}
 			}
 		}
 	}
 	/*
-	 * Method to set a cell on fire once it has been determined that it should be set on fire. 
+	 * Method to set a cell on fire once it has been determined that it should be set on fire.
 	 */
 	public void setMapOnFire(Cell cell, Cell homeCell){
 		// for determining direction of fire
@@ -419,7 +433,7 @@ public class World {
 	 * Helps animals flee more effectively
 	 */
 	public  Cell [] findNeighbors(int row, int column){
-		
+
 		Cell north      = this.worldMatrix    [row - 1]   [column];
 		Cell south      = this.worldMatrix    [row + 1]   [column];
 		Cell east       = this.worldMatrix    [row]       [column + 1];
@@ -446,8 +460,8 @@ public class World {
 	 * Method to regrow trees on the map where there was once a fire
 	 */
 	public void regrowTrees(){
-		for(int j = 0 ; j < this.worldMatrix.length - 1; j ++){
-			for (int i = 0 ; i < this.worldMatrix.length - 1 ; i ++)	{
+		for(int j = 0 ; j < this.size - 1; j ++){
+			for (int i = 0 ; i < this.size - 1 ; i ++)	{
 				Cell currentCell = this.worldMatrix [j][i];
 				if (currentCell.getState() == Cell.STATES.BURNT){
 					double chance_to_regorw = rand.nextDouble(1);
@@ -460,29 +474,29 @@ public class World {
 	}
 
 	/*
-	 * Method to place random cells in the matrix on fire. 
+	 * Method to place random cells in the matrix on fire.
 	 */
 	public void randomFireSpot(){
 		// set 3 random fires after main fire goes out
 		for (int i = 0 ; i < Driver.numberOfFires ; i ++){
-			int rand_index = rand.nextInt(1, this.worldMatrix.length-1);
-			int rand_index_b = rand.nextInt(1, this.worldMatrix.length-1);
+			int rand_index = rand.nextInt(1, this.size-1);
+			int rand_index_b = rand.nextInt(1, this.size-1);
 			Cell currentCell = worldMatrix[rand_index][rand_index_b];
 			if (currentCell.getState() == Cell.STATES.TREE){
 				currentCell.setState(Cell.STATES.BURNING);
-				
-			}	
+
+			}
 		}
 	}
 
-	// METRICS FUNCTIONS 
+	// METRICS FUNCTIONS
 	/*
 	 * Method to determine what percentage of the matrix is burned
 	 */
 	private double totalBurned(){
 		double burned_area = 0;
-		for(int j = 0 ; j < this.worldMatrix .length - 1; j ++){
-			for (int i = 0 ; i < this.worldMatrix .length - 1 ; i ++)	{
+		for(int j = 0 ; j < this.size - 1; j ++){
+			for (int i = 0 ; i < this.size - 1 ; i ++)	{
 				if (this.worldMatrix [j][i].getState() == Cell.STATES.BURNT){
 					burned_area += 1;
 				}
@@ -496,7 +510,7 @@ public class World {
 	 */
 	public double burnPercentage(){
 		double burn_area = totalBurned();
-		double total_cells = (this.worldMatrix .length-1) * (this.worldMatrix .length-1);
+		double total_cells = (this.size-1) * (this.size-1);
 		double percetage_burned = (burn_area / total_cells) * 100;
 		return percetage_burned;
 	}
@@ -517,26 +531,26 @@ public class World {
 	 */
 	public double totalDead(){
 		int total_dead = 0;
-		for (int i = 1;  i < this.worldMatrix .length - 1; i ++){
-			for (int j = 1 ; j < this.worldMatrix .length - 1; j ++){
+		for (int i = 1;  i < this.size - 1; i ++){
+			for (int j = 1 ; j < this.size - 1; j ++){
 				if (this.worldMatrix [i][j].getObject() == Cell.OBJECTS.WILDLIFEDEAD){
 					total_dead += 1;
-					}	
+					}
 				}
 			}
 			return total_dead;
 		}
-	
+
 	/*
 	* Method to show the total live animals on the map
-	*/	
+	*/
 	public double totalAlive(){
 		double total_alive = 0;
-		for (int i = 1;  i < this.worldMatrix .length - 1; i ++){
-			for (int j = 1 ; j < this.worldMatrix .length - 1; j ++){
+		for (int i = 1;  i < this.size - 1; i ++){
+			for (int j = 1 ; j < this.size - 1; j ++){
 				if (this.worldMatrix [i][j].getObject() == Cell.OBJECTS.WILDLIFEALIVE){
 					total_alive ++;
-					}	
+					}
 				}
 			}
 			return total_alive;
@@ -546,8 +560,8 @@ public class World {
 	 * Method to dispay metrics in the terminal
 	 */
 	public void displayData(){
-		System.out.print("\033[H\033[2J");  
-        System.out.flush(); 
+		System.out.print("\033[H\033[2J");
+        System.out.flush();
 		int steps = trackSteps();
 		double percentage = burnPercentage();
 		double mortality_rate = mortalityRate();
@@ -555,8 +569,8 @@ public class World {
 		double animal_pop = totalAlive();
 		long pop = Math.round(animal_pop);
 		//if (animal_pop == 0) wildlife.repopulate();
-		int area = worldMatrix.length * worldMatrix.length;
-		System.out.printf("%nSteps:          %d%nBurn area:      %.2f%%%nAnimal pop:     %d%nMortality rate: %.2f%%%nWind direction: %s%nMap Size:       %d SQ acres%n", 
+		int area = size * size;
+		System.out.printf("%nSteps:          %d%nBurn area:      %.2f%%%nAnimal pop:     %d%nMortality rate: %.2f%%%nWind direction: %s%nMap Size:       %d SQ acres%n",
 		steps, percentage, pop, mortality_rate, direction, area);
 	}
 
@@ -565,19 +579,19 @@ public class World {
 	 * Method to load tree images for the map
 	 */
 	public void createTrees(){
-        	
+
 		try{
 
 			BufferedImage tree2 = ImageIO.read(getClass().getResourceAsStream("/trees/tree1.png"));
 			BufferedImage tree3 = ImageIO.read(getClass().getResourceAsStream("/trees/tree3.png"));
 			BufferedImage tree4 = ImageIO.read(getClass().getResourceAsStream("/trees/tree4.png"));
 			BufferedImage tree5 = ImageIO.read(getClass().getResourceAsStream("/trees/tree5.png"));
-			
+
 			trees[0] = tree2;
 			trees[1] = tree3;
 			trees[2] = tree4;
 			trees[3] = tree5;
-	
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -586,19 +600,19 @@ public class World {
 	 * Method to laod fire images for the map
 	 */
 	public void createFires(){
-        	
+
 		try{
 
 			BufferedImage fire1 = ImageIO.read(getClass().getResourceAsStream("/fires/fireEast.png"));
 			BufferedImage fire2 = ImageIO.read(getClass().getResourceAsStream("/fires/fireNorth.png"));
 			BufferedImage fire3 = ImageIO.read(getClass().getResourceAsStream("/fires/fireWest.png"));
 			BufferedImage fire4 = ImageIO.read(getClass().getResourceAsStream("/fires/fireSouth.png"));
-			
+
 			fires[0] = fire1;
 			fires[1] = fire2;
 			fires[2] = fire3;
 			fires[3] = fire4;
-	
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -607,15 +621,15 @@ public class World {
 	 * Method to load burnt cell images for the map
 	 */
 	public void createBurnt(){
-        	
+
 		try{
 
 			BufferedImage burnt1 = ImageIO.read(getClass().getResourceAsStream("/burnt/bunt1.png"));
 			BufferedImage burnt2 = ImageIO.read(getClass().getResourceAsStream("/burnt/burnt2.png"));
 			burnt[0] = burnt1;
 			burnt[1] = burnt2;
-		
-	
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -624,17 +638,39 @@ public class World {
 	 * Method to load animal images for the map
 	 */
 	public void createAnimals(){
-        	
+
 		try{
 
 			BufferedImage animal1 = ImageIO.read(getClass().getResourceAsStream("/animals/deaddino.png"));
 			BufferedImage animal2 = ImageIO.read(getClass().getResourceAsStream("/animals/dino2.png"));
 			anima[0] = animal1;
-			anima[1] = animal2; 
-		
+			anima[1] = animal2;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+	/* 
+	private void randomWeatherDirection(){
+		int random = rand.nextInt(0,100);
+		if (random < 1){
+			int rand_index = rand.nextInt(0,3);
+			switch (rand_index) {
+				case 0: this.todaysWeather.setDirection(Weather.DIRECTION.NORTH);
+
+					break;
+				case 1: this.todaysWeather.setDirection(Weather.DIRECTION.EAST);
+
+					break;
+				case 2: this.todaysWeather.setDirection(Weather.DIRECTION.SOUTH);
+
+					break;
+				case 3: this.todaysWeather.setDirection(Weather.DIRECTION.WEST);
+
+					break;
+			}
+		}
+	}
+	*/
 
 }

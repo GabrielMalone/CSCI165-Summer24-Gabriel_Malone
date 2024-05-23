@@ -6,11 +6,11 @@ import java.awt.image.BufferedImage;
 public class Cell {
 
 	// static means that variable/method will be shared by all instances of that class
-	
+
 	// basic states for a cell
 	public static enum STATES {
-		EMPTY, 
-		TREE, 
+		EMPTY,
+		TREE,
 		BURNING,
 		BURNT;
 	}
@@ -56,7 +56,7 @@ public class Cell {
 	private OBJECTS object = OBJECTS.VOID;
 	private FIREMOVING firemoving = FIREMOVING.VOID;
 	private POSITIONASNEIGHBOR position;
-	double burnMultiplier = 1.0;
+	double burnMultiplier = 0;
 	public String cellColor;
 	int row;
 	int column;
@@ -64,6 +64,10 @@ public class Cell {
 	public BufferedImage stateimage;
 	public BufferedImage animalimage;
 	public boolean moved = false;
+
+	public Cell(){
+
+	}
 
 	/*
 	 * Method to set a cells position as a neighbor
@@ -103,7 +107,7 @@ public class Cell {
 		// set image for animals
 		if (this.object == Cell.OBJECTS.WILDLIFEALIVE) 	this.animalimage = World.anima[1];
 	}
-	
+
 	/**
 	 * Method to get a cell's object
 	 * @return cell's object
@@ -158,7 +162,7 @@ public class Cell {
 		}
 		else if (this.state == Cell.STATES.EMPTY){
 			this.stateimage = World.burnt[0];
-		}	
+		}
 		else if (this.state == Cell.STATES.BURNT){
 				this.stateimage = World.burnt[0];
 		}
@@ -194,11 +198,11 @@ public class Cell {
 	public double burnMultiplier(){
 		// if cell burning and windy, increase burn chance of cell in path of wind
 		if (this.weather.equals(WEATHER.WINDY)){
-			this.burnMultiplier *= -1;
+			this.burnMultiplier -= .005;
 		}
 		return this.burnMultiplier;
 	}
-	
+
 	/**
 	 * Method to return the cell's coordinates in integer form
 	 * @return array of integers
@@ -212,9 +216,9 @@ public class Cell {
 	}
 
 	/*
-	 * Method to  
+	 * Method to see if one cell is the same as another cell in the matrix
 	 */
-	public boolean equals(Cell otherCell){
+	public boolean cellEquals(Cell otherCell){
 		if (this.coordinates.equals(otherCell.coordinates)) return true;
 		else return false;
 	}
