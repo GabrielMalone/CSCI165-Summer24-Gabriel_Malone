@@ -24,44 +24,6 @@ public class Driver {
 	public static boolean start = false;
 
 	public static void main(String[] args) {
-		// create world instance
-		int size = 6;                                               // pick a size (row and column length)
-		size = Driver.worldResize(size);                             // adjust size as necessary (25->25)
-		Driver.catchprobability = .25;                                 // over time, 25% of neighbors, on average, should be set on fire
-		Driver.size = size;                                          // set size for the matrix (25 * 25)
-		int t = 0;
-		double [] numFiresArray = new double [100000];
-		World worldOne = new World(); 
-		while (t < 100000){                          
-			worldOne.fillWorld();
-			worldOne.setCenterCellonFire();
-			worldOne.copyWorldMatrix();
-			worldOne.designatetNeighborsOnFire();
-			worldOne.clearPreviousFire();  
-			double numberOfFires = 0;
-			worldOne.applyChangesToWorld();
-			Cell [] centerNeighbors = worldOne.findNeighbors(worldOne.centerCell.row, worldOne.centerCell.column);
-			for (Cell neighboringCell : centerNeighbors){
-				if (neighboringCell.getState() == Cell.STATES.BURNING){
-					numberOfFires ++;
-				}
-			}
-			numFiresArray[t] = numberOfFires;
-			t ++;
-		}
-		// find average of ints in the array
-		// sum the results
-		// divide by length of array
-		double sum = 0;
-		for (double result : numFiresArray){
-			sum += result;
-		}
-		double average = sum / numFiresArray.length;
-		double percent_of_neighbors_burned = (average / 8);
-		double upper_range = Driver.catchprobability + .1;
-		double lower_range = Driver.catchprobability - .1;
-		if (percent_of_neighbors_burned >= lower_range && percent_of_neighbors_burned <= upper_range)
-			System.out.println(percent_of_neighbors_burned);
 		// main options menu
 		// this loads first
 		options = new Menu();
