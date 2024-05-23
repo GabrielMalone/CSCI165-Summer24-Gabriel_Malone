@@ -293,7 +293,7 @@ public class Matrix_Test {
         for (Cell neighbor : neighbors) {
             // go through the tree image lists
             for (BufferedImage tree : World.trees){
-                // if a neibhor has one of the tree images
+                // if a neighbor has one of the tree images
                 if (tree == neighbor.stateimage){
                     // add to the tally
                     total_neighbors_as_trees ++;
@@ -302,6 +302,21 @@ public class Matrix_Test {
         } 
         // all 8 neighbors should be some sort of tree
         assertTrue(total_neighbors_as_trees == 8);
+        // border cells should be empty
+        for (int i = 0 ; i < worldOne.size ; i ++){
+			for (int j = 0 ; j < worldOne.size; j++){
+                // if at edge top/botoom
+				if (i == 0 || i == worldOne.size - 1){
+                    // border cells should be empty
+					assertTrue(worldOne.worldMatrix[i][j].stateimage == World.burnt[0]);
+				}
+				// if at edge left/right
+				else if ( j == 0 || j == worldOne.size - 1){
+                    // border cells should be empty
+					assertTrue(worldOne.worldMatrix[i][j].stateimage == World.burnt[0]);
+				}
+			}
+		}
     }
     
 }

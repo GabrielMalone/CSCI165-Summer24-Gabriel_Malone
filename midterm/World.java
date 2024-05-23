@@ -205,23 +205,6 @@ public class World {
 	}
 
 	/*
-	private void displayWorld(){
-
-		// for displaying the matrices in terminal
-        //Terminal_Graphics t_graphics = new Terminal_Graphics();
-		// display the world
-		try{
-			Thread.sleep(Driver.speed);
-			}
-		catch (InterruptedException iException){
-			}
-		// turn off to prevent slow down of bigger maps
-		//t_graphics.displayWorld();
-
-	}
-
-	*/
-	/*
 	 * Method to track steps (only tallies when a cell is burning)
 	 */
 	public int trackSteps(){
@@ -650,27 +633,5 @@ public class World {
             e.printStackTrace();
         }
     }
-	/* 
-	private void randomWeatherDirection(){
-		int random = rand.nextInt(0,100);
-		if (random < 1){
-			int rand_index = rand.nextInt(0,3);
-			switch (rand_index) {
-				case 0: this.todaysWeather.setDirection(Weather.DIRECTION.NORTH);
-
-					break;
-				case 1: this.todaysWeather.setDirection(Weather.DIRECTION.EAST);
-
-					break;
-				case 2: this.todaysWeather.setDirection(Weather.DIRECTION.SOUTH);
-
-					break;
-				case 3: this.todaysWeather.setDirection(Weather.DIRECTION.WEST);
-
-					break;
-			}
-		}
-	}
-	*/
 
 }

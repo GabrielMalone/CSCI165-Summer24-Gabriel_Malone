@@ -221,9 +221,9 @@ public class Wildlife {
 
 			case SOUTH:		return Cell.POSITIONASNEIGHBOR.SOUTH;
 
-			case EAST: 		return Cell.POSITIONASNEIGHBOR.EAST;
+			case EAST:		return Cell.POSITIONASNEIGHBOR.EAST;
 
-			case WEST: 		return Cell.POSITIONASNEIGHBOR.WEST;
+			case WEST:		return Cell.POSITIONASNEIGHBOR.WEST;
 
 			case NORTHEAST:	return Cell.POSITIONASNEIGHBOR.NORTH;
 

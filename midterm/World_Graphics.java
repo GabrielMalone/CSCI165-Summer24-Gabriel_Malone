@@ -7,11 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.Font;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.Timer;
-
 
 public class World_Graphics extends JPanel implements ActionListener {
 	// Timer to repaint map
@@ -92,10 +90,8 @@ public class World_Graphics extends JPanel implements ActionListener {
 		super.paintComponent(g);
 		baseMap(g);
 		animalMap(g);
-		//windMap(g);
-		if (Driver.displayMode)
-			dataOverlay(g);
 	}
+
 	/*
 	 * Method to paint the base map (trees, fire, burnt)
 	 */
@@ -155,114 +151,7 @@ public class World_Graphics extends JPanel implements ActionListener {
             x = 1;
         }
     }
-
-	/*
-	 * Method to display wind on the map
-	 */
-	public void windMap(Graphics g) {
-        Graphics2D graphics2d = (Graphics2D) g;
-		// transparency settings for various map sizes
-		Color map20  = new Color(255, 255, 255, 150);
-		Color map50  = new Color(255, 255, 255, 50);
-		Color map100 = new Color(255, 255, 255, 40);
-		Color map150 = new Color(255, 255, 255, 30);
-		Color map200 = new Color(255, 255, 255, 50);
-		Color map500 = new Color(255, 255, 255, 5);
-        int x = 1, y = 1;
-        for(int i = 0; i < Driver.neWorld.worldMatrix.length; i++){
-            for(int j = 0; j < Driver.neWorld.worldMatrix.length; j++){
-                Cell currentCell = Driver.neWorld.worldMatrix[i][j];
-                if (currentCell.getCellWeather() == Cell.WEATHER.WINDY){
-					if (Driver.size == 51) 	{graphics2d.setColor(map50); 	graphics2d.drawArc(x, y, 10, 10, y, x);}
-					else if (Driver.size == 101) 	{graphics2d.setColor(map100); 	graphics2d.drawArc(x, y, 10, 10, y, x);}
-					else if (Driver.size == 151) 	{graphics2d.setColor(map150); 	graphics2d.drawArc(x, y, 5, 5, y, x);}
-					else if (Driver.size == 201) 	{graphics2d.setColor(map200); 	graphics2d.drawArc(x, y, 10, 10, 0, 50);}
-					else if (Driver.size <= 501)	{graphics2d.setColor(map500);	graphics2d.drawArc(x, y, 5, 5, y, x);}
-					else 							{graphics2d.setColor(map20); 	graphics2d.drawArc(x, y, 15, 15, y, x);}
-
-                }
-                x += IMAGE_SIZE;
-            }
-            y += IMAGE_SIZE;
-            x = 1;
-        }
-    }
-	/*
-	 * Method to display metric data on map directly
-	 */
-	public void dataOverlay(Graphics g) {
-        Graphics2D graphics2d = (Graphics2D) g;
-		// STEPS BOX AND INFO
-		Color transparentback = new Color(0f, 1f, .5f, .7f);
-		Color transparenttitle = new Color(0f, 0f, 0f, .9f);
-		Color transparentinfo = new Color(1f, 1f, 1f, .9f);
-		Font FontTitle = new Font("SansSerif", Font.BOLD, 8);
-		Font FontData = new Font("SansSerif", Font.BOLD, 17);
-
-		graphics2d.setColor(transparentback);
-		graphics2d.fillRoundRect(WINDOW_HEIGHT - 60, 20, 50, 50, 10, 10);
-		graphics2d.setColor(transparenttitle);
-		graphics2d.setFont(FontTitle);
-		graphics2d.drawString("STEPS", WINDOW_HEIGHT - 48,35);
-		graphics2d.setFont(FontData);
-		graphics2d.setColor(transparentinfo);
-		if (Driver.neWorld.timeStep < 9) 			graphics2d.drawString(String.valueOf(Driver.neWorld.timeStep), WINDOW_HEIGHT - 40, 55);
-		else if (Driver.neWorld.timeStep < 100) 	graphics2d.drawString(String.valueOf(Driver.neWorld.timeStep), WINDOW_HEIGHT - 45,55);
-		else if (Driver.neWorld.timeStep < 1000 ) 	graphics2d.drawString(String.valueOf(Driver.neWorld.timeStep), WINDOW_HEIGHT - 52, 55);
-		else 										graphics2d.drawString(String.valueOf(Driver.neWorld.timeStep), WINDOW_HEIGHT - 57, 55);
-
-		// BURN AREA BOX AND INFO
-		graphics2d.setColor(transparentback);
-		graphics2d.fillRoundRect(WINDOW_HEIGHT - 60, 75, 50, 50, 10, 10);
-		graphics2d.setColor(transparenttitle);
-		graphics2d.setFont(FontTitle);
-		graphics2d.drawString("BURN %", WINDOW_HEIGHT - 52, 90);
-		graphics2d.setColor(transparentinfo);
-		graphics2d.setFont(FontData);
-		String burn_output = String.format("%.0f%%", Driver.neWorld.burnPercentage());
-		if (Driver.neWorld.burnPercentage() < 10.001) graphics2d.drawString(burn_output, WINDOW_HEIGHT - 45, 110);
-		else if (Driver.neWorld.burnPercentage() < 100) graphics2d.drawString(burn_output, WINDOW_HEIGHT - 50, 110);
-		else graphics2d.drawString(burn_output, WINDOW_HEIGHT - 57, 110);
-
-		// DEATH TOLL BOX AND INFO
-		if (Driver.animalsOn){
-			graphics2d.setColor(transparentback);
-			graphics2d.fillRoundRect(WINDOW_HEIGHT - 60, 130, 50, 50, 10, 10);
-			graphics2d.setFont(FontTitle);
-			graphics2d.setColor(transparenttitle);
-			graphics2d.drawString("MORT %", WINDOW_HEIGHT - 52, 145);
-			graphics2d.setFont(FontData);
-			graphics2d.setColor(transparentinfo);
-			String death_output = String.format("%.0f%%", Driver.neWorld.mortalityRate());
-			if (Driver.neWorld.mortalityRate() < 10.001) graphics2d.drawString(death_output, WINDOW_HEIGHT - 45, 165);
-			else if (Driver.neWorld.mortalityRate() < 99) graphics2d.drawString(death_output, WINDOW_HEIGHT - 50, 165);
-			else graphics2d.drawString(death_output, WINDOW_HEIGHT - 57, 165);
-		}
-
-		// WIND DIRECTION
-		if (Driver.weatherOn){
-			graphics2d.setColor(transparentback);
-			graphics2d.fillRoundRect(WINDOW_HEIGHT - 60, 185, 50, 50, 10, 10);
-			graphics2d.setFont(FontTitle);
-			graphics2d.setColor(transparenttitle);
-			graphics2d.drawString("WIND  ", WINDOW_HEIGHT - 47, 200);
-			graphics2d.setFont(FontData);
-			graphics2d.setColor(transparentinfo);
-			switch (Driver.todaysWeather.getStringDirection()) {
-				case "NORTH": 	graphics2d.drawString("N", WINDOW_HEIGHT - 43, 220);
-					break;
-				case "SOUTH": 	graphics2d.drawString("S", WINDOW_HEIGHT - 40, 220);
-					break;
-				case "EAST": 	graphics2d.drawString("E", WINDOW_HEIGHT - 43, 220);
-					break;
-				case "WEST": 	graphics2d.drawString("W", WINDOW_HEIGHT - 43, 220);
-					break;
-				default:		graphics2d.drawString("X", WINDOW_HEIGHT - 43, 220);
-					break;
-			}
-		}
-    }
-
+	
 	/*
 	 * Method to adjust image sizes depending on size of world matrix
 	 */
@@ -307,5 +196,4 @@ public class World_Graphics extends JPanel implements ActionListener {
 		size = (Driver.size * IMAGE_SIZE);
 		return size;
 	}
-
 }
