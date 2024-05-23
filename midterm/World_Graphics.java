@@ -1,3 +1,4 @@
+// Gabriel Malone / CS165 / Midterm / Summer 2024
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -13,18 +14,16 @@ import javax.swing.Timer;
 
 
 public class World_Graphics extends JPanel implements ActionListener {
-
+	// Timer to repaint map
 	public int DELAY = Driver.speed;
 	public Timer timer;
 	private  World world = Driver.neWorld;
-	
 	// create a JFrame instance to contain the JPanel	
 	public  JFrame window = new JFrame();
 	// MAP SIZE DRAW SETTINGS
 	public  int IMAGE_HEIGHT 		= setImageSize();
 	public  int IMAGE_WIDTH 		= IMAGE_HEIGHT;
 	public  int WINDOW_HEIGHT 		= setWindowSize(IMAGE_HEIGHT) ;
-
 
 	public World_Graphics() {
 		world.initializeFire();
@@ -56,7 +55,7 @@ public class World_Graphics extends JPanel implements ActionListener {
 		// MAIN WINDOW	
 		// give it a title bar							
 		this.window.setTitle("Goobs Fire Sim");
-		// how big is the window?		
+		// set window size to 	
 		this.window.getSize();			
 		this.window.setSize( WINDOW_HEIGHT, (int)(WINDOW_HEIGHT * 1.045));
 		// place window in the middle of the screen, not relative to any other GUI object			
@@ -65,7 +64,9 @@ public class World_Graphics extends JPanel implements ActionListener {
 		this.window.setVisible(true);
 		
 	}
-
+	/*
+	 * Method to loop the main logic
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e){
 		// stop and restart timer for live update purpose
@@ -75,14 +76,19 @@ public class World_Graphics extends JPanel implements ActionListener {
 		this.repaint();
 	}
 
+	/*
+	 * Method to initialize the timer for calling the paint methods
+	 */
 	public void initTimer() {
 		this.timer = new Timer(DELAY, this);	
 		this.timer.start();					
 	}
 
+	/*
+	 * Method to paint the map and its layers
+	 */
 	@Override
 	public void paintComponent(Graphics g){
-	
 		super.paintComponent(g);
 		baseMap(g);
 		animalMap(g);
@@ -90,7 +96,9 @@ public class World_Graphics extends JPanel implements ActionListener {
 		if (Driver.displayMode) 
 			dataOverlay(g);
 	}
-
+	/*
+	 * Method to paint the base map (trees, fire, burnt)
+	 */
 	public void baseMap(Graphics g) {
 		Graphics2D graphics2d = (Graphics2D) g;
 		// cartesian points, to control where rectangles are drawn
@@ -122,6 +130,9 @@ public class World_Graphics extends JPanel implements ActionListener {
 		} 
 	}
 
+	/*
+	 * Method to display animals on the map
+	 */
 	public void animalMap(Graphics g) {
         Graphics2D graphics2d = (Graphics2D) g;
         // cartesian points, to control where rectangles are drawn
@@ -145,8 +156,12 @@ public class World_Graphics extends JPanel implements ActionListener {
         } 
     }
 
+	/*
+	 * Method to display wind on the map
+	 */
 	public void windMap(Graphics g) {
         Graphics2D graphics2d = (Graphics2D) g;
+		// transparency settings for various map sizes
 		Color map20  = new Color(255, 255, 255, 150);
 		Color map50  = new Color(255, 255, 255, 50);
 		Color map100 = new Color(255, 255, 255, 40);
@@ -172,9 +187,10 @@ public class World_Graphics extends JPanel implements ActionListener {
             x = 1;						
         } 
     }
-
+	/*
+	 * Method to display metric data on map directly
+	 */
 	public void dataOverlay(Graphics g) {
-	
         Graphics2D graphics2d = (Graphics2D) g;
 		// STEPS BOX AND INFO
 		Color transparentback = new Color(0f, 1f, .5f, .7f);
@@ -247,6 +263,9 @@ public class World_Graphics extends JPanel implements ActionListener {
 		}
     }
 
+	/*
+	 * Method to adjust image sizes depending on size of world matrix
+	 */
 	public int setImageSize(){
 		int size = 0;
 		if (Driver.size == 21) {
@@ -277,6 +296,9 @@ public class World_Graphics extends JPanel implements ActionListener {
 		
 	}
 
+	/*
+	 * Method to set window size depending on size of world matrix
+	 */
 	public int setWindowSize(int IMAGE_HEIGHT){
 		int size;
 		size = (Driver.size * IMAGE_HEIGHT);

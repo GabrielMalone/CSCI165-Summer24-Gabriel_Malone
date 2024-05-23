@@ -1,3 +1,4 @@
+// Gabriel Malone / CS165 / Midterm / Summer 2024
 
 public class Driver {
     
@@ -22,12 +23,14 @@ public class Driver {
     public static Weather todaysWeather = new Weather();
     public static boolean start = false;
 
- 
 	public static void main(String[] args) {
+        // main options menu
+        // this loads first
         options = new Menu();
     }
   
     public static int worldResize(int size){
+        // resize input sizes to allow for a perfect center
         if (size % 2 == 0) return size += 1;	
         return size;
     }

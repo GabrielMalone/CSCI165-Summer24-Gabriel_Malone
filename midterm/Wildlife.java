@@ -1,3 +1,4 @@
+// Gabriel Malone / CS165 / Midterm / Summer 2024
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -7,12 +8,14 @@ public class Wildlife {
 	// track active wildlife on map
 	public ArrayList<Cell> activeWildlifeCells = new ArrayList<>();
 	public ArrayList<Cell> deadanimals = new ArrayList<>();
-
+	// for a metric I never used
 	int escapedanimals = 0;
 	Random rand = new Random();
 
+	/*
+	 * Method to place wildlife randomly on the map
+	 */
 	public void placeWildlife(){
-		
 		for (int i = 0; i < Driver.startingPop; i++){
 			// find location on map for object
 			int row_location = rand.nextInt(1, Driver.neWorld.worldMatrix.length - 1);
@@ -22,13 +25,17 @@ public class Wildlife {
 			// update cell
 			cell_at_this_location.setObject(Cell.OBJECTS.WILDLIFEALIVE);
 			this.activeWildlifeCells.add(cell_at_this_location);	
-			}
 		}
-
+	}
+	
+	/*
+	 * Method to repopulate a map steadily
+	 */
 	public void regrowWildlife(){
 		for(int j = 0 ; j < Driver.size - 1; j ++){
-			for (int i = 0 ; i < Driver.size - 1 ; i ++)	{
+			for (int i = 0 ; i < Driver.size - 1 ; i ++){
 				Cell currentCell = Driver.neWorld.worldMatrix [j][i];
+				// can only pop into a cell with a tree and no other animals
 				if (currentCell.getState() == Cell.STATES.TREE && currentCell.getObject() == Cell.OBJECTS.VOID){
 					double chance_to_regorw = rand.nextDouble(1);
 					if (chance_to_regorw <Driver.popRegrowth){
@@ -39,6 +46,10 @@ public class Wildlife {
 		}
 	}
 	
+	/*
+	 * Method to see if the current cell, which is on fire, has any wildlife.
+	 * If so, animal dies.
+	 */
 	public void checkIfDead(Cell current_cell, Cell burningCell){
 		// if caught in fire, deadd
 		if (current_cell.getObject() == (Cell.OBJECTS.WILDLIFEALIVE)){
@@ -47,6 +58,9 @@ public class Wildlife {
 		}
 	}
 	
+	/*
+	 * Method to help animals flee from fire effectively
+	 */
 	public void makeAnEscape(){
 		// iterate through world
 		for( int i = 0 ; i < Driver.neWorld.worldMatrix.length - 1 ; i ++){
@@ -79,6 +93,10 @@ public class Wildlife {
 		}
 	}
 
+	/*
+	 * Method to have animals move around randomly to open/safe spots while not 
+	 * fleeing any fires.
+	 */
 	public void moveAround(){
 		// if not fleeing a fire - randomly move to a nearby cell if all clear
 		for( int i = 0 ; i < Driver.neWorld.worldMatrix.length - 1 ; i ++){
@@ -90,6 +108,8 @@ public class Wildlife {
 					for (Cell neighbor : neighbors){
 						neighborArray.add(neighbor);
 					}
+					// randomly search the nearby cells and see if any spots suitable for moving to
+					// if don't do this, animals just move to the next open cell and will just move one direction
 					while (neighborArray.size() > 0){
 						int rand_index = rand.nextInt(neighborArray.size());
 						Cell neighboring_cell = neighborArray.get(rand_index);
@@ -106,6 +126,9 @@ public class Wildlife {
 		}
 	}
 
+	/*
+	 * Method to reset cell's moved state from true to false (to prevent an animal from moving more than once per turn)
+	 */
 	public void resetMoveState(){
 		for( int i = 0 ; i < Driver.neWorld.worldMatrix.length - 1 ; i ++){
 			for (int j = 0 ; j < Driver.neWorld.worldMatrix.length - 1 ; j ++){
@@ -117,6 +140,9 @@ public class Wildlife {
 		}
 	}
 
+	/*
+	 *  Clear any animals who made it to the border safely when fleeing fire
+	 */
 	public void clearEscaped(){
 		for( int i = 0 ; i < Driver.neWorld.worldMatrix.length; i ++){
 			for (int j = 0 ; j < Driver.neWorld.worldMatrix.length; j ++){
@@ -131,7 +157,10 @@ public class Wildlife {
 			}
 		}
 	}
-		
+	
+	/*
+	 * Method to see if the current cell is a safe spot to move to.
+	 */
 	private boolean clearEscapeChoice(Cell option){
 		// can leave the map
 		if (option.getState() != Cell.STATES.BURNING && option.getObject() == Cell.OBJECTS.VOID && option.getState() != Cell.STATES.BURNT && option.row >= 0 && option.column >= 0)
@@ -139,13 +168,20 @@ public class Wildlife {
 		return false;
 	}
 
+	/*
+	 * Method to see if a cell is a clear spot to move to for a wandering animal
+	 */
 	private boolean clearMoveChoice(Cell option){
 		// can only escape map if running from fire
-		if (option.getState() != Cell.STATES.BURNING && option.getObject() == Cell.OBJECTS.VOID && option.getState() != Cell.STATES.BURNT && option.row > 0 && option.column > 0 && option.row < Driver.neWorld.worldMatrix.length - 1 && option.column < Driver.neWorld.worldMatrix.length - 1)
+		// verbose conditional because wanted to be able tweak a lot of settings. 
+		if (option.getState() != Cell.STATES.BURNING && option.getObject() == Cell.OBJECTS.VOID && option.getState() != Cell.STATES.BURNT && option.row >= 0 && option.column >= 0 && option.row <= Driver.neWorld.worldMatrix.length && option.column <= Driver.neWorld.worldMatrix.length)
 			return true;
 		return false;
 	}
 
+	/*
+	 * Method to randomly clear dead animals from the map
+	 */
 	public void clearDead(){
 		for (int f = 0 ; f < Driver.neWorld.worldMatrix.length - 1; f ++ ){
             for(int g = 0 ; g < Driver.neWorld.worldMatrix.length - 1; g ++){    
@@ -159,6 +195,9 @@ public class Wildlife {
 		}
 	}
 
+	/*
+	 * Method to clear all animals from a map
+	 */
 	public void clearAnimals(){
 		for (int f = 0 ; f < Driver.neWorld.worldMatrix.length - 1; f ++ ){
             for(int g = 0 ; g < Driver.neWorld.worldMatrix.length - 1; g ++){ 
@@ -169,8 +208,9 @@ public class Wildlife {
 		}
 	}
 
-	
-	
+	/*
+	 * Method to determine the opposite direction of a neighboring cell (using a cell's relative position info). Used in fleeing fires. 
+	 */
 	private Cell.POSITIONASNEIGHBOR oppositeDirection(Cell neighboringCell){
 		// default
 		Cell.POSITIONASNEIGHBOR oppositeDirection = Cell.POSITIONASNEIGHBOR.NORTH;

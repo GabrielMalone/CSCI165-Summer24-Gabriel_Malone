@@ -1,3 +1,4 @@
+// Gabriel Malone / CS165 / Midterm / Summer 2024
 
 import java.util.Random;
 
@@ -12,15 +13,22 @@ public class Weather {
     public DIRECTION direction;
     public String windDirection;
 	public double windyProb = .35;
+
 	/**
 	 * Method to create wind pattern
 	 * 
 	 */
 	public void pattern(){
+		// 	this combo of random spots set to windy then their neighbors
+		// 	randomly being set to windy seems to create the 
+		//	most pleasing wind pattern so far. 
 		randomWindSpot();
 		designatetNeighborsWindy();
 	}
 
+	/*
+	 * Method to set ENUM direction of a cell's weather pattern
+	 */
     public void setDirection (DIRECTION direction){
 		this.direction = direction;
         switch (this.direction) {
@@ -36,9 +44,17 @@ public class Weather {
                 break;
 	    }
     }
+
+	/*
+	 * Method to get the weather direction of a cell
+	 */
     public DIRECTION getDirection(){
 		return this.direction;
 	}
+
+	/*
+	 * Method to return the string of a weather direction of a cell
+	 */
 	public String getStringDirection(){
 		if (this.direction == null) return "X";
 		switch (this.direction) {
@@ -49,6 +65,10 @@ public class Weather {
 			default:	return 	"x";
 	    }
 	}
+
+	/*
+	* Method to clear the current weather pattern
+	 */ 
 	public void clearWeatherPattern(){
 		for (int i = 0; i < Driver.neWorld.worldMatrix.length ; i ++ ){
 			for (int j = 0; j < Driver.neWorld.worldMatrix.length ; j ++ ){
@@ -56,18 +76,18 @@ public class Weather {
 			}
 		}
 	}
-	public void setCenterWindy(){
-		// find center
-		int center = Driver.size / 2;
-		// set center after the loop complete
-		Cell centerCell = new Cell();
-		centerCell.setWeather(Cell.WEATHER.WINDY);
-		Driver.neWorld.worldMatrix[center][center] =  centerCell;
-	}
-	public  boolean somethingWindy(Cell currentCell){
+
+	/*
+	 * Method to see if the current cell is windy
+	 */
+	private  boolean somethingWindy(Cell currentCell){
 		if (currentCell.getCellWeather().equals(Cell.WEATHER.WINDY)) return true;
 		return false;
 	}
+
+	/*
+	 * Method to set nearby cells as windy
+	 */
 	void designatetNeighborsWindy(){
         for (int f = 1 ; f < Driver.neWorld.worldMatrix.length - 1; f ++ ){
             for(int g = 1 ; g < Driver.neWorld.worldMatrix.length - 1; g ++){    
@@ -79,7 +99,11 @@ public class Weather {
 					}
                 }
             }
-        }     
+        } 
+	
+	/*
+	* Method to see if a cell should be set as windy or not
+	*/	
 	private void seeWhatBlows(Cell[] neighboringcells, Cell homeCell){
 		for (Cell cell : neighboringcells){
             if(cell.getCellWeather().equals(Cell.WEATHER.CALM)){
@@ -90,6 +114,10 @@ public class Weather {
             }
 		}
 	}
+
+	/*
+	 * Method to set a random spot in the matrix as windy
+	 */
 	public void randomWindSpot(){
 		// set 3 random fires after main fire goes out
 		for (int i = 0 ; i < Driver.numberOfFires ; i ++){
