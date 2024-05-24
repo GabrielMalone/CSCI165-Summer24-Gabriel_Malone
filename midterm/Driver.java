@@ -5,8 +5,6 @@ public class Driver {
 	// DEFAULTS
 	public static boolean displayMode = false;
 	public static boolean weatherOn = false;
-	public static boolean metricsOn = true;
-	public static boolean centerStart;
 	public static boolean endlessMode = true;
 	public static boolean animalsOn = false;
 	public static boolean animalsWander = false;

@@ -207,19 +207,6 @@ public class Cell {
 		}
 		return this.burnMultiplier;
 	}
-
-	/**
-	 * Method to return the cell's coordinates in integer form
-	 * @return array of integers
-	 */
-	public int[] convertCoordsToInteger(){
-		String [] coordinateStrings = this.coordinates.split(",");
-		int x = Integer.valueOf(coordinateStrings[0]);
-		int y = Integer.valueOf(coordinateStrings[1]);
-		int [] intCoords = {x, y};
-		return intCoords;
-	}
-
 	/*
 	 * Method to see if one cell is the same as another cell in the matrix
 	 */

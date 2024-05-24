@@ -3,8 +3,10 @@
 import java.util.Random;
 
 public class Weather {
-	Random rand = new Random();
-    public static enum DIRECTION {
+	
+	public static Random rand = new Random();
+    
+	public static enum DIRECTION {
 		NORTH,
 		EAST,
 		SOUTH,
@@ -26,8 +28,9 @@ public class Weather {
 		designatetNeighborsWindy();
 	}
 
-	/*
+	/**
 	 * Method to set ENUM direction of a cell's weather pattern
+	 * @param direction
 	 */
     public void setDirection (DIRECTION direction){
 		this.direction = direction;
@@ -45,15 +48,17 @@ public class Weather {
 	    }
     }
 
-	/*
-	 * Method to get the weather direction of a cell
+	/**
+	 * 
+	 * @return DIRECTION of wind
 	 */
     public DIRECTION getDirection(){
 		return this.direction;
 	}
 
-	/*
+	/**
 	 * Method to return the string of a weather direction of a cell
+	 * @return String  of a weather direction of a cell
 	 */
 	public String getStringDirection(){
 		if (this.direction == null) return "X";
@@ -66,8 +71,8 @@ public class Weather {
 	    }
 	}
 
-	/*
-	* Method to clear the current weather pattern
+	/**
+	 * Method to clear the current weather pattern
 	 */
 	public void clearWeatherPattern(){
 		for (int i = 0; i < Driver.neWorld.worldMatrix.length ; i ++ ){
@@ -77,15 +82,17 @@ public class Weather {
 		}
 	}
 
-	/*
+	/**
 	 * Method to see if the current cell is windy
+	 * @param currentCell
+	 * @return true if cell is windy
 	 */
-	private  boolean somethingWindy(Cell currentCell){
+	private boolean somethingWindy(Cell currentCell){
 		if (currentCell.getCellWeather().equals(Cell.WEATHER.WINDY)) return true;
 		return false;
 	}
 
-	/*
+	/**
 	 * Method to set nearby cells as windy
 	 */
 	void designatetNeighborsWindy(){
@@ -101,9 +108,11 @@ public class Weather {
             }
         }
 
-	/*
-	* Method to see if a cell should be set as windy or not
-	*/
+	/**
+	 * Method to see if a cell should be set as windy or not
+	 * @param neighboringcells
+	 * @param homeCell
+	 */
 	private void seeWhatBlows(Cell[] neighboringcells, Cell homeCell){
 		for (Cell cell : neighboringcells){
             if(cell.getCellWeather().equals(Cell.WEATHER.CALM)){
@@ -115,7 +124,7 @@ public class Weather {
 		}
 	}
 
-	/*
+	/**
 	 * Method to set a random spot in the matrix as windy
 	 */
 	public void randomWindSpot(){
