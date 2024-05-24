@@ -52,7 +52,6 @@ public class World {
   		createBurnt();
 		// create base world
 		fillWorld();
-
 	}
 
 	// INITIALIZE LOOP
@@ -78,13 +77,9 @@ public class World {
 	 */
 	public void spreadFire(){
 		// SIMULATION LOOP
-		if (this.weatherSet){
-			// turn on the wind
-			//randomWeatherDirection();
+		if (this.weatherSet)
 			this.todaysWeather.pattern();
-		}
 		// decay dead at each round
-		this.wildlife.clearDead();
 		if (this.timeStep > 1) {
 			// snuff out anything that was on fire
 			clearPreviousFire();
@@ -95,8 +90,8 @@ public class World {
 				this.burning = true;
 			}
 		}
-		// set the cells for the next iteration
 		applyChangesToWorld();
+		// set the cells for the next iteration
 		if (Driver.endlessMode)
 			regrowTrees();
 		if (Driver.animalsOn){
@@ -105,6 +100,7 @@ public class World {
 			if (Driver.endlessMode)
 				this.wildlife.regrowWildlife();
 				this.wildlife.clearEscaped();
+				this.wildlife.clearDead();
 			if (Driver.animalsWander)
 				this.wildlife.moveAround();
 		}
@@ -116,9 +112,8 @@ public class World {
 			// if single-run mode, end here
 			if (! stillBurning()){
 				this.burning = false;
-				if (! Driver.endlessMode){
-					Driver.world.timer.stop();
-				}
+				if (! Driver.endlessMode)
+					 Driver.world.timer.stop();	
 			}
 		}
 		displayData();
@@ -278,12 +273,13 @@ public class World {
 		directions.put(northwest, "northwest");
 		directions.put(southeast, "southeast");
 		directions.put(southwest, "southwest");
-		// if cell in path of fire, more likely to burn
+		// if cell set to potentially be on fire and in path of wind, more likely to burn
 		if (directions.get(currentCell).equals(todaysWeather.windDirection)){
 			chanceToBurn *= currentCell.burnMultiplier();
 			return chanceToBurn;
 		}
-		else chanceToBurn += .025;
+		// if outside of path, cell set to be on fire is less likely to burn than usual
+		else chanceToBurn += .1;
 		return chanceToBurn;
 	}
 
@@ -465,12 +461,11 @@ public class World {
 			int rand_index = rand.nextInt(1, this.size-1);
 			int rand_index_b = rand.nextInt(1, this.size-1);
 			Cell currentCell = worldMatrix[rand_index][rand_index_b];
-			if (currentCell.getState() == Cell.STATES.TREE){
-				currentCell.setState(Cell.STATES.BURNING);
-
+			Cell [] neighbors = findNeighbors(currentCell.row, currentCell.column);
+			seeWhatBurns(neighbors, currentCell);
 			}
 		}
-	}
+	
 
 	// METRICS FUNCTIONS
 	/*
