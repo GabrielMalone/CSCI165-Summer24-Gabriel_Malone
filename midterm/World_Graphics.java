@@ -24,10 +24,15 @@ public class World_Graphics extends JPanel implements ActionListener {
 
 	public World_Graphics() {
 		world.initializeFire();
-		initTimer();
+		initTimer(); 
 		// mouse clicks to place bombs
 		addMouseMotionListener(new MouseAdapter(){
 			public void mouseDragged(MouseEvent e){
+				// line up the coordinates of the window to the matrix [] [] Cell beneath the mouse pointer
+				// window size = world matrix size * size of image
+				// thus each pixel == one image 
+				// example : if matrix size is 200x200, each image is set to 3x3 pixels -> (600x600 window size)
+				// so from 0->3 window pixels the mouse will be assigned to the first cell
 				int column = e.getX() / IMAGE_SIZE;
 				int row = e.getY() /  IMAGE_SIZE;
 				if (column > 1 && row > 1 && Driver.neWorld.worldMatrix[row][column].getState() == Cell.STATES.TREE){
@@ -62,7 +67,8 @@ public class World_Graphics extends JPanel implements ActionListener {
 		this.window.setVisible(true);
 
 	}
-	/*
+
+	/**
 	 * Method to loop the main logic
 	 */
 	@Override
@@ -74,7 +80,7 @@ public class World_Graphics extends JPanel implements ActionListener {
 		this.repaint();
 	}
 
-	/*
+	/**
 	 * Method to initialize the timer for calling the paint methods
 	 */
 	public void initTimer() {
@@ -82,7 +88,7 @@ public class World_Graphics extends JPanel implements ActionListener {
 		this.timer.start();
 	}
 
-	/*
+	/**
 	 * Method to paint the map and its layers
 	 */
 	@Override
@@ -92,8 +98,9 @@ public class World_Graphics extends JPanel implements ActionListener {
 		animalMap(g);
 	}
 
-	/*
+	/**
 	 * Method to paint the base map (trees, fire, burnt)
+	 * @param g
 	 */
 	public void baseMap(Graphics g) {
 		Graphics2D graphics2d = (Graphics2D) g;
@@ -126,9 +133,10 @@ public class World_Graphics extends JPanel implements ActionListener {
 		}
 	}
 
-	/*
+	/**
 	 * Method to display animals on the map
-	 */
+	 * @param g
+	 */ 
 	public void animalMap(Graphics g) {
         Graphics2D graphics2d = (Graphics2D) g;
         // cartesian points, to control where rectangles are drawn
@@ -152,8 +160,9 @@ public class World_Graphics extends JPanel implements ActionListener {
         }
     }
 	
-	/*
+	/**
 	 * Method to adjust image sizes depending on size of world matrix
+	 * @return image size
 	 */
 	public int setImageSize(){
 		int size = 0;
@@ -188,8 +197,10 @@ public class World_Graphics extends JPanel implements ActionListener {
 
 	}
 
-	/*
+	/**
 	 * Method to set window size depending on size of world matrix
+	 * @param IMAGE_SIZE
+	 * @return window size
 	 */
 	public int setWindowSize(int IMAGE_SIZE){
 		int size;

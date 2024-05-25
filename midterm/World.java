@@ -41,8 +41,8 @@ public class World {
 	// for stochatic method
 	private Random rand = new Random();
 
-	/*
-	 * Instance creator
+	/**
+	 * Instance method
 	 */
 	public World(){
 		// load images
@@ -71,9 +71,8 @@ public class World {
 	}
 
 	// MAIN LOOP
-	/*
-	 * Method to run the simulation logic
-	 *
+	/**
+	 * Method to simulate fire burning
 	 */
 	public void spreadFire(){
 		// SIMULATION LOOP
@@ -116,7 +115,7 @@ public class World {
 					 Driver.world.timer.stop();	
 			}
 		}
-		displayData();
+		//displayData();
 	}
 
 	// WORLD LOGIC
@@ -177,8 +176,8 @@ public class World {
 
 	}
 
-	/*
-	 * Method to copy the previous world iteration to the current one
+	/**
+	 * Method to copy previous iteration to current one
 	 */
 	void applyChangesToWorld(){
 		for(int g = 0 ; g < this.size ; g ++){
@@ -188,7 +187,7 @@ public class World {
 		}
 	}
 
-	/*
+	/**
 	 * Method to copy the current world iteration to the next one
 	 */
 	void copyWorldMatrix(){
@@ -199,8 +198,9 @@ public class World {
 		}
 	}
 
-	/*
+	/**
 	 * Method to track steps (only tallies when a cell is burning)
+	 * @return steps 
 	 */
 	public int trackSteps(){
 		// track steps
@@ -210,8 +210,10 @@ public class World {
 
 	}
 
-	/*
-	 * Method to see if the current cell is burning
+	/**
+	 *  Method to see if the current cell is burning
+	 * @param currentCell
+	 * @return
 	 */
 	private  boolean somethingBurning(Cell currentCell){
 		if (currentCell.getState().equals(Cell.STATES.BURNING)) return true;
@@ -238,7 +240,8 @@ public class World {
 		centerCell.column = centered;
 
 	}
-	/*
+	
+	/**
 	 * Method to set the cell at the center of a matrix on fire
 	 */
 	void setCenterCellonFire(){
@@ -246,8 +249,12 @@ public class World {
 		this.centerCell.setState(Cell.STATES.BURNING);
 	}
 
-	/*
+	/**
 	 * Method to change burn characteristics of a cell in path or near the path of wind
+	 * @param homeCell cell that was burning
+	 * @param currentCell cell that is currently burning
+	 * @param chanceToBurn	cell's chance to burn
+	 * @return
 	 */
 	private double windDirectionEffect(Cell homeCell, Cell currentCell, double chanceToBurn){
 		// array for all of a cell's direct neighbors
@@ -283,8 +290,10 @@ public class World {
 		return chanceToBurn;
 	}
 
-	/*
+	/**
 	 * Method to see which neighbors of a burning cell catch on fire
+	 * @param neighboringcells
+	 * @param homeCell
 	 */
 	private void seeWhatBurns(Cell[] neighboringcells, Cell homeCell){
 		for (Cell cell : neighboringcells){
@@ -308,6 +317,9 @@ public class World {
         }
     }
 
+	/**
+	 * Method to see which of a cell's neighbors should bet set on fire
+	 */
     void designatetNeighborsOnFire(){
         for (int f = 0 ; f < this.size - 1; f ++ ){
             for(int g = 0 ; g < this.size - 1; g ++){
@@ -320,8 +332,9 @@ public class World {
             }
         }
 
-	/*
+	/**
 	 * See if there are any burning cells anywhere in the matrix
+	 * @return
 	 */
     public boolean stillBurning(){
         for (int f = 0 ; f < this.size - 1; f ++ ){
@@ -334,7 +347,7 @@ public class World {
         return false;
     }
 
-	/*
+	/**
 	 * Clear any fires from the previous iteration
 	 */
 	void clearPreviousFire(){
@@ -348,8 +361,11 @@ public class World {
 			}
 		}
 	}
-	/*
-	 * Method to set a cell on fire once it has been determined that it should be set on fire.
+
+	/**
+	 *  Method to set a cell on fire once it has been determined that it should be set on fire.
+	 * @param cell current cell to be set on fire
+	 * @param homeCell previous cell on fire to determine direction of fire
 	 */
 	public void setMapOnFire(Cell cell, Cell homeCell){
 		// for determining direction of fire
@@ -374,8 +390,14 @@ public class World {
 		// place it on next map iteration
 		this.nextStep[nextCell.row][nextCell.column] = nextCell;
 	}
-	/*
+
+	/**
 	 * Method to determind the direction of fire. used to help animals flee in a safe direction
+	 * @param homerow
+	 * @param hoomecolumn
+	 * @param nextCellrow
+	 * @param nextCellcolumn
+	 * @return
 	 */
 	private Cell.FIREMOVING fireDirection(int homerow, int hoomecolumn, int nextCellrow, int nextCellcolumn){
 		Cell.FIREMOVING direction = Cell.FIREMOVING.VOID;
@@ -407,9 +429,12 @@ public class World {
 		return direction;
 	}
 
-	/*
+	/**
 	 * Method to determine the relative cardinal directions of a cell to another cell.
 	 * Helps animals flee more effectively
+	 * @param row
+	 * @param column
+	 * @return
 	 */
 	public  Cell [] findNeighbors(int row, int column){
 
@@ -435,7 +460,7 @@ public class World {
 		return neighboringCells;
 	}
 
-	/*
+	/**
 	 * Method to regrow trees on the map where there was once a fire
 	 */
 	public void regrowTrees(){
@@ -452,7 +477,7 @@ public class World {
 		}
 	}
 
-	/*
+	/**
 	 * Method to place random cells in the matrix on fire.
 	 */
 	public void randomFireSpot(){
@@ -468,8 +493,9 @@ public class World {
 	
 
 	// METRICS FUNCTIONS
-	/*
+	/**
 	 * Method to determine what percentage of the matrix is burned
+	 * @return area of map burned
 	 */
 	private double totalBurned(){
 		double burned_area = 0;
@@ -483,8 +509,9 @@ public class World {
 		return burned_area;
 	}
 
-	/*
+	/**
 	 * Method to display the burn percentage
+	 * @return burn percentage
 	 */
 	public double burnPercentage(){
 		double burn_area = totalBurned();
@@ -493,19 +520,10 @@ public class World {
 		return percetage_burned;
 	}
 
-	/*
-	 * Method to display the mortality rate
-	 */
-	public double mortalityRate(){
-		double mortality_rate = 0.1;
-		if (this.wildlife.deadanimals.size()> 0){
-			mortality_rate = ((double)wildlife.deadanimals.size() / (double)wildlife.activeWildlifeCells.size() ) * 100;
-		}
-		return mortality_rate;
-	}
 
-	/*
+	/**
 	 * Method to determine how many dead animals there are on the map
+	 * @return
 	 */
 	public double totalDead(){
 		int total_dead = 0;
@@ -519,9 +537,10 @@ public class World {
 			return total_dead;
 		}
 
-	/*
-	* Method to show the total live animals on the map
-	*/
+	/**
+	 * Method to show the total live animals on the map
+	 * @return
+	 */
 	public double totalAlive(){
 		double total_alive = 0;
 		for (int i = 1;  i < this.size - 1; i ++){
@@ -533,27 +552,26 @@ public class World {
 			}
 			return total_alive;
 		}
-
-	/*
-	 * Method to dispay metrics in the terminal
+		
+	/**
+	 *  Method to dispay metrics in the terminal
 	 */
 	public void displayData(){
 		System.out.print("\033[H\033[2J");
         System.out.flush();
 		int steps = trackSteps();
 		double percentage = burnPercentage();
-		double mortality_rate = mortalityRate();
 		String direction = todaysWeather.getStringDirection();
 		double animal_pop = totalAlive();
 		long pop = Math.round(animal_pop);
 		//if (animal_pop == 0) wildlife.repopulate();
 		int area = size * size;
-		System.out.printf("%nSteps:          %d%nBurn area:      %.2f%%%nAnimal pop:     %d%nMortality rate: %.2f%%%nWind direction: %s%nMap Size:       %d SQ acres%n",
-		steps, percentage, pop, mortality_rate, direction, area);
+		System.out.printf("%nSteps:          %d%nBurn area:      %.2f%%%nAnimal pop:     %d%nWind direction: %s%nMap Size:       %d SQ acres%n",
+		steps, percentage, pop, direction, area);
 	}
 
 	// WORLD IMAGES
-	/*
+	/**
 	 * Method to load tree images for the map
 	 */
 	public void createTrees(){
@@ -574,7 +592,8 @@ public class World {
             e.printStackTrace();
         }
     }
-	/*
+
+	/**
 	 * Method to laod fire images for the map
 	 */
 	public void createFires(){
@@ -595,7 +614,8 @@ public class World {
             e.printStackTrace();
         }
     }
-	/*
+
+	/**
 	 * Method to load burnt cell images for the map
 	 */
 	public void createBurnt(){
@@ -612,7 +632,8 @@ public class World {
             e.printStackTrace();
         }
     }
-	/*
+
+	/**
 	 * Method to load animal images for the map
 	 */
 	public void createAnimals(){
