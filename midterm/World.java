@@ -55,6 +55,7 @@ public class World {
 	}
 
 	// INITIALIZE LOOP
+	
 	/*
 	 * Method to set up the simulation to run in a loop
 	 */
@@ -71,6 +72,7 @@ public class World {
 	}
 
 	// MAIN LOOP
+
 	/**
 	 * Method to simulate fire burning
 	 */
@@ -260,14 +262,14 @@ public class World {
 		// array for all of a cell's direct neighbors
 		Cell[] neighbors = findNeighbors(homeCell.row, homeCell.column);
 
-		Cell north 		= neighbors[0];
-		Cell south 		= neighbors[1];
-		Cell east 		= neighbors[2];
-		Cell west		= neighbors[3];
-		Cell northeast 	= neighbors[4];
-		Cell northwest 	= neighbors[5];
-		Cell southeast 	= neighbors[6];
-		Cell southwest 	= neighbors[7];
+		Cell north			= neighbors[0];
+		Cell south			= neighbors[1];
+		Cell east			= neighbors[2];
+		Cell west			= neighbors[3];
+		Cell northeast 		= neighbors[4];
+		Cell northwest 		= neighbors[5];
+		Cell southeast 		= neighbors[6];
+		Cell southwest 		= neighbors[7];
 
 		HashMap<Cell, String> directions = new HashMap<>();
 
@@ -297,13 +299,13 @@ public class World {
 	 */
 	private void seeWhatBurns(Cell[] neighboringcells, Cell homeCell){
 		for (Cell cell : neighboringcells){
-            if(	cell.getState().equals(Cell.STATES.TREE)
+			if(	cell.getState().equals(Cell.STATES.TREE)
 			&& 	cell.getCellWeather().equals(Cell.WEATHER.CALM)){
 				double chanceToBurn = probCatch();
 				if 	(chanceToBurn < this.catchprobability){
 					setMapOnFire(cell, homeCell);
-                }
-            }
+				}
+			}
 
 			else if (cell.getState().equals(Cell.STATES.TREE)
 			&& 	cell.getCellWeather().equals(Cell.WEATHER.WINDY)){
@@ -312,47 +314,47 @@ public class World {
 				if 	(chanceToBurn < this.catchprobability){
 					setMapOnFire(cell, homeCell);
 
-                }
+				}
 			}
-        }
-    }
+		}
+	}
 
 	/**
 	 * Method to see which of a cell's neighbors should bet set on fire
 	 */
-    void designatetNeighborsOnFire(){
-        for (int f = 0 ; f < this.size - 1; f ++ ){
-            for(int g = 0 ; g < this.size - 1; g ++){
+	void designatetNeighborsOnFire(){
+		for (int f = 0 ; f < this.size - 1; f ++ ){
+			for(int g = 0 ; g < this.size - 1; g ++){
 				Cell currentCell = this.worldMatrix[f][g];
 				if (somethingBurning(currentCell)){
 					Cell [] neighboringCells = findNeighbors(f, g);
 					seeWhatBurns(neighboringCells, currentCell);
 					}
-                }
-            }
-        }
+				}
+			}
+		}
 
 	/**
 	 * See if there are any burning cells anywhere in the matrix
 	 * @return
 	 */
-    public boolean stillBurning(){
-        for (int f = 0 ; f < this.size - 1; f ++ ){
-            for(int g = 0 ; g < this.size - 1; g ++){
-                if (somethingBurning(worldMatrix[f][g])){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+	public boolean stillBurning(){
+		for (int f = 0 ; f < this.size - 1; f ++ ){
+			for(int g = 0 ; g < this.size - 1; g ++){
+				if (somethingBurning(worldMatrix[f][g])){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Clear any fires from the previous iteration
 	 */
 	void clearPreviousFire(){
 		for (int f = 0 ; f < this.size - 1; f ++ ){
-            for(int g = 0 ; g < this.size - 1; g ++){
+			for(int g = 0 ; g < this.size - 1; g ++){
 				Cell currentCell = worldMatrix[f][g];
 				if (somethingBurning(currentCell)){
 					currentCell.setState(Cell.STATES.BURNT);
@@ -493,6 +495,7 @@ public class World {
 	
 
 	// METRICS FUNCTIONS
+
 	/**
 	 * Method to determine what percentage of the matrix is burned
 	 * @return area of map burned
@@ -558,7 +561,7 @@ public class World {
 	 */
 	public void displayData(){
 		System.out.print("\033[H\033[2J");
-        System.out.flush();
+		System.out.flush();
 		int steps = trackSteps();
 		double percentage = burnPercentage();
 		String direction = todaysWeather.getStringDirection();
@@ -588,10 +591,10 @@ public class World {
 			trees[2] = tree4;
 			trees[3] = tree5;
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Method to laod fire images for the map
@@ -610,10 +613,10 @@ public class World {
 			fires[2] = fire3;
 			fires[3] = fire4;
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Method to load burnt cell images for the map
@@ -628,10 +631,10 @@ public class World {
 			burnt[1] = burnt2;
 
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Method to load animal images for the map
@@ -645,9 +648,9 @@ public class World {
 			anima[0] = animal1;
 			anima[1] = animal2;
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
