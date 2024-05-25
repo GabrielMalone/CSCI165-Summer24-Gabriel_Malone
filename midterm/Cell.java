@@ -3,6 +3,7 @@
 import java.util.Random;
 import java.awt.image.BufferedImage;
 
+
 public class Cell {
 
 	// static means that a variable/method will be shared by all instances of that class
@@ -19,7 +20,7 @@ public class Cell {
 	// weather states for a cell
 	public static enum WEATHER {
 		WINDY,
-		CALM;
+		CALM,
 	}
 	// objects a cell can 'hold'
 	public static enum OBJECTS{
@@ -59,16 +60,38 @@ public class Cell {
 	private FIREMOVING firemoving = FIREMOVING.VOID;
 	private POSITIONASNEIGHBOR position;
 	double burnMultiplier = 0;
-	public String cellColor;
 	int row;
 	int column;
-	String coordinates;
+	private String [] Colors = {"255-255-051","000-204-000","255-000-000", "000-000-000"};
+	public String cellColor;
+	public String coordinates;
 	public BufferedImage stateimage;
 	public BufferedImage animalimage;
+	public BufferedImage weatherimage;
 	public boolean moved = false;
+	private Random rand = new Random();
 
 	public Cell(){
 
+	}
+
+	/**
+	 * Method to assign a color to a cell object
+	 * 
+	 */
+	public void SetCellColor(){
+		switch (this.state) {
+			case BURNING: 		this.cellColor = Colors[2];
+							break;
+			case TREE: 			this.cellColor = Colors[1];
+							break;
+			case EMPTY: 		this.cellColor = Colors[0];
+							break;
+			case BURNT: 		this.cellColor = Colors[3];
+			break;
+					default:
+							break;
+		}
 	}
 
 	/*
@@ -107,7 +130,8 @@ public class Cell {
 	public void setObject (OBJECTS object){
 		this.object = object;
 		// set image for animals
-		if (this.object == Cell.OBJECTS.WILDLIFEALIVE) 	this.animalimage = World.anima[1];
+		if (this.object == Cell.OBJECTS.WILDLIFEALIVE) this.animalimage = World.anima[0];
+		if (this.object == Cell.OBJECTS.WILDLIFEDEAD) this.animalimage = World.anima[1];
 	}
 
 	/**
@@ -130,9 +154,9 @@ public class Cell {
 	 * Method to set images for a cell
 	 */
 	private void setStateImages(){
-		Random rand = new Random();
+	
 		// sets a cell's tree image randomly
-		int randindex = rand.nextInt(4);
+		int randindex = this.rand.nextInt(4);
 
 		if (this.state == Cell.STATES.TREE){
 			this.stateimage = World.trees[randindex];
@@ -185,7 +209,8 @@ public class Cell {
 	 * Method to set the cell's weather
 	 */
 	public void setWeather(WEATHER weather){
-		this.weather = weather;
+		this.weather = weather; 
+		this.weatherimage = World.winds[0];
 	}
 
 	/**

@@ -8,7 +8,7 @@ public class Wildlife {
 	// track active wildlife on map
 	//public ArrayList<Cell> activeWildlifeCells = new ArrayList<>();
 	//public ArrayList<Cell> deadanimals = new ArrayList<>();
-	// for a metric I never used
+	// excapedanimals -- > a metric I never used
 	int escapedanimals = 0;
 	Random rand = new Random();
 
@@ -194,7 +194,7 @@ public class Wildlife {
 		for (int f = 0 ; f < Driver.neWorld.size - 1; f ++ ){
             for(int g = 0 ; g < Driver.neWorld.size - 1; g ++){
 				Cell currentCell = Driver.neWorld.worldMatrix[f][g];
-				double chance_to_decay = rand.nextDouble(1);
+				double chance_to_decay = this.rand.nextDouble(1);
 				if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEDEAD && chance_to_decay < .1){
 					currentCell.setObject(Cell.OBJECTS.VOID);
 

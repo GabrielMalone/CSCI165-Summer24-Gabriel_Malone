@@ -38,6 +38,7 @@ public class World {
 	public  static BufferedImage [] fires = new BufferedImage[4];
 	public  static BufferedImage [] burnt = new BufferedImage[4];
 	public  static BufferedImage [] anima = new BufferedImage[4];
+	public  static BufferedImage [] winds = new BufferedImage[4];
 	// for stochatic method
 	private Random rand = new Random();
 
@@ -50,12 +51,13 @@ public class World {
   		createTrees();
   		createFires();
   		createBurnt();
+		createWind();
 		// create base world
 		fillWorld();
 	}
 
 	// INITIALIZE LOOP
-	
+
 	/*
 	 * Method to set up the simulation to run in a loop
 	 */
@@ -138,6 +140,7 @@ public class World {
 				// if at edge tops/bottom
 				if (i == 0 || i == this.size - 1){
 					newCell.setState(Cell.STATES.EMPTY);
+					newCell.SetCellColor();
 					this.rgbWorld[i][j] = newCell.cellColor;
 					newCell.row = i;
 					newCell.column = j;
@@ -146,6 +149,7 @@ public class World {
 				// if at edge left/right
 				else if ( j == 0 || j == this.size - 1){
 					newCell.setState(Cell.STATES.EMPTY);
+					newCell.SetCellColor();
 					this.rgbWorld[i][j] = newCell.cellColor;
 					newCell.row = i;
 					newCell.column = j;
@@ -154,6 +158,7 @@ public class World {
 				// if not at edge - tree
 				else {
 					newCell.setState(Cell.STATES.TREE);
+					newCell.SetCellColor();
 					this.rgbWorld[i][j] = newCell.cellColor;
 					newCell.row = i;
 					newCell.column = j;
@@ -173,7 +178,7 @@ public class World {
 	 */
 	double probCatch(){
 		// random value from  0.0 - 1.0
-		double catchProb = rand.nextDouble(1);
+		double catchProb = this.rand.nextDouble(1);
 		return catchProb;
 
 	}
@@ -234,12 +239,11 @@ public class World {
 		// set center after the loop complete
 		this.centerCell = new Cell();
 		// for old graphics set up
-		this.rgbWorld[centered][centered] = centerCell.cellColor;
 		// place center cell and assign its coordinates for other logic
 		this.worldMatrix[centered][centered] =  this.centerCell;
-		centerCell.coordinates = centered + "," + centered;
-		centerCell.row = centered;
-		centerCell.column = centered;
+		this.centerCell.coordinates = centered + "," + centered;
+		this.centerCell.row = centered;
+		this.centerCell.column = centered;
 
 	}
 	
@@ -249,6 +253,7 @@ public class World {
 	void setCenterCellonFire(){
 		placeCenterCell();
 		this.centerCell.setState(Cell.STATES.BURNING);
+		this.centerCell.SetCellColor();
 	}
 
 	/**
@@ -299,8 +304,8 @@ public class World {
 	 */
 	private void seeWhatBurns(Cell[] neighboringcells, Cell homeCell){
 		for (Cell cell : neighboringcells){
-			if(	cell.getState().equals(Cell.STATES.TREE)
-			&& 	cell.getCellWeather().equals(Cell.WEATHER.CALM)){
+			if  (cell.getState().equals(Cell.STATES.TREE)
+			&& 	(cell.getCellWeather().equals(Cell.WEATHER.CALM))){
 				double chanceToBurn = probCatch();
 				if 	(chanceToBurn < this.catchprobability){
 					setMapOnFire(cell, homeCell);
@@ -358,6 +363,7 @@ public class World {
 				Cell currentCell = worldMatrix[f][g];
 				if (somethingBurning(currentCell)){
 					currentCell.setState(Cell.STATES.BURNT);
+					currentCell.SetCellColor();
 
 				}
 			}
@@ -389,6 +395,7 @@ public class World {
 		nextCell.setFireMoving(direction);
 		// set it on fire
 		nextCell.setState(Cell.STATES.BURNING);
+		nextCell.SetCellColor();
 		// place it on next map iteration
 		this.nextStep[nextCell.row][nextCell.column] = nextCell;
 	}
@@ -470,9 +477,10 @@ public class World {
 			for (int i = 0 ; i < this.size - 1 ; i ++)	{
 				Cell currentCell = this.worldMatrix [j][i];
 				if (currentCell.getState() == Cell.STATES.BURNT){
-					double chance_to_regorw = rand.nextDouble(1);
+					double chance_to_regorw = this.rand.nextDouble(1);
 					if (chance_to_regorw < Driver.chanceToRegrow){
 						currentCell.setState(Cell.STATES.TREE);
+						currentCell.SetCellColor();
 					}
 				}
 			}
@@ -485,9 +493,9 @@ public class World {
 	public void randomFireSpot(){
 		// set 3 random fires after main fire goes out
 		for (int i = 0 ; i < Driver.numberOfFires ; i ++){
-			int rand_index = rand.nextInt(1, this.size-1);
-			int rand_index_b = rand.nextInt(1, this.size-1);
-			Cell currentCell = worldMatrix[rand_index][rand_index_b];
+			int rand_index = this.rand.nextInt(1, this.size-1);
+			int rand_index_b = this.rand.nextInt(1, this.size-1);
+			Cell currentCell = this.worldMatrix[rand_index][rand_index_b];
 			Cell [] neighbors = findNeighbors(currentCell.row, currentCell.column);
 			seeWhatBurns(neighbors, currentCell);
 			}
@@ -648,6 +656,21 @@ public class World {
 			anima[0] = animal1;
 			anima[1] = animal2;
 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Method to load wind images for the map
+	 */
+	public void createWind(){
+
+		try{
+
+			BufferedImage wind1 = ImageIO.read(getClass().getResourceAsStream("/winds/wind.png"));
+			winds[0] = wind1;
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
