@@ -93,6 +93,8 @@ public class World {
 		if (Driver.rainOn){
 			this.todaysRain.resetMoveState();
 			this.todaysRain.scatterRain();
+			if (Driver.weatherOn)
+				this.todaysRain.drip();
 			this.todaysRain.waterTrees();
 			this.todaysRain.clearBorderRain();
 			

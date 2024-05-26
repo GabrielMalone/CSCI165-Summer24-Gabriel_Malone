@@ -41,9 +41,24 @@ public class Rain {
 			Cell cell_at_this_location = Driver.neWorld.worldMatrix[row_location][column_location];
 			// update cell
 			double chance_to_rain = rand.nextDouble(1);
-			if (chance_to_rain < .001){
+			if (chance_to_rain < .1){
 				if (cell_at_this_location.getRain() == Cell.RAIN.NOT_RAINING) 
 					cell_at_this_location.setRain(Cell.RAIN.RAINING);
+			}
+		}
+	}
+	public void dry(){
+		for (int i = 0; i < Driver.startingRain; i++){
+			// find location on map for object
+			int row_location = rand.nextInt(1, Driver.neWorld.size - 1);
+			int column_location = rand.nextInt(1, Driver.neWorld.size - 1);
+			// get cell at this location
+			Cell cell_at_this_location = Driver.neWorld.worldMatrix[row_location][column_location];
+			// update cell
+			double chance_to_rain = rand.nextDouble(1);
+			if (chance_to_rain < .02){
+				if (cell_at_this_location.getRain() == Cell.RAIN.RAINING) 
+					cell_at_this_location.setRain(Cell.RAIN.NOT_RAINING);
 			}
 		}
 	}
@@ -105,13 +120,17 @@ public class Rain {
 					neighboring_cell.setRain(Cell.RAIN.RAINING);
 					if (Driver.weatherOn)
 						windDirectionEffectOnRain(current_location, neighboring_cell);
-
 					neighboring_cell.rain_moved = true;
 					break;
 					}
 				neighborArray.remove(neighboring_cell);
 			}
 		}
+		if (Driver.weatherOn){
+			drip();
+			dry();
+		}
+	
 	}
 
 	/**
@@ -201,7 +220,7 @@ public class Rain {
 				if (directions.get(neighbor).equals(Driver.neWorld.todaysWind.getStringDirection()) && precipitation_chance < .75){
 					neighbor.setRain(Cell.RAIN.RAINING);
 				}
-				else if ( precipitation_chance < .1 ) neighbor.setRain(Cell.RAIN.NOT_RAINING);
+				else if ( precipitation_chance < .5 ) neighbor.setRain(Cell.RAIN.NOT_RAINING);
 			}
 		} 
 

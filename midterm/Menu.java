@@ -588,9 +588,8 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			this.wanders_label.setForeground(Color.GRAY);
 			this.animal_pop_label.setForeground(Color.GRAY);
 			this.animal_pop_slider.setEnabled(false);
-			this.animal_pop_slider.setValue(0);
+			this.animal_repop_slider.setEnabled(false);
 			if (this.finished_start_up) Driver.neWorld.wildlife.clearAnimals();
-			Driver.startingPop = 0;
 			this.animal_pop_label.setText("Starting pop: " + Driver.startingPop);
 			}
 		// animal radio buttons
@@ -658,7 +657,10 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		else if (evt.getSource() == rain_on){
 			rain_slider_label.setForeground(Color.BLACK);
 			rain_slider.setEnabled(true);
-			Driver.rainOn = true;
+			if (finished_start_up){
+				Driver.rainOn = true;
+				Driver.neWorld.todaysRain.letItRain();
+			}
 		}
 		else if (evt.getSource() == rain_off){
 			rain_slider_label.setForeground(Color.GRAY);
