@@ -66,7 +66,7 @@ public class World {
 		// creates next instance of the world
 		copyWorldMatrix();
 		// initial fire
-		setCenterCellonFire();
+		// setCenterCellonFire();
 		// see which neighbors burn
 		designatetNeighborsOnFire();
 	}
@@ -79,7 +79,6 @@ public class World {
 	public void spreadFire(){
 		// SIMULATION LOOP
 		if (this.timeStep > 1) {
-			// snuff out anything that was on fire
 			clearPreviousFire();
 			// if fires go out and endless mode on
 			// reset the fires at random spots
@@ -97,7 +96,6 @@ public class World {
 				this.todaysRain.drip();
 			this.todaysRain.waterTrees();
 			this.todaysRain.clearBorderRain();
-			
 		}
 		if (Driver.endlessMode)
 			regrowTrees();
@@ -172,6 +170,7 @@ public class World {
 				// also write to color file
 			}
 		}
+		setCenterCellonFire();
 	}
 
 	/**
@@ -362,7 +361,6 @@ public class World {
 				if (somethingBurning(currentCell)){
 					currentCell.setState(Cell.STATES.BURNT);
 					currentCell.SetCellColor();
-
 				}
 			}
 		}
