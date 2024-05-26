@@ -410,7 +410,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		}
 		else if (e.getSource() == rain_slider){
 			this.rain_precipt 		 = (double)this.rain_slider.getValue();
-			Driver.rainAdjust 		 = (double)this.rain_slider.getValue()/500;
+			Driver.rainAdjust 		 = (double)this.rain_slider.getValue()/2000;
 			this.rain_slid_str		 = "precipitation rate " + (int)this.rain_slider.getValue() + "%";
 			this.rain_slider_label.setText(rain_slid_str);
 		}
