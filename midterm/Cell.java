@@ -18,9 +18,14 @@ public class Cell {
 		BURNT;
 	}
 	// weather states for a cell
-	public static enum WEATHER {
+	public static enum WIND {
 		WINDY,
 		CALM,
+	}
+	// weather states for a cell
+	public static enum RAIN {
+		RAINING,
+		DRY,
 	}
 	// objects a cell can 'hold'
 	public static enum OBJECTS{
@@ -28,7 +33,7 @@ public class Cell {
 		WILDLIFEALIVE,
 		WILDLIFEDEAD,
 		DECAYING,
-		BOMB;
+		BOMB,
 	}
 	// data about fire direction a cell can have
 	public static enum FIREMOVING{
@@ -55,11 +60,13 @@ public class Cell {
 	}
 	// initialize enums/variables
 	private STATES state;
-	private WEATHER weather = WEATHER.CALM;
+	private WIND weather = WIND.CALM;
+	private RAIN rain = RAIN.DRY;
 	private OBJECTS object = OBJECTS.VOID;
 	private FIREMOVING firemoving = FIREMOVING.VOID;
 	private POSITIONASNEIGHBOR position;
-	double burnMultiplier = 0;
+	double windMultiplier = 0;
+	double rainMultiplier = 0;
 	int row;
 	int column;
 	private String [] Colors = {"255-255-051","000-204-000","255-000-000", "000-000-000"};
@@ -69,7 +76,9 @@ public class Cell {
 	public BufferedImage animalimage;
 	public BufferedImage weatherimage;
 	public boolean moved = false;
+	public boolean rain_moved = false;
 	private Random rand = new Random();
+	public boolean raining = false;
 
 	public Cell(){
 
@@ -204,20 +213,34 @@ public class Cell {
 	public STATES getState(){
 		return this.state;
 	}
+		/*
+	 * Method to set the cell's rain
+	 */
+	public void setRain(RAIN rain){
+		this.rain = rain; 
+		int randindex = this.rand.nextInt(2);
+		this.weatherimage = World.winds[randindex];
+	}
+	/**
+	 * Method to get a cell's weather
+	 * @return cell's weather
+	 */
+	public RAIN getRain(){
+		return this.rain;
+	}
 
 	/*
 	 * Method to set the cell's weather
 	 */
-	public void setWeather(WEATHER weather){
+	public void setWind(WIND weather){
 		this.weather = weather; 
-		this.weatherimage = World.winds[0];
 	}
 
 	/**
 	 * Method to get a cell's weather
 	 * @return cell's weather
 	 */
-	public WEATHER getCellWeather(){
+	public WIND getCellWind(){
 		return this.weather;
 	}
 
@@ -225,12 +248,9 @@ public class Cell {
 	 * Method to determine a cell's readiness to burn
 	 * @return double of cell's increased/decreased burn value
 	 */
-	public double burnMultiplier(){
-		// if cell burning and windy, increase burn chance of cell in path of wind
-		if (this.weather.equals(WEATHER.WINDY)){
-			this.burnMultiplier -= .005;
-		}
-		return this.burnMultiplier;
+	
+	public double rainEffects (double chanceToBurn) {
+		return chanceToBurn += .1;
 	}
 	/*
 	 * Method to see if one cell is the same as another cell in the matrix

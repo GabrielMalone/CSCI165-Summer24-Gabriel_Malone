@@ -23,7 +23,7 @@ public class Wildlife {
 			// get cell at this location
 			Cell cell_at_this_location = Driver.neWorld.worldMatrix[row_location][column_location];
 			// update cell
-			cell_at_this_location.setObject(Cell.OBJECTS.WILDLIFEALIVE);
+			if (cell_at_this_location.getState() != Cell.STATES.BURNT) cell_at_this_location.setObject(Cell.OBJECTS.WILDLIFEALIVE);
 			//this.activeWildlifeCells.add(cell_at_this_location);
 		}
 	}
@@ -194,7 +194,7 @@ public class Wildlife {
 		for (int f = 0 ; f < Driver.neWorld.size - 1; f ++ ){
             for(int g = 0 ; g < Driver.neWorld.size - 1; g ++){
 				Cell currentCell = Driver.neWorld.worldMatrix[f][g];
-				double chance_to_decay = this.rand.nextDouble(1);
+				double chance_to_decay = rand.nextDouble(1);
 				if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEDEAD && chance_to_decay < .1){
 					currentCell.setObject(Cell.OBJECTS.VOID);
 

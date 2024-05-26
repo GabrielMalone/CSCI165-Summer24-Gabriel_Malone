@@ -89,7 +89,7 @@ public class World_Graphics extends JPanel implements ActionListener{
 		super.paintComponent(g);
 		baseMap(g);
 		animalMap(g);
-		//windMap(g);
+		rainMap(g);
 	}
 
 	/**
@@ -112,7 +112,9 @@ public class World_Graphics extends JPanel implements ActionListener{
 			// outer loop processes the number of "rows"
 			for(int i = 0; i < Driver.size; i++){ 
 				// inner loop processes the number of "columns"
-				int r = 0, a = 1, b = 2;
+				int r = 0;
+				int a = 1; 
+				int b = 2;
 				for(int j = 0; j < Driver.size; j++){
 					String[] rgbArray = Driver.neWorld.worldMatrix[i][j].cellColor.split("-");
 					int red		= Integer.parseInt(rgbArray[0]);
@@ -196,13 +198,13 @@ public class World_Graphics extends JPanel implements ActionListener{
 	 * Method to display animals on the map
 	 * @param g
 	 */ 
-	public void windMap(Graphics g) {
+	public void rainMap(Graphics g) {
         Graphics2D graphics2d = (Graphics2D) g;
         int x = 1, y = 1;
         for(int i = 0; i < Driver.size; i++){
             for(int j = 0; j < Driver.size; j++){
                 Cell currentCell = Driver.neWorld.worldMatrix[i][j];
-                if (currentCell.getCellWeather() == Cell.WEATHER.WINDY){
+                if (currentCell.getRain() == Cell.RAIN.RAINING){
                     // display scaled versions of animsls depending on map size
                     graphics2d.drawImage(currentCell.weatherimage, x, y, this.IMAGE_SIZE, this.IMAGE_SIZE, null);
 				}

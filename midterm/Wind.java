@@ -1,8 +1,9 @@
 // Gabriel Malone / CS165 / Midterm / Summer 2024
 
-public class Weather {
+
+public class Wind {
 	
-	//private Random rand = new Random();
+	
     
 	public static enum DIRECTION {
 		NORTH,
@@ -12,17 +13,6 @@ public class Weather {
 	}
     public DIRECTION direction;
     public String windDirection;
-
-	/**
-	 * Method to create wind pattern
-	 *
-	 */
-	public void pattern(){
-		// 	this combo of random spots set to windy then their neighbors
-		// 	randomly being set to windy seems to create the
-		//	most pleasing wind pattern so far
-		windOn();
-	}
 
 	/**
 	 * Method to set ENUM direction of a cell's weather pattern
@@ -74,7 +64,7 @@ public class Weather {
 	public void clearWeatherPattern(){
 		for (int i = 0; i < Driver.neWorld.worldMatrix.length ; i ++ ){
 			for (int j = 0; j < Driver.neWorld.worldMatrix.length ; j ++ ){
-				Driver.neWorld.worldMatrix[i][j].setWeather(Cell.WEATHER.CALM);
+				Driver.neWorld.worldMatrix[i][j].setWind(Cell.WIND.CALM);
 			}
 		}
 	}
@@ -85,10 +75,12 @@ public class Weather {
 	public void windOn(){
 		for (int i = 0; i < Driver.neWorld.worldMatrix.length ; i ++ ){
 			for (int j = 0; j < Driver.neWorld.worldMatrix.length ; j ++ ){
-				Driver.neWorld.worldMatrix[i][j].setWeather(Cell.WEATHER.WINDY);
+				Driver.neWorld.worldMatrix[i][j].setWind(Cell.WIND.WINDY);
 			}
 		}
 	}
+
+
 }
 
 

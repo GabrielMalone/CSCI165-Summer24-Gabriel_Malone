@@ -49,6 +49,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 	JSeparator separator12		= new JSeparator();
 	JSeparator separator13		= new JSeparator();
 	JSeparator separator14		= new JSeparator();
+	JSeparator separator15		= new JSeparator();
 	// fonts
 	Font labelfont 				= new Font("SansSerif", Font.PLAIN, 10);
 	Font popFont 				= new Font("SansSerif", Font.PLAIN, 10);
@@ -108,6 +109,15 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 	String[] windDirections 	= {"North", "East", "South", "West"};
 	JComboBox<String> windBox	= new JComboBox<>(windDirections);
 	JLabel wind_direction_Label = new JLabel("Direction");
+	// rain on/off
+	ButtonGroup rain_group 		= new ButtonGroup();
+	JRadioButton rain_on 		= new JRadioButton("On");
+	JRadioButton rain_off		= new JRadioButton("Off");
+	JLabel rain_Label			= new JLabel("Rain");
+	JSlider rain_slider 		= new JSlider();
+	double rain_precipt			= (double)rain_slider.getValue();
+	String rain_slid_str		= "precipitation rate " + rain_precipt + "%";
+	JLabel rain_slider_label 	= new JLabel(rain_slid_str);
 	// Modes
 	JLabel mode_label			= new JLabel("Modes");
 	ButtonGroup mode_Group	 	= new ButtonGroup();
@@ -179,6 +189,19 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.weather_group.add(this.wind_off);
 		this.wind_direction_Label.setForeground(Color.GRAY);
 		this.windBox.setEnabled(false);
+		// rain on/off
+		this.rain_group.add(this.rain_on);
+		this.rain_group.add(this.rain_off);
+		this.rain_on.addActionListener(this);
+		this.rain_on.setFont(labelfont);
+		this.rain_off.addActionListener(this);
+		this.rain_off.setSelected(true);
+		this.rain_off.setFont(labelfont);
+		this.rain_Label.setForeground(Color.BLACK);
+		this.rain_slider.addChangeListener(this);
+		this.rain_slider_label.setFont(labelfont);
+		this.rain_slider_label.setForeground(Color.GRAY);
+		this.rain_slider.setEnabled(false);
 		// burn rate slider
 		this.burn_slider.addChangeListener(this);
 		this.burn_slider.setValue(25);
@@ -205,7 +228,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.optionsWindow.add(this);
 		this.optionsWindow.setTitle("Options");
 		this.optionsWindow.getSize();
-		this.optionsWindow.setSize( 195, 800);
+		this.optionsWindow.setSize( 195, 850);
 		this.optionsWindow.setLayout(null);
 		this.optionsWindow.setLocationRelativeTo(null);
 		this.optionsWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -254,22 +277,29 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.wind_direction_Label.setBounds(102, 517, 150, 20);
 		this.windBox.setBounds(25, 537, 140, 25);
 		this.separator4.setBounds(0, 567, 200, 20);
+		// rain section
+		this.rain_Label.setBounds(40, 587, 150, 20);
+		this.rain_on.setBounds(70, 567, 50, 60);
+		this.rain_off.setBounds(110, 567, 60, 60);
+		this.rain_slider_label.setBounds(37,620, 150, 20 );
+		this.rain_slider.setBounds(5,645, 180, 20);
+		this.separator15.setBounds(0, 668, 200, 20);
 		// modes
-		this.endless.setBounds(15, 574, 90, 30);
-		this.single_run.setBounds(90, 574, 90, 30);
-		this.separator9.setBounds(0, 600, 200, 20);
+		this.endless.setBounds(15, 674, 90, 30);
+		this.single_run.setBounds(90, 674, 90, 30);
+		this.separator9.setBounds(0, 700, 200, 20);
 		// data
-		this.data_title.setBounds(25, 610, 90, 30);
-		this.separator10.setBounds(0, 635, 200, 20);
-		this.data_steps_title.setBounds(25, 640, 90, 20);
-		this.data_steps_output.setBounds(120, 640, 90, 20);
-		this.separator11.setBounds(0, 655, 200, 20);
-		this.data_pop_title.setBounds(25, 660, 90, 20);
-		this.data_pop_output.setBounds(120, 660, 90, 20);
-		this.separator12.setBounds(0, 675, 200, 20);
-		this.data_burn_area_title.setBounds(25, 680, 90, 20);
-		this.data_burn_area_output.setBounds(120, 680, 90, 20);
-		this.separator13.setBounds(0, 695, 200, 20);
+		this.data_title.setBounds(25, 710, 90, 30);
+		this.separator10.setBounds(0, 735, 200, 20);
+		this.data_steps_title.setBounds(25, 740, 90, 20);
+		this.data_steps_output.setBounds(120, 740, 90, 20);
+		this.separator11.setBounds(0, 755, 200, 20);
+		this.data_pop_title.setBounds(25, 760, 90, 20);
+		this.data_pop_output.setBounds(120, 760, 90, 20);
+		this.separator12.setBounds(0, 775, 200, 20);
+		this.data_burn_area_title.setBounds(25, 780, 90, 20);
+		this.data_burn_area_output.setBounds(120, 780, 90, 20);
+		this.separator13.setBounds(0, 795, 200, 20);
 
 		// put everything in the frame
 		this.optionsWindow.add(this);
@@ -310,6 +340,11 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.optionsWindow.add(data_burn_area_output);
 		this.optionsWindow.add(animal_repop_label);
 		this.optionsWindow.add(animal_repop_slider);
+		this.optionsWindow.add(rain_Label);
+		this.optionsWindow.add(rain_slider_label);
+		this.optionsWindow.add(rain_off);
+		this.optionsWindow.add(rain_slider);
+		this.optionsWindow.add(rain_on);
 		this.optionsWindow.add(separator);
 		this.optionsWindow.add(separator2);
 		this.optionsWindow.add(separator3);
@@ -324,6 +359,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.optionsWindow.add(separator12);
 		this.optionsWindow.add(separator13);
 		this.optionsWindow.add(separator14);
+		this.optionsWindow.add(separator15);
 		this.optionsWindow.setVisible(true);
 
 	}
@@ -371,6 +407,12 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			Driver.popRegrowth 		 = (double)this.animal_repop_slider.getValue() / 10000;
 			this.animal_repop_String = "repopulation rate " + (int)this.animal_repop_slider.getValue() + "%";
 			this.animal_repop_label.setText(animal_repop_String);
+		}
+		else if (e.getSource() == rain_slider){
+			this.rain_precipt 		 = (double)this.rain_slider.getValue();
+			Driver.rainAdjust 		 = (double)this.rain_slider.getValue()/500;
+			this.rain_slid_str		 = "precipitation rate " + (int)this.rain_slider.getValue() + "%";
+			this.rain_slider_label.setText(rain_slid_str);
 		}
 	}
 
@@ -423,20 +465,20 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			Driver.neWorld = new World();
 			Driver.world = new World_Graphics();
 			if (this.weather_initializer.equals("NORTH")){
-				Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.NORTH);
-				Driver.neWorld.weatherSet = true;
+				Driver.neWorld.todaysWind.setDirection(Wind.DIRECTION.NORTH);
+				
 			}
 			if (this.weather_initializer.equals("SOUTH")){
-				Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.SOUTH);
-				Driver.neWorld.weatherSet = true;
+				Driver.neWorld.todaysWind.setDirection(Wind.DIRECTION.SOUTH);
+		
 			}
 			if (this.weather_initializer.equals("EAST")){
-				Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.EAST);
-				Driver.neWorld.weatherSet = true;
+				Driver.neWorld.todaysWind.setDirection(Wind.DIRECTION.EAST);
+			
 			}
 			if (this.weather_initializer.equals("WEST")){
-				Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.WEST);
-				Driver.neWorld.weatherSet = true;
+				Driver.neWorld.todaysWind.setDirection(Wind.DIRECTION.WEST);
+
 			}
 			this.finished_start_up = true;
 
@@ -554,9 +596,9 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			this.windBox.setEnabled(true);
 			this.windBox.setSelectedIndex(0);
 			if (finished_start_up){
-				Driver.neWorld.todaysWeather.clearWeatherPattern();
-				Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.NORTH);
-				Driver.neWorld.weatherSet = true;
+				Driver.neWorld.todaysWind.clearWeatherPattern();
+				Driver.neWorld.todaysWind.setDirection(Wind.DIRECTION.NORTH);
+				Driver.neWorld.todaysWind.windOn();
 			}
 			else{
 				this.weather_initializer = "NORTH";
@@ -565,8 +607,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		}
 		else if (evt.getSource() == wind_off){
 			if (finished_start_up){
-				Driver.neWorld.todaysWeather.clearWeatherPattern();
-				Driver.neWorld.weatherSet = false;
+				Driver.neWorld.todaysWind.clearWeatherPattern();
 			}
 			this.windBox.setEnabled(false);
 			this.wind_direction_Label.setForeground(Color.GRAY);
@@ -576,33 +617,44 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			switch (index){
 				case 0:		if (! finished_start_up) this.weather_initializer = "NORTH";
 							else{
-								Driver.neWorld.todaysWeather.clearWeatherPattern();
-								Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.NORTH);
-								Driver.neWorld.weatherSet = true;
+								Driver.neWorld.todaysWind.clearWeatherPattern();
+								Driver.neWorld.todaysWind.setDirection(Wind.DIRECTION.NORTH);
+								Driver.neWorld.todaysWind.windOn();
 							}
 							break;
 				case 1:		if (! finished_start_up) this.weather_initializer = "EAST";
 							else{
-								Driver.neWorld.todaysWeather.clearWeatherPattern();
-								Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.EAST);
-								Driver.neWorld.weatherSet = true;
+								Driver.neWorld.todaysWind.clearWeatherPattern();
+								Driver.neWorld.todaysWind.setDirection(Wind.DIRECTION.EAST);
+								Driver.neWorld.todaysWind.windOn();
 							}
 							break;
 				case 2:		if (! finished_start_up) this.weather_initializer = "SOUTH";
 							else{
-								Driver.neWorld.todaysWeather.clearWeatherPattern();
-								Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.SOUTH);
-								Driver.neWorld.weatherSet = true;
+								Driver.neWorld.todaysWind.clearWeatherPattern();
+								Driver.neWorld.todaysWind.setDirection(Wind.DIRECTION.SOUTH);
+								Driver.neWorld.todaysWind.windOn();
 							}
 							break;
 				case 3:		if (! finished_start_up) this.weather_initializer = "WEST";
 							else{
-							Driver.neWorld.todaysWeather.clearWeatherPattern();
-							Driver.neWorld.todaysWeather.setDirection(Weather.DIRECTION.WEST);
-							Driver.neWorld.weatherSet = true;
+								Driver.neWorld.todaysWind.clearWeatherPattern();
+								Driver.neWorld.todaysWind.setDirection(Wind.DIRECTION.WEST);
+								Driver.neWorld.todaysWind.windOn();
 							}
 							break;
 			}
+		}
+		else if (evt.getSource() == rain_on){
+			rain_slider_label.setForeground(Color.BLACK);
+			rain_slider.setEnabled(true);
+			Driver.rainOn = true;
+		}
+		else if (evt.getSource() == rain_off){
+			rain_slider_label.setForeground(Color.GRAY);
+			rain_slider.setEnabled(false);
+			Driver.rainOn = false;
+			Driver.neWorld.todaysRain.dryTheEarth();
 		}
 		else if (evt.getSource() == endless){
 			Driver.endlessMode = true;

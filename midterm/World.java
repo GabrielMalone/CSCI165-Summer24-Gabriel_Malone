@@ -14,7 +14,6 @@ public class World {
 	// map size (width) also used in calculating animal population maxes
 	public  int size = Driver.size;
 	// used to manage flow of main loop logic
-	public  boolean weatherSet = false;
 	// create blank Cell matrix
 	public  Cell[][] worldMatrix = new Cell [size][size];
 	// matrix to hold the upcoming iteration of world
@@ -30,9 +29,11 @@ public class World {
 	// for terminating loop
 	public boolean burning = true;
 	// get weather for world map
-	public Weather todaysWeather = Driver.todaysWeather;
+	public Wind todaysWind = Driver.todaysWind;
 	// get wildlife
 	public Wildlife wildlife = new Wildlife();
+	// get rain
+	public Rain todaysRain = new Rain();
 	// graphics
 	public  static BufferedImage [] trees = new BufferedImage[4];
 	public  static BufferedImage [] fires = new BufferedImage[4];
@@ -80,9 +81,6 @@ public class World {
 	 */
 	public void spreadFire(){
 		// SIMULATION LOOP
-		if (this.weatherSet)
-			this.todaysWeather.pattern();
-		// decay dead at each round
 		if (this.timeStep > 1) {
 			// snuff out anything that was on fire
 			clearPreviousFire();
@@ -95,6 +93,12 @@ public class World {
 		}
 		applyChangesToWorld();
 		// set the cells for the next iteration
+		if (Driver.rainOn){
+			this.todaysRain.drip();
+			this.todaysRain.scatterRain();
+			this.todaysRain.waterTrees();
+			this.todaysRain.clearBorderRain();
+		}
 		if (Driver.endlessMode)
 			regrowTrees();
 		if (Driver.animalsOn){
@@ -119,7 +123,6 @@ public class World {
 					 Driver.world.timer.stop();	
 			}
 		}
-		//displayData();
 	}
 
 	// WORLD LOGIC
@@ -288,15 +291,14 @@ public class World {
 		directions.put(southeast, "southeast");
 		directions.put(southwest, "southwest");
 		// if cell set to potentially be on fire and in path of wind, more likely to burn
-		if (directions.get(currentCell).equals(todaysWeather.windDirection)){
-			chanceToBurn *= currentCell.burnMultiplier();
+		if (directions.get(currentCell).equals(todaysWind.windDirection)){
+			chanceToBurn -= 1;
 			return chanceToBurn;
 		}
 		// if outside of path, cell set to be on fire is less likely to burn than usual
-		else chanceToBurn += .1;
+		else chanceToBurn -= .15;
 		return chanceToBurn;
 	}
-
 	/**
 	 * Method to see which neighbors of a burning cell catch on fire
 	 * @param neighboringcells
@@ -304,21 +306,17 @@ public class World {
 	 */
 	private void seeWhatBurns(Cell[] neighboringcells, Cell homeCell){
 		for (Cell cell : neighboringcells){
-			if  (cell.getState().equals(Cell.STATES.TREE)
-			&& 	(cell.getCellWeather().equals(Cell.WEATHER.CALM))){
-				double chanceToBurn = probCatch();
-				if 	(chanceToBurn < this.catchprobability){
-					setMapOnFire(cell, homeCell);
+			double chanceToBurn = rand.nextDouble(0, 1);
+			if  (cell.getState().equals(Cell.STATES.TREE)){
+				// wind multiplier
+				if (cell.getCellWind().equals(Cell.WIND.WINDY)){
+					chanceToBurn += windDirectionEffect(homeCell, cell, chanceToBurn);
 				}
-			}
-
-			else if (cell.getState().equals(Cell.STATES.TREE)
-			&& 	cell.getCellWeather().equals(Cell.WEATHER.WINDY)){
-				double chanceToBurn = probCatch();
-				chanceToBurn = windDirectionEffect(homeCell, cell, chanceToBurn);
-				if 	(chanceToBurn < this.catchprobability){
+				// rain multiiplier
+				if (cell.getRain() == Cell.RAIN.RAINING)
+					chanceToBurn += cell.rainEffects(chanceToBurn);
+				if 	(chanceToBurn <= this.catchprobability){
 					setMapOnFire(cell, homeCell);
-
 				}
 			}
 		}
@@ -328,8 +326,8 @@ public class World {
 	 * Method to see which of a cell's neighbors should bet set on fire
 	 */
 	void designatetNeighborsOnFire(){
-		for (int f = 0 ; f < this.size - 1; f ++ ){
-			for(int g = 0 ; g < this.size - 1; g ++){
+		for (int f = 1 ; f < this.size - 1; f ++ ){
+			for(int g = 1 ; g < this.size - 1; g ++){
 				Cell currentCell = this.worldMatrix[f][g];
 				if (somethingBurning(currentCell)){
 					Cell [] neighboringCells = findNeighbors(f, g);
@@ -381,9 +379,10 @@ public class World {
 		int hoomecolumn = homeCell.column;
 		// create new cell for next step
 		Cell nextCell = new Cell();
-		nextCell.setWeather(cell.getCellWeather());
+		nextCell.setWind(cell.getCellWind());
 		// see if any wildlife present to kill
 		this.wildlife.checkIfDead(cell, nextCell);
+		this.todaysRain.checkIfDriedOut(cell, cell);
 		nextCell.setState(cell.getState());
 		// set coordinates of new cell
 		nextCell.coordinates = cell.coordinates;
@@ -572,7 +571,7 @@ public class World {
 		System.out.flush();
 		int steps = trackSteps();
 		double percentage = burnPercentage();
-		String direction = todaysWeather.getStringDirection();
+		String direction = todaysWind.getStringDirection();
 		double animal_pop = totalAlive();
 		long pop = Math.round(animal_pop);
 		//if (animal_pop == 0) wildlife.repopulate();
@@ -669,7 +668,9 @@ public class World {
 		try{
 
 			BufferedImage wind1 = ImageIO.read(getClass().getResourceAsStream("/winds/wind.png"));
+			BufferedImage wind2 = ImageIO.read(getClass().getResourceAsStream("/winds/wind2.png"));
 			winds[0] = wind1;
+			winds[1] = wind2;
 			
 		} catch (IOException e) {
 			e.printStackTrace();
