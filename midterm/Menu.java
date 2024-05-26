@@ -405,7 +405,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		}
 		else if (e.getSource() == animal_repop_slider){
 			this.animal_grow_percent = (double)this.animal_repop_slider.getValue();
-			Driver.popRegrowth 		 = (double)this.animal_repop_slider.getValue() / 10000;
+			Driver.popRegrowth 		 = (double)this.animal_repop_slider.getValue() / 100;
 			this.animal_repop_String = "repopulation rate " + (int)this.animal_repop_slider.getValue() + "%";
 			this.animal_repop_label.setText(animal_repop_String);
 		}

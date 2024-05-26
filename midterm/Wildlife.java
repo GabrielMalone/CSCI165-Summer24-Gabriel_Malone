@@ -29,19 +29,17 @@ public class Wildlife {
 		}
 	}
 
-	/**
-	 * Method to repopulate a map steadily
-	 */
 	public void regrowWildlife(){
-		for(int j = 0 ; j < Driver.size - 1; j ++){
-			for (int i = 0 ; i < Driver.size - 1 ; i ++){
-				Cell currentCell = Driver.neWorld.worldMatrix [j][i];
-				// can only pop into a cell with a tree and no other animals
-				if (currentCell.getState() == Cell.STATES.TREE && currentCell.getObject() == Cell.OBJECTS.VOID){
-					double chance_to_regorw = rand.nextDouble(1);
-					if (chance_to_regorw <Driver.popRegrowth){
-						currentCell.setObject(Cell.OBJECTS.WILDLIFEALIVE);
-					}
+		for( int i = 0 ; i < Driver.neWorld.size; i ++){
+			for (int j = 0 ; j < Driver.neWorld.size; j ++){
+				Cell current_location = Driver.neWorld.worldMatrix[i][j];
+				if (current_location.getObject() == Cell.OBJECTS.VOID && current_location.row 		== 1 ||
+					current_location.getObject() == Cell.OBJECTS.VOID && current_location.column 	== 1 ||
+					current_location.getObject() == Cell.OBJECTS.VOID && current_location.row 		== (Driver.neWorld.size - 2) ||
+					current_location.getObject() == Cell.OBJECTS.VOID && current_location.column 	== (Driver.neWorld.size - 2) ){
+						double repop_chance = rand.nextDouble();
+						if (repop_chance < Driver.popRegrowth)
+							current_location.setObject(Cell.OBJECTS.WILDLIFEALIVE);
 				}
 			}
 		}
@@ -200,7 +198,7 @@ public class Wildlife {
 	private boolean clearMoveChoice(Cell option){
 		// can only escape map if running from fire
 		// verbose conditional because wanted to be able tweak a lot of settings.
-		if (option.getState() != Cell.STATES.BURNING && option.getObject() == Cell.OBJECTS.VOID && option.getState() != Cell.STATES.BURNT && option.row >= 0 && option.column >= 0 && option.row <= Driver.neWorld.size&& option.column <= Driver.neWorld.size)
+		if (option.getState() != Cell.STATES.BURNING && option.getObject() == Cell.OBJECTS.VOID && option.getState() != Cell.STATES.BURNT && option.row >= 0 && option.column >= 0 && option.row <= Driver.neWorld.size && option.column <= Driver.neWorld.size)
 			return true;
 		return false;
 	}
