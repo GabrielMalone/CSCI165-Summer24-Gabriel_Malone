@@ -25,7 +25,7 @@ public class Cell {
 	// weather states for a cell
 	public static enum RAIN {
 		RAINING,
-		DRY,
+		NOT_RAINING;
 	}
 	// objects a cell can 'hold'
 	public static enum OBJECTS{
@@ -61,7 +61,7 @@ public class Cell {
 	// initialize enums/variables
 	private STATES state;
 	private WIND weather = WIND.CALM;
-	private RAIN rain = RAIN.DRY;
+	private RAIN rain;
 	private OBJECTS object = OBJECTS.VOID;
 	private FIREMOVING firemoving = FIREMOVING.VOID;
 	private POSITIONASNEIGHBOR position;
@@ -218,8 +218,8 @@ public class Cell {
 	 */
 	public void setRain(RAIN rain){
 		this.rain = rain; 
-		int randindex = this.rand.nextInt(2);
-		this.weatherimage = World.winds[randindex];
+		//int randindex = this.rand.nextInt(3);
+		this.weatherimage = World.winds[1];
 	}
 	/**
 	 * Method to get a cell's weather
@@ -250,7 +250,8 @@ public class Cell {
 	 */
 	
 	public double rainEffects (double chanceToBurn) {
-		return chanceToBurn += .1;
+		double chance = rand.nextDouble(0, 1);
+		return chanceToBurn += chance;
 	}
 	/*
 	 * Method to see if one cell is the same as another cell in the matrix

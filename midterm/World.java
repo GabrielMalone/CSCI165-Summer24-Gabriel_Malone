@@ -63,9 +63,6 @@ public class World {
 	 * Method to set up the simulation to run in a loop
 	 */
 	public void initializeFire(){
-		// place animals if animals on
-		if (Driver.animalsOn)
-			this.wildlife.placeWildlife();
 		// creates next instance of the world
 		copyWorldMatrix();
 		// initial fire
@@ -94,10 +91,11 @@ public class World {
 		applyChangesToWorld();
 		// set the cells for the next iteration
 		if (Driver.rainOn){
-			this.todaysRain.drip();
+			this.todaysRain.resetMoveState();
 			this.todaysRain.scatterRain();
 			this.todaysRain.waterTrees();
 			this.todaysRain.clearBorderRain();
+			
 		}
 		if (Driver.endlessMode)
 			regrowTrees();
@@ -292,11 +290,11 @@ public class World {
 		directions.put(southwest, "southwest");
 		// if cell set to potentially be on fire and in path of wind, more likely to burn
 		if (directions.get(currentCell).equals(todaysWind.windDirection)){
-			chanceToBurn -= 1;
+			chanceToBurn *= -1;
 			return chanceToBurn;
 		}
 		// if outside of path, cell set to be on fire is less likely to burn than usual
-		else chanceToBurn -= .15;
+		else chanceToBurn += .05;
 		return chanceToBurn;
 	}
 	/**
@@ -592,6 +590,7 @@ public class World {
 			BufferedImage tree3 = ImageIO.read(getClass().getResourceAsStream("/trees/tree3.png"));
 			BufferedImage tree4 = ImageIO.read(getClass().getResourceAsStream("/trees/tree4.png"));
 			BufferedImage tree5 = ImageIO.read(getClass().getResourceAsStream("/trees/tree5.png"));
+			
 
 			trees[0] = tree2;
 			trees[1] = tree3;
@@ -634,9 +633,10 @@ public class World {
 
 			BufferedImage burnt1 = ImageIO.read(getClass().getResourceAsStream("/burnt/bunt1.png"));
 			BufferedImage burnt2 = ImageIO.read(getClass().getResourceAsStream("/burnt/burnt2.png"));
+			BufferedImage moist = ImageIO.read(getClass().getResourceAsStream("/trees/moist.png"));
 			burnt[0] = burnt1;
 			burnt[1] = burnt2;
-
+			burnt[2] = moist;
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -669,8 +669,10 @@ public class World {
 
 			BufferedImage wind1 = ImageIO.read(getClass().getResourceAsStream("/winds/wind.png"));
 			BufferedImage wind2 = ImageIO.read(getClass().getResourceAsStream("/winds/wind2.png"));
+			BufferedImage wind3 = ImageIO.read(getClass().getResourceAsStream("/winds/wind3.png"));
 			winds[0] = wind1;
 			winds[1] = wind2;
+			winds[2] = wind3;
 			
 		} catch (IOException e) {
 			e.printStackTrace();

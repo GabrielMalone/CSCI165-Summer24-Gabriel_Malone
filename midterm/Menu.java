@@ -115,8 +115,8 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 	JRadioButton rain_off		= new JRadioButton("Off");
 	JLabel rain_Label			= new JLabel("Rain");
 	JSlider rain_slider 		= new JSlider();
-	double rain_precipt			= (double)rain_slider.getValue();
-	String rain_slid_str		= "precipitation rate " + rain_precipt + "%";
+	int rain_precipt			= rain_slider.getValue();
+	String rain_slid_str		= "precipitation rate " + rain_precipt;
 	JLabel rain_slider_label 	= new JLabel(rain_slid_str);
 	// Modes
 	JLabel mode_label			= new JLabel("Modes");
@@ -199,6 +199,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.rain_off.setFont(labelfont);
 		this.rain_Label.setForeground(Color.BLACK);
 		this.rain_slider.addChangeListener(this);
+		this.rain_slider.setValue(0);
 		this.rain_slider_label.setFont(labelfont);
 		this.rain_slider_label.setForeground(Color.GRAY);
 		this.rain_slider.setEnabled(false);
@@ -388,9 +389,9 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		}
 		else if (e.getSource() == animal_pop_slider){
 			this.pop_number = String.valueOf(this.animal_pop_slider.getValue() * (Driver.size));
-			Driver.startingPop = this.animal_pop_slider.getValue();
+			Driver.startingPop = this.animal_pop_slider.getValue() * Driver.size;
 			this.animal_confirm_label.setText(this.startng_pop_string + this.pop_number);
-			Driver.startingPop = Integer.valueOf(pop_number);
+	
 		if (this.finished_start_up){
 			Driver.neWorld.wildlife.clearAnimals();
 			Driver.neWorld.wildlife.placeWildlife();
@@ -398,7 +399,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		}
 		else if (e.getSource() == tree_Slider){
 			this.tree_regrow_percent = (double)this.tree_Slider.getValue();
-			Driver.chanceToRegrow 	 = (double)this.tree_Slider.getValue() / 100;
+			Driver.chanceToRegrow 	 = (double)this.tree_Slider.getValue() / 1000;
 			this.tree_slider_string  = (int)this.tree_Slider.getValue() + "% tree regrow rate";
 			this.tree_slider_Label.setText(tree_slider_string);
 		}
@@ -409,10 +410,13 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			this.animal_repop_label.setText(animal_repop_String);
 		}
 		else if (e.getSource() == rain_slider){
-			this.rain_precipt 		 = (double)this.rain_slider.getValue();
-			Driver.rainAdjust 		 = (double)this.rain_slider.getValue()/2000;
-			this.rain_slid_str		 = "precipitation rate " + (int)this.rain_slider.getValue() + "%";
+			Driver.startingRain 	 = (this.rain_slider.getValue() * Driver.size);
+			this.rain_slid_str		 = "precipitation rate " + this.rain_slider.getValue() * Driver.size;
 			this.rain_slider_label.setText(rain_slid_str);
+			if (this.finished_start_up){
+				Driver.neWorld.todaysRain.dryTheEarth();
+				Driver.neWorld.todaysRain.letItRain();
+				}
 		}
 	}
 
@@ -532,6 +536,10 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 			this.wind_off.setEnabled(true);
 			this.wind_off.setSelected(true);
 			this.windBox.setEnabled(false);
+			this.rain_slider.setEnabled(false);
+			this.rain_slider_label.setForeground(Color.GRAY);
+			this.rain_off.setSelected(true);
+			Driver.startingRain = 0;
 		}
 
 		// map combo box actions
@@ -599,6 +607,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 				Driver.neWorld.todaysWind.clearWeatherPattern();
 				Driver.neWorld.todaysWind.setDirection(Wind.DIRECTION.NORTH);
 				Driver.neWorld.todaysWind.windOn();
+				Driver.weatherOn = true;
 			}
 			else{
 				this.weather_initializer = "NORTH";
@@ -608,6 +617,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		else if (evt.getSource() == wind_off){
 			if (finished_start_up){
 				Driver.neWorld.todaysWind.clearWeatherPattern();
+				Driver.weatherOn = false;
 			}
 			this.windBox.setEnabled(false);
 			this.wind_direction_Label.setForeground(Color.GRAY);

@@ -11,6 +11,7 @@ public class Driver {
 	public static int size = 200;
 	public static int speed = 20;
 	public static int startingPop = 0;
+	public static int startingRain = 0;
 	public static double popRegrowth = 0;
 	public static double chanceOfRain = .01;
 	public static double rainAdjust =.01;
