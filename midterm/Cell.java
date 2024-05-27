@@ -79,6 +79,8 @@ public class Cell {
 	public boolean rain_moved = false;
 	private Random rand = new Random();
 	public boolean raining = false;
+	public boolean naturalBirth = false;
+	public int age = 0;
 
 	public Cell(){
 

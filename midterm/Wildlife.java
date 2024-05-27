@@ -24,7 +24,10 @@ public class Wildlife {
 			// get cell at this location
 			Cell cell_at_this_location = Driver.neWorld.worldMatrix[row_location][column_location];
 			// update cell
-			if (cell_at_this_location.getState() != Cell.STATES.BURNT) cell_at_this_location.setObject(Cell.OBJECTS.WILDLIFEALIVE);
+			if (cell_at_this_location.getState() != Cell.STATES.BURNT) {
+				cell_at_this_location.setObject(Cell.OBJECTS.WILDLIFEALIVE);
+				cell_at_this_location.age = 0;
+			}
 			//this.activeWildlifeCells.add(cell_at_this_location);
 		}
 	}
@@ -165,6 +168,8 @@ public class Wildlife {
 				while (counter <= 3){
 					int rand_index_b = rand.nextInt(emptySpot.size());
 					emptySpot.get(rand_index_b).setObject(Cell.OBJECTS.WILDLIFEALIVE);
+					emptySpot.get(rand_index_b).naturalBirth = true;
+					emptySpot.get(rand_index_b).age = 0;
 					counter ++ ;
 					}
 				}
@@ -337,6 +342,16 @@ public class Wildlife {
 			case VOID: return Cell.POSITIONASNEIGHBOR.NORTH;
 		}
 		return oppositeDirection;
+	}
+
+	public void naturalDeath(){
+		for (int f = 0 ; f < Driver.neWorld.size - 1; f ++ ){
+			for(int g = 0 ; g < Driver.neWorld.size - 1; g ++){
+				Cell currentCell = Driver.neWorld.worldMatrix[f][g];
+				if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEALIVE && currentCell.age > 15)
+					currentCell.setObject(Cell.OBJECTS.VOID);
+			}
+		}
 	}
 
 

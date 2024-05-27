@@ -100,6 +100,7 @@ public class World {
 		if (Driver.endlessMode)
 			regrowTrees();
 		if (Driver.animalsOn){
+			this.wildlife.naturalDeath();
 			this.wildlife.resetMoveState();
 			this.wildlife.makeAnEscape();
 			if (Driver.endlessMode)
@@ -197,6 +198,8 @@ public class World {
 		for(int g = 0 ; g < this.size ; g ++){
 			for(int h = 0 ; h < this.size ; h ++){
 				worldMatrix[g][h] = nextStep[g][h];
+				Cell currentCell = worldMatrix[g][h];
+				if (currentCell.naturalBirth) currentCell.age ++;
 			}
 		}
 	}
