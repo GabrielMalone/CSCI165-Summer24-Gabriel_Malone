@@ -159,7 +159,7 @@ public class Wildlife {
 				else if (mate.getObject() == Cell.OBJECTS.VOID && mate.getState() == Cell.STATES.TREE)
 					emptySpot.add(mate);
 			}
-			if (num_neighbors == 2 && emptySpot.size() == 4){
+			if (num_neighbors > 0 && emptySpot.size() == 3){
 				current_location.setObject(Cell.OBJECTS.WILDLIFEDEAD);
 				int counter = 1;
 				while (counter <= 2){
@@ -189,10 +189,10 @@ public class Wildlife {
 					aliveNeighbors.add(neighbor);
 				}
 			}
-			if (total_neighbors == 4){
+			if (total_neighbors > 4){
 				current_location.setObject(Cell.OBJECTS.WILDLIFEDEAD);
-				while (aliveNeighbors.size() > aliveNeighbors.size()){
-					int rand_index_c = rand.nextInt(0 , total_neighbors);
+				while (aliveNeighbors.size() > 0){
+					int rand_index_c = rand.nextInt(0 , aliveNeighbors.size());
 					aliveNeighbors.get(rand_index_c).setObject(Cell.OBJECTS.WILDLIFEDEAD);
 					aliveNeighbors.remove(rand_index_c);
 				}
