@@ -108,6 +108,11 @@ public class World {
 				this.wildlife.clearDead();
 			if (Driver.animalsWander)
 				this.wildlife.moveAround();
+			else if (! Driver.animalsWander){
+				this.wildlife.reproduce();
+				this.wildlife.overPopulation();
+			}
+			
 		}
 		// mouse input actions
 		Bomb.explodeBomb();

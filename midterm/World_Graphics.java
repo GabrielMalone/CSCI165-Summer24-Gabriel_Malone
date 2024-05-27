@@ -183,10 +183,12 @@ public class World_Graphics extends JPanel implements ActionListener{
                     // display scaled versions of animsls depending on map size
                     graphics2d.drawImage(currentCell.animalimage, x, y, this.IMAGE_SIZE, this.IMAGE_SIZE, null);
                 }
+				/* 
                 if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEDEAD){
                     // display scaled versions of animals depending on map size
 					graphics2d.drawImage(currentCell.animalimage, x, y, this.IMAGE_SIZE, this.IMAGE_SIZE, null);
                 }
+				*/
                 x += this.IMAGE_SIZE;
             }
             y += this.IMAGE_SIZE;

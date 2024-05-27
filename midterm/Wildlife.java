@@ -29,7 +29,11 @@ public class Wildlife {
 		}
 	}
 
+	/**
+	 * Method to have animals migrate in from the borders
+	 */
 	public void regrowWildlife(){
+		// animals migrate in from the borders
 		for( int i = 0 ; i < Driver.neWorld.size; i ++){
 			for (int j = 0 ; j < Driver.neWorld.size; j ++){
 				Cell current_location = Driver.neWorld.worldMatrix[i][j];
@@ -100,12 +104,13 @@ public class Wildlife {
 	 * using a for loop to iterate through the world
 	 */
 	public void getTheAnimals(){
+		this.alltheanimals.clear();
 		// if not fleeing a fire - randomly move to a nearby cell if all clear
-		for( int i = 0 ; i < Driver.neWorld.size - 1 ; i ++){
-			for (int j = 0 ; j < Driver.neWorld.size - 1 ; j ++){
+		for( int i = 1 ; i < Driver.neWorld.size - 1 ; i ++){
+			for (int j = 1 ; j < Driver.neWorld.size - 1 ; j ++){
 				Cell current_location = Driver.neWorld.worldMatrix[i][j];
 				if (current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && ! current_location.moved && current_location.row != 0 && current_location.column != 0){
-					alltheanimals.add(current_location);
+					this.alltheanimals.add(current_location);
 				}
 			}
 		}
@@ -118,32 +123,101 @@ public class Wildlife {
 	public void moveAround(){
 		// switched to two while loops since the for loop was not creating a random movement overall 
 		// animals trended up and to the left
+		reproduce();
+		overPopulation();
 		getTheAnimals();
-		while ( alltheanimals.size() > 0 ) {
+		while ( this.alltheanimals.size() > 0 ) {
 			int rand_index_a = this.rand.nextInt(0,alltheanimals.size());
 			Cell current_location = alltheanimals.get(rand_index_a);
-			alltheanimals.remove(current_location);
+			this.alltheanimals.remove(current_location);
 			ArrayList<Cell> neighborArray = new ArrayList<>();
 			Cell [] neighbors = Driver.neWorld.findNeighbors(current_location.row, current_location.column);
 			for (Cell neighbor : neighbors){
 				neighborArray.add(neighbor);
 			}
-			// randomly search the nearby cells and see if any spots suitable for moving to
-			// if don't do this, animals just move to the next open cell and will just move one direction
-			while (neighborArray.size() > 0){
-				int rand_index = this.rand.nextInt(0,neighborArray.size());
-				Cell neighboring_cell = neighborArray.get(rand_index);
-				if (clearMoveChoice(neighboring_cell)){
-					current_location.setObject(Cell.OBJECTS.VOID);
-					neighboring_cell.setObject(Cell.OBJECTS.WILDLIFEALIVE);
-					neighboring_cell.moved = true;
-					break;
+			findRandomOpenSpot(neighborArray, current_location);
+			
+		}
+	}
+	
+	public void reproduce(){
+		// put all the animals in the map into an array so can pick from them randomly
+		getTheAnimals();
+		while ( this.alltheanimals.size() > 0 ) {
+			// loop through the array at random spots
+			int rand_index_a = this.rand.nextInt(0,alltheanimals.size());
+			Cell current_location = alltheanimals.get(rand_index_a);
+			// pop that animal from arrary
+			this.alltheanimals.remove(current_location);
+			// when a spot picked, check the neighbors of the cell in this location
+			ArrayList<Cell> emptySpot = new ArrayList<>();
+			int num_neighbors = 0;
+			Cell [] potential_mates = Driver.neWorld.findNeighbors(current_location.row, current_location.column);
+			for (Cell mate : potential_mates){
+				if (mate.getObject() == Cell.OBJECTS.WILDLIFEALIVE)
+					num_neighbors ++;
+				else if (mate.getObject() == Cell.OBJECTS.VOID && mate.getState() == Cell.STATES.TREE)
+					emptySpot.add(mate);
+			}
+			if (num_neighbors == 2 && emptySpot.size() == 4){
+				current_location.setObject(Cell.OBJECTS.WILDLIFEDEAD);
+				int counter = 1;
+				while (counter <= 2){
+					int rand_index_b = rand.nextInt(emptySpot.size());
+					emptySpot.get(rand_index_b).setObject(Cell.OBJECTS.WILDLIFEALIVE);
+					counter ++ ;
 					}
-				neighborArray.remove(neighboring_cell);
+				}
+			}
+		}
+	
+
+	public void overPopulation(){
+		getTheAnimals();
+		while ( this.alltheanimals.size() > 0 ) {
+			// loop through the array at random spots
+			int rand_index_a = this.rand.nextInt(0,alltheanimals.size());
+			Cell current_location = alltheanimals.get(rand_index_a);
+			this.alltheanimals.remove(current_location);
+			// when a spot picked, check the neighbors of the cell in this location
+			Cell [] neighbors = Driver.neWorld.findNeighbors(current_location.row, current_location.column);
+			ArrayList<Cell> aliveNeighbors = new ArrayList<>();
+			int total_neighbors = 0;
+			for (Cell neighbor : neighbors){
+				if (neighbor.getObject() == Cell.OBJECTS.WILDLIFEALIVE){
+					total_neighbors ++;
+					aliveNeighbors.add(neighbor);
+				}
+			}
+			if (total_neighbors == 4){
+				current_location.setObject(Cell.OBJECTS.WILDLIFEDEAD);
+				while (aliveNeighbors.size() > aliveNeighbors.size()){
+					int rand_index_c = rand.nextInt(0 , total_neighbors);
+					aliveNeighbors.get(rand_index_c).setObject(Cell.OBJECTS.WILDLIFEDEAD);
+					aliveNeighbors.remove(rand_index_c);
+				}
 			}
 		}
 	}
-		
+	
+
+
+	private void findRandomOpenSpot(ArrayList<Cell> neighborArray, Cell current_location) {
+		// randomly search the nearby cells and see if any spots suitable for moving to
+		// if don't do this, animals just move to the next open cell and will just move one direction
+		while (neighborArray.size() > 0){
+			int rand_index = this.rand.nextInt(0,neighborArray.size());
+			Cell neighboring_cell = neighborArray.get(rand_index);
+			if (clearMoveChoice(neighboring_cell)){
+				current_location.setObject(Cell.OBJECTS.VOID);
+				neighboring_cell.setObject(Cell.OBJECTS.WILDLIFEALIVE);
+				neighboring_cell.moved = true;
+				break;
+				}
+			neighborArray.remove(neighboring_cell);
+		}
+	}
+
 
 	/**
 	 * Method to reset cell's moved state from true to false (to prevent an animal from moving more than once per turn)
@@ -264,6 +338,7 @@ public class Wildlife {
 		}
 		return oppositeDirection;
 	}
+
 
 }
 
