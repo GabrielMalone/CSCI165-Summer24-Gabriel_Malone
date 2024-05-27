@@ -123,8 +123,8 @@ public class Wildlife {
 	public void moveAround(){
 		// switched to two while loops since the for loop was not creating a random movement overall 
 		// animals trended up and to the left
-		reproduce();
-		overPopulation();
+		//reproduce();
+		//overPopulation();
 		getTheAnimals();
 		while ( this.alltheanimals.size() > 0 ) {
 			int rand_index_a = this.rand.nextInt(0,alltheanimals.size());
