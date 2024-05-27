@@ -82,6 +82,7 @@ public class Cell {
 	public boolean naturalBirth = false;
 	public int age = 0;
 
+
 	public Cell(){
 
 	}

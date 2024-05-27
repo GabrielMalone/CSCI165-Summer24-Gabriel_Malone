@@ -9,9 +9,11 @@ public class Wildlife {
 	//public ArrayList<Cell> activeWildlifeCells = new ArrayList<>();
 	//public ArrayList<Cell> deadanimals = new ArrayList<>();
 	// excapedanimals -- > a metric I never used
-	int escapedanimals = 0;
-	Random rand = new Random();
-	ArrayList<Cell> alltheanimals = new ArrayList<>();
+	private Random rand = new Random();
+	private ArrayList<Cell> alltheanimals = new ArrayList<>();
+	public int space_needed_for_reproduction = 3;
+	public int neighbors_needed_for_reproduction = 1;
+
 
 	/**
 	 * Method to place wildlife randomly on the map
@@ -162,10 +164,10 @@ public class Wildlife {
 				else if (mate.getObject() == Cell.OBJECTS.VOID && mate.getState() == Cell.STATES.TREE)
 					emptySpot.add(mate);
 			}
-			if (num_neighbors > 1 && emptySpot.size() ==  3){
+			if (num_neighbors > neighbors_needed_for_reproduction && emptySpot.size() ==  space_needed_for_reproduction){
 				current_location.setObject(Cell.OBJECTS.WILDLIFEDEAD);
 				int counter = 1;
-				while (counter <= 3){
+				while (counter <= space_needed_for_reproduction){
 					int rand_index_b = rand.nextInt(emptySpot.size());
 					emptySpot.get(rand_index_b).setObject(Cell.OBJECTS.WILDLIFEALIVE);
 					emptySpot.get(rand_index_b).naturalBirth = true;
@@ -251,7 +253,6 @@ public class Wildlife {
 					current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.row 		== Driver.neWorld.size- 1 ||
 					current_location.getObject() == Cell.OBJECTS.WILDLIFEALIVE && current_location.column 	== Driver.neWorld.size- 1){
 						current_location.setObject(Cell.OBJECTS.VOID);
-						escapedanimals ++ ;
 				}
 			}
 		}

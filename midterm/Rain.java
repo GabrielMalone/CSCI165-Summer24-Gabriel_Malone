@@ -76,7 +76,7 @@ public class Rain {
 	}
 	
     /**
-	 * Method to dry a cell
+	 * Method to regrow burnt areas
 	 */
 	public void waterTrees(){
 		for(int j = 0 ; j < Driver.size - 1; j ++){
@@ -87,6 +87,24 @@ public class Rain {
                     double chance_of_dry = rand.nextDouble(.1);
                      if (chance_to_dry < chance_of_dry){
                     currentCell.setState(Cell.STATES.TREE);
+                     }
+                }
+            }
+        }
+    }
+
+	/**
+	 * Method increase reproduction rates of animals if they have lots of water
+	 */
+	public void waterAnimals(){
+		for(int j = 0 ; j < Driver.size - 1; j ++){
+			for (int i = 0 ; i < Driver.size - 1 ; i ++){
+                Cell currentCell = Driver.neWorld.worldMatrix[j][i];
+                if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEALIVE && currentCell.getRain() == Cell.RAIN.RAINING){
+                    double chance_to_quench_thirst = rand.nextDouble(1);
+                    double chance_of_thirst = rand.nextDouble(.5);
+                     if (chance_to_quench_thirst < chance_of_thirst){
+                    	currentCell.age -= 10;
                      }
                 }
             }

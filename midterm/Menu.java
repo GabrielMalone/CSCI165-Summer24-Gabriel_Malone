@@ -88,7 +88,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 	ButtonGroup  wander_group 	= new ButtonGroup();
 	JRadioButton wander_on 		= new JRadioButton("On");
 	JRadioButton wander_off		= new JRadioButton("Off");
-	JLabel wanders_label		= new JLabel("Meander");
+	JLabel wanders_label		= new JLabel("Dot Mode");
 	// animal pop
 	JSlider animal_pop_slider 	= new JSlider();
 	String startng_pop_string 	= "animals: ";

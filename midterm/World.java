@@ -95,12 +95,13 @@ public class World {
 			if (Driver.weatherOn)
 				this.todaysRain.drip();
 			this.todaysRain.waterTrees();
+			this.todaysRain.waterAnimals();
 			this.todaysRain.clearBorderRain();
 		}
 		if (Driver.endlessMode)
 			regrowTrees();
 		if (Driver.animalsOn){
-			this.wildlife.naturalDeath();
+			if (! Driver.animalsWander) this.wildlife.naturalDeath();
 			this.wildlife.resetMoveState();
 			this.wildlife.makeAnEscape();
 			if (Driver.endlessMode)
@@ -199,7 +200,7 @@ public class World {
 			for(int h = 0 ; h < this.size ; h ++){
 				worldMatrix[g][h] = nextStep[g][h];
 				Cell currentCell = worldMatrix[g][h];
-				if (currentCell.naturalBirth) currentCell.age ++;
+				if (currentCell.naturalBirth && ! Driver.animalsWander) currentCell.age ++;
 			}
 		}
 	}
