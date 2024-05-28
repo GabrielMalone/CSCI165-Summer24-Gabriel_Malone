@@ -104,10 +104,10 @@ public class AlienFireCube extends Wildlife{
         for( int i = 0 ; i < Driver.neWorld.size; i ++){
 			for (int j = 0 ; j < Driver.neWorld.size; j ++){
                 Cell currCell = Driver.neWorld.worldMatrix[i][j];
-                if (currCell.row >= this.player.row - (int)this.player_size
-                    && currCell.row <= this.player.row + (int)this.player_size 
-                    && currCell.column >= this.player.column - (int)this.player_size
-                    && currCell.column <= this.player.column + (int)this.player_size
+                if (currCell.row >= this.player.row - (int)this.player_size / 2
+                    && currCell.row <= this.player.row + (int)this.player_size / 2
+                    && currCell.column >= this.player.column - (int)this.player_size / 2
+                    && currCell.column <= this.player.column + (int)this.player_size / 2
                     && currCell.getObject() == Cell.OBJECTS.WILDLIFEALIVE){
                         total_attacks ++;
                         this.attacked = true;
