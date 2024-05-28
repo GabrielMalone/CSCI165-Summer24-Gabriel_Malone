@@ -90,10 +90,10 @@ public class World {
 		applyChangesToWorld();
 		// set the cells for the next iteration
 		if (Driver.world.player_set){
-			Driver.alien.eat();
-			Driver.alien.fireFighter();
-			Driver.alien.starve();
-			Driver.alien.burnVictim();
+			Driver.alien.camoFireSheild();
+			Driver.alien.fireProofed();
+			Driver.alien.regenerate();
+			Driver.alien.animalVictim();
 		}
 		if (Driver.rainOn){
 			this.todaysRain.resetMoveState();

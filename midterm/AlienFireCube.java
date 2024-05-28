@@ -5,21 +5,20 @@ public class AlienFireCube extends Wildlife{
     public boolean player_set;
     public double player_size;
     public boolean burning;
-    public int time_without_eating;
+    public boolean attacked;
+    public int time_without_being_attacked;
     private int move_distance;
     private int rain_effect;
     
-
     AlienFireCube () {
         this.player_set = false;
         this.player_size = 20;
         this.burning = false;
-        this.time_without_eating = 0;
+        this.time_without_being_attacked = 0;
         this.move_distance = 4;
         this.rain_effect = 2;
     }
     
-  
     public void movePlayerUp(){
         if (Driver.rainOn) this.move_distance /= this.rain_effect;
         if (this.player.row - this.move_distance >= (int)( this.player_size / 4 )) {
@@ -63,7 +62,7 @@ public class AlienFireCube extends Wildlife{
         if (Driver.rainOn) this.move_distance *= this.rain_effect;
     }
 
-    private void time_without_eating_check() {
+    private void time_without_being_attacked_check() {
         if (this.player.row > 1 && this.player.row < Driver.size - 1 && this.player.column > 1 && this.player.column < Driver.size - 1){
             Cell [] player_neighbors = Driver.neWorld.findNeighbors(this.player.row, this.player.column);
             int total_void_neighbors = 0;
@@ -73,40 +72,19 @@ public class AlienFireCube extends Wildlife{
                 }
             }
             if (total_void_neighbors == 8){
-                this.time_without_eating ++;
+                this.time_without_being_attacked ++;
             }
         }
     }
 
-    public void starve (){
-        time_without_eating_check();
-        if (this.time_without_eating > 100 && this.player_size > 10){
-            this.player_size -= .5;
-        }
-        for( int i = 0 ; i < Driver.neWorld.size; i ++){
-			for (int j = 0 ; j < Driver.neWorld.size; j ++){
-                if (Driver.neWorld.worldMatrix[i][j].getObject() == Cell.OBJECTS.PLAYER){
-                    Driver.neWorld.worldMatrix[i][j].setObject(Cell.OBJECTS.VOID);
-                }
-            }
+    public void regenerate (){
+        time_without_being_attacked_check();
+        if (this.time_without_being_attacked > 5 && this.player_size < Driver.size){
+            this.player_size += 1;
         }
     }
 
-    public void eat (){
-        int total_food = 0;
-        for( int i = 0 ; i < Driver.neWorld.size; i ++){
-			for (int j = 0 ; j < Driver.neWorld.size; j ++){
-                Cell currCell = Driver.neWorld.worldMatrix[i][j];
-                if (currCell.row >= this.player.row - (int)this.player_size / 2.5
-                    && currCell.row <= this.player.row + (int)this.player_size / 2.5
-                    && currCell.column >= this.player.column - (int)this.player_size / 2.5 
-                    && currCell.column <= this.player.column + (int)this.player_size / 2.5
-                    && currCell.getObject() == Cell.OBJECTS.WILDLIFEALIVE){
-                        currCell.setObject(Cell.OBJECTS.WILDLIFEDEAD);
-                        total_food ++;
-                    }
-            }
-        }
+    public void camoFireSheild (){
         for( int i = 0 ; i < Driver.neWorld.size; i ++){
 			for (int j = 0 ; j < Driver.neWorld.size; j ++){
                 Cell currCell = Driver.neWorld.worldMatrix[i][j];
@@ -116,36 +94,35 @@ public class AlienFireCube extends Wildlife{
                     && currCell.column <= this.player.column + (int)this.player_size / 2.5
                     && currCell.getState() == Cell.STATES.TREE){
                         Bomb.placeBomb(i, j);
-                        //total_food ++;
                     }
             }
         }
-        if (total_food > 0) this.time_without_eating = 0;
-        if (this.player_size < Driver.size / 2.5)
-            this.player_size += total_food * .1;
     }
 
-    public void burnVictim () {
-        int total_burns = 0;
+    public void animalVictim () {
+        int total_attacks = 0;
         for( int i = 0 ; i < Driver.neWorld.size; i ++){
 			for (int j = 0 ; j < Driver.neWorld.size; j ++){
                 Cell currCell = Driver.neWorld.worldMatrix[i][j];
-                if (currCell.row >= this.player.row - (int)this.player_size / 2.5
-                    && currCell.row <= this.player.row + (int)this.player_size / 2.5
-                    && currCell.column >= this.player.column - (int)this.player_size / 2.5 
-                    && currCell.column <= this.player.column + (int)this.player_size / 2.5
-                    && currCell.getState() == Cell.STATES.BURNING){
-                        total_burns ++;
-                        this.burning = true;
+                if (currCell.row >= this.player.row - (int)this.player_size
+                    && currCell.row <= this.player.row + (int)this.player_size 
+                    && currCell.column >= this.player.column - (int)this.player_size
+                    && currCell.column <= this.player.column + (int)this.player_size
+                    && currCell.getObject() == Cell.OBJECTS.WILDLIFEALIVE){
+                        total_attacks ++;
+                        this.attacked = true;
                     }
             }
         }
-        if (this.player_size > 10)
-            this.player_size -= total_burns * .2;
-        if (total_burns == 0) this.burning = false;
+        double potential_size = this.player_size -= total_attacks * .2;
+        if (potential_size < 10)
+            this.player_size = 10;
+        else 
+            this.player_size -= total_attacks * .02;
+        if (total_attacks == 0) this.attacked = false;
     }
 
-    public void fireFighter() {
+    public void fireProofed() {
         for( int i = 0 ; i < Driver.neWorld.size; i ++){
             for (int j = 0 ; j < Driver.neWorld.size; j ++){
                 Cell currCell = Driver.neWorld.worldMatrix[i][j];
