@@ -34,6 +34,7 @@ public class Cell {
 		WILDLIFEDEAD,
 		DECAYING,
 		BOMB,
+		PLAYER;
 	}
 	// data about fire direction a cell can have
 	public static enum FIREMOVING{
@@ -81,6 +82,7 @@ public class Cell {
 	public boolean raining = false;
 	public boolean naturalBirth = false;
 	public int age = 0;
+	public boolean controllable = false;
 
 
 	public Cell(){
@@ -141,9 +143,10 @@ public class Cell {
 	 */
 	public void setObject (OBJECTS object){
 		this.object = object;
-		// set image for animals
+		// set image for animals / player
 		if (this.object == Cell.OBJECTS.WILDLIFEALIVE) this.animalimage = World.anima[0];
 		if (this.object == Cell.OBJECTS.WILDLIFEDEAD) this.animalimage = World.anima[1];
+		if (this.object == Cell.OBJECTS.PLAYER) this.animalimage = World.winds[0];
 	}
 
 	/**

@@ -89,6 +89,12 @@ public class World {
 		}
 		applyChangesToWorld();
 		// set the cells for the next iteration
+		if (Driver.world.player_set){
+			Driver.alien.eat();
+			Driver.alien.fireFighter();
+			Driver.alien.starve();
+			Driver.alien.burnVictim();
+		}
 		if (Driver.rainOn){
 			this.todaysRain.resetMoveState();
 			this.todaysRain.scatterRain();
@@ -97,7 +103,7 @@ public class World {
 			this.todaysRain.waterTrees();
 			this.todaysRain.waterAnimals();
 			this.todaysRain.clearBorderRain();
-		}
+		}	
 		if (Driver.endlessMode)
 			regrowTrees();
 		if (Driver.animalsOn){
@@ -315,7 +321,7 @@ public class World {
 	private void seeWhatBurns(Cell[] neighboringcells, Cell homeCell){
 		for (Cell cell : neighboringcells){
 			double chanceToBurn = rand.nextDouble(0, 1);
-			if  (cell.getState().equals(Cell.STATES.TREE)){
+			if  (cell.getState().equals(Cell.STATES.TREE) && cell.getObject() != Cell.OBJECTS.PLAYER){
 				// wind multiplier
 				if (cell.getCellWind().equals(Cell.WIND.WINDY)){
 					chanceToBurn += windDirectionEffect(homeCell, cell, chanceToBurn);
@@ -661,8 +667,12 @@ public class World {
 
 			BufferedImage animal1 = ImageIO.read(getClass().getResourceAsStream("/animals/deaddino.png"));
 			BufferedImage animal2 = ImageIO.read(getClass().getResourceAsStream("/animals/dino2.png"));
+			BufferedImage animal3 = ImageIO.read(getClass().getResourceAsStream("/animals/dino.png"));
+			BufferedImage animal4 = ImageIO.read(getClass().getResourceAsStream("/animals/cat.png"));
 			anima[0] = animal1;
 			anima[1] = animal2;
+			anima[2] = animal3;
+			anima[3] = animal4;
 
 		} catch (IOException e) {
 			e.printStackTrace();

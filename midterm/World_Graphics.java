@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
@@ -21,10 +23,30 @@ public class World_Graphics extends JPanel implements ActionListener{
 	// MAP SIZE DRAW SETTINGS
 	public  int IMAGE_SIZE 		= setImageSize();
 	public  int WINDOW_HEIGHT 	= setWindowSize(IMAGE_SIZE);
+	public boolean player_set = false;
+	
+
 
 	public World_Graphics() {
 		world.initializeFire();
 		initTimer(); 
+		// MAIN WINDOW
+		// mouse clicks to place player
+
+		addMouseListener(new MouseAdapter(){
+			public void mousePressed(MouseEvent e){
+				int column = e.getX() / IMAGE_SIZE;
+				int row = e.getY() / IMAGE_SIZE;
+				if (Driver.neWorld.worldMatrix[row][column].getState() == Cell.STATES.TREE && ! player_set){
+					Driver.neWorld.worldMatrix[row][column].setObject(Cell.OBJECTS.PLAYER);
+					
+					Driver.alien = new AlienFireCube();
+					Driver.alien.player = Driver.neWorld.worldMatrix[row][column];
+					player_set = true;
+				}
+			}
+		});
+	
 		addMouseMotionListener(new MouseAdapter(){
 			// mouse click and dragged to place bombs
 			public void mouseDragged(MouseEvent e){
@@ -32,28 +54,31 @@ public class World_Graphics extends JPanel implements ActionListener{
 				// window size = world matrix size * size of image
 				// example : if matrix size is 200x200, each image is set to 3x3 pixels -> (600x600 window size)
 				// so from 0->3 window pixels the mouse will be assigned to the first cell
+				
 				int column = e.getX() / IMAGE_SIZE;
-				int row = e.getY() /  IMAGE_SIZE;
-				if (column > 1 && row > 1 && Driver.neWorld.worldMatrix[row][column].getState() == Cell.STATES.TREE){
-					//World.worldMatrix[row][column].setState(Cell.STATES.BURNING);
-					Bomb.placeBomb(row, column);
-				}
+				int row = e.getY() / IMAGE_SIZE; 
+				Bomb.placeBomb(row, column);
 			}
 		});
-		// mouse clicks to place bombs
-		addMouseListener(new MouseAdapter(){
-			public void mousePressed(MouseEvent e){
-				int column = e.getX() / IMAGE_SIZE;
-				int row = e.getY() / IMAGE_SIZE;
-				if (Driver.neWorld.worldMatrix[row][column].getState() == Cell.STATES.TREE){
-					//World.worldMatrix[row][column].setState(Cell.STATES.BURNING);
-					Bomb.placeBomb(row, column);
-				}
-			}
-		});
-
-		// MAIN WINDOW
 		this.window.add(this);
+		// add key listener
+		this.window.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e){
+				int keyCode = e.getKeyCode();
+				if (keyCode == KeyEvent.VK_W){
+					Driver.alien.movePlayerUp();
+				}
+				if (keyCode == KeyEvent.VK_D){
+					Driver.alien.movePlayerRight();
+				}
+				if (keyCode == KeyEvent.VK_A){
+					Driver.alien.movePlayerLeft();
+				}
+				if (keyCode == KeyEvent.VK_S){
+					Driver.alien.movePlayerDown();
+				}
+			}
+		});
 		this.window.setTitle("Goobs Fire Sim");
 		this.window.setSize(WINDOW_HEIGHT, (int)(WINDOW_HEIGHT * 1.045));
 		this.window.setLocation(0,0);
@@ -183,9 +208,10 @@ public class World_Graphics extends JPanel implements ActionListener{
                     // display scaled versions of animsls depending on map size
                     graphics2d.drawImage(currentCell.animalimage, x, y, this.IMAGE_SIZE, this.IMAGE_SIZE, null);
                 }
-                if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEDEAD){
+                if (currentCell.getObject() == Cell.OBJECTS.PLAYER && ! Driver.alien.burning){
                     // display scaled versions of animals depending on map size
-					//graphics2d.drawImage(currentCell.animalimage, x, y, this.IMAGE_SIZE, this.IMAGE_SIZE, null);
+					graphics2d.drawRect(x - (int)Driver.alien.player_size, y - (int)Driver.alien.player_size, 2 * (int)Driver.alien.player_size, 2 * (int)Driver.alien.player_size);
+					//graphics2d.drawImage(World.anima[2], x - (int)Driver.me.player_size, y - (int)Driver.me.player_size, 2 * (int)Driver.me.player_size, 2 * (int)Driver.me.player_size, null);
                 }
                 x += this.IMAGE_SIZE;
             }

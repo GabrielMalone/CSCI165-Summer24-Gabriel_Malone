@@ -171,6 +171,7 @@ public class Wildlife {
 					int rand_index_b = rand.nextInt(emptySpot.size());
 					emptySpot.get(rand_index_b).setObject(Cell.OBJECTS.WILDLIFEALIVE);
 					emptySpot.get(rand_index_b).naturalBirth = true;
+					emptySpot.get(rand_index_b).controllable = true;
 					emptySpot.get(rand_index_b).age = 0;
 					counter ++ ;
 					}
@@ -263,7 +264,7 @@ public class Wildlife {
 	 * @param option
 	 * @return
 	 */
-	private boolean clearEscapeChoice(Cell option){
+	public boolean clearEscapeChoice(Cell option){
 		// can leave the map
 		if (option.getState() != Cell.STATES.BURNING && option.getObject() == Cell.OBJECTS.VOID && option.getState() != Cell.STATES.BURNT && option.row >= 0 && option.column >= 0)
 			return true;
@@ -318,7 +319,7 @@ public class Wildlife {
 	 * @param neighboringCell
 	 * @return
 	 */
-	private Cell.POSITIONASNEIGHBOR oppositeDirection(Cell neighboringCell){
+	public Cell.POSITIONASNEIGHBOR oppositeDirection(Cell neighboringCell){
 		// default
 		Cell.POSITIONASNEIGHBOR oppositeDirection = Cell.POSITIONASNEIGHBOR.NORTH;
 
@@ -354,7 +355,6 @@ public class Wildlife {
 			}
 		}
 	}
-
 
 }
 
