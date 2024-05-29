@@ -25,6 +25,7 @@ public class Driver {
 	public static Wind todaysWind = new Wind();
 	public static boolean start = false;
 	public static AlienFireCube alien;
+	public static boolean player_set = false;
 
 	public static void main(String[] args) {
 		// main options menu

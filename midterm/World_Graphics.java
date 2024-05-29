@@ -23,9 +23,7 @@ public class World_Graphics extends JPanel implements ActionListener{
 	// MAP SIZE DRAW SETTINGS
 	public  int IMAGE_SIZE 		= setImageSize();
 	public  int WINDOW_HEIGHT 	= setWindowSize(IMAGE_SIZE);
-	public boolean player_set = false;
 	
-
 
 	public World_Graphics() {
 		world.initializeFire();
@@ -37,12 +35,11 @@ public class World_Graphics extends JPanel implements ActionListener{
 			public void mousePressed(MouseEvent e){
 				int column = e.getX() / IMAGE_SIZE;
 				int row = e.getY() / IMAGE_SIZE;
-				if (Driver.neWorld.worldMatrix[row][column].getState() == Cell.STATES.TREE && ! player_set){
+				if (! Driver.player_set){
 					Driver.neWorld.worldMatrix[row][column].setObject(Cell.OBJECTS.PLAYER);
-					
 					Driver.alien = new AlienFireCube();
 					Driver.alien.player = Driver.neWorld.worldMatrix[row][column];
-					player_set = true;
+					Driver.player_set = true;
 				}
 			}
 		});
@@ -54,12 +51,13 @@ public class World_Graphics extends JPanel implements ActionListener{
 				// window size = world matrix size * size of image
 				// example : if matrix size is 200x200, each image is set to 3x3 pixels -> (600x600 window size)
 				// so from 0->3 window pixels the mouse will be assigned to the first cell
-				
-				int column = e.getX() / IMAGE_SIZE;
-				int row = e.getY() / IMAGE_SIZE; 
+				int coordinates_adjustment = IMAGE_SIZE;
+				int column = e.getX() 	/ coordinates_adjustment;
+				int row = e.getY() 		/ coordinates_adjustment;
 				Bomb.placeBomb(row, column);
 			}
 		});
+
 		this.window.add(this);
 		// add key listener
 		this.window.addKeyListener(new KeyAdapter() {
@@ -76,6 +74,18 @@ public class World_Graphics extends JPanel implements ActionListener{
 				}
 				if (keyCode == KeyEvent.VK_S){
 					Driver.alien.movePlayerDown();
+				}
+				if (keyCode == KeyEvent.VK_UP){
+					Driver.alien.fireUp();
+				}
+				if (keyCode == KeyEvent.VK_RIGHT){
+					Driver.alien.fireRight();
+				}
+				if (keyCode == KeyEvent.VK_DOWN){
+					Driver.alien.fireDown();
+				}
+				if (keyCode == KeyEvent.VK_LEFT){
+					Driver.alien.fireLeft();
 				}
 			}
 		});
@@ -208,9 +218,15 @@ public class World_Graphics extends JPanel implements ActionListener{
                     // display scaled versions of animsls depending on map size
                     graphics2d.drawImage(currentCell.animalimage, x, y, this.IMAGE_SIZE, this.IMAGE_SIZE, null);
                 }
-                if (currentCell.getObject() == Cell.OBJECTS.PLAYER && ! Driver.alien.burning){
+				if (currentCell.getObject() == Cell.OBJECTS.WILDLIFEDEAD && Driver.animalsWander){
+                    // display scaled versions of animsls depending on map size
+                    graphics2d.drawImage(currentCell.animalimage, x, y, this.IMAGE_SIZE, this.IMAGE_SIZE, null);
+                }
+                if (currentCell.getObject() == Cell.OBJECTS.PLAYER){
                     // display scaled versions of animals depending on map size
-					graphics2d.drawRect(x - (int)Driver.alien.player_size, y - (int)Driver.alien.player_size, 2 * (int)Driver.alien.player_size, 2 * (int)Driver.alien.player_size);
+					Color clear = new Color(0,0,0,0);
+					graphics2d.setColor(clear);
+					graphics2d.fillRect(x - (int)Driver.alien.player_size, y - (int)Driver.alien.player_size, 2 * (int)Driver.alien.player_size, 2 * (int)Driver.alien.player_size);
 					//graphics2d.drawImage(World.anima[2], x - (int)Driver.me.player_size, y - (int)Driver.me.player_size, 2 * (int)Driver.me.player_size, 2 * (int)Driver.me.player_size, null);
                 }
                 x += this.IMAGE_SIZE;

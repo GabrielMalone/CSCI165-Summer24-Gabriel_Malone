@@ -1,22 +1,29 @@
 
+import java.util.Random;
+
 public class AlienFireCube extends Wildlife{
     
     public Cell player;
     public boolean player_set;
-    public double player_size;
+    public int player_size;
     public boolean burning;
     public boolean attacked;
     public int time_without_being_attacked;
     private int move_distance;
     private int rain_effect;
+    public boolean laserShow;
+    
+    
+    Random rand = new Random();
     
     AlienFireCube () {
         this.player_set = false;
         this.player_size = 20;
         this.burning = false;
         this.time_without_being_attacked = 0;
-        this.move_distance = 4;
-        this.rain_effect = 2;
+        this.move_distance = 2;
+        this.rain_effect = 1;
+        this.laserShow = false;
     }
     
     public void movePlayerUp(){
@@ -61,28 +68,54 @@ public class AlienFireCube extends Wildlife{
         }
         if (Driver.rainOn) this.move_distance *= this.rain_effect;
     }
-
-    private void time_without_being_attacked_check() {
-        if (this.player.row > 1 && this.player.row < Driver.size - 1 && this.player.column > 1 && this.player.column < Driver.size - 1){
-            Cell [] player_neighbors = Driver.neWorld.findNeighbors(this.player.row, this.player.column);
-            int total_void_neighbors = 0;
-            for (Cell neighbor : player_neighbors){
-                if (neighbor.getObject() == Cell.OBJECTS.VOID){
-                    total_void_neighbors ++ ;
-                }
-            }
-            if (total_void_neighbors == 8){
-                this.time_without_being_attacked ++;
-            }
+     
+    public void fireUp() {
+        // fire up
+        int rand_col_up = rand.nextInt(this.player.column - (int)(this.player_size / 4), this.player.column + (int)(this.player_size / 4));
+        for (int j = (int)(this.player.row - (this.player_size/2.5)) ; j > 0 ; j --){
+            Cell currentCell = Driver.neWorld.worldMatrix[j][rand_col_up];
+            Bomb.placeBomb(currentCell.row, currentCell.column);
+            
         }
     }
+    public void fireRight() {
+        // fire right
+        Random rand = new Random();
+        int rand_row_right = rand.nextInt(this.player.row - (int)(this.player_size / 4), this.player.row + (int)(this.player_size / 4));
+            for (int j = (int)(this.player.column + (this.player_size/2.5)) ; j < Driver.size ; j ++){
+                Cell currentCell = Driver.neWorld.worldMatrix[rand_row_right][j];
+                Bomb.placeBomb(currentCell.row, currentCell.column);
+                
+            }
+    }
+    public void fireDown() {
+        // fire down
+        int rand_col_down = rand.nextInt(this.player.column - (int)(this.player_size / 4), this.player.column + (int)(this.player_size / 4));
+        for (int j = (int)(this.player.row - (this.player_size/2.5)) ; j < Driver.size ; j ++){
+            Cell currentCell = Driver.neWorld.worldMatrix[j][rand_col_down];
+            Bomb.placeBomb(currentCell.row, currentCell.column);
+            
+        }
+    }
+    public void fireLeft() {
+        // fire left
+        int rand_row_left = rand.nextInt(this.player.row - (int)(this.player_size / 4), this.player.row + (int)(this.player_size / 4));
+        for (int j = (int)(this.player.column - (this.player_size/2.5)) ; j > 0 ; j --){
+            Cell currentCell = Driver.neWorld.worldMatrix[rand_row_left][j];
+            Bomb.placeBomb(currentCell.row, currentCell.column);
+           
+        }
+    }
+
 
     public void regenerate (){
-        time_without_being_attacked_check();
-        if (this.time_without_being_attacked > 5 && this.player_size < Driver.size){
-            this.player_size += 1;
-        }
-    }
+        // grow based on how many animals killed each step
+        // total dead at one step
+        if (Driver.neWorld.totalDead() > 0){
+                this.player_size +=1;
+            }
+        }    
+    
 
     public void camoFireSheild (){
         for( int i = 0 ; i < Driver.neWorld.size; i ++){
@@ -114,7 +147,7 @@ public class AlienFireCube extends Wildlife{
                     }
             }
         }
-        double potential_size = this.player_size -= total_attacks * .2;
+        int potential_size = this.player_size -= (total_attacks * .2);
         if (potential_size < 10)
             this.player_size = 10;
         else 
@@ -131,8 +164,8 @@ public class AlienFireCube extends Wildlife{
                     && currCell.column >= this.player.column - (int)this.player_size / 2.5 
                     && currCell.column <= this.player.column + (int)this.player_size / 2.5
                     && currCell.getState() == Cell.STATES.BURNING){
-                        currCell.setState(Cell.STATES.TREE);
-                    }
+                    currCell.setState(Cell.STATES.TREE);
+                }
             }
         }
     }

@@ -42,6 +42,7 @@ public class World {
 	public  static BufferedImage [] winds = new BufferedImage[4];
 	// for stochatic method
 	private Random rand = new Random();
+	
 
 	/**
 	 * Instance method
@@ -89,10 +90,11 @@ public class World {
 		}
 		applyChangesToWorld();
 		// set the cells for the next iteration
-		if (Driver.world.player_set){
+		if (Driver.player_set){
 			Driver.alien.camoFireSheild();
 			Driver.alien.fireProofed();
-			Driver.alien.regenerate();
+			if(Driver.animalsOn)
+				Driver.alien.regenerate();
 			Driver.alien.animalVictim();
 		}
 		if (Driver.rainOn){

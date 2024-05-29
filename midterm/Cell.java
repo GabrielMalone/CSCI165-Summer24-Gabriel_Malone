@@ -145,7 +145,7 @@ public class Cell {
 		this.object = object;
 		// set image for animals / player
 		if (this.object == Cell.OBJECTS.WILDLIFEALIVE) this.animalimage = World.anima[0];
-		if (this.object == Cell.OBJECTS.WILDLIFEDEAD) this.animalimage = World.anima[1];
+		if (this.object == Cell.OBJECTS.WILDLIFEDEAD) this.animalimage = World.anima[3];
 		if (this.object == Cell.OBJECTS.PLAYER) this.animalimage = World.winds[0];
 	}
 

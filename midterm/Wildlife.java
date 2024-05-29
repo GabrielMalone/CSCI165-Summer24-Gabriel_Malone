@@ -64,7 +64,6 @@ public class Wildlife {
 		// if caught in fire, deadd
 		if (current_cell.getObject() == (Cell.OBJECTS.WILDLIFEALIVE)){
 			burningCell.setObject(Cell.OBJECTS.WILDLIFEDEAD);
-			//this.deadanimals.add(burningCell);
 		}
 	}
 
