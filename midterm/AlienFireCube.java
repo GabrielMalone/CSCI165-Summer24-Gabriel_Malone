@@ -25,16 +25,26 @@ public class AlienFireCube extends Wildlife{
         this.rain_effect = 1;
         this.laserShow = false;
     }
-    
+    /**
+     * Method to move a cube up with the keyboard
+     */
     public void movePlayerUp(){
+        // if rain on , movement slowed
         if (Driver.rainOn) this.move_distance /= this.rain_effect;
+        // check to prevent user from exiting map
         if (this.player.row - this.move_distance >= (int)( this.player_size / 4 )) {
+            // if legit move, make current spot void of player object
             Driver.neWorld.worldMatrix[this.player.row][this.player.column].setObject(Cell.OBJECTS.VOID);
+            // move player to desired spot by updating matrix
             Driver.neWorld.worldMatrix[this.player.row - this.move_distance][this.player.column].setObject(Cell.OBJECTS.PLAYER);
+            // give the player cell the new coordinate info
             this.player = Driver.neWorld.worldMatrix[this.player.row - this.move_distance][this.player.column];
             if (Driver.rainOn) this.move_distance *= this.rain_effect;
         }
     }
+    /**
+     * Method to move a cube to the right with the keyboard
+     */
     public void movePlayerRight(){
         if (Driver.rainOn) this.move_distance /= this.rain_effect;
         int next_position = this.player.column + this.move_distance;
@@ -46,6 +56,9 @@ public class AlienFireCube extends Wildlife{
             if (Driver.rainOn) this.move_distance *= this.rain_effect;
         }
     }
+    /**
+     * Method to move a player left with the keyboard
+     */
     public void movePlayerLeft(){
         if (Driver.rainOn) this.move_distance /= this.rain_effect;
         int next_position = this.player.column - this.move_distance;
@@ -57,6 +70,9 @@ public class AlienFireCube extends Wildlife{
         }
         if (Driver.rainOn) this.move_distance *= this.rain_effect;
     }
+    /**
+     * Method to move a player down with the keyboard
+     */
     public void movePlayerDown(){
         if (Driver.rainOn) this.move_distance /= this.rain_effect;
         int next_position = this.player.row + this.move_distance;
@@ -68,10 +84,13 @@ public class AlienFireCube extends Wildlife{
         }
         if (Driver.rainOn) this.move_distance *= this.rain_effect;
     }
-     
+    /**
+     * Method to fire lasers from the top of the cube with keyboard input
+     */
     public void fireUp() {
-        // fire up
-        int rand_col_up = rand.nextInt(this.player.column - (int)(this.player_size / 4), this.player.column + (int)(this.player_size / 4));
+        // fire up from a random row on the top of the player's cube
+        int rand_col_up = rand.nextInt(this.player.column - (int)(this.player_size / 2.5), this.player.column + (int)(this.player_size / 2.5));
+        // fire from top of cube to top edge of map (row 0)
         for (int j = (int)(this.player.row - (this.player_size/2.5)) ; j > 0 ; j --){
             Cell currentCell = Driver.neWorld.worldMatrix[j][rand_col_up];
             Bomb.placeBomb(currentCell.row, currentCell.column);
@@ -81,7 +100,7 @@ public class AlienFireCube extends Wildlife{
     public void fireRight() {
         // fire right
         Random rand = new Random();
-        int rand_row_right = rand.nextInt(this.player.row - (int)(this.player_size / 4), this.player.row + (int)(this.player_size / 4));
+        int rand_row_right = rand.nextInt(this.player.row - (int)(this.player_size / 2.5), this.player.row + (int)(this.player_size / 2.5));
             for (int j = (int)(this.player.column + (this.player_size/2.5)) ; j < Driver.size ; j ++){
                 Cell currentCell = Driver.neWorld.worldMatrix[rand_row_right][j];
                 Bomb.placeBomb(currentCell.row, currentCell.column);
@@ -90,7 +109,7 @@ public class AlienFireCube extends Wildlife{
     }
     public void fireDown() {
         // fire down
-        int rand_col_down = rand.nextInt(this.player.column - (int)(this.player_size / 4), this.player.column + (int)(this.player_size / 4));
+        int rand_col_down = rand.nextInt(this.player.column - (int)(this.player_size / 2.5), this.player.column + (int)(this.player_size / 2.5));
         for (int j = (int)(this.player.row - (this.player_size/2.5)) ; j < Driver.size ; j ++){
             Cell currentCell = Driver.neWorld.worldMatrix[j][rand_col_down];
             Bomb.placeBomb(currentCell.row, currentCell.column);
@@ -99,14 +118,13 @@ public class AlienFireCube extends Wildlife{
     }
     public void fireLeft() {
         // fire left
-        int rand_row_left = rand.nextInt(this.player.row - (int)(this.player_size / 4), this.player.row + (int)(this.player_size / 4));
+        int rand_row_left = rand.nextInt(this.player.row - (int)(this.player_size / 2.5), this.player.row + (int)(this.player_size / 2.5));
         for (int j = (int)(this.player.column - (this.player_size/2.5)) ; j > 0 ; j --){
             Cell currentCell = Driver.neWorld.worldMatrix[rand_row_left][j];
             Bomb.placeBomb(currentCell.row, currentCell.column);
            
         }
     }
-
 
     public void regenerate (){
         // grow based on how many animals killed each step
@@ -116,7 +134,9 @@ public class AlienFireCube extends Wildlife{
             }
         }    
     
-
+    /**
+     * Method for the cube to place bombs around its border
+     */
     public void camoFireSheild (){
         for( int i = 0 ; i < Driver.neWorld.size; i ++){
 			for (int j = 0 ; j < Driver.neWorld.size; j ++){
@@ -131,7 +151,9 @@ public class AlienFireCube extends Wildlife{
             }
         }
     }
-
+    /**
+     * Method to shrink a cube when wildlife enters an area of the cube's border
+     */
     public void animalVictim () {
         int total_attacks = 0;
         for( int i = 0 ; i < Driver.neWorld.size; i ++){
@@ -154,7 +176,10 @@ public class AlienFireCube extends Wildlife{
             this.player_size -= total_attacks * .02;
         if (total_attacks == 0) this.attacked = false;
     }
-
+    /**
+     * Method to prevent the area within the cube from catching on fire
+     * Also creates the camo effect
+     */
     public void fireProofed() {
         for( int i = 0 ; i < Driver.neWorld.size; i ++){
             for (int j = 0 ; j < Driver.neWorld.size; j ++){
@@ -164,7 +189,7 @@ public class AlienFireCube extends Wildlife{
                     && currCell.column >= this.player.column - (int)this.player_size / 2.5 
                     && currCell.column <= this.player.column + (int)this.player_size / 2.5
                     && currCell.getState() == Cell.STATES.BURNING){
-                    currCell.setState(Cell.STATES.TREE);
+                        currCell.setState(Cell.STATES.TREE);
                 }
             }
         }

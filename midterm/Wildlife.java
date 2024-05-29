@@ -178,7 +178,9 @@ public class Wildlife {
 			}
 		}
 	
-
+	/**
+	 * Method to kill off wildlife if too many wildlife in an cell block
+	 */
 	public void overPopulation(){
 		getTheAnimals();
 		while ( this.alltheanimals.size() > 0 ) {
