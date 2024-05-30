@@ -18,7 +18,7 @@ public class AlienFireCube extends Wildlife{
     
     AlienFireCube () {
         this.player_set = false;
-        this.player_size = 20;
+        this.player_size = 40;
         this.burning = false;
         this.time_without_being_attacked = 0;
         this.move_distance = 2;
@@ -129,7 +129,7 @@ public class AlienFireCube extends Wildlife{
     public void regenerate (){
         // grow based on how many animals killed each step
         // total dead at one step
-        if (Driver.neWorld.totalDead() > 0){
+        if (Driver.neWorld.totalDead() > 0 && this.player_size < 60){
                 this.player_size +=1;
             }
         }    
@@ -173,7 +173,7 @@ public class AlienFireCube extends Wildlife{
         if (potential_size < 10)
             this.player_size = 10;
         else 
-            this.player_size -= total_attacks * .02;
+            this.player_size -= total_attacks * .0002;
         if (total_attacks == 0) this.attacked = false;
     }
     /**
@@ -190,6 +190,28 @@ public class AlienFireCube extends Wildlife{
                     && currCell.column <= this.player.column + (int)this.player_size / 2.5
                     && currCell.getState() == Cell.STATES.BURNING){
                         currCell.setState(Cell.STATES.TREE);
+                }
+            }
+        }
+    }
+
+    public void forcefield(){
+        // if nearby the cube, move towards the cube
+        int alien_location_row = (int)(Driver.alien.player.row);
+        int alien_location_col = (int)(Driver.alien.player.column); 
+        
+        for( int i = 0 ; i < Driver.neWorld.size; i ++){
+            for (int j = 0 ; j < Driver.neWorld.size; j ++){
+                Cell currentCell = Driver.neWorld.worldMatrix[i][j];
+                double radius = Math.sqrt(Math.pow((Driver.alien.player_size), 2) * 2);
+                // equation for a cirlce -- if within the radius surrounding the cube then attack
+                if  ( Math.sqrt((Math.pow(alien_location_row - currentCell.row , 2) + Math.pow(alien_location_col - currentCell.column, 2)))  < (radius + 1)
+                && Math.sqrt((Math.pow(alien_location_row - currentCell.row , 2) + Math.pow(alien_location_col - currentCell.column, 2)))  > (radius - 1)
+                ){
+                    // what I really want it to do is have animals travel the radius (slope)to the center of the cube
+                    // think i'll need trig for that
+                    // or travel in circles with a shriking randius until hit the cube
+                    currentCell.setState(Cell.STATES.BURNING);
                 }
             }
         }

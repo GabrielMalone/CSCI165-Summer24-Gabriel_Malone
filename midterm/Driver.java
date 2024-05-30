@@ -10,6 +10,7 @@ public class Driver {
 	public static boolean animalsWander = false;
 	public static boolean player_set = false;
 	public static boolean start = false;
+	public static boolean forcefield = false;
 	public static int size = 200;
 	public static int speed = 20;
 	public static int startingPop = 0;

@@ -96,6 +96,8 @@ public class World {
 			if(Driver.animalsOn)
 				Driver.alien.regenerate();
 			Driver.alien.animalVictim();
+			if (Driver.forcefield)
+				Driver.alien.forcefield();
 		}
 		if (Driver.rainOn){
 			this.todaysRain.resetMoveState();
@@ -109,18 +111,20 @@ public class World {
 		if (Driver.endlessMode)
 			regrowTrees();
 		if (Driver.animalsOn){
-			if (! Driver.animalsWander) this.wildlife.naturalDeath();
 			this.wildlife.resetMoveState();
 			this.wildlife.makeAnEscape();
 			if (Driver.endlessMode)
 				this.wildlife.regrowWildlife();
 				this.wildlife.clearEscaped();
 				this.wildlife.clearDead();
-			if (Driver.animalsWander)
+			if (Driver.animalsWander){
 				this.wildlife.moveAround();
+				
+			}
 			else if (! Driver.animalsWander){
 				this.wildlife.reproduce();
 				this.wildlife.overPopulation();
+				this.wildlife.naturalDeath();
 			}
 			
 		}

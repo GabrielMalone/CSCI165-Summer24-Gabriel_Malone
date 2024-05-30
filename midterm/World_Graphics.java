@@ -87,6 +87,9 @@ public class World_Graphics extends JPanel implements ActionListener{
 				if (keyCode == KeyEvent.VK_LEFT){
 					Driver.alien.fireLeft();
 				}
+				if (keyCode == KeyEvent.VK_SPACE){
+					Driver.forcefield = true;
+				}
 			}
 		});
 		this.window.setTitle("Goobs Fire Sim");

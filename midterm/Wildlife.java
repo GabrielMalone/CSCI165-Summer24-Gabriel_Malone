@@ -10,7 +10,7 @@ public class Wildlife {
 	//public ArrayList<Cell> deadanimals = new ArrayList<>();
 	// excapedanimals -- > a metric I never used
 	private Random rand = new Random();
-	private ArrayList<Cell> alltheanimals = new ArrayList<>();
+	public ArrayList<Cell> alltheanimals = new ArrayList<>();
 	public int space_needed_for_reproduction = 3;
 	public int neighbors_needed_for_reproduction = 1;
 
@@ -140,8 +140,8 @@ public class Wildlife {
 				neighborArray.add(neighbor);
 			}
 			findRandomOpenSpot(neighborArray, current_location);
-			
 		}
+		
 	}
 	
 	public void reproduce(){
@@ -355,7 +355,7 @@ public class Wildlife {
 					currentCell.setObject(Cell.OBJECTS.VOID);
 			}
 		}
-	}
+	}		
 
 }
 
