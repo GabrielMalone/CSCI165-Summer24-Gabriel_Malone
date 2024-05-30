@@ -1,0 +1,10 @@
+Fresh Tomatoe,4.35,206
+Lettuce - Arugula,6.25,979
+Muffin Mix - Corn Harvest,6.2,428
+Apples - Sliced / Wedge,6.09,419
+Freedom Fries,2.99,448
+Chocolate Chip Cookie,6.45,1000
+Beer,9.0,635
+Beef Patty,3.79,943
+Apple - Royal Gala,8.75,248
+Pork Sandwich,6.34,207
