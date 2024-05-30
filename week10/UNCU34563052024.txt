@@ -1,0 +1,19 @@
+ENJOY!
+
+unknown customer / unknown phone / unknown email
+Invoice number: UNCU34563052024
+Date: 30/5/2024
+Time: Time: 18:32:38
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         3     $6.09  $18.27
+FRESH TOMATOE                   4     $4.35  $17.40
+MUFFIN MIX - CORN HARVEST       3     $6.20  $18.60
+
+Calories: 1053
+====================================================
+
+Subtotal               $54.27
+6.25% sales tax        $3.39
+Order Total            $57.66
+

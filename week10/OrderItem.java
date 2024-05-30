@@ -22,6 +22,11 @@ public class OrderItem {
     public double orderTotal = 0;
 
     /**
+     * No methods constructor
+     */
+    public OrderItem (){}
+
+    /**
      * Method to do a deep comparison of two OrderItem objects
      * @param other_orderItem
      * @return true if the orders contain the same items and quanities. 

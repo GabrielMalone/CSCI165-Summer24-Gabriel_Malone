@@ -18,13 +18,14 @@ public class Order {
 	private ArrayList<MenuItem> shoppingCart 	= Driver.orderItem.shoppingCart;
 	private ArrayList<MenuItem> cartCopy	 	= new ArrayList<>();
 	private boolean processingReceipt 			= true;
-	private String todaysDateComplete			= Date.dateString(Driver.today);
-	private String timeNow 						= Date.getTime();
 	private String name;						
 	private String phone;						
-	private String email; 						
-
-	 /**
+	private String email;				
+	private Date rightNow 						= Date.dateInitializer();
+	private String todaysDateComplete			= rightNow.dateString(rightNow);
+	private String timeNow 						= rightNow.getTime();	
+	
+	/**
      * No argument constructor leaves all fields default
      */
 	public Order () {}
@@ -35,6 +36,7 @@ public class Order {
 	* @return			the invoice number
 	*/
 	private String getInvoiceID(){
+		
 		// Create a variable to store the invoice number
 		String invoiceNumber = "";
 		// Get the first name										
@@ -52,9 +54,10 @@ public class Order {
 		// Concatenate the initials and ID
 		invoiceNumber = firstInitials + lastInitials + id;	
 		// Concatenate the date (add the time in if you want)			
-		invoiceNumber += Driver.today.getDay() + Driver.today.getMonth();		
+		invoiceNumber += rightNow.getDay() + "" + rightNow.getMonth() + "" + rightNow.getYear();		
 		return invoiceNumber;											
 	}
+
 
 	/**
     * Method to alphabetize customer's shopping cart

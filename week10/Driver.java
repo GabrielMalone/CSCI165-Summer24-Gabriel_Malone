@@ -5,14 +5,11 @@
 		public static Customer customer;
 		public static OrderItem orderItem;
 		public static Order order;
-		public static Date today;
-
 		// main program loop
 		public static void main(String[] args) {
 			// run until machine turned off
 			while(true){
 				// create new shoppingcart
-				today = Date.dateInitializer();
 				orderItem = new OrderItem();
 				order = new Order();
 				// clear screen and show menu

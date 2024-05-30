@@ -1,0 +1,37 @@
+ENJOY!
+
+GOOBERT MALONE / unknown phone / unknown email
+Invoice number: GOMA20722031
+Date: 4/3/2024
+Time: Time: 17:50:40
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         2     $6.09  $12.18
+FREEDOM FRIES                   2     $2.99  $5.98
+
+Calories: 867
+====================================================
+
+Subtotal               $18.16
+6.25% sales tax        $1.14
+Order Total            $19.30
+
+ENJOY!
+
+GOOBERT MALONE / unknown phone / unknown email
+Invoice number: GOMA20722031
+Date: 4/3/2024
+Time: Time: 17:50:46
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         2     $6.09  $12.18
+FRESH TOMATOE                   1     $4.35  $4.35
+MUFFIN MIX - CORN HARVEST       1     $6.20  $6.20
+
+Calories: 1053
+====================================================
+
+Subtotal               $22.73
+6.25% sales tax        $1.42
+Order Total            $24.15
+

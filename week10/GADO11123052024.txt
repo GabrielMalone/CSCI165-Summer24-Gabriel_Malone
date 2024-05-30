@@ -1,0 +1,18 @@
+ENJOY!
+
+GABE DOE / unknown phone / unknown email
+Invoice number: GADO11123052024
+Date: 30/5/2024
+Time: Time: 18:31:37
+Item                          Quant   Price  Total
+====================================================
+FRESH TOMATOE                   1     $4.35  $4.35
+MUFFIN MIX - CORN HARVEST       1     $6.20  $6.20
+
+Calories: 634
+====================================================
+
+Subtotal               $10.55
+6.25% sales tax        $0.66
+Order Total            $11.21
+

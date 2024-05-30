@@ -1,0 +1,19 @@
+ENJOY!
+
+GOOBERT MALONE / unknown phone / unknown email
+Invoice number: GOMA20723052024
+Date: 30/5/2024
+Time: Time: 18:50:9
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         3     $6.09  $18.27
+FRESH TOMATOE                   5     $4.35  $21.75
+MUFFIN MIX - CORN HARVEST       4     $6.20  $24.80
+
+Calories: 1053
+====================================================
+
+Subtotal               $64.82
+6.25% sales tax        $4.05
+Order Total            $68.87
+
