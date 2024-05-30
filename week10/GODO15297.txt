@@ -1,0 +1,38 @@
+ENJOY!
+
+GOOBERT DOE / unknown phone / unknown email
+Invoice number: GODO15297
+Date: 4/3/2024
+Time: Time: 17:4:19
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         1     $6.09  $6.09
+FRESH TOMATOE                   1     $4.35  $4.35
+MUFFIN MIX - CORN HARVEST       5     $6.20  $31.00
+
+Calories: 1053
+====================================================
+
+Subtotal               $41.44
+6.25% sales tax        $2.59
+Order Total            $44.03
+
+ENJOY!
+
+GOOBERT DOE / unknown phone / unknown email
+Invoice number: GODO15297
+Date: 4/3/2024
+Time: Time: 17:34:7
+Item                          Quant   Price  Total
+====================================================
+FREEDOM FRIES                   5     $2.99  $14.95
+APPLES - SLICED / WEDGE         5     $6.09  $30.45
+MUFFIN MIX - CORN HARVEST       3     $6.20  $18.60
+
+Calories: 1295
+====================================================
+
+Subtotal               $64.00
+6.25% sales tax        $4.00
+Order Total            $68.00
+

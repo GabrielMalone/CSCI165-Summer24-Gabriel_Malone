@@ -12,20 +12,20 @@
 			// run until machine turned off
 			while(true){
 				// create new shoppingcart
+				today = Date.dateInitializer();
 				orderItem = new OrderItem();
 				order = new Order();
-				today = Date.dateInitializer();
 				// clear screen and show menu
 				TerminalDisplay.clearSequence();
-				// clear any carts
+				// clear any carts from previous orders
 				orderItem.clearCarts();
 				// create new customer and get new customer info
 				customer = new Customer();
-				// take order // 
+				// take order
 				orderItem.takeOrder(customer);
-				// print receipt // save receipt info
-				order.printOrder();
-				// display receipt //
+				// save receipt info
+				order.writeToFile();
+				// display receipt on computer terminal
 				order.displayReceipt();
 			}
 		}

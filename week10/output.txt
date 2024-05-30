@@ -1,99 +1,84 @@
+[H[2JENJOY!
 
-Customer: unknown customer
-
+unknown customer / unknown customer / unknown customer
 Invoice number: UNCU34567
 Date: 4/3/2024
-Time: Time: 15:58:32
+Time: Time: 16:42:28
 Item                          Quant   Price  Total
 ====================================================
-
-Calories: 207
-====================================================
-
-Subtotal               $45.49
-6.25% sales tax        $2.84
-Order Total            $48.33
-
-Customer: unknown customer
-
-Invoice number: UNCU34567
-Date: 4/3/2024
-Time: Time: 15:59:49
-Item                          Quant   Price  Total
-====================================================
-
-Calories: 856
-====================================================
-
-Subtotal               $41.98
-6.25% sales tax        $2.62
-Order Total            $44.60
-
-Customer: unknown customer
-
-Invoice number: UNCU34567
-Date: 4/3/2024
-Time: Time: 16:1:38
-Item                          Quant   Price  Total
-====================================================
-
-Calories: 1284
-====================================================
-
-Subtotal               $42.09
-6.25% sales tax        $2.63
-Order Total            $44.72
-
-Customer: unknown customer
-
-Invoice number: UNCU34567
-Date: 4/3/2024
-Time: Time: 16:2:31
-Item                          Quant   Price  Total
-====================================================
-
-Calories: 428
-====================================================
-
-Subtotal               $58.55
-6.25% sales tax        $3.66
-Order Total            $62.21
-
-Customer: unknown customer
-
-Invoice number: UNCU34567
-Date: 4/3/2024
-Time: Time: 16:3:17
-Item                          Quant   Price  Total
-====================================================
-
-Calories: 1053
-====================================================
-
-Subtotal               $42.09
-6.25% sales tax        $2.63
-Order Total            $44.72
-
-Customer: unknown customer
-
-Invoice number: UNCU34567
-Date: 4/3/2024
-Time: Time: 16:4:33
-Item                          Quant   Price  Total
-====================================================
-APPLES - SLICED / WEDGE         4     $6.09  $24.36
+APPLES - SLICED / WEDGE         1     $6.09  $6.09
 BEEF PATTY                      1     $3.79  $3.79
-BEER                            1     $9.00  $9.00
-CHOCOLATE CHIP COOKIE           2     $6.45  $12.90
-FREEDOM FRIES                   3     $2.99  $8.97
-FRESH TOMATOE                   4     $4.35  $17.40
+CHOCOLATE CHIP COOKIE           1     $6.45  $6.45
+FREEDOM FRIES                   1     $2.99  $2.99
 LETTUCE - ARUGULA               1     $6.25  $6.25
+BEER                            2     $9.00  $18.00
 MUFFIN MIX - CORN HARVEST       1     $6.20  $6.20
-PORK SANDWICH                   1     $6.34  $6.34
 
-Calories: 5265
+Calories: 4852
 ====================================================
 
-Subtotal               $95.21
-6.25% sales tax        $5.95
-Order Total            $101.16
+Subtotal               $49.77
+6.25% sales tax        $3.11
+Order Total            $52.88
+
+[H[2JENJOY!
+
+unknown customer / null / null
+Invoice number: UNCU34567
+Date: 4/3/2024
+Time: Time: 16:44:21
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         1     $6.09  $6.09
+FREEDOM FRIES                   1     $2.99  $2.99
+FRESH TOMATOE                   2     $4.35  $8.70
+MUFFIN MIX - CORN HARVEST       1     $6.20  $6.20
+
+Calories: 1501
+====================================================
+
+Subtotal               $23.98
+6.25% sales tax        $1.50
+Order Total            $25.48
+
+ENJOY!
+
+unknown customer / unknown phone / unknown email
+Invoice number: UNCU34567
+Date: 4/3/2024
+Time: Time: 16:55:22
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         1     $6.09  $6.09
+FREEDOM FRIES                   1     $2.99  $2.99
+LETTUCE - ARUGULA               1     $6.25  $6.25
+FRESH TOMATOE                   1     $4.35  $4.35
+MUFFIN MIX - CORN HARVEST       1     $6.20  $6.20
+
+Calories: 2480
+====================================================
+
+Subtotal               $25.88
+6.25% sales tax        $1.62
+Order Total            $27.50
+
+ENJOY!
+
+GOOBERT MALONE / unknown phone / unknown email
+Invoice number: GOMA20727
+Date: 4/3/2024
+Time: Time: 16:55:37
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         1     $6.09  $6.09
+FREEDOM FRIES                   5     $2.99  $14.95
+FRESH TOMATOE                   1     $4.35  $4.35
+MUFFIN MIX - CORN HARVEST       1     $6.20  $6.20
+
+Calories: 1501
+====================================================
+
+Subtotal               $31.59
+6.25% sales tax        $1.97
+Order Total            $33.56
+
