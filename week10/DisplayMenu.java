@@ -39,6 +39,7 @@ public class DisplayMenu {
 				// 	add it to the ArrayList
 				menuItems.add(newMenuItem);
 			}
+			scanner.close();
 		}
 		// Catch the FileNotFoundException
 		catch(FileNotFoundException e){

@@ -228,7 +228,7 @@ public class Order {
 		System.out.println("Order Total"+space.repeat(12) + TerminalDisplay.nf.format(this.totalWithTax));
 		System.out.println();
 		System.out.print(TerminalDisplay.PRICE_COLORS + "PRESS ENTER " + TerminalDisplay.ANSI_RESET);
-		String placeHolder = Driver.orderItem.order.nextLine();
+		Driver.orderItem.order.nextLine();
 		// wait for user input
 		System.out.println();
 		System.out.print(TerminalDisplay.PRICE_COLORS + "PRESS ENTER " + TerminalDisplay.ANSI_RESET);

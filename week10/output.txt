@@ -607,3 +607,51 @@ Calories: 2996
 Subtotal               $43.40
 6.25% sales tax        $2.71
 Order Total            $46.11
+
+Customer: unknown customer
+
+Invoice number: UNCU34567
+Date: 4/3/2024
+Time: Time: 14:46:6
+Item                          Quant   Price  Total
+====================================================
+MUFFIN MIX - CORN HARVEST       5     $6.20  $31.00
+
+Calories: 2140
+====================================================
+
+Subtotal               $31.00
+6.25% sales tax        $1.94
+Order Total            $32.94
+
+Customer: unknown customer
+
+Invoice number: UNCU34567
+Date: 4/3/2024
+Time: Time: 14:47:23
+Item                          Quant   Price  Total
+====================================================
+APPLES - SLICED / WEDGE         4     $6.09  $24.36
+
+Calories: 1676
+====================================================
+
+Subtotal               $24.36
+6.25% sales tax        $1.52
+Order Total            $25.88
+
+Customer: unknown customer
+
+Invoice number: UNCU34567
+Date: 4/3/2024
+Time: Time: 14:47:28
+Item                          Quant   Price  Total
+====================================================
+MUFFIN MIX - CORN HARVEST       7     $6.20  $43.40
+
+Calories: 2996
+====================================================
+
+Subtotal               $43.40
+6.25% sales tax        $2.71
+Order Total            $46.11
