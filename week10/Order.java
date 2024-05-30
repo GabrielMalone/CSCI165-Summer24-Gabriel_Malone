@@ -125,23 +125,20 @@ public class Order {
 				// get first item from cart
 				int index = 0;
 				MenuItem menuitem = this.shoppingCart.get(index);
-				int quant = 0;
+				int quant = Driver.orderItem.cartMap.get(menuitem);
 				index += 1;
-				// if cart has more than one of this item, calc how many
-				while (this.shoppingCart.contains(menuitem)){
-					quant += 1;
-					this.subtotal += menuitem.getPrice();
-					this.caloriesTotal += menuitem.getCalories();
-					// remove item when done with it
-					this.shoppingCart.remove(menuitem);	
-				}
+				this.subtotal += menuitem.getPrice() * quant;
+				this.caloriesTotal += menuitem.getCalories();
+				// remove item when done with it
+				this.shoppingCart.remove(menuitem);	
 				// total cost for each item bought
 				this.total = quant * menuitem.getPrice();
-				writer.printf("%-32s%-6d%-7s%s%n",
-								menuitem.getName(),
-								quant,
-								TerminalDisplay.nf.format(menuitem.getPrice()),
-								TerminalDisplay.nf.format(total)
+				writer.printf(
+					"%-32s%-6d%-7s%s%n",
+					menuitem.getName(),
+					quant,
+					TerminalDisplay.nf.format(menuitem.getPrice()),
+					TerminalDisplay.nf.format(this.total)
 				);
 				index = 0;
 			}
@@ -198,16 +195,12 @@ public class Order {
 			// get first item from cart
 			int index = 0;
 			MenuItem menuitem = this.cartCopy.get(index);
-			int quant = 0;
+			int quant = Driver.orderItem.cartMap.get(menuitem);
 			index += 1;
-			// if cart has more than one of this item, calc how many
-			while (this.cartCopy.contains(menuitem)){
-				quant += 1;
-				this.subtotal += menuitem.getPrice();
-				this.caloriesTotal += menuitem.getCalories();
-				// remove item when done with it
-				this.cartCopy.remove(menuitem);	
-			}
+			this.subtotal += menuitem.getPrice() * quant;
+			this.caloriesTotal += menuitem.getCalories();
+			// remove item when done with it
+			this.cartCopy.remove(menuitem);	
 			// total cost for each item bought
 			this.total = quant * menuitem.getPrice();
 			System.out.printf(

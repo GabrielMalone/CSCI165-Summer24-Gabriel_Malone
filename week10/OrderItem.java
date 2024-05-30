@@ -222,9 +222,11 @@ public class OrderItem {
         // add name to name array to check if should be placed on  new line or not in terminal output
         menuNames.add(itemForOrder.getName());
         // if name not in array, create the new menuitem 
-        if (! menuNames.contains(itemForOrder.getName()))
+        if (! menuNames.contains(itemForOrder.getName())){
             // create a deep copy 
             itemForOrder = new MenuItem(itemForOrder);
+            // place item in cart for checkout
+        }
         // place the unique menu items in map for terminal display
         cartMap.putIfAbsent(itemForOrder, 0);
         // update quantity if item ordered more than once
@@ -232,8 +234,8 @@ public class OrderItem {
         // update price to correspond with quantity of item ordered
         double orderPrice = itemForOrder.getPrice();
         orderTotal += orderPrice;
-        // place item in cart for checkout
-        this.shoppingCart.add(itemForOrder);
+        if (! this.shoppingCart.contains(itemForOrder))
+            this.shoppingCart.add(itemForOrder);
     }
 
     private void formatting() {
