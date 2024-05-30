@@ -5,11 +5,11 @@ public class Customer {
 	// ================================
 	// || Private instance variables ||
 	// ================================
-	private String name	 = unknown;
-	private String email = unknown;
-	private String phone = unknown;
+	private String name	 = "unknown customer";
+	private String email = "unknown email";
+	private String phone = "unknown phone";
 
-	private static final String unknown = "unknown customer";
+	
 
 	// ==================
 	// || Constructors ||
@@ -21,15 +21,15 @@ public class Customer {
 	public Customer(){
 
 		// get info 
-		this.name = TerminalDisplay.nameRequest();
+		String term_name = TerminalDisplay.nameRequest();
 		TerminalDisplay.clearSequence();
-		this.email = TerminalDisplay.emailRequest();
+		String term_email = TerminalDisplay.emailRequest();
 		TerminalDisplay.clearSequence();
-		this.phone = TerminalDisplay.phoneRequest();
+		String term_phone = TerminalDisplay.phoneRequest();
 		TerminalDisplay.clearSequence();
-		this.setName(name);
-		this.setEmail(email);
-		this.setPhone(phone);		
+		this.setName(term_name);
+		this.setEmail(term_email);
+		this.setPhone(term_phone);		
 	}
 	
 	/**
@@ -57,7 +57,7 @@ public class Customer {
 	 * @return name (String)
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -67,10 +67,14 @@ public class Customer {
 	public void setName(String name) {
 		char [] charArray = name.toCharArray();
 		
-		if(name == null || name == "")   name = this.name;
-		else if (! name.contains(" ") && charArray.length != 1) this.name = name.toUpperCase() + " DOE";
-		else if (charArray.length == 1) name = this.name; 
-		
+		if(name == null || name == "")   
+			name = this.name;
+		// if no last name included
+		else if (! name.contains(" ") && charArray.length != 1) 
+			this.name = name.toUpperCase() + " DOE";
+		// if name too short
+		else if (charArray.length == 1) 
+			name = this.name; 
 		else this.name = name.toUpperCase();
 	}
 
@@ -79,7 +83,7 @@ public class Customer {
 	 * @return email (String) The Customer's email
 	 */
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
 	/**
@@ -94,8 +98,7 @@ public class Customer {
 		// It's also fun and good practice to write explicit logic . . .
 		// especially while learning :)
 		
-		if(email == null) return;	// fail fastest
-
+		if(email == null || email == "") email = this.email; 
 		int NOT_FOUND		= -1;	// reader friendly code symbols
 		int PREFIX_LENGTH	= 64;
 
@@ -134,7 +137,7 @@ public class Customer {
 	 * @return phone (String) The Customer's phone
 	 */
 	public String getPhone() {
-		return phone;
+		return this.phone;
 	}
 
 	/**
@@ -143,7 +146,7 @@ public class Customer {
 	 */
 	public void setPhone(String phone) {
 		// fail first, fail fast
-		if(phone == null)		return;
+		if(phone == null || phone == "") phone = this.phone;
 		if(phone.length() != 10)return;
 
 		// is each character a digit?

@@ -50,7 +50,7 @@ public class TerminalDisplay {
 	static String nameRequest(){
 		horizontalLine();
 		System.out.printf("%38s%s ", space,"NAME: ");
-		String name = OrderItem.order.nextLine();
+		String name = Driver.orderItem.order.nextLine();
 		if (name.length() > 26){
 			// cap name lengths to 26 char to fit nicely in menu
 			name = name.substring(0, 26);
@@ -61,14 +61,14 @@ public class TerminalDisplay {
 	static String emailRequest(){
 		horizontalLine();
 		System.out.printf("%38s%s", space, "EMAIL: ");
-		String email = OrderItem.order.nextLine();
+		String email = Driver.orderItem.order.nextLine();
 		return email;
 	}
 
 	static String phoneRequest(){
 		horizontalLine();
 		System.out.printf("%38s%s", space, "PHONE: ");
-		String phone = OrderItem.order.nextLine();
+		String phone = Driver.orderItem.order.nextLine();
 		return phone;
 	}
 
@@ -137,7 +137,7 @@ public class TerminalDisplay {
 					" ",
 					item.getName()
 					);
-					OrderItem.orderMap.put(index, item);
+					Driver.orderItem.orderMap.put(index, item);
 					index += 1;
 					foodItem += 1;
 				}    
@@ -179,26 +179,25 @@ public class TerminalDisplay {
 		System.out.printf("%23s%-30s%s %s$%.2f%s%n", space, newCustomer.getName(), "Subtotal", SUBTOTAL_COLOR, orderTotal, ANSI_RESET);
 	}
 
-	public static void orderFeedback(ArrayList<MenuItem> shoppingCart){
+	public static void orderFeedback(){
 		// to display cart items
 		ArrayList <MenuItem> tempCart = new ArrayList<>();
 		// make a hashmap, add menuitem as key and quantity as value.
 		// then print from the hashmap 
-		for(MenuItem items : shoppingCart){
-			if (OrderItem.cartMap.containsKey(items) && ! tempCart.contains(items)) tempCart.add(items);
+		for(MenuItem items : Driver.orderItem.shoppingCart){
+			if (Driver.orderItem.cartMap.containsKey(items) && ! tempCart.contains(items)) tempCart.add(items);
 		}
 		int counter = 0;
-		OrderItem.shoppingCartAlphabetize(tempCart);
-		OrderItem.shoppingCartAlphabetize(tempCart);
+		Driver.order.shoppingCartAlphabetize(tempCart);
+		Driver.order.shoppingCartAlphabetize(tempCart);
 		for (MenuItem item: tempCart){
-			String itemTotal = "(" +  OrderItem.cartMap.get(item) + ")";
-			String itemSubtotal = PRICE_COLORS + nf.format((item.getPrice()) * OrderItem.cartMap.get(item)) +  ANSI_RESET;
-			String caloriesTotal = CALORIE_COLOR +  (item.getCalories() * OrderItem.cartMap.get(item)) +  ANSI_RESET;
+			String itemTotal = "(" +  Driver.orderItem.cartMap.get(item) + ")";
+			String itemSubtotal = PRICE_COLORS + nf.format((item.getPrice()) * Driver.orderItem.cartMap.get(item)) +  ANSI_RESET;
+			String caloriesTotal = CALORIE_COLOR +  (item.getCalories() * Driver.orderItem.cartMap.get(item)) +  ANSI_RESET;
 			String cartList = MENU_BORDER_COLOR + (counter += 1) +  ANSI_RESET;
 			System.out.printf("%23s%-18s%-26s%-4s %-17s %s%n", 
 			space, cartList, item.getName(),itemTotal, itemSubtotal, caloriesTotal);
-
-			OrderItem.removeMap.put(counter + 1, item);
+			Driver.orderItem.removeMap.put(counter + 1, item);
 
 		}
 	}

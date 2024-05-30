@@ -6,30 +6,31 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class OrderItem {
-
+    // create shopping cart
+    public ArrayList<MenuItem> shoppingCart = new ArrayList<>();
     // scanner for user input
-    static Scanner order = new Scanner(System.in);
+    public Scanner order = new Scanner(System.in);
     // hashamp for easy ordering
-    static Map<Integer, MenuItem> orderMap = new HashMap<Integer, MenuItem>(10);
+    public Map<Integer, MenuItem> orderMap = new HashMap<Integer, MenuItem>(10);
     // hasmap for live updating cart info
-    static Map<MenuItem, Integer> cartMap = new HashMap<MenuItem, Integer>(10);
+    public Map<MenuItem, Integer> cartMap = new HashMap<MenuItem, Integer>(10);
     // map for removing items
-    static Map<Integer, MenuItem> removeMap = new HashMap<Integer, MenuItem>(10);
+    public Map<Integer, MenuItem> removeMap = new HashMap<Integer, MenuItem>(10);
+    // array to keep track of names of items in cart
+    public ArrayList<String> menuNames = new ArrayList<>();
+    // order total 
+    public double orderTotal = 0;
 
     /**
 	* Method to take the customer's order
 	* 
 	* @return (ArrayList<String>) shopping cart items
 	*/
-	public static ArrayList<MenuItem> takeOrder(Customer customer){
-		// order total 
-		double orderTotal = 0;	
-		// create shopping cart
-		ArrayList<MenuItem> shoppingCart = new ArrayList<>();
+	public void takeOrder(Customer customer){
 		// ask for order
 		TerminalDisplay.headerOutput();
 		TerminalDisplay.horizontalLine();
-		TerminalDisplay.orderFeedback(shoppingCart);
+		TerminalDisplay.orderFeedback();
 		TerminalDisplay.horizontalLine();
 		TerminalDisplay.subTotalOutPut(orderTotal, customer);
 		TerminalDisplay.horizontalLine();
@@ -37,10 +38,8 @@ public class OrderItem {
 		String itemNumber = order.next().toUpperCase();
 		// valid input check
 		while(! validInput(itemNumber)){
-			TerminalDisplay.clearSequence();
-			TerminalDisplay.headerOutput();
-			TerminalDisplay.horizontalLine();
-			TerminalDisplay.orderFeedback(shoppingCart);
+			formatting();
+			TerminalDisplay.orderFeedback();
 			TerminalDisplay.horizontalLine();
 			TerminalDisplay.subTotalOutPut(orderTotal, customer);
 			TerminalDisplay.horizontalLine();
@@ -52,20 +51,15 @@ public class OrderItem {
 		// whilte input valid logic
 		while(validInput(itemNumber) && ! itemNumber.equals("D")){
 			// if remove requested sequence
-			while (itemNumber.equals("R") && shoppingCart.size() > 0){
-				TerminalDisplay.clearSequence();
-				TerminalDisplay.headerOutput();
-				TerminalDisplay.horizontalLine();
-				TerminalDisplay.orderFeedback(shoppingCart);
+			while (itemNumber.equals("R") && this.shoppingCart.size() > 0){
+				formatting();
+				TerminalDisplay.orderFeedback();
 				TerminalDisplay.horizontalLine();
 				TerminalDisplay.subTotalOutPut(orderTotal, customer);
 				TerminalDisplay.horizontalLine();
-				double priceReduction = removeRequest(shoppingCart, orderTotal, customer);
-				//shoppingCartAlphabetize(shoppingCart);
-				TerminalDisplay.clearSequence();
-				TerminalDisplay.headerOutput();
-				TerminalDisplay.horizontalLine();
-				TerminalDisplay.orderFeedback(shoppingCart);
+				double priceReduction = removeRequest(orderTotal, customer);
+				formatting();
+				TerminalDisplay.orderFeedback();
 				TerminalDisplay.horizontalLine();
 				orderTotal -= priceReduction;
 				TerminalDisplay.subTotalOutPut(orderTotal, customer);
@@ -74,10 +68,8 @@ public class OrderItem {
 				itemNumber = order.next().toUpperCase();
 				// valid input check
 				while(! validInput(itemNumber)){
-					TerminalDisplay.clearSequence();
-					TerminalDisplay.headerOutput();
-					TerminalDisplay.horizontalLine();
-					TerminalDisplay.orderFeedback(shoppingCart);
+					formatting();
+					TerminalDisplay.orderFeedback();
 					TerminalDisplay.horizontalLine();
 					TerminalDisplay.subTotalOutPut(orderTotal, customer);
 					TerminalDisplay.horizontalLine();
@@ -86,11 +78,9 @@ public class OrderItem {
 				}	
 			}
 			// remove request logic if nothing to remove
-			while (itemNumber.equals("R") && shoppingCart.size() == 0){
-				TerminalDisplay.clearSequence();
-				TerminalDisplay.headerOutput();
-				TerminalDisplay.horizontalLine();
-				TerminalDisplay.orderFeedback(shoppingCart);
+			while (itemNumber.equals("R") && this.shoppingCart.size() == 0){
+				formatting();
+				TerminalDisplay.orderFeedback();
 				TerminalDisplay.horizontalLine();
 				TerminalDisplay.subTotalOutPut(orderTotal, customer);
 				TerminalDisplay.horizontalLine();
@@ -98,10 +88,8 @@ public class OrderItem {
 				itemNumber = order.next().toUpperCase();
 				// valid input check
 				while(! validInput(itemNumber)){
-					TerminalDisplay.clearSequence();
-					TerminalDisplay.headerOutput();
-					TerminalDisplay.horizontalLine();
-					TerminalDisplay.orderFeedback(shoppingCart);
+					formatting();
+					TerminalDisplay.orderFeedback();
 					TerminalDisplay.horizontalLine();
 					TerminalDisplay.subTotalOutPut(orderTotal, customer);
 					TerminalDisplay.horizontalLine();
@@ -116,18 +104,12 @@ public class OrderItem {
 				number = Integer.parseInt(itemNumber);
 			}
 			else if (itemNumber.equals("D")) break;
-			// get order from hashmap (number key, object value)
-			MenuItem itemForOrder = orderMap.get(number);
-			cartMap.putIfAbsent(itemForOrder, 0);
-			cartMap.computeIfPresent(itemForOrder, (key, val) -> val += 1);
-			// for output feedback on order
-			double orderPrice = itemForOrder.getPrice();
-			orderTotal += orderPrice;
-			shoppingCart.add(itemForOrder);
+            // update cart
+			updateCart(number);
 			// order feedback			
 			TerminalDisplay.headerOutput();
 			TerminalDisplay.horizontalLine();
-			TerminalDisplay.orderFeedback(shoppingCart);
+			TerminalDisplay.orderFeedback();
 			// total feedback
 			TerminalDisplay.horizontalLine();
 			TerminalDisplay.subTotalOutPut(orderTotal, customer);
@@ -137,10 +119,8 @@ public class OrderItem {
 			itemNumber = order.next().toUpperCase();
 			// valid input check
 			while(! validInput(itemNumber)){
-				TerminalDisplay.clearSequence();
-				TerminalDisplay.headerOutput();
-				TerminalDisplay.horizontalLine();
-				TerminalDisplay.orderFeedback(shoppingCart);
+			    formatting();
+				TerminalDisplay.orderFeedback();
 				// order feedback
 				TerminalDisplay.horizontalLine();
 				TerminalDisplay.subTotalOutPut(orderTotal, customer);
@@ -151,10 +131,9 @@ public class OrderItem {
 			//clear screen // keep menu and last order on screen
 			TerminalDisplay.clearSequence();
 		}
-		return shoppingCart;
 	}
 
-    private static boolean validRemoveInput(ArrayList<MenuItem> shoppingCart, int itemNumber){
+    private  boolean validRemoveInput(int itemNumber){
         // checks to see if the remove requests something that exists
         boolean valid = false;
         // create empty array
@@ -173,7 +152,7 @@ public class OrderItem {
         return valid;
     }
 
-    private static double removeRequest(ArrayList<MenuItem> shoppingCart, double orderTotal, Customer customer){
+    private double removeRequest(double orderTotal, Customer customer){
         // this sets up the remove request 
         // reduce total amount variable
         double priceReduction = 0;
@@ -193,10 +172,8 @@ public class OrderItem {
              break; 
              }
              catch(NumberFormatException eNumberFormatException){
-                 TerminalDisplay.clearSequence();
-                 TerminalDisplay.headerOutput();
-                 TerminalDisplay.horizontalLine();
-                 TerminalDisplay.orderFeedback(shoppingCart);
+                 formatting();
+                 TerminalDisplay.orderFeedback();
                  TerminalDisplay.horizontalLine();
                  TerminalDisplay.subTotalOutPut(orderTotal, customer);
                  TerminalDisplay.horizontalLine();
@@ -206,7 +183,7 @@ public class OrderItem {
              }	
         }
          // if remove request valid
-         if (validRemoveInput(shoppingCart, itemToRemove)){
+         if (validRemoveInput(itemToRemove)){
              // remove item
              MenuItem itemBeingRemoved = removeMap.get(itemToRemove+1);
              // for live cart updates
@@ -214,12 +191,12 @@ public class OrderItem {
              if (cartMap.get(itemBeingRemoved) == 0) cartMap.remove(itemBeingRemoved);
              // reduce total price
              priceReduction = itemBeingRemoved.getPrice();
-             shoppingCart.remove(itemBeingRemoved);
+             this.shoppingCart.remove(itemBeingRemoved);
          }
             return priceReduction;
     }
 
-    private static boolean validInput(String itemNumber){
+    private boolean validInput(String itemNumber){
         // checks to see if user inputted valid options
         boolean valid  = false;
         // lets make the valid input scalable to uknown menu sizes
@@ -239,47 +216,36 @@ public class OrderItem {
         return valid;
     }
 
-    /**
-    * Method to alphabetize customer's shopping cart
-    * 
-    * @param shoppingCart list of MenuItems
-    * @return ArrayList<MenuItem>
-    */
-    public static void shoppingCartAlphabetize(ArrayList<MenuItem> shoppingCart){
-        if (shoppingCart.size() > 1){
-            // stating letter A
-            char letter = 65;
-            // iterate through the menut items
-            while (letter <= 90){
-                for (int index = 0 ; index < shoppingCart.size() ; index ++){
-                    MenuItem item = shoppingCart.get(index);
-                    // put each item name into a char array
-                    char [] itemname = item.getName().toCharArray();
-                    // check first letter of the char in the name
-                    // if A, go to front of list, if B, go next in list, etc. 
-                    if (itemname[0] == letter) {
-                        // take the item from it's current position
-                        shoppingCart.remove(item);
-                        // put it in the back of the list. A will go to the back, then B, etc..
-                        shoppingCart.add(shoppingCart.size() - 1, item);
-                    }			
-                } // for loop end
-                // move letter to next letter
-                letter += 1;
-            } // while loop end
-            // now sort within A's, B's, etc..
-            int index = 0;
-            while (index < shoppingCart.size() - 1){
-                MenuItem item1 = shoppingCart.get(index);
-                MenuItem item2 = shoppingCart.get(index + 1);
-                // if item1 comes after item2 alphabetically, swap
-                if (item1.compareName(item2) == 1){
-                    shoppingCart.remove(item1);
-                    shoppingCart.add(index + 1, item1);
-                }
-                index += 1;
-            }
-        }	
+    private void updateCart(int number){
+        // get order from hashmap (number key, object value)
+        MenuItem itemForOrder = orderMap.get(number);
+        // add name to name array to check if should be placed on  new line or not in terminal output
+        menuNames.add(itemForOrder.getName());
+        // if name not in array, create the new menuitem 
+        if (! menuNames.contains(itemForOrder.getName()))
+            // create a deep copy 
+            itemForOrder = new MenuItem(itemForOrder);
+        // place the unique menu items in map for terminal display
+        cartMap.putIfAbsent(itemForOrder, 0);
+        // update quantity if item ordered more than once
+        cartMap.computeIfPresent(itemForOrder, (key, val) -> val += 1);
+        // update price to correspond with quantity of item ordered
+        double orderPrice = itemForOrder.getPrice();
+        orderTotal += orderPrice;
+        // place item in cart for checkout
+        this.shoppingCart.add(itemForOrder);
     }
+
+    private void formatting() {
+        TerminalDisplay.clearSequence();
+        TerminalDisplay.headerOutput();
+        TerminalDisplay.horizontalLine();
+    }
+
+    public void clearCarts(){
+		this.cartMap = new HashMap<MenuItem, Integer>(10);
+		this.orderMap = new HashMap<Integer, MenuItem>(10);
+		this.removeMap = new HashMap<Integer, MenuItem>(10);
+	}
 
 }

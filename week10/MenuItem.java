@@ -16,6 +16,16 @@ public class MenuItem {
     public MenuItem(){}
 
     /**
+     * Copy constructor to create a deep copy of MenuItem object
+     * @param copy
+     */
+    public MenuItem (MenuItem copy){
+        this.name       = copy.name;
+        this.price      = copy.price;
+        this.calories   = copy.calories;
+    }
+
+    /**
      * Overloaded constructor
      * 
      * @param name (String) of menu item
