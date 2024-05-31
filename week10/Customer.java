@@ -19,13 +19,16 @@ public class Customer {
 	 * No argument constructor lets TerminalDisplay take in the information
 	 */
 	public Customer(){
-	
+		// clear screen and show menu
+		TerminalDisplay.clearSequence();
+		// get info
 		String name = TerminalDisplay.nameRequest();
 		TerminalDisplay.clearSequence();
 		String email = TerminalDisplay.emailRequest();
 		TerminalDisplay.clearSequence();
 		String phone = TerminalDisplay.phoneRequest();
 		TerminalDisplay.clearSequence();
+		// set info
 		this.setName(name);
 		this.setEmail(email);
 		this.setPhone(phone);	

@@ -51,14 +51,20 @@ public class OrderItem {
     public String toString() {
         return "OrderItem [orderTotal=" +
         "$" + item_total * menuItem.getPrice()
-                + ", item_total=" + item_total + ", menuItem=" + menuItem + "]";
+        + ", item_total=" + item_total + ", menuItem=" + menuItem + "]";
     }
 
+    /*
+     * Method to increase the quantity of a MenuItem outside of Terminal Display.
+     */
     public void updateQuantity (int quant){
         if (this.item_total + quant > 0)
             this.item_total += quant;
     }
 
+    /*
+     * Method to get the quanity of a MenuItem outside of Terminal Display.
+     */
     public int getQuantity () {
       return this.item_total;
     }
@@ -128,7 +134,6 @@ public class OrderItem {
         // output information
         String itemRequest = "REMOVE # / 0 TO CANCEL: ";
         System.out.printf("%34s%s", TerminalDisplay.space, itemRequest);
-        //order.nextLine();
         // initialize item to remove var
         int itemToRemove = 0; 
         // get the requested item # to remove

@@ -3,7 +3,6 @@
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-
 public class TerminalDisplay {
 	// text // graphic colors
 	public static 	String ANSI_RESET           = "\u001B[0m"; 
@@ -21,6 +20,7 @@ public class TerminalDisplay {
 	private static  String MENU_BORDER_COLOR    = ANSI_PINK;
 	public 	static  String PRICE_COLORS         = ANSI_BLUE;
 	private static  String SUBTOTAL_COLOR       = ANSI_BLUE_BACK + ANSI_BOLD + ANSI_WHITE;
+	public static boolean display = true;
 	
 	// use this a lot
 	static String space = " ";

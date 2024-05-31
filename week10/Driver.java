@@ -10,18 +10,12 @@ public class Driver{
 		while(true){
 			// create new shoppingcart
 			order = new Order();
-			// clear screen and show menu
-			TerminalDisplay.clearSequence();
-			// clear any carts from previous orders
-			order.clearCarts();
 			// create new customer and get new customer info
 			customer = new Customer();
 			// take order
 			order.takeOrder(customer);
-			// save receipt info
+			// save and display receipt info
 			order.writeToFile();
-			// display receipt on computer terminal
-			order.displayReceipt();
 		}
 	}
 } 

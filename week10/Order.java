@@ -32,7 +32,6 @@ public class Order {
 	private double salesTax;
 	private double totalWithTax;
 	private ArrayList<MenuItem> cartCopy	 	= new ArrayList<>();
-	private boolean processingReceipt 			= true;
 	private String name;						
 	private String phone;						
 	private String email;				
@@ -40,14 +39,17 @@ public class Order {
 	private String todaysDateComplete			= rightNow.dateString(rightNow);
 	private String timeNow 						= rightNow.getTime();	
 	double orderTotal 							= 0;
+	ArrayList<String> cartStringArray = new ArrayList<>();
 	
 	/**
-     * No argument constructor leaves all fields default
+     * No argument constructor leaves all fields default. clears any carts.
      */
-	public Order () {}
+	public Order () {
+		clearCarts();
+	}
 
-	 /**
-	* Method to take the customer's order
+	/**
+	* Method to take the customer's order, loops until order complete. 
 	* @return (ArrayList<String>) shopping cart items
 	*/
 	public void takeOrder(Customer customer){
@@ -60,7 +62,7 @@ public class Order {
 		TerminalDisplay.subTotalOutPut(orderTotal, customer);
 		TerminalDisplay.horizontalLine();
 		TerminalDisplay.addRequest();
-		String itemNumber = scanner.next().toUpperCase();
+		String itemNumber = this.scanner.next().toUpperCase();
 		// valid input check
 		while(! this.orderItem.validInput(itemNumber)){
 			formatting();
@@ -69,7 +71,7 @@ public class Order {
 			TerminalDisplay.subTotalOutPut(orderTotal, customer);
 			TerminalDisplay.horizontalLine();
 			TerminalDisplay.addRequest();
-			itemNumber = scanner.next().toUpperCase();
+			itemNumber = this.scanner.next().toUpperCase();
 		}
 		// clear screen
 		TerminalDisplay.clearSequence();
@@ -86,7 +88,7 @@ public class Order {
 				formatting();
 				TerminalDisplay.orderFeedback();
 				TerminalDisplay.horizontalLine();
-				orderTotal -= priceReduction;
+				this.orderTotal -= priceReduction;
 				TerminalDisplay.subTotalOutPut(orderTotal, customer);
 				TerminalDisplay.horizontalLine();
 				TerminalDisplay.addRequest();
@@ -99,7 +101,7 @@ public class Order {
 					TerminalDisplay.subTotalOutPut(orderTotal, customer);
 					TerminalDisplay.horizontalLine();
 					TerminalDisplay.addRequest();
-					itemNumber = scanner.next().toUpperCase();
+					itemNumber = this.scanner.next().toUpperCase();
 				}	
 			}
 			// remove request logic if nothing to remove
@@ -110,7 +112,7 @@ public class Order {
 				TerminalDisplay.subTotalOutPut(orderTotal, customer);
 				TerminalDisplay.horizontalLine();
 				TerminalDisplay.addRequest();
-				itemNumber = scanner.next().toUpperCase();
+				itemNumber = this.scanner.next().toUpperCase();
 				// valid input check
 				while(! this.orderItem.validInput(itemNumber)){
 					formatting();
@@ -119,7 +121,7 @@ public class Order {
 					TerminalDisplay.subTotalOutPut(orderTotal, customer);
 					TerminalDisplay.horizontalLine();
 					TerminalDisplay.addRequest();
-					itemNumber = scanner.next().toUpperCase();
+					itemNumber = this.scanner.next().toUpperCase();
 				}
 			}	
 			TerminalDisplay.clearSequence();
@@ -160,10 +162,9 @@ public class Order {
 
 	/**
 	* Creates a (mostly) unique invoice number from the Customer data and the Date
-	* @return			the invoice number
+	* @return the invoice number
 	*/
 	private String getInvoiceID(){
-		
 		// Create a variable to store the invoice number
 		String invoiceNumber = "";
 		// Get the first name										
@@ -232,96 +233,52 @@ public class Order {
 	* Method to save order to file and print receipt
 	*/
 	public void writeToFile(){
-		copyCart();
 		//Write to file and print       
 		try{
-			this.name 	= Driver.customer.getName();
-			this.phone 	= Driver.customer.getPhone();
-			this.email 	= Driver.customer.getEmail();
 			// open printwriter in append mode to save all receipts to file, not just one.
 			PrintWriter writer = new PrintWriter(new FileOutputStream(new File(getInvoiceID()+".txt"), true)); 	
-			// space between receipts
-			receiptHeaderPrint(writer);
-			// sort objects in array by their name attribute
-			// iterate through sorted array and print / save
-			// alphabetize shopping cart
-			shoppingCartAlphabetize(this.shoppingCart);
-			// iterate through shopping cart
-			calculateTotal(shoppingCart, writer);
-			// print other total information
-			salesTax();
-			totalWithTax();
-			receiptFooterPrint(writer);
-			processingReceipt = false;
+			writer.print(this.toString());
+			writer.close();
 		}catch(IOException ioe){
 			System.out.print("Could not write to file");
 			System.exit(0);
 		}
+		// display receipt on terminal
+		displayReceipt();
 	}
 	
 	/**
 	 * Method to display the receipt on the computer terminal
 	 */
 	public void displayReceipt (){
-		// reset totals after calculating for print receipt
-		this.total = 0;
-		this.subtotal = 0;
-		this.caloriesTotal = 0;
-		receiptHeaderDisplay();
-		shoppingCartAlphabetize(this.cartCopy);
-		calculateTotal(cartCopy, null);
-		receiptFooterDisplay();
+		// clear menu
+		System.out.print("\033[H\033[2J");  
+		System.out.flush();
+		// display receipt
+		System.out.println(this.toString());
+		// wait for user input
+		this.orderItem.order.nextLine();
+		System.out.println();
+		System.out.print(TerminalDisplay.PRICE_COLORS + "PRESS ENTER " + TerminalDisplay.ANSI_RESET);
 	}
 
+	/**
+	 * Method to calc sales tax
+	 * @return
+	 */
 	private double salesTax(){
 		this.salesTax = this.subtotal * this.TAX;
 		return this.salesTax;
 	}
 
+	/**
+	 * Method to calc total cart with tax
+	 * @return
+	 */
 	private double totalWithTax(){
 		this.totalWithTax = this.salesTax + this.subtotal;
 		return this.totalWithTax;
 	}
-
-	private void calculateTotal(ArrayList<MenuItem> cart, PrintWriter writer){
-		while (cart.size() > 0){
-			// get first item from cart
-			int index = 0;
-			MenuItem menuitem = cart.get(index);
-			int quant = this.cartMap.get(menuitem);
-			index += 1;
-			this.subtotal += menuitem.getPrice() * quant;
-			this.caloriesTotal += menuitem.getCalories();
-			// remove item when done with it
-			cart.remove(menuitem);	
-			// total cost for each item bought
-			this.total = quant * menuitem.getPrice();
-			if (processingReceipt)
-				printTotalInfo(menuitem, quant, writer);
-			else 
-				displayTotalInfo(menuitem, quant);
-		}
-	}
-
-	private void displayTotalInfo(MenuItem menuitem, int quant){
-	System.out.printf(
-		"%-32s%-6d%-7s%s%n",
-		menuitem.getName(),
-		quant,
-		TerminalDisplay.nf.format(menuitem.getPrice()),
-		TerminalDisplay.nf.format(this.total)
-		);
-	}
-
-	private void printTotalInfo(MenuItem menuitem, int quant, PrintWriter writer){
-		writer.printf(
-			"%-32s%-6d%-7s%s%n",
-			menuitem.getName(),
-			quant,
-			TerminalDisplay.nf.format(menuitem.getPrice()),
-			TerminalDisplay.nf.format(this.total)
-			);
-		}
 
 	/**
 	 * copy cart for displaying the receipt data in terminal (otherwise cart is null at this point)
@@ -341,63 +298,6 @@ public class Order {
 		this.removeMap = new HashMap<Integer, MenuItem>(10);
 	}
 
-	private void receiptHeaderDisplay () {
-		// clear menu
-		System.out.print("\033[H\033[2J");  
-		System.out.flush();
-		System.out.println("ENJOY!");
-		System.out.println();
-		System.out.printf("%s / %s / %s", this.name, this.phone, this.email);
-		System.out.println();
-		System.out.printf("Invoice number: %s%n", getInvoiceID());
-		System.out.printf("Date: %s%n", this.todaysDateComplete);
-		System.out.printf("Time: %s%n", this.timeNow);
-		System.out.printf("%-30s%-8s%-7s%s%n","Item", "Quant", "Price", "Total");
-		System.out.println("=".repeat(52));
-	}
-
-	private void receiptFooterDisplay () {
-		System.out.println();
-		System.out.printf("Calories: %d%n", this.caloriesTotal);
-		System.out.println("=".repeat(52));
-		System.out.println();
-		System.out.printf("Subtotal%s%s%n",this.space.repeat(15), TerminalDisplay.nf.format(this.subtotal));
-		System.out.println("6.25% sales tax"+this.space.repeat(8) + TerminalDisplay.nf.format(this.salesTax));
-		System.out.println("Order Total"+this.space.repeat(12) + TerminalDisplay.nf.format(this.totalWithTax));
-		System.out.println();
-		System.out.print(TerminalDisplay.PRICE_COLORS + "PRESS ENTER " + TerminalDisplay.ANSI_RESET);
-		this.orderItem.order.nextLine();
-		// wait for user input
-		System.out.println();
-		System.out.print(TerminalDisplay.PRICE_COLORS + "PRESS ENTER " + TerminalDisplay.ANSI_RESET);
-	}
-
-	private void receiptHeaderPrint (PrintWriter writer) {
-		writer.println("ENJOY!");
-		writer.println();
-		writer.printf("%s / %s / %s", this.name, this.phone, this.email);
-		writer.println();
-		writer.printf("Invoice number: %s%n", getInvoiceID());
-		writer.printf("Date: %s%n", this.todaysDateComplete);
-		writer.printf("Time: %s%n", this.timeNow);
-		writer.printf("%-30s%-8s%-7s%s%n","Item", "Quant", "Price", "Total");
-		writer.println("=".repeat(52));
-	}
-
-	private void receiptFooterPrint (PrintWriter writer) {
-		writer.println();
-		writer.printf("Calories: %d%n", this.caloriesTotal);
-		writer.println("=".repeat(52));
-		writer.println();
-		writer.printf("Subtotal%s%s%n",this.space.repeat(15), TerminalDisplay.nf.format(this.subtotal));
-		writer.println("6.25% sales tax"+this.space.repeat(8) + TerminalDisplay.nf.format(this.salesTax));
-		writer.println("Order Total"+this.space.repeat(12) + TerminalDisplay.nf.format(this.totalWithTax));
-		writer.println();
-		writer.close();
-		// space between receipts in save file
-		writer.println();
-		writer.println();
-	}
 	/**
      * Method to help format the display ouput of the cart during ordering
      */
@@ -406,5 +306,72 @@ public class Order {
         TerminalDisplay.headerOutput();
         TerminalDisplay.horizontalLine();
     }
+
+	public String toString() {
+		// reset so they dont double up with printing to file and screen
+		this.total = 0;
+		this.subtotal = 0;
+		this.totalWithTax = 0;
+		this.name 	= Driver.customer.getName();
+		this.phone 	= Driver.customer.getPhone();
+		this.email 	= Driver.customer.getEmail();
+		// duplicate cart for the terminal display of receipt 
+		// otherwise cart gets emptied out during alphabetizing process
+		copyCart();
+		shoppingCartAlphabetize(this.cartCopy);
+		String receipt	= "";
+		String cartStr	= "";
+		String enjoy	= "ENJOY!";
+		String invoice 	= "Invoice number:";
+		String date 	= "Date:";
+		String time 	= "Time:";
+		String item 	= "Item";
+		String quant	= "Quant";
+		String price 	= "Price";
+		String total	= "Total";
+		String split 	= "=";
+		String calories = "Calories:";
+		String subtotal	= "Subtotal";
+		String salestax = "6.25% sales tax";
+		String ordertot = "Order Total";
+		// header string
+		String receiptheader = String.format(
+				"%s%n%n%s / %s / %s%n%s %s%n%s %s%n%s %s%n%-30s%-8s%-7s%s%n%s%n", 
+				enjoy, this.name, this.phone, this.email, invoice, getInvoiceID(),
+				date, this.todaysDateComplete, time, this.timeNow, item,
+				quant, price, total, split.repeat(52));
+		// iterate through cart and add items in the cart to the middle of receipt string		
+		while (this.cartCopy.size() > 0){
+			// get first item from cart
+			int index = 0;
+			MenuItem menuitem = this.cartCopy.get(index);
+			int quantity = this.cartMap.get(menuitem);
+			index += 1;
+			this.subtotal += menuitem.getPrice() * quantity;
+			this.caloriesTotal += menuitem.getCalories();
+			// remove item when done with it
+			this.cartCopy.remove(menuitem);	
+			// total cost for each item bought
+			this.total = quantity * menuitem.getPrice();
+			cartStr += String.format(
+			"%-32s%-6d%-7s%s%n",
+			menuitem.getName(),
+			quantity,
+			TerminalDisplay.nf.format(menuitem.getPrice()),
+			TerminalDisplay.nf.format(this.total));
+			
+		}
+		salesTax();
+		totalWithTax();
+		// footer string
+		String receiptfooter = String.format(
+				"%n%s %d%n%s%n%s%s%s%n%s%s%n%s%s%n%n",
+				calories, this.caloriesTotal, split.repeat(52), subtotal, 
+				this.space.repeat(15),TerminalDisplay.nf.format(this.subtotal),
+				salestax, this.space.repeat(8) + TerminalDisplay.nf.format(this.salesTax),
+				ordertot, this.space.repeat(12) + TerminalDisplay.nf.format(this.totalWithTax));
+		receipt = receiptheader + cartStr + receiptfooter;
+		return receipt;
+	}
 
 }
