@@ -19,16 +19,13 @@ public class Customer {
 	 * No argument constructor lets TerminalDisplay take in the information
 	 */
 	public Customer(){
-		// create new shoppingcart
-		// get info 
-		/* 
-		String term_name = TerminalDisplay.nameRequest();
+	
+		String name = TerminalDisplay.nameRequest();
 		TerminalDisplay.clearSequence();
-		String term_email = TerminalDisplay.emailRequest();
+		String email = TerminalDisplay.emailRequest();
 		TerminalDisplay.clearSequence();
-		String term_phone = TerminalDisplay.phoneRequest();
+		String phone = TerminalDisplay.phoneRequest();
 		TerminalDisplay.clearSequence();
-		*/
 		this.setName(name);
 		this.setEmail(email);
 		this.setPhone(phone);	
@@ -77,7 +74,7 @@ public class Customer {
 		// if name too short
 		else if (charArray.length == 1) 
 			name = this.name; 
-		//else this.name = name.toUpperCase();
+		else this.name = name;
 	}
 
 	/**

@@ -5,9 +5,25 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 public class Order {
-
+	
+	// create shopping cart Array
+	ArrayList<MenuItem> shoppingCart = new ArrayList<>();
+	// array to keep track of names of items in cart
+	ArrayList<String> menuNames = new ArrayList<>();
+	// hashamp for easy order
+    Map<Integer, MenuItem> orderMap = new HashMap<Integer, MenuItem>(10);
+    // hasmap for live updating cart info
+    Map<MenuItem, Integer> cartMap = new HashMap<MenuItem, Integer>(10);
+    // map for removing items
+    Map<Integer, MenuItem> removeMap = new HashMap<Integer, MenuItem>(10);
+	
+	Scanner scanner = new Scanner(System.in);
+	private OrderItem orderItem;
 	private String space 						= TerminalDisplay.space;
 	private double subtotal;
 	private int caloriesTotal;
@@ -15,7 +31,6 @@ public class Order {
 	private double TAX 							= 0.0625;
 	private double salesTax;
 	private double totalWithTax;
-	private ArrayList<MenuItem> shoppingCart 	= Driver.orderItem.shoppingCart;
 	private ArrayList<MenuItem> cartCopy	 	= new ArrayList<>();
 	private boolean processingReceipt 			= true;
 	private String name;						
@@ -24,12 +39,124 @@ public class Order {
 	private Date rightNow 						= Date.dateInitializer();
 	private String todaysDateComplete			= rightNow.dateString(rightNow);
 	private String timeNow 						= rightNow.getTime();	
+	double orderTotal 							= 0;
 	
 	/**
      * No argument constructor leaves all fields default
      */
 	public Order () {}
 
+	 /**
+	* Method to take the customer's order
+	* @return (ArrayList<String>) shopping cart items
+	*/
+	public void takeOrder(Customer customer){
+		this.orderItem = new OrderItem();
+		// ask for order
+		TerminalDisplay.headerOutput();
+		TerminalDisplay.horizontalLine();
+		TerminalDisplay.orderFeedback();
+		TerminalDisplay.horizontalLine();
+		TerminalDisplay.subTotalOutPut(orderTotal, customer);
+		TerminalDisplay.horizontalLine();
+		TerminalDisplay.addRequest();
+		String itemNumber = scanner.next().toUpperCase();
+		// valid input check
+		while(! this.orderItem.validInput(itemNumber)){
+			formatting();
+			TerminalDisplay.orderFeedback();
+			TerminalDisplay.horizontalLine();
+			TerminalDisplay.subTotalOutPut(orderTotal, customer);
+			TerminalDisplay.horizontalLine();
+			TerminalDisplay.addRequest();
+			itemNumber = scanner.next().toUpperCase();
+		}
+		// clear screen
+		TerminalDisplay.clearSequence();
+		// whilte input valid logic
+		while(this.orderItem.validInput(itemNumber) && ! itemNumber.equals("D")){
+			// if remove requested sequence
+			while (itemNumber.equals("R") && this.shoppingCart.size() > 0){
+				formatting();
+				TerminalDisplay.orderFeedback();
+				TerminalDisplay.horizontalLine();
+				TerminalDisplay.subTotalOutPut(orderTotal, customer);
+				TerminalDisplay.horizontalLine();
+				double priceReduction = this.orderItem.removeRequest(orderTotal, customer);
+				formatting();
+				TerminalDisplay.orderFeedback();
+				TerminalDisplay.horizontalLine();
+				orderTotal -= priceReduction;
+				TerminalDisplay.subTotalOutPut(orderTotal, customer);
+				TerminalDisplay.horizontalLine();
+				TerminalDisplay.addRequest();
+				itemNumber = scanner.next().toUpperCase();
+				// valid input check
+				while(! this.orderItem.validInput(itemNumber)){
+					formatting();
+					TerminalDisplay.orderFeedback();
+					TerminalDisplay.horizontalLine();
+					TerminalDisplay.subTotalOutPut(orderTotal, customer);
+					TerminalDisplay.horizontalLine();
+					TerminalDisplay.addRequest();
+					itemNumber = scanner.next().toUpperCase();
+				}	
+			}
+			// remove request logic if nothing to remove
+			while (itemNumber.equals("R") && this.shoppingCart.size() == 0){
+				formatting();
+				TerminalDisplay.orderFeedback();
+				TerminalDisplay.horizontalLine();
+				TerminalDisplay.subTotalOutPut(orderTotal, customer);
+				TerminalDisplay.horizontalLine();
+				TerminalDisplay.addRequest();
+				itemNumber = scanner.next().toUpperCase();
+				// valid input check
+				while(! this.orderItem.validInput(itemNumber)){
+					formatting();
+					TerminalDisplay.orderFeedback();
+					TerminalDisplay.horizontalLine();
+					TerminalDisplay.subTotalOutPut(orderTotal, customer);
+					TerminalDisplay.horizontalLine();
+					TerminalDisplay.addRequest();
+					itemNumber = scanner.next().toUpperCase();
+				}
+			}	
+			TerminalDisplay.clearSequence();
+			// get integer from input
+			int number = 0;
+			if (! itemNumber.equals("D")){
+				number = Integer.parseInt(itemNumber);
+			}
+			else if (itemNumber.equals("D")) break;
+            // update cart
+			this.orderItem.updateCart(number);
+			// order feedback			
+			TerminalDisplay.headerOutput();
+			TerminalDisplay.horizontalLine();
+			TerminalDisplay.orderFeedback();
+			// total feedback
+			TerminalDisplay.horizontalLine();
+			TerminalDisplay.subTotalOutPut(orderTotal, customer);
+			TerminalDisplay.horizontalLine();
+			// get next input
+			TerminalDisplay.addRequest();
+			itemNumber = scanner.next().toUpperCase();
+			// valid input check
+			while(! this.orderItem.validInput(itemNumber)){
+			    formatting();
+				TerminalDisplay.orderFeedback();
+				// order feedback
+				TerminalDisplay.horizontalLine();
+				TerminalDisplay.subTotalOutPut(orderTotal, customer);
+				TerminalDisplay.horizontalLine();
+				TerminalDisplay.addRequest();
+				itemNumber = scanner.next().toUpperCase();         
+			}
+			//clear screen // keep menu and last order on screen
+			TerminalDisplay.clearSequence();
+		}
+	}
 
 	/**
 	* Creates a (mostly) unique invoice number from the Customer data and the Date
@@ -57,7 +184,6 @@ public class Order {
 		invoiceNumber += rightNow.getDay() + "" + rightNow.getMonth() + "" + rightNow.getYear();		
 		return invoiceNumber;											
 	}
-
 
 	/**
     * Method to alphabetize customer's shopping cart
@@ -162,7 +288,7 @@ public class Order {
 			// get first item from cart
 			int index = 0;
 			MenuItem menuitem = cart.get(index);
-			int quant = Driver.orderItem.cartMap.get(menuitem);
+			int quant = this.cartMap.get(menuitem);
 			index += 1;
 			this.subtotal += menuitem.getPrice() * quant;
 			this.caloriesTotal += menuitem.getCalories();
@@ -172,7 +298,8 @@ public class Order {
 			this.total = quant * menuitem.getPrice();
 			if (processingReceipt)
 				printTotalInfo(menuitem, quant, writer);
-			displayTotalInfo(menuitem, quant);
+			else 
+				displayTotalInfo(menuitem, quant);
 		}
 	}
 
@@ -205,6 +332,15 @@ public class Order {
 		}
 	}
 
+	/**
+     * Method to clear carts from any previous orders
+     */
+    public void clearCarts(){
+		this.cartMap = new HashMap<MenuItem, Integer>(10);
+		this.orderMap = new HashMap<Integer, MenuItem>(10);
+		this.removeMap = new HashMap<Integer, MenuItem>(10);
+	}
+
 	private void receiptHeaderDisplay () {
 		// clear menu
 		System.out.print("\033[H\033[2J");  
@@ -230,7 +366,7 @@ public class Order {
 		System.out.println("Order Total"+this.space.repeat(12) + TerminalDisplay.nf.format(this.totalWithTax));
 		System.out.println();
 		System.out.print(TerminalDisplay.PRICE_COLORS + "PRESS ENTER " + TerminalDisplay.ANSI_RESET);
-		Driver.orderItem.order.nextLine();
+		this.orderItem.order.nextLine();
 		// wait for user input
 		System.out.println();
 		System.out.print(TerminalDisplay.PRICE_COLORS + "PRESS ENTER " + TerminalDisplay.ANSI_RESET);
@@ -258,10 +394,17 @@ public class Order {
 		writer.println("Order Total"+this.space.repeat(12) + TerminalDisplay.nf.format(this.totalWithTax));
 		writer.println();
 		writer.close();
-		// clear the scanner
-		Driver.orderItem.order.nextLine();
 		// space between receipts in save file
 		writer.println();
 		writer.println();
 	}
+	/**
+     * Method to help format the display ouput of the cart during ordering
+     */
+    void formatting() {
+        TerminalDisplay.clearSequence();
+        TerminalDisplay.headerOutput();
+        TerminalDisplay.horizontalLine();
+    }
+
 }

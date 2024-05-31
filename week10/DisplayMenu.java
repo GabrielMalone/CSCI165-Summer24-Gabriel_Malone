@@ -11,7 +11,6 @@ public class DisplayMenu {
 	// load current items on the menu
 	static ArrayList<MenuItem> myMenuItems = loadMenuItems("products.txt");
 	
-
 	/**
 	* Method to load new menu items from a file
 	*
