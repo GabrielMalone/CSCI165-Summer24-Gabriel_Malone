@@ -183,23 +183,25 @@ public class TerminalDisplay {
 
 	public static void orderFeedback(){
 		// to display cart items
-		ArrayList <MenuItem> tempCart = new ArrayList<>();
+		ArrayList <OrderItem> tempCart = new ArrayList<>();
 		// make a hashmap, add menuitem as key and quantity as value.
 		// then print from the hashmap 
-		for(MenuItem items : Driver.order.shoppingCart){
-			if (Driver.order.cartMap.containsKey(items) && ! tempCart.contains(items)) tempCart.add(items);
+		for(OrderItem items : Driver.order.shoppingCart){
+			if (Driver.order.cartMap.containsKey(items.getMenuItem().getName())) {
+				tempCart.add(items);
+			}	
 		}
 		int counter = 0;
 		Driver.order.shoppingCartAlphabetize(tempCart);
 		Driver.order.shoppingCartAlphabetize(tempCart);
-		for (MenuItem item: tempCart){
-			String itemTotal = "(" +  Driver.order.cartMap.get(item) + ")";
-			String itemSubtotal = PRICE_COLORS + nf.format((item.getPrice()) * Driver.order.cartMap.get(item)) +  ANSI_RESET;
-			String caloriesTotal = CALORIE_COLOR +  (item.getCalories() * Driver.order.cartMap.get(item)) +  ANSI_RESET;
+		for (OrderItem item: tempCart){
+			String itemTotal = "(" +  Driver.order.cartMap.get(item.getMenuItem().getName()) + ")";
+			String itemSubtotal = PRICE_COLORS + nf.format((item.getMenuItem().getPrice()) * Driver.order.cartMap.get(item.getMenuItem().getName())) +  ANSI_RESET;
+			String caloriesTotal = CALORIE_COLOR +  (item.getMenuItem().getCalories() * Driver.order.cartMap.get(item.getMenuItem().getName())) +  ANSI_RESET;
 			String cartList = MENU_BORDER_COLOR + (counter += 1) +  ANSI_RESET;
 			System.out.printf("%23s%-18s%-26s%-4s %-17s %s%n", 
-			space, cartList, item.getName(),itemTotal, itemSubtotal, caloriesTotal);
-			Driver.order.removeMap.put(counter + 1, item);
+			space, cartList, item.getMenuItem().getName(),itemTotal, itemSubtotal, caloriesTotal);
+			Driver.order.removeMap.put(counter + 1, item.getMenuItem());
 
 		}
 	}
