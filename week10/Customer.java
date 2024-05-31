@@ -6,30 +6,33 @@ public class Customer {
 	// || Private instance variables ||
 	// ================================
 	private String name	 = "unknown customer";
-	private String email = "unknown email";
-	private String phone = "unknown phone";
-
+	private String email = "unknown customer";
+	private String phone = "unknown customer";
 	
 
 	// ==================
 	// || Constructors ||
 	// ==================
 
+
 	/**
 	 * No argument constructor lets TerminalDisplay take in the information
 	 */
 	public Customer(){
-
+		// create new shoppingcart
 		// get info 
+		/* 
 		String term_name = TerminalDisplay.nameRequest();
 		TerminalDisplay.clearSequence();
 		String term_email = TerminalDisplay.emailRequest();
 		TerminalDisplay.clearSequence();
 		String term_phone = TerminalDisplay.phoneRequest();
 		TerminalDisplay.clearSequence();
-		this.setName(term_name);
-		this.setEmail(term_email);
-		this.setPhone(term_phone);		
+		*/
+		this.setName(name);
+		this.setEmail(email);
+		this.setPhone(phone);	
+
 	}
 	
 	/**
@@ -66,7 +69,6 @@ public class Customer {
 	 */
 	public void setName(String name) {
 		char [] charArray = name.toCharArray();
-		
 		if(name == null || name == "")   
 			name = this.name;
 		// if no last name included
@@ -75,7 +77,7 @@ public class Customer {
 		// if name too short
 		else if (charArray.length == 1) 
 			name = this.name; 
-		else this.name = name.toUpperCase();
+		//else this.name = name.toUpperCase();
 	}
 
 	/**

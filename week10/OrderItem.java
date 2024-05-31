@@ -7,19 +7,22 @@ import java.util.Scanner;
 
 public class OrderItem {
     // create shopping cart Array
-    public ArrayList<MenuItem> shoppingCart = new ArrayList<>();
+    ArrayList<MenuItem> shoppingCart = new ArrayList<>();
     // scanner for user input
-    public Scanner order = new Scanner(System.in);
-    // hashamp for easy ordering
-    public Map<Integer, MenuItem> orderMap = new HashMap<Integer, MenuItem>(10);
+    Scanner order = new Scanner(System.in);
+    // hashamp for easy order
+    Map<Integer, MenuItem> orderMap = new HashMap<Integer, MenuItem>(10);
     // hasmap for live updating cart info
-    public Map<MenuItem, Integer> cartMap = new HashMap<MenuItem, Integer>(10);
+    Map<MenuItem, Integer> cartMap = new HashMap<MenuItem, Integer>(10);
     // map for removing items
-    public Map<Integer, MenuItem> removeMap = new HashMap<Integer, MenuItem>(10);
+    Map<Integer, MenuItem> removeMap = new HashMap<Integer, MenuItem>(10);
     // array to keep track of names of items in cart
-    public ArrayList<String> menuNames = new ArrayList<>();
+    private ArrayList<String> menuNames = new ArrayList<>();
     // order total for terminal display
-    public double orderTotal = 0;
+    private double orderTotal = 0;
+    private int item_total = 0;
+    private MenuItem menuItem; 
+
 
     /**
      * No methods constructor
@@ -27,42 +30,57 @@ public class OrderItem {
     public OrderItem (){}
 
     /**
-     * Method to do a deep comparison of two OrderItem objects
-     * @param other_orderItem
-     * @return true if the orders contain the same items and quanities. 
+     * Overloaded method constructor
+     * @param menuItem
+     * @param item_total
      */
-    public boolean equals(OrderItem other_orderItem){
-        // check size
-        if (this.shoppingCart.size() != other_orderItem.shoppingCart.size())
-            return false;
-        // if same size, check items.  
-        // if they don't contain the same items return false   
-        while (this.shoppingCart.size() > 0){
-            for (MenuItem item : other_orderItem.shoppingCart){
-                if (! this.shoppingCart.contains(item)){
-                    return false;
-                }
-                // if they contain they same items, 
-                // see if they are the same quantity for each item
-                else{
-                    if (this.cartMap.get(item) != other_orderItem.cartMap.get(item)){
-                        return false;
-                    }
-                }
-                // take out item, move on to the next one, if there is one. 
-                this.shoppingCart.remove(item);
-            }
-        }
-        // if all above true
-		return true;
-	}
+    public OrderItem(MenuItem menuItem, int item_total) {
+        // clone any menuItems passed into the method
+        this.menuItem = new MenuItem(menuItem);
+        this.item_total = item_total;
+    }
 
     /**
-     * Method to get the selected MenuItem object via the Menu Map
+     * Method to return a cloned menu item
+     * @return
+     */
+    public MenuItem getMenuItem () {
+       return this.menuItem;
+    }
+
+    /**
+     * Method to retun the number of items a OrderItem has
+     * @return int of total number of items an OrderItem has
+     */
+    public int getItemTotal (){
+        return this.item_total;
+    }
+
+    /*
+     * Method to return a string detailing the current OrderItem
+     */
+    @Override
+    public String toString() {
+        return "OrderItem [orderTotal=" +
+        "$" + item_total * menuItem.getPrice()
+                + ", item_total=" + item_total + ", menuItem=" + menuItem + "]";
+    }
+
+    public void updateQuantity (int quant){
+        if (this.item_total + quant > 0)
+            this.item_total += quant;
+    }
+
+    public int getQuantity () {
+      return this.item_total;
+    }
+
+    /**
+     * Method to put the selected MenuItem object via the Menu Map into the shopping cart
      * repeating this process will increase quantity
      * @param number
      */
-    private void getMenuItem(int number){
+    private void updateCart(int number){
         // get order from hashmap (number key, object value)
         MenuItem itemForOrder = orderMap.get(number);
         // add name to name array to check if should be placed on  new line or not in terminal output
@@ -184,6 +202,53 @@ public class OrderItem {
     }
 
     /**
+     * Method to compare two OrderItems
+     * @param otherOrderItem
+     * @return
+     */
+    public boolean equals(OrderItem otherOrderItem){
+        // compare name and quantity, not memory address
+        if (this.menuItem.getName() 
+            == otherOrderItem.menuItem.getName()
+            && this.getItemTotal() == otherOrderItem.getItemTotal())
+            return true;
+        else
+            return false;
+    }
+
+
+    /**
+     * Method to do a deep comparison of two OrderItem objects
+     * @param other_orderItem
+     * @return true if the orders contain the same items and quanities. 
+     */
+    public boolean the_real_equals(OrderItem other_orderItem){
+        // check size
+        if (this.shoppingCart.size() != other_orderItem.shoppingCart.size())
+            return false;
+        // if same size, check items.  
+        // if they don't contain the same items return false   
+        while (this.shoppingCart.size() > 0){
+            for (MenuItem item : other_orderItem.shoppingCart){
+                if (! this.shoppingCart.contains(item)){
+                    return false;
+                }
+                // if they contain they same items, 
+                // see if they are the same quantity for each item
+                else{
+                    if (this.cartMap.get(item) != other_orderItem.cartMap.get(item)){
+                        return false;
+                    }
+                }
+                // take out item, move on to the next one, if there is one. 
+                this.shoppingCart.remove(item);
+            }
+        }
+        // if all above true
+		return true;
+	}
+
+    /**
 	* Method to take the customer's order
 	* @return (ArrayList<String>) shopping cart items
 	*/
@@ -266,7 +331,7 @@ public class OrderItem {
 			}
 			else if (itemNumber.equals("D")) break;
             // update cart
-			getMenuItem(number);
+			updateCart(number);
 			// order feedback			
 			TerminalDisplay.headerOutput();
 			TerminalDisplay.horizontalLine();

@@ -1,0 +1,24 @@
+ENJOY!
+
+unknown customer / unknown phone / unknown email
+Invoice number: UNCU34563052024
+Date: 30/5/2024
+Time: Time: 21:42:59
+Item                          Quant   Price  Total
+====================================================
+APPLE - ROYAL GALA              1     $8.75  $8.75
+BEER                            36    $9.00  $324.00
+FREEDOM FRIES                   34    $2.99  $101.66
+FRESH TOMATOE                   7     $4.35  $30.45
+LETTUCE - ARUGULA               8     $6.25  $50.00
+MUFFIN MIX - CORN HARVEST       9     $6.20  $55.80
+APPLES - SLICED / WEDGE         4     $6.09  $24.36
+PORK SANDWICH                   1     $6.34  $6.34
+
+Calories: 3570
+====================================================
+
+Subtotal               $601.36
+6.25% sales tax        $37.59
+Order Total            $638.95
+
