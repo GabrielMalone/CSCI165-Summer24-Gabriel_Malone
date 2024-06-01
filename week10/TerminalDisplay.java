@@ -180,9 +180,9 @@ public class TerminalDisplay {
 		System.out.println();
 	}
 
-	public static void subTotalOutPut(double orderTotal, Customer newCustomer){
+	public static void subTotalOutPut(){
 		   
-		System.out.printf("%23s%-30s%s %s$%.2f%s%n", space, newCustomer.getName(), "Subtotal", SUBTOTAL_COLOR, orderTotal, ANSI_RESET);
+		System.out.printf("%23s%-30s%s %s$%.2f%s%n", space, Driver.order.getCustomer().getName(), "Subtotal", SUBTOTAL_COLOR, Driver.order.getTotal(), ANSI_RESET);
 	}
 
 	public static void orderFeedback(){

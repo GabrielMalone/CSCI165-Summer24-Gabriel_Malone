@@ -1,7 +1,6 @@
 // Gabriel Malone / CSCI65 / Week 10 / Summer 2024
 
 
-
 public class OrderItem {
    
     private int item_total = 0;
@@ -53,13 +52,14 @@ public class OrderItem {
     public String toString() {
         return "OrderItem [orderTotal=" +
         "$" + item_total * menuItem.getPrice()
-        + ", item_total=" + item_total + ", menuItem=" + menuItem + "]";
+        + menuItem.toString();
     }
 
     /*
      * Method to increase the quantity of a MenuItem outside of Terminal Display.
      */
     public void updateQuantity (int quant){
+        // to prevent negative quantities of an item
         if (this.item_total + quant > 0)
             this.item_total += quant;
     }
@@ -70,7 +70,6 @@ public class OrderItem {
     public int getQuantity () {
       return this.item_total;
     }
-
 
     /**
      * Method to compare two OrderItems

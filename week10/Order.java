@@ -28,10 +28,8 @@ public class Order {
 	private double totalWithTax;
 	private double orderTotal 					= 0;
 	private ArrayList<OrderItem> cartCopy	 	= new ArrayList<>();			
-	private Date rightNow 						= Date.dateInitializer();
-	private String todaysDateComplete			= rightNow.dateString(rightNow);
-	private String timeNow 						= rightNow.getTime();	
 	private Customer customer;
+	private Date todaysDate;
 	
 	/**
      * No argument constructor leaves all fields default. clears any carts.
@@ -39,6 +37,7 @@ public class Order {
 	public Order () {
 		// clear any carts from previous orders
 		clearCarts();
+		setDate();
 	}
 
 	/**
@@ -47,6 +46,7 @@ public class Order {
 	 */
 	public Order (Customer newCustomer){
 		this.customer = newCustomer;
+		setDate();
 	}
 
 	/**
@@ -66,11 +66,9 @@ public class Order {
 		this.salesTax = copy.salesTax;
 		this.totalWithTax = copy.totalWithTax;
 		this.cartCopy = copy.cartCopy;
-		this.rightNow = copy.rightNow;
-		this.todaysDateComplete = copy.todaysDateComplete;
-		this.timeNow = copy.timeNow;
 		this.orderTotal = copy.orderTotal;
 		this.customer = copy.customer;
+		this.todaysDate = copy.todaysDate;
 	}
 
 	/**
@@ -80,6 +78,19 @@ public class Order {
 	public Customer getCustomer() {
 		Customer clone = new Customer(this.customer);
 		return clone;
+	}
+
+	public Date getDate(){
+		Date cloneDated = new Date(this.todaysDate);
+		return cloneDated;
+	}
+
+	/**
+	 * Method to return the total of an order
+	 * @return double of total
+	 */
+	public double getTotal(){
+		return this.orderTotal;
 	}
 
 	/**
@@ -94,6 +105,15 @@ public class Order {
 			cartCopy.add(copy);
 		}
 		return cartCopy;
+	}
+
+	/**
+	 * 
+	 * @return String of the invoice ID for this Order
+	 */
+	public String getInvoiceID(){
+		String invoiceID = createInvoiceID();
+		return invoiceID;
 	}
 	
 	/**
@@ -127,8 +147,8 @@ public class Order {
 		// header string
 		String receiptheader = String.format(
 				"%s%n%n%s / %s / %s%n%s %s%n%s %s%n%s %s%n%-30s%-8s%-7s%s%n%s%n", 
-				enjoy, this.customer.getName(), this.customer.getPhone(), this.customer.getEmail(), invoice, getInvoiceID(),
-				date, this.todaysDateComplete, time, this.timeNow, item,
+				enjoy, this.customer.getName(), this.customer.getPhone(), this.customer.getEmail(), invoice, createInvoiceID(),
+				date, this.todaysDate.toString(), time, this.todaysDate.getTime(), item,
 				quant, price, total, split.repeat(52));
 		// iterate through cart and add items in the cart to the middle of receipt string		
 		while (this.cartCopy.size() > 0){
@@ -198,48 +218,40 @@ public class Order {
 		TerminalDisplay.headerOutput();
 		TerminalDisplay.horizontalLine();
 		TerminalDisplay.orderFeedback();
-		TerminalDisplay.horizontalLine();
-		TerminalDisplay.subTotalOutPut(orderTotal, customer);
-		TerminalDisplay.horizontalLine();
+		subtotalOutputFormatting();
 		TerminalDisplay.addRequest();
 		String itemNumber = Driver.scanner.next().toUpperCase();
 		// valid input check
-		while(! this.validInput(itemNumber)){
+		while(! validInput(itemNumber)){
 			formatting();
 			TerminalDisplay.orderFeedback();
-			TerminalDisplay.horizontalLine();
-			TerminalDisplay.subTotalOutPut(orderTotal, customer);
-			TerminalDisplay.horizontalLine();
+			subtotalOutputFormatting();
 			TerminalDisplay.addRequest();
 			itemNumber = Driver.scanner.next().toUpperCase();
 		}
 		// clear screen
 		TerminalDisplay.clearSequence();
 		// whilte input valid logic
-		while(this.validInput(itemNumber) && ! itemNumber.equals("D")){
+		while(validInput(itemNumber) && ! itemNumber.equals("D")){
 			// if remove requested sequence
 			while (itemNumber.equals("R") && this.shoppingCart.size() > 0){
 				formatting();
 				TerminalDisplay.orderFeedback();
-				TerminalDisplay.horizontalLine();
-				TerminalDisplay.subTotalOutPut(orderTotal, customer);
-				TerminalDisplay.horizontalLine();
-				double priceReduction = this.removeRequest(orderTotal, customer);
+				subtotalOutputFormatting();
+				OrderItem removedItem = removeItem();
 				formatting();
 				TerminalDisplay.orderFeedback();
 				TerminalDisplay.horizontalLine();
-				this.orderTotal -= priceReduction;
-				TerminalDisplay.subTotalOutPut(orderTotal, customer);
+				this.orderTotal -= removedItem.getMenuItem().getPrice();
+				TerminalDisplay.subTotalOutPut();
 				TerminalDisplay.horizontalLine();
 				TerminalDisplay.addRequest();
 				itemNumber = Driver.scanner.next().toUpperCase();
 				// valid input check
-				while(! this.validInput(itemNumber)){
+				while(!validInput(itemNumber)){
 					formatting();
 					TerminalDisplay.orderFeedback();
-					TerminalDisplay.horizontalLine();
-					TerminalDisplay.subTotalOutPut(orderTotal, customer);
-					TerminalDisplay.horizontalLine();
+					subtotalOutputFormatting();
 					TerminalDisplay.addRequest();
 					itemNumber = Driver.scanner.next().toUpperCase();
 				}	
@@ -248,18 +260,14 @@ public class Order {
 			while (itemNumber.equals("R") && this.shoppingCart.size() == 0){
 				formatting();
 				TerminalDisplay.orderFeedback();
-				TerminalDisplay.horizontalLine();
-				TerminalDisplay.subTotalOutPut(orderTotal, customer);
-				TerminalDisplay.horizontalLine();
+				subtotalOutputFormatting();
 				TerminalDisplay.addRequest();
 				itemNumber = Driver.scanner.next().toUpperCase();
 				// valid input check
-				while(! this.validInput(itemNumber)){
+				while(! validInput(itemNumber)){
 					formatting();
 					TerminalDisplay.orderFeedback();
-					TerminalDisplay.horizontalLine();
-					TerminalDisplay.subTotalOutPut(orderTotal, customer);
-					TerminalDisplay.horizontalLine();
+					subtotalOutputFormatting();
 					TerminalDisplay.addRequest();
 					itemNumber = Driver.scanner.next().toUpperCase();
 				}
@@ -272,26 +280,22 @@ public class Order {
 			}
 			else if (itemNumber.equals("D")) break;
             // update cart
-			this.updateCart(number);
+			addItem(number);
 			// order feedback			
 			TerminalDisplay.headerOutput();
 			TerminalDisplay.horizontalLine();
 			TerminalDisplay.orderFeedback();
 			// total feedback
-			TerminalDisplay.horizontalLine();
-			TerminalDisplay.subTotalOutPut(orderTotal, customer);
-			TerminalDisplay.horizontalLine();
+			subtotalOutputFormatting();
 			// get next input
 			TerminalDisplay.addRequest();
 			itemNumber = Driver.scanner.next().toUpperCase();
 			// valid input check
-			while(! this.validInput(itemNumber)){
+			while(! validInput(itemNumber)){
 			    formatting();
 				TerminalDisplay.orderFeedback();
 				// order feedback
-				TerminalDisplay.horizontalLine();
-				TerminalDisplay.subTotalOutPut(orderTotal, customer);
-				TerminalDisplay.horizontalLine();
+				subtotalOutputFormatting();
 				TerminalDisplay.addRequest();
 				itemNumber = Driver.scanner.next().toUpperCase();         
 			}
@@ -306,7 +310,7 @@ public class Order {
 		//Write to file and print       
 		try{
 			// open printwriter in append mode to save all receipts to file, not just one.
-			PrintWriter writer = new PrintWriter(new FileOutputStream(new File(getInvoiceID()+".txt"), true)); 	
+			PrintWriter writer = new PrintWriter(new FileOutputStream(new File(createInvoiceID()+".txt"), true)); 	
 			writer.print(this.toString());
 			writer.close();
 		}catch(IOException ioe){
@@ -349,7 +353,7 @@ public class Order {
      * repeating this process will increase quantity
      * @param number
      */
-    void updateCart(int number){
+    void addItem(int number){
         // get order from hashmap (number key, object value)
         MenuItem itemForOrder = this.orderMap.get(number);
         // add name to name array to check if should be placed on new line or not in terminal output
@@ -405,14 +409,11 @@ public class Order {
 
 	/**
      * Method for removing an item from the cart
-     * @param orderTotal
-     * @param customer
-     * @return
+     * @return OrderItem being removed from the cart
      */
-    double removeRequest(double orderTotal, Customer customer){
+    OrderItem removeItem(){
+		OrderItem orderItem=null;
         // this sets up the remove request 
-        // reduce total amount variable
-        double priceReduction = 0;
         // output information
         String itemRequest = "REMOVE # / 0 TO CANCEL: ";
         System.out.printf("%34s%s", TerminalDisplay.space, itemRequest);
@@ -430,9 +431,7 @@ public class Order {
              catch(NumberFormatException eNumberFormatException){
                  this.formatting();
                  TerminalDisplay.orderFeedback();
-                 TerminalDisplay.horizontalLine();
-                 TerminalDisplay.subTotalOutPut(orderTotal, customer);
-                 TerminalDisplay.horizontalLine();
+               	subtotalOutputFormatting();
                  itemRequest = "# TO REMOVE: ";
                  System.out.printf("%34s%s", TerminalDisplay.space, itemRequest);
                  removeRequest = Driver.scanner.next().toUpperCase();
@@ -450,24 +449,22 @@ public class Order {
                 for (OrderItem orderitem : this.shoppingCart){
 					if (orderitem.getMenuItem().equals(itemBeingRemoved)){
 						this.shoppingCart.remove(orderitem);
-						break;
+						return orderitem;
 					}
 				}
-             }
-			 else{
-					for (OrderItem orderitem : this.shoppingCart){
-						if (orderitem.getMenuItem().equals(itemBeingRemoved)){
-							int current_quant = orderitem.getQuantity();
-							orderitem.updateQuantity(current_quant --);
-						}
+			}
+			else{
+				for (OrderItem orderitem : this.shoppingCart){
+					if (orderitem.getMenuItem().equals(itemBeingRemoved)){
+						int current_quant = orderitem.getQuantity();
+						orderitem.updateQuantity(current_quant --);
+						return orderitem;
 					}
-			 	}
-             // reduce total price
-             priceReduction = itemBeingRemoved.getPrice();
-             // since now only one actual Object in the shopping cart, only remove when reaches zero
-         }	
-            return priceReduction;
-    }
+				}
+			}
+		}
+		return orderItem;	
+	}
 
 	/**
     * Method to alphabetize customer's shopping cart
@@ -512,14 +509,17 @@ public class Order {
         }	
     }
 	
-	/**
- 	* Method to help format the display ouput of the cart during ordering
-	*/
-    void formatting() {
+    private void formatting() {
         TerminalDisplay.clearSequence();
         TerminalDisplay.headerOutput();
         TerminalDisplay.horizontalLine();
     }
+
+	private void subtotalOutputFormatting(){
+		TerminalDisplay.horizontalLine();
+		TerminalDisplay.subTotalOutPut();
+		TerminalDisplay.horizontalLine();
+	}
 
 	/**
      * Method for validating a remove request
@@ -546,32 +546,6 @@ public class Order {
     }
 
 	/**
-	* Creates a (mostly) unique invoice number from the Customer data and the Date
-	* @return the invoice number
-	*/
-	private String getInvoiceID(){
-		// Create a variable to store the invoice number
-		String invoiceNumber = "";
-		// Get the first name										
-		String[] name = Driver.order.customer.getName().split(" ");		
-		// Get the first two initials of the first name			
-		String firstInitials = name[0].substring(0, 2).toUpperCase();
-		// Get the first two initials of the last name	
-		String lastInitials = name[1].substring(0, 2).toUpperCase();	
-		int firstUnicode = (int)name[0].charAt(0);
-		// Get the Unicode value of the first character of the first name					
-		int lastUnicode = (int)name[1].charAt(0);	
-		// Get the Unicode value of the first character of the last name
-		// Calculate the ID				
-		int id = (firstUnicode + lastUnicode) * Driver.order.customer.getName().length();
-		// Concatenate the initials and ID
-		invoiceNumber = firstInitials + lastInitials + id;	
-		// Concatenate the date (add the time in if you want)			
-		invoiceNumber += rightNow.getDay() + "" + rightNow.getMonth() + "" + rightNow.getYear();		
-		return invoiceNumber;											
-	}
-
-	/**
 	 * Method to calc sales tax
 	 * @return
 	 */
@@ -596,6 +570,36 @@ public class Order {
 		for (OrderItem item : this.shoppingCart){
 			this.cartCopy.add(item);
 		}
+	}
+
+	/**
+	* Creates a (mostly) unique invoice number from the Customer data and the Date
+	* @return the invoice number
+	*/
+	private String createInvoiceID(){
+		// Create a variable to store the invoice number
+		String invoiceNumber = "";
+		// Get the first name										
+		String[] name = this.customer.getName().split(" ");		
+		// Get the first two initials of the first name			
+		String firstInitials = name[0].substring(0, 2).toUpperCase();
+		// Get the first two initials of the last name	
+		String lastInitials = name[1].substring(0, 2).toUpperCase();	
+		int firstUnicode = (int)name[0].charAt(0);
+		// Get the Unicode value of the first character of the first name					
+		int lastUnicode = (int)name[1].charAt(0);	
+		// Get the Unicode value of the first character of the last name
+		// Calculate the ID				
+		int id = (firstUnicode + lastUnicode) * this.customer.getName().length();
+		// Concatenate the initials and ID
+		invoiceNumber = firstInitials + lastInitials + id;	
+		// Concatenate the date (add the time in if you want)			
+		invoiceNumber += todaysDate.getDay() + "" + todaysDate.getMonth() + "" + todaysDate.getYear();		
+		return invoiceNumber;											
+	}
+
+	private void setDate(){
+		this.todaysDate = Date.dateInitializer();
 	}
 
 }

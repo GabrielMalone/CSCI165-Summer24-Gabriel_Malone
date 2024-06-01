@@ -13,6 +13,7 @@ public class OrderTests {
     OrderItem   orderItem1, orderItem2, orderItem3;
     MenuItem    menuItemOne, menuItemTwo, menuItemThree;
     Customer    customer;
+    Date        date1, date2;
 
     @BeforeEach
     public void setup() {
@@ -116,6 +117,19 @@ public class OrderTests {
         OrderItem item1 = returnedCart.get(0);
         OrderItem item2 = order1.shoppingCart.get(0);
         assertTrue(item1.equals(item2));
+    }
+    @Test
+	public void testgetDatePrivacy() {
+        // create a new Date object with today's current time info
+        Date today = new Date();
+        today = Date.dateInitializer();
+        // create a new Order object which will also create a date object with currrent time info
+        order1 = new Order();
+        Date OrderDate = order1.getDate();
+        // today and orderDate should not have the same memory address
+        assertFalse(OrderDate == today);
+        // but today and orderDate should have the same variable states
+        assertTrue(today.equals(OrderDate));
     }
 }
 

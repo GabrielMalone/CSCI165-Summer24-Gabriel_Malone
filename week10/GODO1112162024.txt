@@ -1,0 +1,15 @@
+ENJOY!
+
+GOOB DOE / unknown customer / unknown customer
+Invoice number: GODO1112162024
+Date: 1/6/2024
+Time: Time: 7:29:15
+Item                          Quant   Price  Total
+====================================================
+
+Calories: 0
+====================================================
+Subtotal               $0.00
+6.25% sales tax        $0.00
+Order Total            $0.00
+

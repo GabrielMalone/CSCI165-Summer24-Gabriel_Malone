@@ -99,7 +99,7 @@
          this.year	= 1000;
          this.format = DateFormat.LONG_DATE;
      }
- 
+
      /**
       * Overloaded constructor to set all fields.
       * Arguments will be domain validated

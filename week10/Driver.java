@@ -8,7 +8,6 @@ public class Driver{
 	public static Scanner scanner;
 	// main program loop
 	public static void main(String[] args) {
-		
 		// run until machine turned off
 		while(true){
 			scanner = new Scanner(System.in);

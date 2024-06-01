@@ -1,0 +1,21 @@
+ENJOY!
+
+GO DOE / unknown customer / unknown customer
+Invoice number: GODO834162024
+Date: 1/6/2024
+Time: Time: 7:16:56
+Item                          Quant   Price  Total
+====================================================
+BEEF PATTY                      1     $3.79  $3.79
+CHOCOLATE CHIP COOKIE           2     $6.45  $12.90
+FREEDOM FRIES                   3     $2.99  $8.97
+LETTUCE - ARUGULA               1     $6.25  $6.25
+APPLES - SLICED / WEDGE         4     $6.09  $24.36
+MUFFIN MIX - CORN HARVEST       4     $6.20  $24.80
+
+Calories: 4217
+====================================================
+Subtotal               $81.07
+6.25% sales tax        $5.07
+Order Total            $86.14
+
