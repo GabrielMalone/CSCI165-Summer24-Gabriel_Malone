@@ -34,6 +34,17 @@ public class Customer {
 		this.setPhone(phone);	
 
 	}
+
+	/**
+     * Copy constructor to create a deep copy of MenuItem object
+     * @param copy
+     */
+    public Customer (Customer copy){
+		// nots ure if this needed since strings
+		this.name       = copy.name;
+        this.email      = copy.email;
+        this.phone   	= copy.phone;
+    }
 	
 	/**
 	 * Overloaded constructor

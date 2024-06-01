@@ -1,15 +1,11 @@
 // Gabriel Malone / CSCI65 / Week 10 / Summer 2024
 
-import java.util.Scanner;
+
 
 public class OrderItem {
    
-    // scanner for user input
-    Scanner scanner = new Scanner(System.in);  
-    // order total for terminal display
     private int item_total = 0;
     private MenuItem menuItem; 
-
 
     /**
      * No methods constructor
@@ -27,11 +23,18 @@ public class OrderItem {
         this.item_total = item_total;
     }
 
+    public OrderItem (OrderItem copy){
+        this.menuItem = copy.menuItem;
+        // not sure if this one needed since int
+        this.item_total = copy.item_total;
+    }
+
     /**
      * Method to return a cloned menu item
      * @return
      */
     public MenuItem getMenuItem () {
+        // cloned when object initialized
        return this.menuItem;
     }
 
@@ -76,9 +79,7 @@ public class OrderItem {
      */
     public boolean equals(OrderItem otherOrderItem){
         // compare name and quantity, not memory address
-        if (this.menuItem.getName() 
-            == otherOrderItem.menuItem.getName()
-            && this.getItemTotal() == otherOrderItem.getItemTotal())
+        if (this.menuItem.equals(otherOrderItem.menuItem) && this.getItemTotal() == otherOrderItem.getItemTotal())
             return true;
         else
             return false;

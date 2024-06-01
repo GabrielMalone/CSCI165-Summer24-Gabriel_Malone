@@ -3,6 +3,7 @@
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
+
 public class TerminalDisplay {
 	// text // graphic colors
 	public static 	String ANSI_RESET           = "\u001B[0m"; 
@@ -50,9 +51,10 @@ public class TerminalDisplay {
 	}
 	
 	static String nameRequest(){
+
 		horizontalLine();
 		System.out.printf("%38s%s ", space,"NAME: ");
-		String name = Driver.order.scanner.nextLine();
+		String name = Driver.scanner.nextLine();
 		if (name.length() > 26){
 			// cap name lengths to 26 char to fit nicely in menu
 			name = name.substring(0, 26);
@@ -61,16 +63,18 @@ public class TerminalDisplay {
 	}
 
 	static String emailRequest(){
+
 		horizontalLine();
 		System.out.printf("%38s%s", space, "EMAIL: ");
-		String email = Driver.order.scanner.nextLine();
+		String email = Driver.scanner.nextLine();
+
 		return email;
 	}
 
 	static String phoneRequest(){
 		horizontalLine();
 		System.out.printf("%38s%s", space, "PHONE: ");
-		String phone = Driver.order.scanner.nextLine();
+		String phone = Driver.scanner.nextLine();
 		return phone;
 	}
 

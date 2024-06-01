@@ -7,39 +7,31 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class Order {
 	
 	// create shopping cart Array
 	ArrayList<OrderItem> shoppingCart = new ArrayList<>();
+	// hasmap for live updating cart info
+    Map<String, Integer> cartMap = new HashMap<String, Integer>(10);
 	// array to keep track of names of items in cart
 	ArrayList<String> menuNames = new ArrayList<>();
 	// hashamp for easy order
-    Map<Integer, MenuItem> orderMap = new HashMap<Integer, MenuItem>(10);
-    // hasmap for live updating cart info
-    Map<String, Integer> cartMap = new HashMap<String, Integer>(10);
+	Map<Integer, MenuItem> orderMap = new HashMap<Integer, MenuItem>(10);
     // map for removing items
     Map<Integer, MenuItem> removeMap = new HashMap<Integer, MenuItem>(10);
-	
-	Scanner scanner = new Scanner(System.in);
-	private String space 						= TerminalDisplay.space;
 	private double subtotal;
 	private int caloriesTotal;
 	private double total;
 	private double TAX 							= 0.0625;
 	private double salesTax;
 	private double totalWithTax;
-	private ArrayList<OrderItem> cartCopy	 	= new ArrayList<>();
-	private String name;						
-	private String phone;						
-	private String email;				
+	private double orderTotal 					= 0;
+	private ArrayList<OrderItem> cartCopy	 	= new ArrayList<>();			
 	private Date rightNow 						= Date.dateInitializer();
 	private String todaysDateComplete			= rightNow.dateString(rightNow);
 	private String timeNow 						= rightNow.getTime();	
-	double orderTotal 							= 0;
-	ArrayList<String> cartStringArray = new ArrayList<>();
-	Customer customer;
+	private Customer customer;
 	
 	/**
      * No argument constructor leaves all fields default. clears any carts.
@@ -47,6 +39,61 @@ public class Order {
 	public Order () {
 		// clear any carts from previous orders
 		clearCarts();
+	}
+
+	/**
+	 * Overloaded constructor to accept the customer
+	 * @param newCustomer
+	 */
+	public Order (Customer newCustomer){
+		this.customer = newCustomer;
+	}
+
+	/**
+	 * Method to deep copy an Order object
+	 * @param copy an Order object
+	 */
+	public Order(Order copy) {
+		this.shoppingCart = copy.shoppingCart;
+		this.menuNames = copy.menuNames;
+		this.orderMap = copy.orderMap;
+		this.cartMap = copy.cartMap;
+		this.removeMap = copy.removeMap;
+		this.subtotal = copy.subtotal;
+		this.caloriesTotal = copy.caloriesTotal;
+		this.total = copy.total;
+		this.TAX = copy.TAX;
+		this.salesTax = copy.salesTax;
+		this.totalWithTax = copy.totalWithTax;
+		this.cartCopy = copy.cartCopy;
+		this.rightNow = copy.rightNow;
+		this.todaysDateComplete = copy.todaysDateComplete;
+		this.timeNow = copy.timeNow;
+		this.orderTotal = copy.orderTotal;
+		this.customer = copy.customer;
+	}
+
+	/**
+	 * Method to return a clone of the current customer
+	 * @return clone of current customer
+	 */
+	public Customer getCustomer() {
+		Customer clone = new Customer(this.customer);
+		return clone;
+	}
+
+	/**
+	 * Method to do a deep copy of an Order's current cart
+	 * @return copy of current cart
+	 */
+	public ArrayList<OrderItem> getCart (){
+		ArrayList<OrderItem> cartCopy = new ArrayList<>();
+		for (OrderItem item: this.shoppingCart){
+			// deep copy the OrderItem object
+			OrderItem copy = new OrderItem(item);
+			cartCopy.add(copy);
+		}
+		return cartCopy;
 	}
 	
 	/**
@@ -57,10 +104,6 @@ public class Order {
 		this.total = 0;
 		this.subtotal = 0;
 		this.totalWithTax = 0;
-		// get customer info 
-		this.name 	= Driver.order.customer.getName();
-		this.phone 	= Driver.order.customer.getPhone();
-		this.email 	= Driver.order.customer.getEmail();
 		// duplicate cart for the terminal display of receipt 
 		// otherwise cart gets emptied out during alphabetizing process
 		copyCart();
@@ -84,7 +127,7 @@ public class Order {
 		// header string
 		String receiptheader = String.format(
 				"%s%n%n%s / %s / %s%n%s %s%n%s %s%n%s %s%n%-30s%-8s%-7s%s%n%s%n", 
-				enjoy, this.name, this.phone, this.email, invoice, getInvoiceID(),
+				enjoy, this.customer.getName(), this.customer.getPhone(), this.customer.getEmail(), invoice, getInvoiceID(),
 				date, this.todaysDateComplete, time, this.timeNow, item,
 				quant, price, total, split.repeat(52));
 		// iterate through cart and add items in the cart to the middle of receipt string		
@@ -114,9 +157,9 @@ public class Order {
 		String receiptfooter = String.format(
 				"%n%s %d%n%s%n%s%s%s%n%s%s%n%s%s%n%n",
 				calories, this.caloriesTotal, split.repeat(52), subtotal, 
-				this.space.repeat(15),TerminalDisplay.nf.format(this.subtotal),
-				salestax, this.space.repeat(8) + TerminalDisplay.nf.format(this.salesTax),
-				ordertot, this.space.repeat(12) + TerminalDisplay.nf.format(this.totalWithTax));
+				TerminalDisplay.space.repeat(15),TerminalDisplay.nf.format(this.subtotal),
+				salestax, TerminalDisplay.space.repeat(8) + TerminalDisplay.nf.format(this.salesTax),
+				ordertot, TerminalDisplay.space.repeat(12) + TerminalDisplay.nf.format(this.totalWithTax));
 		receipt = receiptheader + cartStr + receiptfooter;
 		return receipt;
 	}
@@ -150,7 +193,7 @@ public class Order {
 	* @return (ArrayList<String>) shopping cart items
 	*/
 	public void takeOrder(){
-		customer = new Customer();
+		this.customer = new Customer();
 		// ask for order
 		TerminalDisplay.headerOutput();
 		TerminalDisplay.horizontalLine();
@@ -159,7 +202,7 @@ public class Order {
 		TerminalDisplay.subTotalOutPut(orderTotal, customer);
 		TerminalDisplay.horizontalLine();
 		TerminalDisplay.addRequest();
-		String itemNumber = this.scanner.next().toUpperCase();
+		String itemNumber = Driver.scanner.next().toUpperCase();
 		// valid input check
 		while(! this.validInput(itemNumber)){
 			formatting();
@@ -168,7 +211,7 @@ public class Order {
 			TerminalDisplay.subTotalOutPut(orderTotal, customer);
 			TerminalDisplay.horizontalLine();
 			TerminalDisplay.addRequest();
-			itemNumber = this.scanner.next().toUpperCase();
+			itemNumber = Driver.scanner.next().toUpperCase();
 		}
 		// clear screen
 		TerminalDisplay.clearSequence();
@@ -189,7 +232,7 @@ public class Order {
 				TerminalDisplay.subTotalOutPut(orderTotal, customer);
 				TerminalDisplay.horizontalLine();
 				TerminalDisplay.addRequest();
-				itemNumber = scanner.next().toUpperCase();
+				itemNumber = Driver.scanner.next().toUpperCase();
 				// valid input check
 				while(! this.validInput(itemNumber)){
 					formatting();
@@ -198,7 +241,7 @@ public class Order {
 					TerminalDisplay.subTotalOutPut(orderTotal, customer);
 					TerminalDisplay.horizontalLine();
 					TerminalDisplay.addRequest();
-					itemNumber = this.scanner.next().toUpperCase();
+					itemNumber = Driver.scanner.next().toUpperCase();
 				}	
 			}
 			// remove request logic if nothing to remove
@@ -209,7 +252,7 @@ public class Order {
 				TerminalDisplay.subTotalOutPut(orderTotal, customer);
 				TerminalDisplay.horizontalLine();
 				TerminalDisplay.addRequest();
-				itemNumber = this.scanner.next().toUpperCase();
+				itemNumber = Driver.scanner.next().toUpperCase();
 				// valid input check
 				while(! this.validInput(itemNumber)){
 					formatting();
@@ -218,7 +261,7 @@ public class Order {
 					TerminalDisplay.subTotalOutPut(orderTotal, customer);
 					TerminalDisplay.horizontalLine();
 					TerminalDisplay.addRequest();
-					itemNumber = this.scanner.next().toUpperCase();
+					itemNumber = Driver.scanner.next().toUpperCase();
 				}
 			}	
 			TerminalDisplay.clearSequence();
@@ -240,7 +283,7 @@ public class Order {
 			TerminalDisplay.horizontalLine();
 			// get next input
 			TerminalDisplay.addRequest();
-			itemNumber = scanner.next().toUpperCase();
+			itemNumber = Driver.scanner.next().toUpperCase();
 			// valid input check
 			while(! this.validInput(itemNumber)){
 			    formatting();
@@ -250,13 +293,58 @@ public class Order {
 				TerminalDisplay.subTotalOutPut(orderTotal, customer);
 				TerminalDisplay.horizontalLine();
 				TerminalDisplay.addRequest();
-				itemNumber = scanner.next().toUpperCase();         
+				itemNumber = Driver.scanner.next().toUpperCase();         
 			}
 			//clear screen // keep menu and last order on screen
 			TerminalDisplay.clearSequence();
 		}
 	}
 	 /**
+	* Method to save order to file and print receipt
+	*/
+	public void writeToFile(){
+		//Write to file and print       
+		try{
+			// open printwriter in append mode to save all receipts to file, not just one.
+			PrintWriter writer = new PrintWriter(new FileOutputStream(new File(getInvoiceID()+".txt"), true)); 	
+			writer.print(this.toString());
+			writer.close();
+		}catch(IOException ioe){
+			System.out.print("Could not write to file");
+			System.exit(0);
+		}
+		// display receipt on terminal
+		displayReceipt();
+		Driver.scanner.nextLine();
+		
+	}
+
+    /**
+	 * Method to display the receipt on the computer terminal
+	 */
+	public void displayReceipt (){
+
+		// clear menu
+		System.out.print("\033[H\033[2J");  
+		System.out.flush();
+		// display receipt
+		System.out.println(this.toString());
+		// wait for user input
+		System.out.println();
+		System.out.print(TerminalDisplay.PRICE_COLORS + "PRESS ENTER " + TerminalDisplay.ANSI_RESET);
+		Driver.scanner.nextLine();
+	}
+
+    /**
+ 	* Method to clear carts from any previous orders
+    */
+    public void clearCarts(){
+		this.cartMap = new HashMap<String, Integer>(10);
+		this.orderMap = new HashMap<Integer, MenuItem>(10);
+		this.removeMap = new HashMap<Integer, MenuItem>(10);
+	}
+
+    /**
      * Method to put the selected MenuItem object via the Menu Map into the shopping cart
      * repeating this process will increase quantity
      * @param number
@@ -290,7 +378,7 @@ public class Order {
        	this.orderTotal += orderPrice;	
     }
 
-    /**
+	/**
      * Method for validating a get request
      * @param itemNumber
      * @return
@@ -315,7 +403,7 @@ public class Order {
         return valid;
     }
 
-    /**
+	/**
      * Method for removing an item from the cart
      * @param orderTotal
      * @param customer
@@ -331,7 +419,7 @@ public class Order {
         // initialize item to remove var
         int itemToRemove = 0; 
         // get the requested item # to remove
-        String removeRequest = this.scanner.nextLine();
+        String removeRequest = Driver.scanner.nextLine();
         // see if it's actually a number
         // ask for a number until get one
         while (true){
@@ -347,7 +435,7 @@ public class Order {
                  TerminalDisplay.horizontalLine();
                  itemRequest = "# TO REMOVE: ";
                  System.out.printf("%34s%s", TerminalDisplay.space, itemRequest);
-                 removeRequest = this.scanner.next().toUpperCase();
+                 removeRequest = Driver.scanner.next().toUpperCase();
              }	
         }
          // if remove request valid
@@ -377,11 +465,63 @@ public class Order {
              // reduce total price
              priceReduction = itemBeingRemoved.getPrice();
              // since now only one actual Object in the shopping cart, only remove when reaches zero
-         }
+         }	
             return priceReduction;
     }
 
-    /**
+	/**
+    * Method to alphabetize customer's shopping cart
+    * 
+    * @param shoppingCart list of MenuItems
+    * @return ArrayList<MenuItem>
+    */
+    void shoppingCartAlphabetize(ArrayList<OrderItem> shoppingCart){
+        if (shoppingCart.size() > 1){
+            // stating letter A
+            char letter = 65;
+            // iterate through the menut items
+            while (letter <= 90){
+                for (int index = 0 ; index < shoppingCart.size() ; index ++){
+                    OrderItem item = shoppingCart.get(index);
+                    // put each item name into a char array
+                    char [] itemname = item.getMenuItem().getName().toCharArray();
+                    // check first letter of the char in the name
+                    // if A, go to front of list, if B, go next in list, etc. 
+                    if (itemname[0] == letter) {
+                        // take the item from it's current position
+                        shoppingCart.remove(item);
+                        // put it in the back of the list. A will go to the back, then B, etc..
+                        shoppingCart.add(shoppingCart.size() - 1, item);
+                    }			
+                } // for loop end
+                // move letter to next letter
+                letter += 1;
+            } // while loop end
+            // now sort within A's, B's, etc..
+            int index = 0;
+            while (index < shoppingCart.size() - 1){
+                OrderItem item1 = shoppingCart.get(index);
+                OrderItem item2 = shoppingCart.get(index + 1);
+                // if item1 comes after item2 alphabetically, swap
+                if (item1.getMenuItem().compareName(item2.getMenuItem()) == 1){
+                    shoppingCart.remove(item1);
+                    shoppingCart.add(index + 1, item1);
+                }
+                index += 1;
+            }
+        }	
+    }
+	
+	/**
+ 	* Method to help format the display ouput of the cart during ordering
+	*/
+    void formatting() {
+        TerminalDisplay.clearSequence();
+        TerminalDisplay.headerOutput();
+        TerminalDisplay.horizontalLine();
+    }
+
+	/**
      * Method for validating a remove request
      * @param itemNumber
      * @return whether or not the remove request was valid
@@ -432,83 +572,6 @@ public class Order {
 	}
 
 	/**
-    * Method to alphabetize customer's shopping cart
-    * 
-    * @param shoppingCart list of MenuItems
-    * @return ArrayList<MenuItem>
-    */
-    void shoppingCartAlphabetize(ArrayList<OrderItem> shoppingCart){
-        if (shoppingCart.size() > 1){
-            // stating letter A
-            char letter = 65;
-            // iterate through the menut items
-            while (letter <= 90){
-                for (int index = 0 ; index < shoppingCart.size() ; index ++){
-                    OrderItem item = shoppingCart.get(index);
-                    // put each item name into a char array
-                    char [] itemname = item.getMenuItem().getName().toCharArray();
-                    // check first letter of the char in the name
-                    // if A, go to front of list, if B, go next in list, etc. 
-                    if (itemname[0] == letter) {
-                        // take the item from it's current position
-                        shoppingCart.remove(item);
-                        // put it in the back of the list. A will go to the back, then B, etc..
-                        shoppingCart.add(shoppingCart.size() - 1, item);
-                    }			
-                } // for loop end
-                // move letter to next letter
-                letter += 1;
-            } // while loop end
-            // now sort within A's, B's, etc..
-            int index = 0;
-            while (index < shoppingCart.size() - 1){
-                OrderItem item1 = shoppingCart.get(index);
-                OrderItem item2 = shoppingCart.get(index + 1);
-                // if item1 comes after item2 alphabetically, swap
-                if (item1.getMenuItem().compareName(item2.getMenuItem()) == 1){
-                    shoppingCart.remove(item1);
-                    shoppingCart.add(index + 1, item1);
-                }
-                index += 1;
-            }
-        }	
-    }
-
-	/**
-	* Method to save order to file and print receipt
-	*/
-	public void writeToFile(){
-		//Write to file and print       
-		try{
-			// open printwriter in append mode to save all receipts to file, not just one.
-			PrintWriter writer = new PrintWriter(new FileOutputStream(new File(getInvoiceID()+".txt"), true)); 	
-			writer.print(this.toString());
-			writer.close();
-		}catch(IOException ioe){
-			System.out.print("Could not write to file");
-			System.exit(0);
-		}
-		// display receipt on terminal
-		displayReceipt();
-		scanner.nextLine();
-	}
-	
-	/**
-	 * Method to display the receipt on the computer terminal
-	 */
-	public void displayReceipt (){
-		// clear menu
-		System.out.print("\033[H\033[2J");  
-		System.out.flush();
-		// display receipt
-		System.out.println(this.toString());
-		// wait for user input
-		System.out.println();
-		System.out.print(TerminalDisplay.PRICE_COLORS + "PRESS ENTER " + TerminalDisplay.ANSI_RESET);
-		scanner.nextLine();
-	}
-
-	/**
 	 * Method to calc sales tax
 	 * @return
 	 */
@@ -534,23 +597,5 @@ public class Order {
 			this.cartCopy.add(item);
 		}
 	}
-
-	/**
- 	* Method to clear carts from any previous orders
-    */
-    public void clearCarts(){
-		this.cartMap = new HashMap<String, Integer>(10);
-		this.orderMap = new HashMap<Integer, MenuItem>(10);
-		this.removeMap = new HashMap<Integer, MenuItem>(10);
-	}
-
-	/**
- 	* Method to help format the display ouput of the cart during ordering
-	*/
-    void formatting() {
-        TerminalDisplay.clearSequence();
-        TerminalDisplay.headerOutput();
-        TerminalDisplay.horizontalLine();
-    }
 
 }

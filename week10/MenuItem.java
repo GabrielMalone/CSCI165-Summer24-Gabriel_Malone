@@ -1,4 +1,4 @@
-// Gabriel Malone / CS165 / Week 6 / Summer 2024
+// Gabriel Malone / CS165 / Week 10 / Summer 2024
 
 public class MenuItem {
     
