@@ -126,7 +126,6 @@ public class Order {
 	 * @param otherOrder
 	 * @return true if both orders have same contents and quantities
 	 */
-	/* 
 	public boolean equals(Order otherOrder){
 		// get carts from both orders
 		// check their size. if not equal false
@@ -135,19 +134,17 @@ public class Order {
 		// compare contents if equal length. sort the carts alphabetically.
 		shoppingCartAlphabetize(this.shoppingCart);
 		shoppingCartAlphabetize(otherOrder.shoppingCart);
-		// can do index comparison with the carts sorted
+		// can do index comparison of objects with the carts sorted
 		for (int index = 0 ; index < this.shoppingCart.size() ; index ++) {
-			MenuItem this_menuitem = this.shoppingCart.get(index);
-			MenuItem that_menuitem = otherOrder.shoppingCart.get(index);
+			OrderItem this_orderitem = this.shoppingCart.get(index);
+			OrderItem that_orderitem = otherOrder.shoppingCart.get(index);
 			// false if not the same menuitem
-			if (! this_menuitem.equals(that_menuitem))
+			if (! this_orderitem.equals(that_orderitem))
 				return false;
 		}
-	
 		return true;
 	}
-	*/
-
+	
 	/**
 	* Method to take the customer's order, loops until order complete. 
 	* @return (ArrayList<String>) shopping cart items
