@@ -241,16 +241,16 @@
       * @return integer representing the lexical ordering
       */
      public int compareTo(Date dateArg){
-         if(	this.equals( dateArg ) )// use equals method
+         if( this.equals( dateArg ) )// use equals method
              return 0;				// they are equal
  
          // they aren't equal so figure out which one "comes first"
-         if(	this.year  < dateArg.year ) return -1; // "this" has smaller year, comes first
+         if( this.year  < dateArg.year )    return -1; // "this" has smaller year, comes first
          if( this.year  > dateArg.year )	return  1; // "this" has larger year, comes after
-         if( this.month < dateArg.month) return -1; // "this" has smaller month, comes first
-         if( this.month > dateArg.month) return  1; // "this" has larger month, comes after
+         if( this.month < dateArg.month)    return -1; // "this" has smaller month, comes first
+         if( this.month > dateArg.month)    return  1; // "this" has larger month, comes after
          if( this.day   < dateArg.day ) 	return -1; // "this" has smaller day, comes first
-                                         return  1; // "this" must have a larger day, comes after
+                                            return  1; // "this" must have a larger day, comes after
      }
  
      // =============================== //

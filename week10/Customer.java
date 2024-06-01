@@ -17,21 +17,24 @@ public class Customer {
 
 	/**
 	 * No argument constructor lets TerminalDisplay take in the information
+	 * Conditional set for Customer Unit test to not need user to input customer info
 	 */
 	public Customer(){
-		// clear screen and show menu
-		TerminalDisplay.clearSequence();
-		// get info
-		String name = TerminalDisplay.nameRequest();
-		TerminalDisplay.clearSequence();
-		String email = TerminalDisplay.emailRequest();
-		TerminalDisplay.clearSequence();
-		String phone = TerminalDisplay.phoneRequest();
-		TerminalDisplay.clearSequence();
+		if (Driver.terminalOn){
+			// clear screen and show menu
+			TerminalDisplay.clearSequence();
+			// get info
+			this.name = TerminalDisplay.nameRequest();
+			TerminalDisplay.clearSequence();
+			this.email = TerminalDisplay.emailRequest();
+			TerminalDisplay.clearSequence();
+			this.phone = TerminalDisplay.phoneRequest();
+			TerminalDisplay.clearSequence();
+		}
 		// set info
-		this.setName(name);
-		this.setEmail(email);
-		this.setPhone(phone);	
+		setName(this.name);
+		setEmail(this.email);
+		setPhone(this.phone);	
 
 	}
 
@@ -81,7 +84,7 @@ public class Customer {
 	public void setName(String name) {
 		char [] charArray = name.toCharArray();
 		if(name == null || name == "")   
-			name = this.name;
+			this.name = "unknown customer";
 		// if no last name included
 		else if (! name.contains(" ") && charArray.length != 1) 
 			this.name = name.toUpperCase() + " DOE";
@@ -111,7 +114,7 @@ public class Customer {
 		// It's also fun and good practice to write explicit logic . . .
 		// especially while learning :)
 		
-		if(email == null || email == "") email = this.email; 
+		if(email == null || email == "") this.email = "unknown customer"; 
 		int NOT_FOUND		= -1;	// reader friendly code symbols
 		int PREFIX_LENGTH	= 64;
 
@@ -159,7 +162,7 @@ public class Customer {
 	 */
 	public void setPhone(String phone) {
 		// fail first, fail fast
-		if(phone == null || phone == "") phone = this.phone;
+		if(phone == null || phone == "") this.phone = "unknown customer";
 		if(phone.length() != 10)return;
 
 		// is each character a digit?

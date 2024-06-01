@@ -183,11 +183,22 @@ public class Order {
 		receipt = receiptheader + cartStr + receiptfooter;
 		return receipt;
 	}
+
+	/**
+	 * Method to compare an Order's date with another Order's date
+	 * @param otherOrder
+	 * @return int
+	 */
+	public int compareTo(Order otherOrder){
+		if (this.getDate().compareTo(otherOrder.getDate()) ==  0) return  0;
+		if (this.getDate().compareTo(otherOrder.getDate()) >   1) return  1;
+		return -1;
+	}
 	
 	/**
 	 * Method to compare two Order objects. 
 	 * @param otherOrder
-	 * @return true if both orders have same contents and quantities
+	 * @return boolean true if both orders have same contents and quantities
 	 */
 	public boolean equals(Order otherOrder){
 		// get carts from both orders
@@ -327,7 +338,6 @@ public class Order {
 	 * Method to display the receipt on the computer terminal
 	 */
 	public void displayReceipt (){
-
 		// clear menu
 		System.out.print("\033[H\033[2J");  
 		System.out.flush();
@@ -382,30 +392,6 @@ public class Order {
        	this.orderTotal += orderPrice;	
     }
 
-	/**
-     * Method for validating a get request
-     * @param itemNumber
-     * @return
-     */
-    boolean validInput(String itemNumber){
-        // checks to see if user inputted valid options
-        boolean valid  = false;
-        // lets make the valid input scalable to uknown menu sizes
-        ArrayList<String> validInputArray = new ArrayList<String>();
-        for (int index = 1; index <= DisplayMenu.myMenuItems.size(); index ++){
-            String number = Integer.toString(index);
-            validInputArray.add(number);
-        }
-        validInputArray.add("R");
-        validInputArray.add("D");
-        for (String valids : validInputArray){
-            if (itemNumber.equals(valids)){
-                valid = true;
-                return valid;
-            }
-        }
-        return valid;
-    }
 
 	/**
      * Method for removing an item from the cart
@@ -520,6 +506,31 @@ public class Order {
 		TerminalDisplay.subTotalOutPut();
 		TerminalDisplay.horizontalLine();
 	}
+
+	/**
+     * Method for validating a get request
+     * @param itemNumber
+     * @return
+     */
+    private boolean validInput(String itemNumber){
+        // checks to see if user inputted valid options
+        boolean valid  = false;
+        // lets make the valid input scalable to uknown menu sizes
+        ArrayList<String> validInputArray = new ArrayList<String>();
+        for (int index = 1; index <= DisplayMenu.myMenuItems.size(); index ++){
+            String number = Integer.toString(index);
+            validInputArray.add(number);
+        }
+        validInputArray.add("R");
+        validInputArray.add("D");
+        for (String valids : validInputArray){
+            if (itemNumber.equals(valids)){
+                valid = true;
+                return valid;
+            }
+        }
+        return valid;
+    }
 
 	/**
      * Method for validating a remove request

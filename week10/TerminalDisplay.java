@@ -27,7 +27,7 @@ public class TerminalDisplay {
 	static String space = " ";
 	// money output used quite a bit
 	static NumberFormat nf = NumberFormat.getCurrencyInstance();
-
+	
 	public static void clearSequence(){
 		System.out.print("\033[H\033[2J");  
 		System.out.flush();

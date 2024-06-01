@@ -131,5 +131,36 @@ public class OrderTests {
         // but today and orderDate should have the same variable states
         assertTrue(today.equals(OrderDate));
     }
+    @Test
+	public void compareOrderTestA() {
+        // compare present to past
+        Date yesterday = new Date(6, 22, 1983);
+        // create a new Order object which will create a date object with currrent time info
+        order1 = new Order();
+        Date OrderDate = order1.getDate();
+        // Orderdate (now) should return as after yesterday (1)
+        assertTrue(OrderDate.compareTo(yesterday) == 1);
+    }
+    @Test
+	public void compareOrderTestB() {
+        // compare past to present
+        Date yesterday = new Date(6, 22, 1983);
+        // create a new Order object which will create a date object with currrent time info
+        order1 = new Order();
+        Date OrderDate = order1.getDate();
+        // yesterday should return as before Orderdate (now) (-1)
+        assertTrue(yesterday.compareTo(OrderDate) == -1);
+    }
+    @Test
+	public void compareOrderTestC() {
+        // compare past to present
+        Date today = new Date();
+        today = Date.dateInitializer();
+        // create a new Order object which will create a date object with currrent time info
+        order1 = new Order();
+        Date OrderDate = order1.getDate();
+        // today should return as equal to Orderdate (also today) (1)
+        assertTrue(today.compareTo(OrderDate) == 0);
+    }
 }
 
