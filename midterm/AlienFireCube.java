@@ -89,9 +89,9 @@ public class AlienFireCube extends Wildlife{
      */
     public void fireUp() {
         // fire up from a random row on the top of the player's cube
-        int rand_col_up = rand.nextInt(this.player.column - (int)(this.player_size / 2.5), this.player.column + (int)(this.player_size / 2.5));
+        int rand_col_up = rand.nextInt(this.player.column - (int)(this.player_size / 4), this.player.column + (int)(this.player_size / 4));
         // fire from top of cube to top edge of map (row 0)
-        for (int j = (int)(this.player.row - (this.player_size/2.5)) ; j > 0 ; j --){
+        for (int j = (int)(this.player.row - (this.player_size/4)) ; j > 0 ; j --){
             Cell currentCell = Driver.neWorld.worldMatrix[j][rand_col_up];
             Bomb.placeBomb(currentCell.row, currentCell.column);
             
@@ -100,8 +100,8 @@ public class AlienFireCube extends Wildlife{
     public void fireRight() {
         // fire right
         Random rand = new Random();
-        int rand_row_right = rand.nextInt(this.player.row - (int)(this.player_size / 2.5), this.player.row + (int)(this.player_size / 2.5));
-            for (int j = (int)(this.player.column + (this.player_size/2.5)) ; j < Driver.size ; j ++){
+        int rand_row_right = rand.nextInt(this.player.row - (int)(this.player_size / 4), this.player.row + (int)(this.player_size / 4));
+            for (int j = (int)(this.player.column + (this.player_size/4)) ; j < Driver.size ; j ++){
                 Cell currentCell = Driver.neWorld.worldMatrix[rand_row_right][j];
                 Bomb.placeBomb(currentCell.row, currentCell.column);
                 
@@ -109,8 +109,8 @@ public class AlienFireCube extends Wildlife{
     }
     public void fireDown() {
         // fire down
-        int rand_col_down = rand.nextInt(this.player.column - (int)(this.player_size / 2.5), this.player.column + (int)(this.player_size / 2.5));
-        for (int j = (int)(this.player.row - (this.player_size/2.5)) ; j < Driver.size ; j ++){
+        int rand_col_down = rand.nextInt(this.player.column - (int)(this.player_size / 4), this.player.column + (int)(this.player_size / 4));
+        for (int j = (int)(this.player.row - (this.player_size/4)) ; j < Driver.size ; j ++){
             Cell currentCell = Driver.neWorld.worldMatrix[j][rand_col_down];
             Bomb.placeBomb(currentCell.row, currentCell.column);
             
@@ -118,8 +118,8 @@ public class AlienFireCube extends Wildlife{
     }
     public void fireLeft() {
         // fire left
-        int rand_row_left = rand.nextInt(this.player.row - (int)(this.player_size / 2.5), this.player.row + (int)(this.player_size / 2.5));
-        for (int j = (int)(this.player.column - (this.player_size/2.5)) ; j > 0 ; j --){
+        int rand_row_left = rand.nextInt(this.player.row - (int)(this.player_size / 4), this.player.row + (int)(this.player_size / 4));
+        for (int j = (int)(this.player.column - (this.player_size/4)) ; j > 0 ; j --){
             Cell currentCell = Driver.neWorld.worldMatrix[rand_row_left][j];
             Bomb.placeBomb(currentCell.row, currentCell.column);
            
@@ -207,12 +207,21 @@ public class AlienFireCube extends Wildlife{
                 // equation for a cirlce -- if within the radius surrounding the cube then attack
                 if  ( Math.sqrt((Math.pow(alien_location_row - currentCell.row , 2) + Math.pow(alien_location_col - currentCell.column, 2)))  < (radius + 1)
                 && Math.sqrt((Math.pow(alien_location_row - currentCell.row , 2) + Math.pow(alien_location_col - currentCell.column, 2)))  > (radius - 1)
-                ){
-                    // what I really want it to do is have animals travel the radius (slope)to the center of the cube
-                    // think i'll need trig for that
-                    // or travel in circles with a shriking randius until hit the cube
-                    currentCell.setState(Cell.STATES.BURNING);
+                ){  
+                    Cell [] neighbors = Driver.neWorld.findNeighbors(currentCell.row, currentCell.column);
+                    Driver.neWorld.seeWhatBurns(neighbors, currentCell);
                 }
+            }
+        }
+    }
+
+    public void killCube(){
+        for( int i = 0 ; i < Driver.neWorld.size; i ++){
+            for (int j = 0 ; j < Driver.neWorld.size; j ++){
+                Cell currentCell = Driver.neWorld.worldMatrix[i][j];
+                if (currentCell.getObject() == Cell.OBJECTS.PLAYER);
+                      currentCell.setObject(Cell.OBJECTS.BOMB);
+                      break;
             }
         }
     }

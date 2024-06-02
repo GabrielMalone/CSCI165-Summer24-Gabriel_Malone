@@ -23,6 +23,9 @@ public class World_Graphics extends JPanel implements ActionListener{
 	// MAP SIZE DRAW SETTINGS
 	public  int IMAGE_SIZE 		= setImageSize();
 	public  int WINDOW_HEIGHT 	= setWindowSize(IMAGE_SIZE);
+	public 	int r;
+	public 	int a;
+	public 	int b;
 	
 
 	public World_Graphics() {
@@ -40,6 +43,10 @@ public class World_Graphics extends JPanel implements ActionListener{
 					Driver.alien = new AlienFireCube();
 					Driver.alien.player = Driver.neWorld.worldMatrix[row][column];
 					Driver.player_set = true;
+				}
+				else{
+					Driver.player_set = false;
+					Driver.alien.killCube();
 				}
 			}
 		});
@@ -88,7 +95,10 @@ public class World_Graphics extends JPanel implements ActionListener{
 					Driver.alien.fireLeft();
 				}
 				if (keyCode == KeyEvent.VK_SPACE){
-					Driver.forcefield = true;
+					if (Driver.forcefield)
+						Driver.forcefield = false;
+					else 
+						Driver.forcefield = true;	
 				}
 			}
 		});
@@ -150,9 +160,9 @@ public class World_Graphics extends JPanel implements ActionListener{
 			// outer loop processes the number of "rows"
 			for(int i = 0; i < Driver.size; i++){ 
 				// inner loop processes the number of "columns"
-				int r = 0;
-				int a = 1; 
-				int b = 2;
+				r = 0;
+				a = 1; 
+				b = 2;
 				for(int j = 0; j < Driver.size; j++){
 					String[] rgbArray = Driver.neWorld.worldMatrix[i][j].cellColor.split("-");
 					int red		= Integer.parseInt(rgbArray[0]);

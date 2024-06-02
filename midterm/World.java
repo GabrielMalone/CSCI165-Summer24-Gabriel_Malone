@@ -324,7 +324,7 @@ public class World {
 	 * @param neighboringcells
 	 * @param homeCell
 	 */
-	private void seeWhatBurns(Cell[] neighboringcells, Cell homeCell){
+	public void seeWhatBurns(Cell[] neighboringcells, Cell homeCell){
 		for (Cell cell : neighboringcells){
 			double chanceToBurn = rand.nextDouble(0, 1);
 			if  (cell.getState().equals(Cell.STATES.TREE) && cell.getObject() != Cell.OBJECTS.PLAYER){
