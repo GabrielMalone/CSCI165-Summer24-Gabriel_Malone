@@ -359,21 +359,13 @@ public class Order {
 		Driver.scanner.nextLine();
 	}
 
-    /**
- 	* Method to clear carts from any previous orders
-    */
-    public void clearCarts(){
-		this.cartMap = new HashMap<String, Integer>(10);
-		this.orderMap = new HashMap<Integer, MenuItem>(10);
-		this.removeMap = new HashMap<Integer, MenuItem>(10);
-	}
 
     /**
      * Method to put the selected MenuItem object via the Menu Map into the shopping cart
      * repeating this process will increase quantity
      * @param number
      */
-    void addItem(int menuNumber, int quantity){
+    public void addItem(int menuNumber, int quantity){
         // get order from hashmap (number key, object value)
         MenuItem itemForOrder = this.orderMap.get(menuNumber);
 		// see if already in cartmap. if not, create a new objectitem
@@ -414,16 +406,18 @@ public class Order {
      * Method for removing an item from the cart
      * @return OrderItem being removed from the cart
      */
-    OrderItem removeItem(){
-		OrderItem orderItem=null;
-        // this sets up the remove request
+    public OrderItem removeItem(){
+		// this sets up the remove request
         // initialize item to remove var
+		OrderItem orderItem=null;
+        // display formatting
 		formatting();
 		TerminalDisplay.orderFeedback();
 		TerminalDisplay.horizontalLine();
 		subtotalOutputFormatting();
 		String itemRequest = "ITEM # FROM CART TO REMOVE: ";
 		System.out.printf("%22s%s", TerminalDisplay.space, itemRequest);
+		// get remove request from user
 		String removeRequest = Driver.scanner.next().toUpperCase();
 		TerminalDisplay.clearSequence();
         // see if it's actually a number
@@ -533,17 +527,6 @@ public class Order {
             }
         }	
     }
-	
-    private void formatting() {
-        TerminalDisplay.clearSequence();
-        TerminalDisplay.headerOutput();
-        TerminalDisplay.horizontalLine();
-    }
-
-	private void subtotalOutputFormatting(){
-		TerminalDisplay.subTotalOutPut();
-		TerminalDisplay.horizontalLine();
-	}
 
 	/**
      * Method for validating a get request
@@ -718,6 +701,26 @@ public class Order {
 		for (OrderItem orderitem : this.shoppingCart){
 			this.orderTotal += (orderitem.getMenuItem().getPrice() * orderitem.getQuantity());
 		}
+	}
+
+	/**
+ 	* Method to clear carts from any previous orders
+    */
+    private void clearCarts(){
+		this.cartMap = new HashMap<String, Integer>(10);
+		this.orderMap = new HashMap<Integer, MenuItem>(10);
+		this.removeMap = new HashMap<Integer, MenuItem>(10);
+	}
+
+	private void formatting() {
+        TerminalDisplay.clearSequence();
+        TerminalDisplay.headerOutput();
+        TerminalDisplay.horizontalLine();
+    }
+
+	private void subtotalOutputFormatting(){
+		TerminalDisplay.subTotalOutPut();
+		TerminalDisplay.horizontalLine();
 	}
 
 }
