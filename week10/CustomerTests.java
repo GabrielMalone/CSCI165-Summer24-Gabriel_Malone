@@ -20,11 +20,11 @@ public class CustomerTests {
         // test that a an empyt constructor returs default values
         // name should == "unknown customer"
         customer1 = new Customer();
-        assertTrue(customer1.getName().equals("unknown customer"));
+        assertTrue(customer1.getName().equals("UNKNOWN CUSTOMER"));
         // phone should == "uknown"
-        assertTrue(customer1.getPhone().equals("N/A"));
+        assertTrue(customer1.getPhone().equals("unknown customer"));
         // email should == "uknown"
-        assertTrue(customer1.getEmail().equals("N/A"));
+        assertTrue(customer1.getEmail().equals("unknown customer"));
         // test overloaded constructor
         customer2 = new Customer("goobert", "goobert@gmail.com", "6072620842");
         assertTrue(customer2.getName().equals("GOOBERT DOE"));

@@ -44,21 +44,6 @@ public class Order {
 		setDate();
 	}
 
-	private void  getCustomerInfo(){
-		// clear screen and show menu
-		TerminalDisplay.clearSequence();
-		// get info
-		String name = TerminalDisplay.nameRequest();
-		TerminalDisplay.clearSequence();
-		String email = TerminalDisplay.emailRequest();
-		TerminalDisplay.clearSequence();
-		String phone = TerminalDisplay.phoneRequest();
-		TerminalDisplay.clearSequence();
-		this.customer.setName(name);
-		this.customer.setEmail(email);
-		this.customer.setPhone(phone);
-	}
-
 	/**
 	 * Overloaded constructor to accept the customer
 	 * @param newCustomer
@@ -732,6 +717,21 @@ public class Order {
 		this.cartMap = new HashMap<String, Integer>(10);
 		this.orderMap = new HashMap<Integer, MenuItem>(10);
 		this.removeMap = new HashMap<Integer, MenuItem>(10);
+	}
+	
+	private void getCustomerInfo(){
+		// clear screen and show menu
+		TerminalDisplay.clearSequence();
+		// get info
+		String name = TerminalDisplay.nameRequest();
+		TerminalDisplay.clearSequence();
+		String email = TerminalDisplay.emailRequest();
+		TerminalDisplay.clearSequence();
+		String phone = TerminalDisplay.phoneRequest();
+		TerminalDisplay.clearSequence();
+		this.customer.setName(name);
+		this.customer.setEmail(email);
+		this.customer.setPhone(phone);
 	}
 
 }

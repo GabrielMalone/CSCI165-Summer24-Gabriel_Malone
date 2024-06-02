@@ -5,11 +5,11 @@ public class Customer {
 	// ================================
 	// || Private instance variables ||
 	// ================================
-	private String name	 = "unknown customer";
-	private String email = "unknown customer";
-	private String phone = "unknown customer";
+	private String name	 = unknown;
+	private String email = unknown;
+	private String phone = unknown;
 
-
+	private static final String unknown = "unknown customer";
 
 	
 
