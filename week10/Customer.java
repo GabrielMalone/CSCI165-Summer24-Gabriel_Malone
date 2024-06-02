@@ -82,15 +82,40 @@ public class Customer {
 	 * @param name The Customer's name
 	 */
 	public void setName(String name) {
-		// if any name has anything non alphabetic, 
+		// if just given firstname
+		// if name has anything non alphabetic, 
 		// remove it and reconstruct with only letters
-		char [] charArray = name.toCharArray();
-		name = "";
-		for (char character : charArray){
-			if (Character.isLetter(character)){
-				name += character;
+		String [] first_last = name.split(" ");
+		if (first_last.length == 1){
+			char [] charArray = name.toCharArray();
+			name = "";
+			for (char character : charArray){
+				if (Character.isLetter(character)){
+					name += character;
+				}
 			}
 		}
+		if (first_last.length > 1){
+			// if given first and last name (or anything longer)
+			String firstname = first_last[0];
+			String lastname  = first_last[1];
+			char [] charArray = firstname.toCharArray();
+			name = "";
+			for (char character : charArray){
+				if (Character.isLetter(character)){
+					name += character;
+				}
+			}
+			name += " ";
+			char [] charArray2 = lastname.toCharArray();
+			for (char character : charArray2){
+				if (Character.isLetter(character)){
+					name += character;
+				}
+			}
+		}
+		// if blank or null
+		char [] charArray = name.toCharArray();
 		if(name == null || name == "")   
 			this.name = "unknown customer";
 		// if no last name included
@@ -98,8 +123,14 @@ public class Customer {
 			this.name = name.toUpperCase() + " DOE";
 		// if name too short
 		else if (charArray.length == 1) 
-			name = this.name; 
-		else this.name = name;
+			name = "unknown customer";
+		// lastly, if just all non alphabetical chars
+		for (char character : charArray){
+			if (! Character.isLetter(character)){
+				this.name = "unkown customer";
+				break;
+			}
+		}
 	}
 
 	/**
