@@ -30,6 +30,8 @@ public class Order {
 	private ArrayList<OrderItem> cartCopy	 	= new ArrayList<>();			
 	private Customer customer;
 	private Date todaysDate;
+	String menuSelection;
+	int selectionQuantity;
 	
 	/**
      * No argument constructor leaves all fields default. clears any carts.
@@ -55,18 +57,6 @@ public class Order {
 	 */
 	public Order(Order copy) {
 		this.shoppingCart = copy.shoppingCart;
-		this.menuNames = copy.menuNames;
-		this.orderMap = copy.orderMap;
-		this.cartMap = copy.cartMap;
-		this.removeMap = copy.removeMap;
-		this.subtotal = copy.subtotal;
-		this.caloriesTotal = copy.caloriesTotal;
-		this.total = copy.total;
-		this.TAX = copy.TAX;
-		this.salesTax = copy.salesTax;
-		this.totalWithTax = copy.totalWithTax;
-		this.cartCopy = copy.cartCopy;
-		this.orderTotal = copy.orderTotal;
 		this.customer = copy.customer;
 		this.todaysDate = copy.todaysDate;
 	}
@@ -228,87 +218,103 @@ public class Order {
 		// ask for order
 		TerminalDisplay.headerOutput();
 		TerminalDisplay.horizontalLine();
+		// show current cart
 		TerminalDisplay.orderFeedback();
 		subtotalOutputFormatting();
 		TerminalDisplay.addRequest();
-		String itemNumber = Driver.scanner.next().toUpperCase();
+		menuSelection();
 		// valid input check
-		while(! validInput(itemNumber)){
+		while(! validAddInput()){
+			// re-request if invalid input
 			formatting();
 			TerminalDisplay.orderFeedback();
 			subtotalOutputFormatting();
 			TerminalDisplay.addRequest();
-			itemNumber = Driver.scanner.next().toUpperCase();
+			menuSelection();
 		}
 		// clear screen
 		TerminalDisplay.clearSequence();
-		// whilte input valid logic
-		while(validInput(itemNumber) && ! itemNumber.equals("D")){
-			// if remove requested sequence
-			while (itemNumber.equals("R") && this.shoppingCart.size() > 0){
+		// whilte input valid logic and have not stated done
+		while(validAddInput() && ! this.menuSelection.equals("D")){
+			// if-remove-requested-sequence
+			while (this.menuSelection.equals("R") && this.shoppingCart.size() > 0){
 				formatting();
 				TerminalDisplay.orderFeedback();
 				subtotalOutputFormatting();
+				// remove the item if valid request
 				OrderItem removedItem = removeItem();
 				formatting();
 				TerminalDisplay.orderFeedback();
 				TerminalDisplay.horizontalLine();
-				this.orderTotal -= removedItem.getMenuItem().getPrice();
+				this.orderTotal -= removedItem.getMenuItem().getPrice() * this.selectionQuantity;
 				TerminalDisplay.subTotalOutPut();
 				TerminalDisplay.horizontalLine();
 				TerminalDisplay.addRequest();
-				itemNumber = Driver.scanner.next().toUpperCase();
+				menuSelection();
 				// valid input check
-				while(!validInput(itemNumber)){
+				while(!validAddInput()){
+					// re-request if invalid input
 					formatting();
 					TerminalDisplay.orderFeedback();
 					subtotalOutputFormatting();
 					TerminalDisplay.addRequest();
-					itemNumber = Driver.scanner.next().toUpperCase();
+					menuSelection();
 				}	
 			}
 			// remove request logic if nothing to remove
-			while (itemNumber.equals("R") && this.shoppingCart.size() == 0){
+			while (this.menuSelection.equals("R") && this.shoppingCart.size() == 0){
 				formatting();
 				TerminalDisplay.orderFeedback();
 				subtotalOutputFormatting();
 				TerminalDisplay.addRequest();
-				itemNumber = Driver.scanner.next().toUpperCase();
+				menuSelection();
 				// valid input check
-				while(! validInput(itemNumber)){
+				while(! validAddInput()){
 					formatting();
 					TerminalDisplay.orderFeedback();
 					subtotalOutputFormatting();
 					TerminalDisplay.addRequest();
-					itemNumber = Driver.scanner.next().toUpperCase();
+					menuSelection();
 				}
 			}	
 			TerminalDisplay.clearSequence();
-			// get integer from input
-			int number = 0;
-			if (! itemNumber.equals("D")){
-				number = Integer.parseInt(itemNumber);
+			// get integer from the valid input
+			int menuNumber = 0;
+			if (! this.menuSelection.equals("D")){
+				menuNumber = Integer.parseInt(this.menuSelection);
 			}
-			else if (itemNumber.equals("D")) break;
-            // update cart
-			addItem(number);
-			// order feedback			
+			// break loop if customer done
+			else if (this.menuSelection.equals("D")) break;
+            // otherwise update cart with the valid add request
+			TerminalDisplay.headerOutput();
+			if (this.cartMap.size() > 0)
+				TerminalDisplay.horizontalLine();
+			TerminalDisplay.orderFeedback();
+			TerminalDisplay.horizontalLine();
+			subtotalOutputFormatting();
+			TerminalDisplay.quantityRequest();
+			selectionQuantity();
+			addItem(menuNumber, this.selectionQuantity);
+			updateTotal();
+			TerminalDisplay.clearSequence();
+			// order feedback
 			TerminalDisplay.headerOutput();
 			TerminalDisplay.horizontalLine();
 			TerminalDisplay.orderFeedback();
+			TerminalDisplay.horizontalLine();
 			// total feedback
 			subtotalOutputFormatting();
 			// get next input
 			TerminalDisplay.addRequest();
-			itemNumber = Driver.scanner.next().toUpperCase();
+			menuSelection();
 			// valid input check
-			while(! validInput(itemNumber)){
+			while(! validAddInput()){
 			    formatting();
 				TerminalDisplay.orderFeedback();
 				// order feedback
 				subtotalOutputFormatting();
 				TerminalDisplay.addRequest();
-				itemNumber = Driver.scanner.next().toUpperCase();         
+				menuSelection();        
 			}
 			//clear screen // keep menu and last order on screen
 			TerminalDisplay.clearSequence();
@@ -363,35 +369,42 @@ public class Order {
      * repeating this process will increase quantity
      * @param number
      */
-    void addItem(int number){
+    void addItem(int menuNumber, int quantity){
         // get order from hashmap (number key, object value)
-        MenuItem itemForOrder = this.orderMap.get(number);
-        // add name to name array to check if should be placed on new line or not in terminal output
-       	this.menuNames.add(itemForOrder.getName());
-        // place the unique menu items in map for terminal display
-        this.cartMap.putIfAbsent(itemForOrder.getName(), 0);
-        // update quantity if item ordered more than once
-        this.cartMap.computeIfPresent(itemForOrder.getName(), (key, val) -> val += 1);
-		// if this the first instance of ordering this item, creating a new OrderItem object
-		if (this.cartMap.get(itemForOrder.getName()) == 1){
-			OrderItem orderitem = new OrderItem(itemForOrder, this.cartMap.get(itemForOrder.getName()));
+        MenuItem itemForOrder = this.orderMap.get(menuNumber);
+		// see if already in cartmap. if not, create a new objectitem
+		if (! this.cartMap.containsKey(itemForOrder.getName())){
+			// first instance of ordering this item, creating a new OrderItem object
+			OrderItem orderitem = new OrderItem(itemForOrder, quantity);
 			// add to cart
 			this.shoppingCart.add(orderitem);
+			// place the unique menu items in map for terminal display
+			this.cartMap.putIfAbsent(itemForOrder.getName(), quantity);
 		}
 		// otherwise just update the number associated with the orderitem
 		else{
 			for (OrderItem orderitem : this.shoppingCart){
 				if (orderitem.getMenuItem().equals(itemForOrder)){
+					orderitem.updateQuantity(quantity);
 					int current_quant = orderitem.getQuantity();
-					orderitem.updateQuantity(current_quant ++);
+					this.cartMap.replace(itemForOrder.getName(), current_quant);
+					if (current_quant > 99){
+						// since no setter methods allowed, will use recursion to reduce until under 100.
+						while (current_quant > 99){
+							orderitem.updateQuantity(-1);
+						}
+					}
 				}
 			}
 		}	
-        // update price to correspond with quantity of item ordered
-        double orderPrice = itemForOrder.getPrice();
-       	this.orderTotal += orderPrice;	
+		// limit the order sizes to 99 max
+		if (cartMap.get(itemForOrder.getName()) > 99){
+			quantity = 99; ;
+			this.cartMap.replace(itemForOrder.getName(), quantity);
+		}
+        // add name to name array to check if should be placed on new line or not in terminal output
+       	this.menuNames.add(itemForOrder.getName());	
     }
-
 
 	/**
      * Method for removing an item from the cart
@@ -399,53 +412,71 @@ public class Order {
      */
     OrderItem removeItem(){
 		OrderItem orderItem=null;
-        // this sets up the remove request 
-        // output information
-        String itemRequest = "REMOVE # / 0 TO CANCEL: ";
-        System.out.printf("%34s%s", TerminalDisplay.space, itemRequest);
+        // this sets up the remove request
         // initialize item to remove var
-        int itemToRemove = 0; 
-        // get the requested item # to remove
-        String removeRequest = Driver.scanner.nextLine();
+		formatting();
+		TerminalDisplay.orderFeedback();
+		subtotalOutputFormatting();
+		String itemRequest = "ITEM # FROM CART TO REMOVE: ";
+		System.out.printf("%22s%s", TerminalDisplay.space, itemRequest);
+		String removeRequest = Driver.scanner.next().toUpperCase();
+		TerminalDisplay.clearSequence();
         // see if it's actually a number
         // ask for a number until get one
-        while (true){
-             try {
-             itemToRemove = Integer.parseInt(removeRequest);
-             break; 
-             }
-             catch(NumberFormatException eNumberFormatException){
-                 this.formatting();
-                 TerminalDisplay.orderFeedback();
-               	subtotalOutputFormatting();
-                 itemRequest = "# TO REMOVE: ";
-                 System.out.printf("%34s%s", TerminalDisplay.space, itemRequest);
-                 removeRequest = Driver.scanner.next().toUpperCase();
-             }	
-        }
-         // if remove request valid
-         if (validRemoveInput(itemToRemove)){
-             // remove item + 1 for index adjust
-             MenuItem itemBeingRemoved = this.removeMap.get(itemToRemove+1);
-             // for live cart updates, reduce the int associated with the item name
-             this.cartMap.computeIfPresent(itemBeingRemoved.getName(), (key, val) -> val -= 1);
-             // if int reaches 0, remove the item from the live updates
-             if (this.cartMap.get(itemBeingRemoved.getName()) == 0){
-                this.cartMap.remove(itemBeingRemoved.getName());
-                for (OrderItem orderitem : this.shoppingCart){
-					if (orderitem.getMenuItem().equals(itemBeingRemoved)){
-						this.shoppingCart.remove(orderitem);
-						return orderitem;
-					}
+		int itemToRemove;
+		// validity checks for integer input and valid remove choice
+		while (true){
+			try{
+				itemToRemove = Integer.valueOf(removeRequest);
+				if (validRemoveInput(itemToRemove))
+					break;
+				formatting();
+				TerminalDisplay.orderFeedback();
+				subtotalOutputFormatting();
+				itemRequest = "ITEM # FROM CART TO REMOVE: ";
+				System.out.printf("%22s%s", TerminalDisplay.space, itemRequest);
+				removeRequest = Driver.scanner.next().toUpperCase();
+				TerminalDisplay.clearSequence();
+			}
+			catch (NumberFormatException e){
+				formatting();
+				TerminalDisplay.orderFeedback();
+				subtotalOutputFormatting();
+				itemRequest = "ITEM # FROM CART TO REMOVE: ";
+				System.out.printf("%22s%s", TerminalDisplay.space, itemRequest);
+				removeRequest = Driver.scanner.next().toUpperCase();
+				TerminalDisplay.clearSequence();
+			}
+		} 
+		// remove item + 1 for index adjust
+		MenuItem itemBeingRemoved = this.removeMap.get(itemToRemove+1);
+		// for live cart updates, reduce the int associated with the item name
+		formatting();
+		TerminalDisplay.orderFeedback();
+		subtotalOutputFormatting();
+		TerminalDisplay.quantityRemoveRequest(itemBeingRemoved);
+		selectionRemoveQuantity(itemBeingRemoved);
+		// check to prevent a remove request creating a negative value (just remove the item if they input more than exists)
+		if (this.selectionQuantity > this.cartMap.get(itemBeingRemoved.getName()))
+			this.selectionQuantity = this.cartMap.get(itemBeingRemoved.getName());
+		this.cartMap.computeIfPresent(itemBeingRemoved.getName(), (key, val) -> val -= this.selectionQuantity);
+		// if int reaches 0, remove the item from the live updates
+		if (this.cartMap.get(itemBeingRemoved.getName()) == 0){
+		this.cartMap.remove(itemBeingRemoved.getName());
+		for (OrderItem orderitem : this.shoppingCart){
+				if (orderitem.getMenuItem().equals(itemBeingRemoved)){
+				this.shoppingCart.remove(orderitem);
+					return orderitem;
 				}
 			}
-			else{
-				for (OrderItem orderitem : this.shoppingCart){
-					if (orderitem.getMenuItem().equals(itemBeingRemoved)){
-						int current_quant = orderitem.getQuantity();
-						orderitem.updateQuantity(current_quant --);
-						return orderitem;
-					}
+		}
+		// if item still in cart after removing some quantity
+		else{
+			for (OrderItem orderitem : this.shoppingCart){
+				if (orderitem.getMenuItem().equals(itemBeingRemoved)){
+				int current_quant = orderitem.getQuantity();
+				orderitem.updateQuantity(current_quant -= this.selectionQuantity);
+				return orderitem;
 				}
 			}
 		}
@@ -509,10 +540,10 @@ public class Order {
 
 	/**
      * Method for validating a get request
-     * @param itemNumber
+     * @param userInput
      * @return
      */
-    private boolean validInput(String itemNumber){
+    private boolean validAddInput(){
         // checks to see if user inputted valid options
         boolean valid  = false;
         // lets make the valid input scalable to uknown menu sizes
@@ -524,7 +555,7 @@ public class Order {
         validInputArray.add("R");
         validInputArray.add("D");
         for (String valids : validInputArray){
-            if (itemNumber.equals(valids)){
+            if (this.menuSelection.equals(valids)){
                 valid = true;
                 return valid;
             }
@@ -534,10 +565,10 @@ public class Order {
 
 	/**
      * Method for validating a remove request
-     * @param itemNumber
+     * @param userInput
      * @return whether or not the remove request was valid
      */
-    private  boolean validRemoveInput(int itemNumber){
+    private  boolean validRemoveInput(int userInput){
         // checks to see if the remove requests something that exists
         boolean valid = false;
         // create empty array
@@ -548,7 +579,7 @@ public class Order {
         }	
         // iterate through array and check input against the integers in array
         for (int validInt : validOptions){
-            if (itemNumber == validInt){
+            if (userInput == validInt){
                 valid = true;
                 return valid;
             }
@@ -611,6 +642,75 @@ public class Order {
 
 	private void setDate(){
 		this.todaysDate = Date.dateInitializer();
+	}
+
+	private void menuSelection (){
+		this.menuSelection = Driver.scanner.next().toUpperCase(); 
+	}
+
+	private void selectionQuantity (){
+		// validity checks for item selection quantities
+		while (true){
+			try{
+				this.selectionQuantity = Integer.valueOf(Driver.scanner.next().toUpperCase());
+				if (this.selectionQuantity > 99){
+					this.selectionQuantity = 99;
+					break;
+				}
+				if (this.selectionQuantity < 0){
+					this.selectionQuantity = 0;
+					break;
+
+				}
+				break;
+			}
+			catch(NumberFormatException e){
+				TerminalDisplay.clearSequence();
+				TerminalDisplay.headerOutput();
+				if (this.cartMap.size() > 0)
+					TerminalDisplay.horizontalLine();
+				TerminalDisplay.orderFeedback();
+				TerminalDisplay.horizontalLine();
+				subtotalOutputFormatting();
+				TerminalDisplay.quantityRequest();
+			}
+		}
+	}
+
+	private void selectionRemoveQuantity (MenuItem itemBeingRemoved){
+		// validity checks for item selection quantities
+		while (true){
+			try{
+				this.selectionQuantity = Integer.valueOf(Driver.scanner.next().toUpperCase());
+				if (this.selectionQuantity > 99){
+					this.selectionQuantity = 99;
+					break;
+				}
+				if (this.selectionQuantity < 0){
+					this.selectionQuantity = 0;
+					break;
+
+				}
+				break;
+			}
+			catch(NumberFormatException e){
+				TerminalDisplay.clearSequence();
+				TerminalDisplay.headerOutput();
+				if (this.cartMap.size() > 0)
+					TerminalDisplay.horizontalLine();
+				TerminalDisplay.orderFeedback();
+				TerminalDisplay.horizontalLine();
+				subtotalOutputFormatting();
+				TerminalDisplay.quantityRemoveRequest(itemBeingRemoved);
+			}
+		}
+	}
+
+	private void updateTotal () {
+		this.orderTotal = 0;
+		for (OrderItem orderitem : this.shoppingCart){
+			this.orderTotal += (orderitem.getMenuItem().getPrice() * orderitem.getQuantity());
+		}
 	}
 
 }

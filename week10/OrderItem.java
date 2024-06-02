@@ -41,7 +41,7 @@ public class OrderItem {
      * Method to retun the number of items a OrderItem has
      * @return int of total number of items an OrderItem has
      */
-    public int getItemTotal (){
+    public int getQuantity (){
         return this.item_total;
     }
 
@@ -59,16 +59,9 @@ public class OrderItem {
      * Method to increase the quantity of a MenuItem outside of Terminal Display.
      */
     public void updateQuantity (int quant){
-        // to prevent negative quantities of an item
-        if (this.item_total + quant > 0)
+        // to prevent negative quantities of an item or too high of an order value
+        if (this.item_total + quant > 0 && this.item_total + quant < 99)
             this.item_total += quant;
-    }
-
-    /*
-     * Method to get the quanity of a MenuItem outside of Terminal Display.
-     */
-    public int getQuantity () {
-      return this.item_total;
     }
 
     /**
@@ -78,7 +71,7 @@ public class OrderItem {
      */
     public boolean equals(OrderItem otherOrderItem){
         // compare name and quantity, not memory address
-        if (this.menuItem.equals(otherOrderItem.menuItem) && this.getItemTotal() == otherOrderItem.getItemTotal())
+        if (this.menuItem.equals(otherOrderItem.menuItem) && this.getQuantity() == otherOrderItem.getQuantity())
             return true;
         else
             return false;

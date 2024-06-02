@@ -47,11 +47,21 @@ public class TerminalDisplay {
 
 	static void addRequest(){
 		String itemRequest = "ADD (" + MENU_NUMBER_COLOR + "#" + ANSI_RESET + ") | (" + ANSI_PURPLE + "R" + ANSI_RESET + ")EMOVE | (" + ANSI_PURPLE + "D" + ANSI_RESET + ")ONE ";
-		System.out.printf("%33s%s", space, itemRequest);
+		System.out.printf("%31s%s", space, itemRequest);
+	}
+
+	static void quantityRequest(){
+		MenuItem menuItem = Driver.order.orderMap.get(Integer.valueOf(Driver.order.menuSelection));
+		String quantity = "QUANTITY OF " + menuItem.getName() + " TO ADD("+ MENU_NUMBER_COLOR + "#" + ANSI_RESET + ")";
+		System.out.printf("%23s%s ", space, quantity);
+	}
+
+	static void quantityRemoveRequest(MenuItem menuItem){
+		String quantity = "QUANTITY OF " + menuItem.getName() + " TO REMOVE ("+ MENU_NUMBER_COLOR + "#" + ANSI_RESET + ")";
+		System.out.printf("%22s%s ", space, quantity);
 	}
 	
 	static String nameRequest(){
-
 		horizontalLine();
 		System.out.printf("%38s%s ", space,"NAME: ");
 		String name = Driver.scanner.nextLine();
@@ -63,11 +73,9 @@ public class TerminalDisplay {
 	}
 
 	static String emailRequest(){
-
 		horizontalLine();
 		System.out.printf("%38s%s", space, "EMAIL: ");
 		String email = Driver.scanner.nextLine();
-
 		return email;
 	}
 
@@ -181,7 +189,6 @@ public class TerminalDisplay {
 	}
 
 	public static void subTotalOutPut(){
-		   
 		System.out.printf("%23s%-30s%s %s$%.2f%s%n", space, Driver.order.getCustomer().getName(), "Subtotal", SUBTOTAL_COLOR, Driver.order.getTotal(), ANSI_RESET);
 	}
 
