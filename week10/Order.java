@@ -240,6 +240,7 @@ public class Order {
 			while (this.menuSelection.equals("R") && this.shoppingCart.size() > 0){
 				formatting();
 				TerminalDisplay.orderFeedback();
+				TerminalDisplay.horizontalLine();
 				subtotalOutputFormatting();
 				// remove the item if valid request
 				OrderItem removedItem = removeItem();
@@ -256,6 +257,7 @@ public class Order {
 					// re-request if invalid input
 					formatting();
 					TerminalDisplay.orderFeedback();
+					TerminalDisplay.horizontalLine();
 					subtotalOutputFormatting();
 					TerminalDisplay.addRequest();
 					menuSelection();
@@ -272,6 +274,7 @@ public class Order {
 				while(! validAddInput()){
 					formatting();
 					TerminalDisplay.orderFeedback();
+					TerminalDisplay.horizontalLine();
 					subtotalOutputFormatting();
 					TerminalDisplay.addRequest();
 					menuSelection();
@@ -311,6 +314,7 @@ public class Order {
 			while(! validAddInput()){
 			    formatting();
 				TerminalDisplay.orderFeedback();
+				TerminalDisplay.horizontalLine();
 				// order feedback
 				subtotalOutputFormatting();
 				TerminalDisplay.addRequest();
@@ -416,6 +420,7 @@ public class Order {
         // initialize item to remove var
 		formatting();
 		TerminalDisplay.orderFeedback();
+		TerminalDisplay.horizontalLine();
 		subtotalOutputFormatting();
 		String itemRequest = "ITEM # FROM CART TO REMOVE: ";
 		System.out.printf("%22s%s", TerminalDisplay.space, itemRequest);
@@ -432,6 +437,7 @@ public class Order {
 					break;
 				formatting();
 				TerminalDisplay.orderFeedback();
+				TerminalDisplay.horizontalLine();
 				subtotalOutputFormatting();
 				itemRequest = "ITEM # FROM CART TO REMOVE: ";
 				System.out.printf("%22s%s", TerminalDisplay.space, itemRequest);
@@ -441,6 +447,7 @@ public class Order {
 			catch (NumberFormatException e){
 				formatting();
 				TerminalDisplay.orderFeedback();
+				TerminalDisplay.horizontalLine();
 				subtotalOutputFormatting();
 				itemRequest = "ITEM # FROM CART TO REMOVE: ";
 				System.out.printf("%22s%s", TerminalDisplay.space, itemRequest);
@@ -453,6 +460,7 @@ public class Order {
 		// for live cart updates, reduce the int associated with the item name
 		formatting();
 		TerminalDisplay.orderFeedback();
+		TerminalDisplay.horizontalLine();
 		subtotalOutputFormatting();
 		TerminalDisplay.quantityRemoveRequest(itemBeingRemoved);
 		selectionRemoveQuantity(itemBeingRemoved);
@@ -533,7 +541,6 @@ public class Order {
     }
 
 	private void subtotalOutputFormatting(){
-		TerminalDisplay.horizontalLine();
 		TerminalDisplay.subTotalOutPut();
 		TerminalDisplay.horizontalLine();
 	}

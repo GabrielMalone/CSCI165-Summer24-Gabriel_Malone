@@ -82,7 +82,15 @@ public class Customer {
 	 * @param name The Customer's name
 	 */
 	public void setName(String name) {
+		// if any name has anything non alphabetic, 
+		// remove it and reconstruct with only letters
 		char [] charArray = name.toCharArray();
+		name = "";
+		for (char character : charArray){
+			if (Character.isLetter(character)){
+				name += character;
+			}
+		}
 		if(name == null || name == "")   
 			this.name = "unknown customer";
 		// if no last name included

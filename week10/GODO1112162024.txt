@@ -1,0 +1,34 @@
+ENJOY!
+
+GOOB DOE / unknown customer / unknown customer
+Invoice number: GODO1112162024
+Date: June 1, 2024
+Time: Time: 20:52:12
+Item                          Quant   Price  Total
+====================================================
+CHOCOLATE CHIP COOKIE           99    $6.45  $638.55
+FREEDOM FRIES                   99    $2.99  $296.01
+FRESH TOMATOE                   2     $4.35  $8.70
+LETTUCE - ARUGULA               4     $6.25  $25.00
+
+Calories: 2633
+====================================================
+Subtotal               $968.26
+6.25% sales tax        $60.52
+Order Total            $1,028.78
+
+ENJOY!
+
+GOOB DOE / unknown customer / unknown customer
+Invoice number: GODO1112162024
+Date: June 1, 2024
+Time: Time: 20:58:55
+Item                          Quant   Price  Total
+====================================================
+
+Calories: 0
+====================================================
+Subtotal               $0.00
+6.25% sales tax        $0.00
+Order Total            $0.00
+
