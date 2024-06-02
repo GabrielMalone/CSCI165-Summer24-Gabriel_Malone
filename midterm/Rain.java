@@ -7,8 +7,10 @@ public class Rain {
 	Random rand = new Random();
 	ArrayList<Cell> alltherain = new ArrayList<>();
 
+	/**
+	 * Method to see where the rain currently is on a maps
+	 */
 	public void getTheRain(){
-		// if not fleeing a fire - randomly move to a nearby cell if all clear
 		for( int i = 1 ; i < Driver.neWorld.size - 1 ; i ++){
 			for (int j = 1 ; j < Driver.neWorld.size - 1 ; j ++){
 				Cell current_location = Driver.neWorld.worldMatrix[i][j];
@@ -19,6 +21,9 @@ public class Rain {
 		}
 	}
 
+	/**
+	 * Method to place rain on the map
+	 */
 	public void letItRain(){
 		for (int i = 0; i < Driver.startingRain; i++){
 			// find location on map for object
@@ -32,6 +37,9 @@ public class Rain {
 		}
 	}
 
+	/**
+	 * Method to have it rain continuously in random spots
+	 */
 	public void drip(){
 		for (int i = 0; i < Driver.startingRain; i++){
 			// find location on map for object
@@ -44,9 +52,13 @@ public class Rain {
 			if (chance_to_rain < .1){
 				if (cell_at_this_location.getRain() == Cell.RAIN.NOT_RAINING) 
 					cell_at_this_location.setRain(Cell.RAIN.RAINING);
-			}
+			}	
 		}
 	}
+
+	/**
+	 *  Method to clear the rain in random spots
+	 */
 	public void dry(){
 		for (int i = 0; i < Driver.startingRain; i++){
 			// find location on map for object
@@ -116,7 +128,7 @@ public class Rain {
 	 * Method to have rain move around randomly
 	 */
 	public void scatterRain(){
-// switched to two while loops since the for loop was not creating a random movement overall 
+		// switched to two while loops since the for loop was not creating a random movement overall 
 		// animals trended up and to the left
 		getTheRain();
 		while ( alltherain.size() > 0 ) {
@@ -208,6 +220,11 @@ public class Rain {
 		}
 	}
 
+	/**
+	 * Method to have wind affect how the rain moves
+	 * @param currentCell
+	 * @param neighboringCell
+	 */
 	public void windDirectionEffectOnRain(Cell currentCell, Cell neighboringCell){
 		
 			Cell[] neighbors = Driver.neWorld.findNeighbors(currentCell.row, currentCell.column);

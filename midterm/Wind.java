@@ -4,7 +4,6 @@
 public class Wind {
 	
 	
-    
 	public static enum DIRECTION {
 		NORTH,
 		EAST,
@@ -56,7 +55,6 @@ public class Wind {
 			default:	return 	"x";
 	    }
 	}
-
 
 	/**
 	 * Method to clear the current weather pattern

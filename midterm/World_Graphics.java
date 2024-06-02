@@ -46,11 +46,22 @@ public class World_Graphics extends JPanel implements ActionListener{
 				}
 				else{
 					Driver.player_set = false;
-					Driver.alien.killCube();
+					Driver.alien.cubeTeleport();
+				}
+			}
+			public void mouseReleased(MouseEvent e){
+				int column = e.getX() / IMAGE_SIZE;
+				int row = e.getY() / IMAGE_SIZE;
+				if (! Driver.player_set){
+					Driver.neWorld.worldMatrix[row][column].setObject(Cell.OBJECTS.PLAYER);
+					Driver.alien = new AlienFireCube();
+					Driver.alien.player = Driver.neWorld.worldMatrix[row][column];
+					Driver.player_set = true;
 				}
 			}
 		});
-	
+
+		
 		addMouseMotionListener(new MouseAdapter(){
 			// mouse click and dragged to place bombs
 			public void mouseDragged(MouseEvent e){
@@ -64,6 +75,7 @@ public class World_Graphics extends JPanel implements ActionListener{
 				Bomb.placeBomb(row, column);
 			}
 		});
+
 
 		this.window.add(this);
 		// add key listener

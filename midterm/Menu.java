@@ -365,6 +365,12 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 
 	}
 
+	public static int worldResize(int size){
+		// resize input sizes to allow for a perfect center
+		if (size % 2 == 0) return size += 1;
+		return size;
+	}
+
 	public void keyPressed (KeyEvent e){
 		System.out.println("test");
 	}
@@ -462,7 +468,7 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 				this.animal_pop_label.setForeground(Color.GRAY);
 			}
 
-			Driver.size = Driver.worldResize(Driver.size);
+			Driver.size = worldResize(Driver.size);
 			Driver.popRegrowth = Driver.startingPop / 4;
 			if (Driver.size == 21)
 				Driver.chanceToRegrow = .05;
