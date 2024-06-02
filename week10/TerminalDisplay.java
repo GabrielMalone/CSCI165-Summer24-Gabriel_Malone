@@ -64,7 +64,7 @@ public class TerminalDisplay {
 	static String nameRequest(){
 		horizontalLine();
 		System.out.printf("%38s%s ", space,"NAME: ");
-		String name = Driver.scanner.nextLine();
+		String name = Driver.order.scanner.nextLine();
 		if (name.length() > 26){
 			// cap name lengths to 26 char to fit nicely in menu
 			name = name.substring(0, 26);
@@ -75,14 +75,14 @@ public class TerminalDisplay {
 	static String emailRequest(){
 		horizontalLine();
 		System.out.printf("%38s%s", space, "EMAIL: ");
-		String email = Driver.scanner.nextLine();
+		String email = Driver.order.scanner.nextLine();
 		return email;
 	}
 
 	static String phoneRequest(){
 		horizontalLine();
 		System.out.printf("%38s%s", space, "PHONE: ");
-		String phone = Driver.scanner.nextLine();
+		String phone = Driver.order.scanner.nextLine();
 		return phone;
 	}
 
@@ -215,6 +215,16 @@ public class TerminalDisplay {
 			Driver.order.removeMap.put(counter + 1, item.getMenuItem());
 
 		}
+	}
+	public static void formatting() {
+        clearSequence();
+        headerOutput();
+        horizontalLine();
+    }
+
+	public static void subtotalOutputFormatting(){
+		subTotalOutPut();
+		horizontalLine();
 	}
 
 }

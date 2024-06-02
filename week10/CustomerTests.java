@@ -22,9 +22,9 @@ public class CustomerTests {
         customer1 = new Customer();
         assertTrue(customer1.getName().equals("unknown customer"));
         // phone should == "uknown"
-        assertTrue(customer1.getPhone().equals("unknown customer"));
+        assertTrue(customer1.getPhone().equals("N/A"));
         // email should == "uknown"
-        assertTrue(customer1.getEmail().equals("unknown customer"));
+        assertTrue(customer1.getEmail().equals("N/A"));
         // test overloaded constructor
         customer2 = new Customer("goobert", "goobert@gmail.com", "6072620842");
         assertTrue(customer2.getName().equals("GOOBERT DOE"));

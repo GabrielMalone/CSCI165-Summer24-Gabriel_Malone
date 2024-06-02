@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Order {
 	
@@ -28,10 +29,11 @@ public class Order {
 	private double totalWithTax;
 	private double orderTotal 					= 0;
 	private ArrayList<OrderItem> cartCopy	 	= new ArrayList<>();			
-	private Customer customer;
 	private Date todaysDate;
 	String menuSelection;
 	int selectionQuantity;
+	Customer customer = Driver.customer;
+	Scanner scanner = new Scanner(System.in);
 	
 	/**
      * No argument constructor leaves all fields default. clears any carts.
@@ -40,6 +42,21 @@ public class Order {
 		// clear any carts from previous orders
 		clearCarts();
 		setDate();
+	}
+
+	private void  getCustomerInfo(){
+		// clear screen and show menu
+		TerminalDisplay.clearSequence();
+		// get info
+		String name = TerminalDisplay.nameRequest();
+		TerminalDisplay.clearSequence();
+		String email = TerminalDisplay.emailRequest();
+		TerminalDisplay.clearSequence();
+		String phone = TerminalDisplay.phoneRequest();
+		TerminalDisplay.clearSequence();
+		this.customer.setName(name);
+		this.customer.setEmail(email);
+		this.customer.setPhone(phone);
 	}
 
 	/**
@@ -134,10 +151,15 @@ public class Order {
 		String subtotal	= "Subtotal";
 		String salestax = "6.25% sales tax";
 		String ordertot = "Order Total";
+		String name 	= this.customer.getName();
+		String email	= this.customer.getPhone();
+		if (email		== "unknown customer") email = "N/A";
+		String phone	= this.customer.getEmail();
+		if (phone 		== "unknown customer") phone = "N/A";
 		// header string
 		String receiptheader = String.format(
 				"%s%n%n%s / %s / %s%n%s %s%n%s %s%n%s %s%n%-30s%-8s%-7s%s%n%s%n", 
-				enjoy, this.customer.getName(), this.customer.getPhone(), this.customer.getEmail(), invoice, createInvoiceID(),
+				enjoy, name, phone, email, invoice, createInvoiceID(),
 				date, this.todaysDate.toString(), time, this.todaysDate.getTime(), item,
 				quant, price, total, split.repeat(52));
 		// iterate through cart and add items in the cart to the middle of receipt string		
@@ -214,21 +236,21 @@ public class Order {
 	* @return (ArrayList<String>) shopping cart items
 	*/
 	public void takeOrder(){
-		this.customer = new Customer();
 		// ask for order
+		getCustomerInfo();
 		TerminalDisplay.headerOutput();
 		TerminalDisplay.horizontalLine();
 		// show current cart
 		TerminalDisplay.orderFeedback();
-		subtotalOutputFormatting();
+		TerminalDisplay.subtotalOutputFormatting();
 		TerminalDisplay.addRequest();
 		menuSelection();
 		// valid input check
 		while(! validAddInput()){
 			// re-request if invalid input
-			formatting();
+			TerminalDisplay.formatting();
 			TerminalDisplay.orderFeedback();
-			subtotalOutputFormatting();
+			TerminalDisplay.subtotalOutputFormatting();
 			TerminalDisplay.addRequest();
 			menuSelection();
 		}
@@ -238,13 +260,13 @@ public class Order {
 		while(validAddInput() && ! this.menuSelection.equals("D")){
 			// if-remove-requested-sequence
 			while (this.menuSelection.equals("R") && this.shoppingCart.size() > 0){
-				formatting();
+				TerminalDisplay.formatting();
 				TerminalDisplay.orderFeedback();
 				TerminalDisplay.horizontalLine();
-				subtotalOutputFormatting();
+				TerminalDisplay.subtotalOutputFormatting();
 				// remove the item if valid request
 				OrderItem removedItem = removeItem();
-				formatting();
+				TerminalDisplay.formatting();
 				TerminalDisplay.orderFeedback();
 				TerminalDisplay.horizontalLine();
 				this.orderTotal -= removedItem.getMenuItem().getPrice() * this.selectionQuantity;
@@ -255,27 +277,27 @@ public class Order {
 				// valid input check
 				while(!validAddInput()){
 					// re-request if invalid input
-					formatting();
+					TerminalDisplay.formatting();
 					TerminalDisplay.orderFeedback();
 					TerminalDisplay.horizontalLine();
-					subtotalOutputFormatting();
+					TerminalDisplay.subtotalOutputFormatting();
 					TerminalDisplay.addRequest();
 					menuSelection();
 				}	
 			}
 			// remove request logic if nothing to remove
 			while (this.menuSelection.equals("R") && this.shoppingCart.size() == 0){
-				formatting();
+				TerminalDisplay.formatting();
 				TerminalDisplay.orderFeedback();
-				subtotalOutputFormatting();
+				TerminalDisplay.subtotalOutputFormatting();
 				TerminalDisplay.addRequest();
 				menuSelection();
 				// valid input check
 				while(! validAddInput()){
-					formatting();
+					TerminalDisplay.formatting();
 					TerminalDisplay.orderFeedback();
 					TerminalDisplay.horizontalLine();
-					subtotalOutputFormatting();
+					TerminalDisplay.subtotalOutputFormatting();
 					TerminalDisplay.addRequest();
 					menuSelection();
 				}
@@ -294,7 +316,7 @@ public class Order {
 				TerminalDisplay.horizontalLine();
 			TerminalDisplay.orderFeedback();
 			TerminalDisplay.horizontalLine();
-			subtotalOutputFormatting();
+			TerminalDisplay.subtotalOutputFormatting();
 			TerminalDisplay.quantityRequest();
 			selectionQuantity();
 			addItem(menuNumber, this.selectionQuantity);
@@ -306,17 +328,17 @@ public class Order {
 			TerminalDisplay.orderFeedback();
 			TerminalDisplay.horizontalLine();
 			// total feedback
-			subtotalOutputFormatting();
+			TerminalDisplay.subtotalOutputFormatting();
 			// get next input
 			TerminalDisplay.addRequest();
 			menuSelection();
 			// valid input check
 			while(! validAddInput()){
-			    formatting();
+			    TerminalDisplay.formatting();
 				TerminalDisplay.orderFeedback();
 				TerminalDisplay.horizontalLine();
 				// order feedback
-				subtotalOutputFormatting();
+				TerminalDisplay.subtotalOutputFormatting();
 				TerminalDisplay.addRequest();
 				menuSelection();        
 			}
@@ -340,7 +362,7 @@ public class Order {
 		}
 		// display receipt on terminal
 		displayReceipt();
-		Driver.scanner.nextLine();
+		scanner.nextLine();
 		
 	}
 
@@ -356,7 +378,7 @@ public class Order {
 		// wait for user input
 		System.out.println();
 		System.out.print(TerminalDisplay.PRICE_COLORS + "PRESS ENTER " + TerminalDisplay.ANSI_RESET);
-		Driver.scanner.nextLine();
+		scanner.nextLine();
 	}
 
 
@@ -411,14 +433,14 @@ public class Order {
         // initialize item to remove var
 		OrderItem orderItem=null;
         // display formatting
-		formatting();
+		TerminalDisplay.formatting();
 		TerminalDisplay.orderFeedback();
 		TerminalDisplay.horizontalLine();
-		subtotalOutputFormatting();
+		TerminalDisplay.subtotalOutputFormatting();
 		String itemRequest = "ITEM # FROM CART TO REMOVE: ";
 		System.out.printf("%22s%s", TerminalDisplay.space, itemRequest);
 		// get remove request from user
-		String removeRequest = Driver.scanner.next().toUpperCase();
+		String removeRequest = scanner.next().toUpperCase();
 		TerminalDisplay.clearSequence();
         // see if it's actually a number
         // ask for a number until get one
@@ -429,33 +451,33 @@ public class Order {
 				itemToRemove = Integer.valueOf(removeRequest);
 				if (validRemoveInput(itemToRemove))
 					break;
-				formatting();
+				TerminalDisplay.formatting();
 				TerminalDisplay.orderFeedback();
 				TerminalDisplay.horizontalLine();
-				subtotalOutputFormatting();
+				TerminalDisplay.subtotalOutputFormatting();
 				itemRequest = "ITEM # FROM CART TO REMOVE: ";
 				System.out.printf("%22s%s", TerminalDisplay.space, itemRequest);
-				removeRequest = Driver.scanner.next().toUpperCase();
+				removeRequest = scanner.next().toUpperCase();
 				TerminalDisplay.clearSequence();
 			}
 			catch (NumberFormatException e){
-				formatting();
+				TerminalDisplay.formatting();
 				TerminalDisplay.orderFeedback();
 				TerminalDisplay.horizontalLine();
-				subtotalOutputFormatting();
+				TerminalDisplay.subtotalOutputFormatting();
 				itemRequest = "ITEM # FROM CART TO REMOVE: ";
 				System.out.printf("%22s%s", TerminalDisplay.space, itemRequest);
-				removeRequest = Driver.scanner.next().toUpperCase();
+				removeRequest = scanner.next().toUpperCase();
 				TerminalDisplay.clearSequence();
 			}
 		} 
 		// remove item + 1 for index adjust
 		MenuItem itemBeingRemoved = this.removeMap.get(itemToRemove+1);
 		// for live cart updates, reduce the int associated with the item name
-		formatting();
+		TerminalDisplay.formatting();
 		TerminalDisplay.orderFeedback();
 		TerminalDisplay.horizontalLine();
-		subtotalOutputFormatting();
+		TerminalDisplay.subtotalOutputFormatting();
 		TerminalDisplay.quantityRemoveRequest(itemBeingRemoved);
 		selectionRemoveQuantity(itemBeingRemoved);
 		// check to prevent a remove request creating a negative value (just remove the item if they input more than exists)
@@ -635,14 +657,14 @@ public class Order {
 	}
 
 	private void menuSelection (){
-		this.menuSelection = Driver.scanner.next().toUpperCase(); 
+		this.menuSelection = scanner.next().toUpperCase(); 
 	}
 
 	private void selectionQuantity (){
 		// validity checks for item selection quantities
 		while (true){
 			try{
-				this.selectionQuantity = Integer.valueOf(Driver.scanner.next().toUpperCase());
+				this.selectionQuantity = Integer.valueOf(scanner.next().toUpperCase());
 				if (this.selectionQuantity > 99){
 					this.selectionQuantity = 99;
 					break;
@@ -661,7 +683,7 @@ public class Order {
 					TerminalDisplay.horizontalLine();
 				TerminalDisplay.orderFeedback();
 				TerminalDisplay.horizontalLine();
-				subtotalOutputFormatting();
+				TerminalDisplay.subtotalOutputFormatting();
 				TerminalDisplay.quantityRequest();
 			}
 		}
@@ -671,7 +693,7 @@ public class Order {
 		// validity checks for item selection quantities
 		while (true){
 			try{
-				this.selectionQuantity = Integer.valueOf(Driver.scanner.next().toUpperCase());
+				this.selectionQuantity = Integer.valueOf(scanner.next().toUpperCase());
 				if (this.selectionQuantity > 99){
 					this.selectionQuantity = 99;
 					break;
@@ -690,7 +712,7 @@ public class Order {
 					TerminalDisplay.horizontalLine();
 				TerminalDisplay.orderFeedback();
 				TerminalDisplay.horizontalLine();
-				subtotalOutputFormatting();
+				TerminalDisplay.subtotalOutputFormatting();
 				TerminalDisplay.quantityRemoveRequest(itemBeingRemoved);
 			}
 		}
@@ -710,17 +732,6 @@ public class Order {
 		this.cartMap = new HashMap<String, Integer>(10);
 		this.orderMap = new HashMap<Integer, MenuItem>(10);
 		this.removeMap = new HashMap<Integer, MenuItem>(10);
-	}
-
-	private void formatting() {
-        TerminalDisplay.clearSequence();
-        TerminalDisplay.headerOutput();
-        TerminalDisplay.horizontalLine();
-    }
-
-	private void subtotalOutputFormatting(){
-		TerminalDisplay.subTotalOutPut();
-		TerminalDisplay.horizontalLine();
 	}
 
 }

@@ -8,6 +8,9 @@ public class Customer {
 	private String name	 = "unknown customer";
 	private String email = "unknown customer";
 	private String phone = "unknown customer";
+
+
+
 	
 
 	// ==================
@@ -20,30 +23,17 @@ public class Customer {
 	 * Conditional set for Customer Unit test to not need user to input customer info
 	 */
 	public Customer(){
-		if (Driver.terminalOn){
-			// clear screen and show menu
-			TerminalDisplay.clearSequence();
-			// get info
-			this.name = TerminalDisplay.nameRequest();
-			TerminalDisplay.clearSequence();
-			this.email = TerminalDisplay.emailRequest();
-			TerminalDisplay.clearSequence();
-			this.phone = TerminalDisplay.phoneRequest();
-			TerminalDisplay.clearSequence();
-		}
-		// set info
+
 		setName(this.name);
 		setEmail(this.email);
 		setPhone(this.phone);	
-
 	}
 
 	/**
-     * Copy constructor to create a deep copy of MenuItem object
+     * Copy constructor to create a deep copy of Customer object
      * @param copy
      */
     public Customer (Customer copy){
-		// nots ure if this needed since strings
 		this.name       = copy.name;
         this.email      = copy.email;
         this.phone   	= copy.phone;
@@ -63,7 +53,6 @@ public class Customer {
 		this.setEmail(email);
 		this.setPhone(phone);
 	}
-
 
 	// =============================
 	// || "GETTERS" and "SETTERS" ||
@@ -116,23 +105,25 @@ public class Customer {
 		}
 		// if blank or null
 		char [] charArray = name.toCharArray();
-		if(name == null || name == "")   
-			this.name = "unknown customer";
+		if(name == null || name == "") {
+			name = this.name;
+		}  
 		// if no last name included
-		else if (! name.contains(" ") && charArray.length != 1) 
+		else if (! name.contains(" ") && charArray.length != 1) {
 			this.name = name.toUpperCase() + " DOE";
-		// if name too short
-		else if (charArray.length == 1) 
-			name = "unknown customer";
-		// lastly, if just all non alphabetical chars
-		for (char character : charArray){
-			if (! Character.isLetter(character)){
-				this.name = "unknown customer";
-				break;
-			}
 		}
+		// if name too short
+		else if (charArray.length == 1) {
+			name = this.name;
+		}
+		// if all good otherwise
+		else{
+			this.name = name.toUpperCase();
+		}
+		// lastly, if just all non alphabetical chars
 	}
-
+		
+	
 	/**
 	 * 
 	 * @return email (String) The Customer's email
@@ -153,7 +144,7 @@ public class Customer {
 		// It's also fun and good practice to write explicit logic . . .
 		// especially while learning :)
 		
-		if(email == null || email == "") this.email = "unknown customer"; 
+		if(email == null || email.equals("")) return; 
 		int NOT_FOUND		= -1;	// reader friendly code symbols
 		int PREFIX_LENGTH	= 64;
 
@@ -201,7 +192,7 @@ public class Customer {
 	 */
 	public void setPhone(String phone) {
 		// fail first, fail fast
-		if(phone == null || phone == "") this.phone = "unknown customer";
+		if(phone == null || phone.equals("")) phone = this.phone;
 		if(phone.length() != 10)return;
 
 		// is each character a digit?
