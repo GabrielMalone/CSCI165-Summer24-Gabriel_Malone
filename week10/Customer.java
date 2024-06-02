@@ -127,7 +127,7 @@ public class Customer {
 		// lastly, if just all non alphabetical chars
 		for (char character : charArray){
 			if (! Character.isLetter(character)){
-				this.name = "unkown customer";
+				this.name = "unknown customer";
 				break;
 			}
 		}
