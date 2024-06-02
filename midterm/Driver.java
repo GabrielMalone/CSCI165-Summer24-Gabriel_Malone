@@ -35,4 +35,9 @@ public class Driver {
 		options = new Menu();
 
 	}
+	public static int worldResize(int size){
+		// resize input sizes to allow for a perfect center
+		if (size % 2 == 0) return size += 1;
+		return size;
+	}
 }
