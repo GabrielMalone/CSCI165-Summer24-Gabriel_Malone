@@ -1,6 +1,7 @@
 // Gabriel Malone / CS165 / Summer 2024 / Week 11
 
 public class MoveablePoint extends Point {
+
     public float xSpeed = 0.0f, ySpeed = 0.0f;
 
     public MoveablePoint (){}
@@ -21,8 +22,8 @@ public class MoveablePoint extends Point {
      * @param ySpeed float
      */
     public MoveablePoint (int x, int y, float xSpeed, float ySpeed){
-        this.setX(x);
-        this.setY(y);
+        setX(x);
+        setY(y);
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
     }
@@ -34,7 +35,7 @@ public class MoveablePoint extends Point {
      * @param ySpeed float
      */ 
     public MoveablePoint (Point xy, float xSpeed, float ySpeed){
-        this.setCoords(xy.getX(),xy.getY());
+        setCoords(xy.getX(),xy.getY());
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
     }
@@ -44,10 +45,10 @@ public class MoveablePoint extends Point {
      * @param toCopy
      */
     public MoveablePoint (MoveablePoint toCopy){
-        toCopy.setY(this.getY());
-        toCopy.setX(this.getX());
-        toCopy.xSpeed = this.xSpeed;
-        toCopy.ySpeed = this.ySpeed;
+        this.setY(toCopy.getY());
+        this.setX(toCopy.getX());
+        this.xSpeed = toCopy.xSpeed;
+        this.ySpeed = toCopy.ySpeed;
     }
 
     /**
@@ -118,7 +119,7 @@ public class MoveablePoint extends Point {
      */
     @Override
     public String toString(){
-        String MoveablePointString = super.toString() + " X speed = " + getXSpeed() + " Y speed = " + getYSpeed();
+        String MoveablePointString = super.toString() + " Xspeed=" + getXSpeed() + " Yspeed=" + getYSpeed();
         return MoveablePointString;
     }
 
@@ -134,12 +135,12 @@ public class MoveablePoint extends Point {
         // downcasting
         Point otherPoint = (Point) obj;
 
-        if (super.getCoords() == null 
+        if (getCoords() == null 
             && otherPoint.getCoords() != null){
             return false;
             } 
-        else if (super.getX() != otherPoint.getX() 
-            &&  super.getY() != otherPoint.getY()){
+        else if (getX() != otherPoint.getX() 
+            &&  getY() != otherPoint.getY()){
             return false;
             }
         MoveablePoint otherMoveablePoint = (MoveablePoint) obj;

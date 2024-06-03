@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 public class PointTest {
 
     Point pointOne, pointTwo;
+    MoveablePoint movePoint;
     double distance;
 
     @BeforeEach
@@ -16,6 +17,18 @@ public class PointTest {
 		pointTwo = null;
         distance = 0;
 	}
+
+    @Test
+    void copyConstructorTest() {
+    pointOne = new Point(3,4);
+    pointTwo = new Point(pointOne);
+    assertTrue(pointTwo.getX() == 3);
+    assertTrue(pointTwo.getX() == pointOne.getX());
+    assertTrue(pointTwo.getY() == 4);
+    assertTrue(pointTwo.getY() == pointOne.getY());
+    assertTrue(pointOne.equals(pointTwo));
+    assertFalse(pointOne == pointTwo);
+    }
     
     @Test
     void testConstructorA() {
@@ -32,7 +45,7 @@ public class PointTest {
     }
 
     @Test
-    void testDistance() {
+    void testDistance1() {
     pointOne = new Point(1, 2);
     pointTwo = new Point(4, 6);
     distance = pointOne.distance(pointTwo);
@@ -58,10 +71,11 @@ public class PointTest {
     }
 
     @Test
-    void testDistance4() {
+    void StatictestDistance() {
         // pythagorean triples
-        pointOne = new Point(1, 2);
-        distance = pointOne.distance(4, 6);
+        Point pointOne = new Point(1, 2);
+        Point pointTwo = new Point(4, 6);
+        distance = Point.distance(pointOne, pointTwo);
         assertTrue(distance == 5);
     }
 
@@ -72,14 +86,6 @@ public class PointTest {
         assertTrue(pointOne.equals(pointTwo));
         assertFalse(pointOne == pointTwo);
 
-    }
-
-    @Test
-    void testCopyProtectionOfPointObject() {
-        pointOne = new Point(5, 10);
-        pointTwo = new Point(pointOne);
-        assertTrue(pointOne.equals(pointTwo));
-        assertFalse(pointOne == pointTwo);
     }
 
     @Test
@@ -138,11 +144,11 @@ public class PointTest {
 
     @Test
     void testToString() {
-        String idealString = "(X: 5, Y: 10)";
+        String idealString = "X=5 Y=10";
         int x = 5, y = 10;
         pointOne = new Point(x, y);
         assertTrue(idealString.equals(pointOne.toString()));
-        String idealString2 = "(X: -5, Y: -10)";
+        String idealString2 = "X=-5 Y=-10";
         int x1 = -5, y1 = -10;
         pointTwo = new Point(x1, y1);
         assertTrue(idealString2.equals(pointTwo.toString()));

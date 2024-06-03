@@ -3,7 +3,7 @@
 public class Point {
 
     private int x, y;
-    private int [] coords = new int [2];
+    private int [] XYcoords = new int [2];
     
     /**
      * No argument constructor
@@ -11,8 +11,8 @@ public class Point {
     public Point (){
         this.x = 0;
         this.y = 0;
-        this.coords [0] = 0;
-        this.coords [1] = 0;
+        this.XYcoords [0] = 0;
+        this.XYcoords [1] = 0;
     }
 
     /**
@@ -23,9 +23,9 @@ public class Point {
     public Point (int x_given, int y_given){
         this.x = x_given;
         this.y = y_given;
-        this.coords =  new int[2];
-        this.coords [0] = x_given;
-        this.coords [1] = y_given;
+        this.XYcoords =  new int[2];
+        this.XYcoords [0] = x_given;
+        this.XYcoords [1] = y_given;
     }
 
     /**
@@ -33,8 +33,8 @@ public class Point {
      * @param copyCoordinate
      */
     public Point (Point copyCoordinate){
-        copyCoordinate.x = this.x;
-        copyCoordinate.y = this.y;  
+        this.x = copyCoordinate.getX();
+        this.y = copyCoordinate.getY();  
     }
 
     /**
@@ -59,7 +59,7 @@ public class Point {
      */
     public void setX(int x) {
         this.x = x;
-        this.coords[0] = x;
+        this.XYcoords[0] = x;
     }
 
     /**
@@ -68,7 +68,7 @@ public class Point {
      */
     public void setY(int y) {
         this.y = y;
-        this.coords[1] = y;
+        this.XYcoords[1] = y;
     }
 
     /**
@@ -77,8 +77,8 @@ public class Point {
      * @param y_coord
      */
     public void setCoords(int x_coord, int y_coord){
-        this.coords [0] = x_coord;
-        this.coords [1] = y_coord;
+        this.XYcoords [0] = x_coord;
+        this.XYcoords [1] = y_coord;
         this.x = x_coord;
         this.y = y_coord;
     }
@@ -89,16 +89,15 @@ public class Point {
      */
     public int[] getCoords(){
         // clone this.coords array
-        this.setCoords(this.x, this.y);
-        int [] coordCopy = new int[2];
-        coordCopy [0] = this.coords[0];
-        coordCopy [1] = this.coords[1];  
-        return coordCopy;
+        int [] XYcoordCopy = new int[2];
+        XYcoordCopy [0] = this.XYcoords[0];
+        XYcoordCopy [1] = this.XYcoords[1];  
+        return XYcoordCopy;
     }
     
     @Override
     public String toString(){
-        String coordinateString= "(X: " + getX() + ", Y: " + getY() + ")";
+        String coordinateString = "X=" + getX() + " Y=" + getY();
         return coordinateString;
     }
 
@@ -111,7 +110,7 @@ public class Point {
         // downcasting
         Point otherPoint = (Point) obj;
 
-        if (    this.getCoords() == null 
+        if (    getCoords() == null 
                 && otherPoint.getCoords() != null){
                 return false;
             } 
