@@ -4,9 +4,11 @@ public class Driver {
     public static Point           p1, p2, p3;
     public static MoveablePoint   mp1, mp2, mp3, mp4, mp5;
     public static Point3D         p3d1, p3d2, p3d3;
+    
     public static void main(String[] args) {
 
     // POINT CONSTRUCTORS
+
         System.out.println();
         System.out.println("POINT CONSTRUCTORS:");
         // toString implicitly called for these
@@ -14,40 +16,41 @@ public class Driver {
         // no arguments constructor
         p1 = new Point();
         // should print default xy coords
-        System.out.println("Point p1 coords (no args):                   " + p1);
+        System.out.println(p1.getClass() + " coords (no args):     " + p1);
 
         // overloaded constructor
         p2 = new Point(3, 5);
         // should print 3, 5 xy coords
-        System.out.println("Point p2 coords (overloaded):                " + p2);
+        System.out.println(p2.getClass() + " coords (overloaded):  " + p2);
 
         // copy constructor
         p3 = new Point(p2);
-        System.out.println("Point p3 coords (copy of P2):                " + p3);
+        System.out.println(p3.getClass() + " coords (copy of P2):  " + p3);
 
     // MOVEPOINT CONSTRUCTORS
+
         System.out.println();
         System.out.println("MOVEPOINT CONSTRUCTORS:");
 
         // no argument constructor
         mp1 = new MoveablePoint();
-        System.out.println("MovePoint mp1 coords (no args):              " + mp1);
+        System.out.println(mp1.getClass() + " coords (no args):                 " + mp1);
 
         // float xspeed , yspeed constructor
         mp2 = new MoveablePoint(3.0f, 5.0f);
-        System.out.println("MovePoint mp2 coords (float args):           " + mp2);
+        System.out.println(mp2.getClass() + " coords (float args):              " + mp2);
 
         // intx, int y, float xspeed , float yspeed constructor
         mp3 = new MoveablePoint(2, 4, 3.0f, 5.0f);
-        System.out.println("MovePoint mp3 coords (int and float args):   " + mp3);
+        System.out.println(mp3.getClass() + " coords (int and float args):      " + mp3);
 
         // point, float yspeed constructor
         mp4 = new MoveablePoint(p2, 3.0f, 5.0f);
-        System.out.println("MovePoint mp4 coords (Point and float args): " + mp4);
+        System.out.println(mp4.getClass() + " coords (Point and float args):    " + mp4);
 
         // copy constructor
         mp5 = new MoveablePoint(mp4);
-        System.out.println("MovePoint mp5 coords (copy of mp4):          " + mp5);
+        System.out.println(mp5.getClass() + " coords (copy of mp4):             " + mp5);
 
     // POINT3D CONSTRUCTORS
         System.out.println();
@@ -56,17 +59,18 @@ public class Driver {
         // no argument constructor 
         p3d1 = new Point3D();
         // default xyz coords
-        System.out.println("Point3D p3d1 coords (no args)                " + p3d1);
+        System.out.println(p3d1.getClass() + " coords (no args)                " + p3d1);
 
         // xyz int constructor
         p3d2 = new Point3D(3, 4, 5);
-        System.out.println("Point3D p3d2 coords (int overload)           " + p3d2);
+        System.out.println(p3d2.getClass() + " coords (int overload)           " + p3d2);
 
         // copy constructor
         p3d3 = new Point3D(p3d2);
-        System.out.println("Point3D p3d2 coords (copy of p3d2)           " + p3d3);
+        System.out.println(p3d3.getClass() + " coords (copy of p3d2)           " + p3d3);
 
     // INHERITED METHOD DEMOS / toSTRING CHAINING
+
         System.out.println();
         System.out.println("INHERITED METHODS / toString CHAIN DEMO:");
 
@@ -76,10 +80,10 @@ public class Driver {
         // inherited method of setting coords
         mp1.setCoords(p1.getX(), p1.getY());
         // chaining toSTring
-        System.out.println("MovePoint mp1 full state info:               " + mp1);
+        System.out.println(mp1.getClass()+ " full state info:         " + mp1);
         // get inheritance demos from MovePoint object
-        System.out.println("MovePoint mp1 getX inheritance demo:         " + mp1.getX());
-        System.out.println("MovePoint mp1 getY inheritance demo:         " + mp1.getY());
+        System.out.println(mp1.getClass() + " getX inheritance demo:   " + mp1.getX());
+        System.out.println(mp1.getClass() + " getY inheritance demo:   " + mp1.getY());
         
         // Point3D inheriting methods from Point
         p1 = new Point(1, 2);
@@ -89,12 +93,13 @@ public class Driver {
         p3d1.setY(p1.getY());
         p3d1.setZ(3);
         // chaining toSTring
-        System.out.println("Point3D p3d1 full state info:                " + p3d1);
+        System.out.println(p3d1.getClass() + " full state info:               " + p3d1);
         // get inheritance demos from Point3D object
-        System.out.println("Point3D p3d1 getX inheritance demo:          " + p3d1.getX());
-        System.out.println("Point3D p3d1 getY inheritance demo:          " + p3d1.getY());
+        System.out.println(p3d1.getClass() + " getX inheritance demo:         " + p3d1.getX());
+        System.out.println(p3d1.getClass() + " getY inheritance demo:         " + p3d1.getY());
 
     // DISTANCE METHODS
+
         System.out.println();
         System.out.println("DISTANCE METHODS DEMO:");
 
@@ -102,7 +107,7 @@ public class Driver {
         p1 = new Point(3, 4);
         System.out.println("The Distance between X=0 Y=0 and " + p1 + " is " + p1.distance());
 
-        // distance from origin (two given int points) from a point object
+        // distance between two given int points from a point object
         p1 = new Point(3, 4);
         System.out.println("The Distance between " + p1 + " and X=8 Y=16 is " + p1.distance(8, 16));
 
@@ -120,6 +125,31 @@ public class Driver {
         p3d1 = new Point3D( new Point (4, 6), 5);
         double distance2 = mp1.distance(p3d1);
         System.out.println("The distance between movepoint object (1,2) and point3d object (4,6) is " + distance2); 
+
+    // POLYMORPHISM FORESHADOWING
+
+        System.out.println();
+        System.out.println("POLYMORPHISM DEMO:");
+        Point [] pointArray = new Point [9];
+        pointArray [0] = new Point(1, 2);
+        pointArray [1] = new Point(2, 3);
+        pointArray [2] = new Point(4, 5);
+        pointArray [3] = new MoveablePoint(1, 2, 3, 4);
+        pointArray [4] = new MoveablePoint(2, 3, 4, 5);
+        pointArray [5] = new MoveablePoint(3, 4, 5, 6);
+        pointArray [6] = new Point3D(10, 11, 12);
+        pointArray [7] = new Point3D(11, 12, 13);
+        pointArray [8] = new Point3D(12, 13, 14);
+        // call toString on each point
+        int index = 0;
+        for (Point point : pointArray){
+            System.out.println(point.getClass() + " at index " + index + "'s state: " + point + "\nthis Point object distance from 0,0: " + point.distance());
+            // point.getXYZ();
+            // cannot call getXYZ as it is only defined for the subclass Point3D. Point3D is a Point, but a Point is not all things a 3Dpoint is, although they share similarities. Just as a dog is an animal and is defined by all things that make an animal, not all animals can bark. Polymorphism flows in a top-down path, moving from general to specific. 
+            // 
+            System.out.println();
+            index ++;
+        }
 
     }
 }
