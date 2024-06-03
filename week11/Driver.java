@@ -168,7 +168,7 @@ public class Driver {
         objectArray [5] = new MoveablePoint(3, 4, 5, 6);
         objectArray [6] = new Point3D(10, 11, 12);
         objectArray [7] = new Point3D(11, 12, 13);
-        objectArray [8] = new Date(12, 2, 1999).getYear();
+        objectArray [8] = new Date(12, 2, 1999);
         int index2 = 0;
         for (Object point2 : objectArray){
             System.out.println(point2.getClass() + " at index " + index2 + "'s state: " + point2);
