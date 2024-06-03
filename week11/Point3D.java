@@ -26,6 +26,20 @@ public class Point3D extends Point {
 	}
 
 	/**
+	 * Overloaded constructor
+	 * @param point
+	 * @param z
+	 */
+	public Point3D (Point point, int z){
+		setX(point.getX());
+		setY(point.getY());
+		this.z = z;
+		this.XYZcoords[0] = point.getX();
+		this.XYZcoords[1] = point.getY();
+		this.XYZcoords[2] = z;
+	}
+
+	/**
 	 * Copy constructor
 	 * @param copy
 	 */

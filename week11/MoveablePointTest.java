@@ -53,15 +53,19 @@ public class MoveablePointTest {
 
     @Test
     void testConstructorOverloadB() {
+        // two floats constructor
         movePointOne = new MoveablePoint(5.1f, 10.1f);
+        // default x, y
         assertTrue(movePointOne.getX() == 0);
         assertTrue(movePointOne.getY() == 0);
+        // matches arguments
         assertTrue(movePointOne.getXSpeed() == 5.1f);
         assertTrue(movePointOne.getYSpeed() == 10.1f);
     }   
 
     @Test
     void testConstructorOverloadC() {
+        // all args constructor
         movePointOne = new MoveablePoint(5, 10, 5.1f, 10.1f);
         assertTrue(movePointOne.getX() == 5);
         assertTrue(movePointOne.getY() == 10);
@@ -72,6 +76,7 @@ public class MoveablePointTest {
 
     @Test
     void testConstructorOverloadD() {
+        // Point object for xy constructor
         pointOne = new Point();
         pointOne.setX(5);
         pointOne.setY(10);
@@ -90,7 +95,9 @@ public class MoveablePointTest {
         pointOne.setY(10);
         movePointOne = new MoveablePoint(pointOne,5.0f, 10.0f);
         movePointTwo = new MoveablePoint(pointOne,5.0f, 10.0f);
+        // Point objects do not share the same memory address
         assertFalse(movePointOne == movePointTwo);
+        // Point objects share the same variable states
         assertTrue(movePointOne.equals(movePointTwo));
     }
 
@@ -101,11 +108,14 @@ public class MoveablePointTest {
         pointOne.setY(10);
         movePointOne = new MoveablePoint(pointOne,6.0f, 10.0f);
         movePointTwo = new MoveablePoint(movePointOne);
+        // explicit and implicit equality demo
         assertTrue(movePointTwo.getX() == 5);
         assertTrue(movePointTwo.getX() == pointOne.getX());
         assertTrue(movePointTwo.getY() == 10);
         assertTrue(movePointTwo.getY() == pointOne.getY());
+        // Point objects do not share the same memory address
         assertFalse(movePointOne == movePointTwo);
+        // Point objects share the same variable states
         assertTrue(movePointOne.equals(movePointTwo));
     }
 

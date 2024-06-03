@@ -41,6 +41,19 @@ public class Point3DTest {
     }
 
     @Test
+    void constructorTestC(){
+        // Piont object for xy coords
+        pointOne = new Point(3, 4);
+        // ints for xyz constructor
+        point3Done = new Point3D(pointOne, 5);
+        int [] XYZcoords = new int[3];
+        XYZcoords = point3Done.getXYZ();
+        assertTrue(XYZcoords[0] == 3);
+        assertTrue(XYZcoords[1] == 4);
+        assertTrue(XYZcoords[2] == 5);
+    }
+
+    @Test
     void copyConstructorTest(){
         point3Done = new Point3D(3, 4, 5);
         // copied Point3D object
