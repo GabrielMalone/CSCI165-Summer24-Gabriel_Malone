@@ -11,6 +11,7 @@ public class Driver {
 
         System.out.println();
         System.out.println("POINT CONSTRUCTORS:");
+        System.out.println();
         // toString implicitly called for these
 
         // no arguments constructor
@@ -31,6 +32,7 @@ public class Driver {
 
         System.out.println();
         System.out.println("MOVEPOINT CONSTRUCTORS:");
+        System.out.println();
 
         // no argument constructor
         mp1 = new MoveablePoint();
@@ -73,6 +75,7 @@ public class Driver {
 
         System.out.println();
         System.out.println("INHERITED METHODS / toString CHAIN DEMO:");
+        System.out.println();
 
         // MovePoint inheriting methods from Point
         p1 = new Point(1, 2);
@@ -102,6 +105,7 @@ public class Driver {
 
         System.out.println();
         System.out.println("DISTANCE METHODS DEMO:");
+        System.out.println();
 
         // distance from origin (0,0) from a point object
         p1 = new Point(3, 4);
@@ -130,6 +134,7 @@ public class Driver {
 
         System.out.println();
         System.out.println("POLYMORPHISM DEMO:");
+        System.out.println();
         Point [] pointArray = new Point [9];
         pointArray [0] = new Point(1, 2);
         pointArray [1] = new Point(2, 3);
@@ -151,5 +156,27 @@ public class Driver {
             index ++;
         }
 
+        System.out.println();
+        System.out.println("POLYMORPHISM DEMO 2:");
+        System.out.println();
+        Object [] objectArray = new Object [9];
+        objectArray [0] = new Point(1, 2);
+        objectArray [1] = new Point(2, 3);
+        objectArray [2] = new Point(4, 5);
+        objectArray [3] = new MoveablePoint(1, 2, 3, 4);
+        objectArray [4] = new MoveablePoint(2, 3, 4, 5);
+        objectArray [5] = new MoveablePoint(3, 4, 5, 6);
+        objectArray [6] = new Point3D(10, 11, 12);
+        objectArray [7] = new Point3D(11, 12, 13);
+        objectArray [8] = new Date(12, 2, 1999).getYear();
+        int index2 = 0;
+        for (Object point2 : objectArray){
+            System.out.println(point2.getClass() + " at index " + index2 + "'s state: " + point2);
+            // point.getXYZ();
+            // Again, cannot call getXYZ (or getdistance anymore) as it is only defined for the Class Point and subclass Point3D. Point3D is a Point and Point is an object, but an Object is not all things a Point is much less all things a 3Dpoint is. 
+            // can still call toString since that is a method that exists in the Object class. The correct toStirng method called for these various sublcasses due to Overriding the toString method to call the one particular to that class. 
+            System.out.println();
+            index2 ++;
+        }
     }
 }
