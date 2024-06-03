@@ -118,7 +118,7 @@ public class MoveablePoint extends Point {
      */
     @Override
     public String toString(){
-        String MoveablePointString = super.toString() + " X speed: " + getXSpeed() + "Y speed: " + getYSpeed();
+        String MoveablePointString = super.toString() + " X speed = " + getXSpeed() + " Y speed = " + getYSpeed();
         return MoveablePointString;
     }
 

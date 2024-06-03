@@ -156,7 +156,10 @@ public class MoveablePointTest {
 
     @Test
     void testToString() {
-
-
+        String idealString = "(X: 3, Y: 4) X speed = 10.0 Y speed = 10.0";
+        pointOne = new Point(3, 4);
+        movePointOne = new MoveablePoint(pointOne, 10, 10);
+        String moveString = movePointOne.toString();
+        assertTrue(idealString.equals(moveString));
     }
 }
