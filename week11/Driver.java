@@ -57,7 +57,7 @@ public class Driver {
     // POINT3D CONSTRUCTORS
         System.out.println();
         System.out.println("POINT3D CONSTRUCTORS:");
-
+        System.out.println();
         // no argument constructor 
         p3d1 = new Point3D();
         // default xyz coords
@@ -170,8 +170,8 @@ public class Driver {
         objectArray [7] = new Point3D(11, 12, 13);
         objectArray [8] = new Date(12, 2, 1999);
         int index2 = 0;
-        for (Object point2 : objectArray){
-            System.out.println(point2.getClass() + " at index " + index2 + "'s state: " + point2);
+        for (Object object : objectArray){
+            System.out.println(object.getClass() + " at index " + index2 + "'s state: " + object);
             // point.getXYZ();
             // Again, cannot call getXYZ (or getdistance anymore) as it is only defined for the Class Point and subclass Point3D. Point3D is a Point and Point is an object, but an Object is not all things a Point is much less all things a 3Dpoint is. 
             // can still call toString since that is a method that exists in the Object class. The correct toStirng method called for these various sublcasses due to Overriding the toString method to call the one particular to that class. 
