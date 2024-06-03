@@ -12,11 +12,25 @@ public class PointTest {
 
     @BeforeEach
 	public void setup() {
-		pointOne= null;
-		pointTwo= null;
-        distance= 0;
+		pointOne = null;
+		pointTwo = null;
+        distance = 0;
 	}
     
+    @Test
+    void testConstructorA() {
+    pointOne = new Point();
+    assertTrue(pointOne.getX() == 0);
+    assertTrue(pointOne.getY() == 0);
+    }
+
+    @Test
+    void testConstructorB() {
+    pointOne = new Point(5, 10);
+    assertTrue(pointOne.getX() == 5);
+    assertTrue(pointOne.getY() == 10);
+    }
+
     @Test
     void testDistance() {
     pointOne = new Point(1, 2);
