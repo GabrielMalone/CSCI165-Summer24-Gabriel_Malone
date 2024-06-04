@@ -128,10 +128,10 @@ public class World {
 				this.wildlife.overPopulation();
 				this.wildlife.naturalDeath();
 				if (Driver.forcefield){
-				Driver.alien.animalAttractor();
-				this.wildlife.reproduce();
-				this.wildlife.overPopulation();
-				this.wildlife.naturalDeath();
+					Driver.alien.animalAttractor();
+					this.wildlife.reproduce();
+					this.wildlife.overPopulation();
+					this.wildlife.naturalDeath();
 				}
 					
 			}
