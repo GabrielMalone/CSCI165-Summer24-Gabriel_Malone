@@ -120,7 +120,8 @@ public class World {
 				this.wildlife.clearEscaped();
 				this.wildlife.clearDead();
 			if (Driver.animalsWander){
-				this.wildlife.moveAround();				
+				this.wildlife.moveAround();	
+				Driver.alien.animalAttractor();			
 			}
 			else if (! Driver.animalsWander){
 				this.wildlife.reproduce();

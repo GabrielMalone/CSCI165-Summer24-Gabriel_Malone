@@ -117,7 +117,7 @@ public class World_Graphics extends JPanel implements ActionListener{
 		this.window.setTitle("Goobs Fire Sim");
 		this.window.setLocation(0,0);
 		this.window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.window.setSize(this.WINDOW_HEIGHT, this.WINDOW_HEIGHT);
+		this.window.setSize(this.WINDOW_HEIGHT, (int)(this.WINDOW_HEIGHT * 1.04));
 		this.window.setVisible(true);
 
 	}
