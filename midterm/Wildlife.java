@@ -42,12 +42,14 @@ public class Wildlife {
 		for( int i = 0 ; i < Driver.neWorld.size; i ++){
 			for (int j = 0 ; j < Driver.neWorld.size; j ++){
 				Cell current_location = Driver.neWorld.worldMatrix[i][j];
+			
 				if (current_location.getObject() == Cell.OBJECTS.VOID && current_location.row 		== 1 ||
 					current_location.getObject() == Cell.OBJECTS.VOID && current_location.column 	== 1 ||
 					current_location.getObject() == Cell.OBJECTS.VOID && current_location.row 		== (Driver.neWorld.size - 2) ||
 					current_location.getObject() == Cell.OBJECTS.VOID && current_location.column 	== (Driver.neWorld.size - 2) ){
+				
 						double repop_chance = rand.nextDouble();
-						if (repop_chance < Driver.popRegrowth)
+						if (repop_chance < Driver.popRegrowth && clearMoveChoice(current_location))
 							current_location.setObject(Cell.OBJECTS.WILDLIFEALIVE);
 				}
 			}
@@ -211,7 +213,7 @@ public class Wildlife {
 	
 
 
-	private void findRandomOpenSpot(ArrayList<Cell> neighborArray, Cell current_location) {
+	public void findRandomOpenSpot(ArrayList<Cell> neighborArray, Cell current_location) {
 		// randomly search the nearby cells and see if any spots suitable for moving to
 		// if don't do this, animals just move to the next open cell and will just move one direction
 		while (neighborArray.size() > 0){
@@ -277,13 +279,27 @@ public class Wildlife {
 	 * @param option
 	 * @return
 	 */
-	private boolean clearMoveChoice(Cell option){
+	public boolean clearMoveChoice(Cell option){
 		// can only escape map if running from fire
 		// verbose conditional because wanted to be able tweak a lot of settings.
 		if (option.getState() != Cell.STATES.BURNING && option.getObject() == Cell.OBJECTS.VOID && option.getState() != Cell.STATES.BURNT && option.row >= 0 && option.column >= 0 && option.row <= Driver.neWorld.size && option.column <= Driver.neWorld.size)
 			return true;
 		return false;
 	}
+
+	/**
+	 * Method to see if a cell is a clear spot to move to for a wandering animal
+	 * @param option
+	 * @return
+	 */
+	public boolean clearMoveChoiceB(Cell option){
+		// can only escape map if running from fire
+		// verbose conditional because wanted to be able tweak a lot of settings.
+		if (option.getState() != Cell.STATES.BURNING  && option.getState() != Cell.STATES.BURNT && option.row >= 0 && option.column >= 0 && option.row <= Driver.neWorld.size && option.column <= Driver.neWorld.size)
+			return true;
+		return false;
+	}
+
 
 	/**
 	 * Method to randomly clear dead animals from the map

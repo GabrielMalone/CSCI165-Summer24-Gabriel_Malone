@@ -96,8 +96,10 @@ public class World {
 			if(Driver.animalsOn)
 				Driver.alien.regenerate();
 			Driver.alien.animalVictim();
-			if (Driver.forcefield)
+			if (Driver.forcefield){
 				Driver.alien.forcefield();
+				Driver.alien.animalAttractor();
+			}
 		}
 		if (Driver.rainOn){
 			this.todaysRain.resetMoveState();
@@ -118,13 +120,13 @@ public class World {
 				this.wildlife.clearEscaped();
 				this.wildlife.clearDead();
 			if (Driver.animalsWander){
-				this.wildlife.moveAround();
-				
+				this.wildlife.moveAround();				
 			}
 			else if (! Driver.animalsWander){
 				this.wildlife.reproduce();
 				this.wildlife.overPopulation();
 				this.wildlife.naturalDeath();
+					
 			}
 			
 		}

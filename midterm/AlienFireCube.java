@@ -1,5 +1,6 @@
 // Gabriel Malone / CS165 / Midterm / Summer 2024
 
+
 import java.util.Random;
 
 public class AlienFireCube extends Wildlife{
@@ -196,15 +197,16 @@ public class AlienFireCube extends Wildlife{
         }
     }
 
+    /**
+     * Method to have a ring of fire protect the cube
+     */
     public void forcefield(){
-        // if nearby the cube, move towards the cube
         int alien_location_row = (int)(Driver.alien.player.row);
         int alien_location_col = (int)(Driver.alien.player.column); 
-        
-        for( int i = 0 ; i < Driver.neWorld.size; i ++){
-            for (int j = 0 ; j < Driver.neWorld.size; j ++){
+        for( int i = 1 ; i < Driver.neWorld.size - 1; i ++){
+            for (int j = 1 ; j < Driver.neWorld.size -1 ; j ++){
                 Cell currentCell = Driver.neWorld.worldMatrix[i][j];
-                double radius = Math.sqrt(Math.pow((Driver.alien.player_size), 2) * 2);
+                double radius = Math.sqrt(Math.pow((Driver.alien.player_size), 2) * 1);
                 // equation for a cirlce -- if within the radius surrounding the cube then attack
                 if  ( Math.sqrt((Math.pow(alien_location_row - currentCell.row , 2) + Math.pow(alien_location_col - currentCell.column, 2)))  < (radius + 1)
                 && Math.sqrt((Math.pow(alien_location_row - currentCell.row , 2) + Math.pow(alien_location_col - currentCell.column, 2)))  > (radius - 1)
@@ -215,6 +217,54 @@ public class AlienFireCube extends Wildlife{
             }
         }
     }
+    /**
+     * Method to have a ring of fire protect the cube
+     */
+    public void animalAttractor(){
+
+        getTheAnimals();
+        int alien_location_row = (int)(Driver.alien.player.row);
+        int alien_location_col = (int)(Driver.alien.player.column); 
+        while ( this.alltheanimals.size() > 0 ) {
+            // loop through the array at random spots
+            int rand_index_a = this.rand.nextInt(0,alltheanimals.size());
+            Cell currentCell = alltheanimals.get(rand_index_a);
+            this.alltheanimals.remove(currentCell);
+            double radius = Math.sqrt(Math.pow((Driver.alien.player_size), 2));
+            // equation for a cirlce -- if within the radius surrounding the cube then attack
+            if  ( Math.sqrt((Math.pow(alien_location_row - currentCell.row , 2) + Math.pow(alien_location_col - currentCell.column, 2)))  <= (radius * 1.5)
+            ){  
+                if (currentCell.row <= alien_location_row){
+                    if (clearMoveChoiceB(Driver.neWorld.worldMatrix[currentCell.row + 1][currentCell.column])){
+                        currentCell.setObject(Cell.OBJECTS.VOID);
+                        Driver.neWorld.worldMatrix[currentCell.row + 1][currentCell.column].setObject(Cell.OBJECTS.WILDLIFEALIVE);
+                    }
+                }
+                if (currentCell.row >= alien_location_row){
+                    if (clearMoveChoiceB(Driver.neWorld.worldMatrix[currentCell.row - 1][currentCell.column])){
+                        currentCell.setObject(Cell.OBJECTS.VOID);
+                        Driver.neWorld.worldMatrix[currentCell.row - 1][currentCell.column].setObject(Cell.OBJECTS.WILDLIFEALIVE);
+                    }
+                }
+                if (currentCell.column >= alien_location_col){
+                    if (clearMoveChoiceB(Driver.neWorld.worldMatrix[currentCell.row][currentCell.column - 1])){
+                        currentCell.setObject(Cell.OBJECTS.VOID);
+                        Driver.neWorld.worldMatrix[currentCell.row][currentCell.column - 1].setObject(Cell.OBJECTS.WILDLIFEALIVE);
+                    }
+                }
+                if (currentCell.column <= alien_location_col){
+                    if (clearMoveChoiceB(Driver.neWorld.worldMatrix[currentCell.row][currentCell.column + 1])){
+                        currentCell.setObject(Cell.OBJECTS.VOID);
+                        Driver.neWorld.worldMatrix[currentCell.row][currentCell.column + 1].setObject(Cell.OBJECTS.WILDLIFEALIVE);
+                    }
+                }
+            }
+        }
+    }
+        
+    
+
+    
 
     public void cubeTeleport(){
         for( int i = 0 ; i < Driver.neWorld.size; i ++){

@@ -301,7 +301,7 @@ public class World_Graphics extends JPanel implements ActionListener{
 			return size = (int)(Driver.size / 35);
 			}
 		else if (Driver.size == 201){
-			return size = (int)(Driver.size / 60);
+			return size = (int)(Driver.size / 50);
 			}
 		else if (Driver.size == 301){
 				return size = (int)(Driver.size / 100);
