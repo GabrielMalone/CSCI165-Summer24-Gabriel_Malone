@@ -99,7 +99,9 @@ public class World {
 			if (Driver.forcefield){
 				Driver.alien.forcefield();
 				if (Driver.animalsOn)
+					this.wildlife.moveAround();
 					Driver.alien.animalAttractor();
+					
 			}
 		}
 		if (Driver.rainOn){
@@ -120,15 +122,17 @@ public class World {
 				this.wildlife.regrowWildlife();
 				this.wildlife.clearEscaped();
 				this.wildlife.clearDead();
-			if (Driver.animalsWander){
-				this.wildlife.moveAround();
-				if (Driver.player_set)	
-					Driver.alien.animalAttractor();			
-			}
-			else if (! Driver.animalsWander){
+			
+			if (! Driver.animalsWander){
 				this.wildlife.reproduce();
 				this.wildlife.overPopulation();
 				this.wildlife.naturalDeath();
+				if (Driver.forcefield){
+				Driver.alien.animalAttractor();
+				this.wildlife.reproduce();
+				this.wildlife.overPopulation();
+				this.wildlife.naturalDeath();
+				}
 					
 			}
 			
