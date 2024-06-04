@@ -148,7 +148,7 @@ public class AlienFireCube extends Wildlife{
                     && currCell.column >= this.player.column - (int)this.player_size / 2.5 
                     && currCell.column <= this.player.column + (int)this.player_size / 2.5
                     && currCell.getState() == Cell.STATES.TREE){
-                        Bomb.placeBomb(i, j);
+                        Bomb.placeBomb(currCell.row, currCell.column);
                     }
             }
         }
@@ -191,7 +191,7 @@ public class AlienFireCube extends Wildlife{
                     && currCell.column >= this.player.column - (int)this.player_size / 2.5 
                     && currCell.column <= this.player.column + (int)this.player_size / 2.5
                     && currCell.getState() == Cell.STATES.BURNING){
-                        currCell.setObject(Cell.OBJECTS.WILDLIFEALIVE);
+                        currCell.setState(Cell.STATES.TREE);
                 }
             }
         }
@@ -213,6 +213,11 @@ public class AlienFireCube extends Wildlife{
                 ){  
                     Cell [] neighbors = Driver.neWorld.findNeighbors(currentCell.row, currentCell.column);
                     Driver.neWorld.seeWhatBurns(neighbors, currentCell);
+                }
+                if  ( Math.sqrt((Math.pow(alien_location_row - currentCell.row , 2) + Math.pow(alien_location_col - currentCell.column, 2)))  < (radius + 15)
+                && Math.sqrt((Math.pow(alien_location_row - currentCell.row , 2) + Math.pow(alien_location_col - currentCell.column, 2)))  > (radius + 10)
+                ){  
+                    currentCell.setObject(Cell.OBJECTS.WILDLIFEALIVE);
                 }
             }
         }
