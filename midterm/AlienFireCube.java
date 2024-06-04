@@ -217,7 +217,8 @@ public class AlienFireCube extends Wildlife{
                 if  ( Math.sqrt((Math.pow(alien_location_row - currentCell.row , 2) + Math.pow(alien_location_col - currentCell.column, 2)))  < (radius + 15)
                 && Math.sqrt((Math.pow(alien_location_row - currentCell.row , 2) + Math.pow(alien_location_col - currentCell.column, 2)))  > (radius + 10)
                 ){  
-                    currentCell.setObject(Cell.OBJECTS.WILDLIFEALIVE);
+                    if (clearMoveChoice(currentCell))
+                        currentCell.setObject(Cell.OBJECTS.WILDLIFEALIVE);
                 }
             }
         }
