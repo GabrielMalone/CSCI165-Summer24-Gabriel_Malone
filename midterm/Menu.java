@@ -205,12 +205,12 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		this.rain_slider.setEnabled(false);
 		// burn rate slider
 		this.burn_slider.addChangeListener(this);
-		this.burn_slider.setValue(25);
+		this.burn_slider.setValue(19);
 		this.burn_Label.setFont(labelfont);
 		// tree rate slider
 		this.tree_Slider.addChangeListener(this);
 		this.tree_slider_Label.setFont(labelfont);
-		this.tree_Slider.setValue(5);
+		this.tree_Slider.setValue(53);
 		this.tree_slider_Label.setForeground(Color.BLACK);
 		// modes
 		this.endless.addActionListener(this);
