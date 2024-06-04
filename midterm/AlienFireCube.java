@@ -191,7 +191,7 @@ public class AlienFireCube extends Wildlife{
                     && currCell.column >= this.player.column - (int)this.player_size / 2.5 
                     && currCell.column <= this.player.column + (int)this.player_size / 2.5
                     && currCell.getState() == Cell.STATES.BURNING){
-                        currCell.setState(Cell.STATES.TREE);
+                        currCell.setObject(Cell.OBJECTS.WILDLIFEALIVE);
                 }
             }
         }
@@ -263,9 +263,6 @@ public class AlienFireCube extends Wildlife{
     }
         
     
-
-    
-
     public void cubeTeleport(){
         for( int i = 0 ; i < Driver.neWorld.size; i ++){
             for (int j = 0 ; j < Driver.neWorld.size; j ++){

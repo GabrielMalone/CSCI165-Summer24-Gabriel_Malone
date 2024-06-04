@@ -39,7 +39,7 @@ public class World {
 	public  static BufferedImage [] fires = new BufferedImage[4];
 	public  static BufferedImage [] burnt = new BufferedImage[4];
 	public  static BufferedImage [] anima = new BufferedImage[4];
-	public  static BufferedImage [] winds = new BufferedImage[4];
+	public  static BufferedImage [] rains = new BufferedImage[4];
 	// for stochatic method
 	private Random rand = new Random();
 	
@@ -614,7 +614,6 @@ public class World {
 			BufferedImage tree4 = ImageIO.read(getClass().getResourceAsStream("/trees/tree4.png"));
 			BufferedImage tree5 = ImageIO.read(getClass().getResourceAsStream("/trees/tree5.png"));
 			
-
 			trees[0] = tree2;
 			trees[1] = tree3;
 			trees[2] = tree4;
@@ -655,11 +654,7 @@ public class World {
 		try{
 
 			BufferedImage burnt1 = ImageIO.read(getClass().getResourceAsStream("/burnt/bunt1.png"));
-			BufferedImage burnt2 = ImageIO.read(getClass().getResourceAsStream("/burnt/burnt2.png"));
-			BufferedImage moist = ImageIO.read(getClass().getResourceAsStream("/trees/moist.png"));
 			burnt[0] = burnt1;
-			burnt[1] = burnt2;
-			burnt[2] = moist;
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -673,14 +668,10 @@ public class World {
 
 		try{
 
-			BufferedImage animal1 = ImageIO.read(getClass().getResourceAsStream("/animals/deaddino.png"));
-			BufferedImage animal2 = ImageIO.read(getClass().getResourceAsStream("/animals/dino2.png"));
-			BufferedImage animal3 = ImageIO.read(getClass().getResourceAsStream("/animals/dino.png"));
-			BufferedImage animal4 = ImageIO.read(getClass().getResourceAsStream("/animals/cat.png"));
+			BufferedImage animal1 = ImageIO.read(getClass().getResourceAsStream("/animals/animal.png"));
+			BufferedImage animal2 = ImageIO.read(getClass().getResourceAsStream("/animals/animal2.png"));
 			anima[0] = animal1;
 			anima[1] = animal2;
-			anima[2] = animal3;
-			anima[3] = animal4;
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -694,12 +685,9 @@ public class World {
 
 		try{
 
-			BufferedImage wind1 = ImageIO.read(getClass().getResourceAsStream("/winds/wind.png"));
-			BufferedImage wind2 = ImageIO.read(getClass().getResourceAsStream("/winds/wind2.png"));
-			BufferedImage wind3 = ImageIO.read(getClass().getResourceAsStream("/winds/wind3.png"));
-			winds[0] = wind1;
-			winds[1] = wind2;
-			winds[2] = wind3;
+			BufferedImage rain = ImageIO.read(getClass().getResourceAsStream("/rain/rain.png"));
+			rains[0] = rain;
+		
 			
 		} catch (IOException e) {
 			e.printStackTrace();

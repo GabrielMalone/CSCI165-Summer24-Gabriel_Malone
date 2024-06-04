@@ -29,11 +29,8 @@ public class World_Graphics extends JPanel implements ActionListener{
 	
 
 	public World_Graphics() {
-		world.initializeFire();
-		initTimer(); 
 		// MAIN WINDOW
 		// mouse clicks to place player
-
 		addMouseListener(new MouseAdapter(){
 			public void mousePressed(MouseEvent e){
 				int column = e.getX() / IMAGE_SIZE;
@@ -75,9 +72,8 @@ public class World_Graphics extends JPanel implements ActionListener{
 				Bomb.placeBomb(row, column);
 			}
 		});
-
-
-		this.window.add(this);
+		
+	
 		// add key listener
 		this.window.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e){
@@ -114,11 +110,16 @@ public class World_Graphics extends JPanel implements ActionListener{
 				}
 			}
 		});
+
+		world.initializeFire();
+		initTimer(); 
+		this.window.add(this);
 		this.window.setTitle("Goobs Fire Sim");
-		this.window.setSize(WINDOW_HEIGHT, (int)(WINDOW_HEIGHT * 1.045));
 		this.window.setLocation(0,0);
 		this.window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.window.setSize(this.WINDOW_HEIGHT, this.WINDOW_HEIGHT);
 		this.window.setVisible(true);
+
 	}
 
 	/**
