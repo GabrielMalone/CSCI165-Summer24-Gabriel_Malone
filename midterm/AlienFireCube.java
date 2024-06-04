@@ -215,10 +215,10 @@ public class AlienFireCube extends Wildlife{
                     Driver.neWorld.seeWhatBurns(neighbors, currentCell);
                 }
                 if  ( Math.sqrt((Math.pow(alien_location_row - currentCell.row , 2) + Math.pow(alien_location_col - currentCell.column, 2)))  < (radius + 15)
-                && Math.sqrt((Math.pow(alien_location_row - currentCell.row , 2) + Math.pow(alien_location_col - currentCell.column, 2)))  > (radius + 10)
+                && Math.sqrt((Math.pow(alien_location_row - currentCell.row , 2) + Math.pow(alien_location_col - currentCell.column, 2)))  > (radius + 14)
                 ){  
-                    if (clearMoveChoice(currentCell))
-                        currentCell.setObject(Cell.OBJECTS.WILDLIFEALIVE);
+                    //if (clearMoveChoice(currentCell))
+                       // currentCell.setObject(Cell.OBJECTS.WILDLIFEALIVE);
                 }
             }
         }
@@ -227,7 +227,6 @@ public class AlienFireCube extends Wildlife{
      * Method to have a ring of fire protect the cube
      */
     public void animalAttractor(){
-
         getTheAnimals();
         int alien_location_row = (int)(Driver.alien.player.row);
         int alien_location_col = (int)(Driver.alien.player.column); 

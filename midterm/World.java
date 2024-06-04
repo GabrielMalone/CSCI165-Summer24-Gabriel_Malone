@@ -98,7 +98,8 @@ public class World {
 			Driver.alien.animalVictim();
 			if (Driver.forcefield){
 				Driver.alien.forcefield();
-				Driver.alien.animalAttractor();
+				if (Driver.animalsOn)
+					Driver.alien.animalAttractor();
 			}
 		}
 		if (Driver.rainOn){
@@ -120,8 +121,9 @@ public class World {
 				this.wildlife.clearEscaped();
 				this.wildlife.clearDead();
 			if (Driver.animalsWander){
-				this.wildlife.moveAround();	
-				Driver.alien.animalAttractor();			
+				this.wildlife.moveAround();
+				if (Driver.player_set)	
+					Driver.alien.animalAttractor();			
 			}
 			else if (! Driver.animalsWander){
 				this.wildlife.reproduce();
@@ -655,7 +657,13 @@ public class World {
 		try{
 
 			BufferedImage burnt1 = ImageIO.read(getClass().getResourceAsStream("/burnt/bunt1.png"));
+			BufferedImage burnt2 = ImageIO.read(getClass().getResourceAsStream("/burnt/burnt2.png"));
+			BufferedImage burnt3 = ImageIO.read(getClass().getResourceAsStream("/burnt/burnt3.png"));
+			BufferedImage burnt4 = ImageIO.read(getClass().getResourceAsStream("/burnt/burnt4.png"));
 			burnt[0] = burnt1;
+			burnt[1] = burnt2;
+			burnt[2] = burnt3;
+			burnt[3] = burnt4;
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -671,8 +679,12 @@ public class World {
 
 			BufferedImage animal1 = ImageIO.read(getClass().getResourceAsStream("/animals/animal.png"));
 			BufferedImage animal2 = ImageIO.read(getClass().getResourceAsStream("/animals/animal2.png"));
+			BufferedImage animal3 = ImageIO.read(getClass().getResourceAsStream("/animals/animal3.png"));
+			BufferedImage animal4 = ImageIO.read(getClass().getResourceAsStream("/animals/animal4.png"));
 			anima[0] = animal1;
 			anima[1] = animal2;
+			anima[2] = animal3;
+			anima[3] = animal4;
 
 		} catch (IOException e) {
 			e.printStackTrace();

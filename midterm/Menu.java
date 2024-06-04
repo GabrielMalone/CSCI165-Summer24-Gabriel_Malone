@@ -426,9 +426,10 @@ public class Menu extends JPanel implements ActionListener, ChangeListener{
 		// live data updates with timer
 		if (finished_start_up){
 			this.data_pop_output.setText(String.valueOf((int)Driver.neWorld.totalAlive()));
-			if (! paused)
-			this.data_steps_output.setText(String.valueOf(Driver.neWorld.trackSteps()));
-			this.data_burn_area_output.setText(String.valueOf((int)Driver.neWorld.burnPercentage()) + "%");
+			if (! paused){
+				this.data_steps_output.setText(String.valueOf(Driver.neWorld.trackSteps()));
+				this.data_burn_area_output.setText(String.valueOf((int)Driver.neWorld.burnPercentage()) + "%");
+			}
 
 		}
 

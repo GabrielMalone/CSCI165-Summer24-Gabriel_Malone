@@ -143,8 +143,9 @@ public class Cell {
 	 */
 	public void setObject (OBJECTS object){
 		this.object = object;
+		int randindex = this.rand.nextInt(4);
 		// set image for animals / player
-		if (this.object == Cell.OBJECTS.WILDLIFEALIVE) this.animalimage = World.anima[0];
+		if (this.object == Cell.OBJECTS.WILDLIFEALIVE) this.animalimage = World.anima[randindex];
 		if (this.object == Cell.OBJECTS.WILDLIFEDEAD) this.animalimage = World.anima[1];
 		if (this.object == Cell.OBJECTS.PLAYER) this.animalimage = World.anima[0];
 	}
@@ -208,7 +209,7 @@ public class Cell {
 			this.stateimage = World.burnt[0];
 		}
 		else if (this.state == Cell.STATES.BURNT){
-				this.stateimage = World.burnt[0];
+				this.stateimage = World.burnt[randindex];
 		}
 	}
 
