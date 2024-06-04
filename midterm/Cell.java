@@ -146,7 +146,7 @@ public class Cell {
 		int randindex = this.rand.nextInt(4);
 		// set image for animals / player
 		if (this.object == Cell.OBJECTS.WILDLIFEALIVE) this.animalimage = World.anima[randindex];
-		if (this.object == Cell.OBJECTS.WILDLIFEDEAD) this.animalimage = World.anima[1];
+		if (this.object == Cell.OBJECTS.WILDLIFEDEAD) this.animalimage = World.anima[4];
 		if (this.object == Cell.OBJECTS.PLAYER) this.animalimage = World.anima[0];
 	}
 

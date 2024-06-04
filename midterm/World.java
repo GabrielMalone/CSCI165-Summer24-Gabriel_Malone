@@ -38,7 +38,7 @@ public class World {
 	public  static BufferedImage [] trees = new BufferedImage[4];
 	public  static BufferedImage [] fires = new BufferedImage[4];
 	public  static BufferedImage [] burnt = new BufferedImage[4];
-	public  static BufferedImage [] anima = new BufferedImage[4];
+	public  static BufferedImage [] anima = new BufferedImage[5];
 	public  static BufferedImage [] rains = new BufferedImage[4];
 	// for stochatic method
 	private Random rand = new Random();
@@ -681,10 +681,12 @@ public class World {
 			BufferedImage animal2 = ImageIO.read(getClass().getResourceAsStream("/animals/animal2.png"));
 			BufferedImage animal3 = ImageIO.read(getClass().getResourceAsStream("/animals/animal3.png"));
 			BufferedImage animal4 = ImageIO.read(getClass().getResourceAsStream("/animals/animal4.png"));
+			BufferedImage animal5 = ImageIO.read(getClass().getResourceAsStream("/animals/deadanimal.png"));
 			anima[0] = animal1;
 			anima[1] = animal2;
 			anima[2] = animal3;
 			anima[3] = animal4;
+			anima[4] = animal5;
 
 		} catch (IOException e) {
 			e.printStackTrace();
