@@ -232,7 +232,7 @@ public class AlienFireCube extends Wildlife{
             this.alltheanimals.remove(currentCell);
             double radius = Math.sqrt(Math.pow((Driver.alien.player_size), 2));
             // equation for a cirlce -- if within the radius surrounding the cube then attack
-            if  ( Math.sqrt((Math.pow(alien_location_row - currentCell.row , 2) + Math.pow(alien_location_col - currentCell.column, 2)))  <= (radius * 1.5)
+            if  ( Math.sqrt((Math.pow(alien_location_row - currentCell.row , 2) + Math.pow(alien_location_col - currentCell.column, 2)))  >= (radius)
             ){  
                 if (currentCell.row <= alien_location_row){
                     if (clearMoveChoiceB(Driver.neWorld.worldMatrix[currentCell.row + 1][currentCell.column])){
