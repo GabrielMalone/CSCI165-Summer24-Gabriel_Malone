@@ -280,6 +280,17 @@ public class AlienFireCube extends Wildlife{
         }
     }
 
+    public void removeCube(){
+        for( int i = 0 ; i < Driver.neWorld.size; i ++){
+            for (int j = 0 ; j < Driver.neWorld.size; j ++){
+                Cell currentCell = Driver.neWorld.worldMatrix[i][j];
+                if (currentCell.getObject() == Cell.OBJECTS.PLAYER){
+                      currentCell.setObject(Cell.OBJECTS.VOID);
+                }   
+            }
+        }
+    }
+
 
 }
 

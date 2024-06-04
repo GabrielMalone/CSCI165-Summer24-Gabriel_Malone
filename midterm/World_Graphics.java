@@ -102,6 +102,11 @@ public class World_Graphics extends JPanel implements ActionListener{
 				if (keyCode == KeyEvent.VK_LEFT){
 					Driver.alien.fireLeft();
 				}
+				if (keyCode == KeyEvent.VK_0){
+					Driver.alien.removeCube();
+					Driver.player_set = false;
+					Driver.forcefield = false;
+				}
 				if (keyCode == KeyEvent.VK_SPACE){
 					if (Driver.forcefield)
 						Driver.forcefield = false;
