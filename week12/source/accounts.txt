@@ -1,0 +1,2 @@
+Gabriel,Malone,6072620842,6,22,1983,6,6,2024,GM662024,checking,123,6,6,2024,3000,30,Scrooge,McDuck
+Gabriel,Malone,6072620842,6,22,1983,6,6,2024,GM662024,savings,123,6,6,2024,3000,3.0,Scrooge,McDuck
