@@ -20,7 +20,7 @@ public class AccountManagerTest {
         // add the account to the array and the map
         manager.addAccount(savingsAccount);
         // save the account info to txt file
-        manager.saveAccounts("unit_test/accounts.txt");
+        manager.saveAccount("unit_test/accounts.txt", savingsAccount);
 
         // clear the arrays and map
         manager.bankAccountMap.clear();
@@ -68,9 +68,9 @@ public class AccountManagerTest {
         AccountManager manager = new AccountManager();
         manager.loadManagers("source/employees.txt");
         // manager with ID 0000 in the employees text file
-        Employee employee = manager.findEmployee("0000");
+        Employee employee = manager.findEmployee("1111");
         // employee info should match the info in the text file (not an exhaustive test yet)
-        assertTrue(employee.getId() == 0000);
+        assertTrue(employee.getId() == 1111);
         assertTrue(employee.getName().equals("Big Wig"));
         assertTrue(employee.getDepartment().equals("Accounts Dept"));
     }

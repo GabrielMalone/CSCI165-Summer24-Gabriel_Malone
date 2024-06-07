@@ -93,10 +93,10 @@ public class Bank {
 		// Now create new Customer Object (Person, todays date, new customer ID)
 		Customer customer = new Customer(person, Date.dateInitializer(), customerID);
 		// Open an account
-		Account account = new Account(createAccountNumber(), customer, Date.dateInitializer(), 0.0);
+		Account account = new Account(createAccountNumber(), customer, manager.findEmployee(String.valueOf(manager.getCurrentLoginID())), Date.dateInitializer());
 		// add this customer to the bank's 'database'
 		this.manager.addAccount(account);
-		this.manager.saveAccounts("source/accounts.txt");
+		this.manager.saveAccount("source/accounts.txt", account);
 	}
 
 	private String createCustomerID(String firstName, String lastName, Date DOB){

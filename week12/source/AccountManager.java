@@ -55,90 +55,91 @@ public class AccountManager {
 	/**
 	 * Method to iterate through the array of accounts and save them to a text file
 	 */
-	public void saveAccounts(String filename){     
+	public void saveAccount(String filename, Account account){     
 		try{
-			PrintWriter writer = new PrintWriter(new FileOutputStream(new File(filename), false));
-			for (Account account : bankAccounts){
+			PrintWriter writer = new PrintWriter(new FileOutputStream(new File(filename), true));
+			
+			String accountString = "";
+			this.firstName		= account.getOwner().getFirstName();
+			accountString 		+= this.firstName + ",";
 
-				String accountString = "";
-				this.firstName		= account.getOwner().getFirstName();
-				accountString 		+= this.firstName + ",";
+			this.lastName		= account.getOwner().getLastName();
+			accountString 		+= this.lastName + ",";
 
-				this.lastName		= account.getOwner().getLastName();
-				accountString 		+= this.lastName + ",";
+			this.phone			= account.getOwner().rawPhoneNumber(account.getOwner().getPhoneNumber());
+			accountString 		+= this.phone + ",";
+			
+			this.birthMonth		= String.valueOf(account.getOwner().getDOB().getMonth());
+			accountString 		+= this.birthMonth + ",";
 
-				this.phone			= account.getOwner().rawPhoneNumber(account.getOwner().getPhoneNumber());
-				accountString 		+= this.phone + ",";
-				
-				this.birthMonth		= String.valueOf(account.getOwner().getDOB().getMonth());
-				accountString 		+= this.birthMonth + ",";
+			this.birthDay		= String.valueOf(account.getOwner().getDOB().getDay());
+			accountString 		+= this.birthDay + ",";
 
-				this.birthDay		= String.valueOf(account.getOwner().getDOB().getDay());
-				accountString 		+= this.birthDay + ",";
+			this.birthYear		= String.valueOf(account.getOwner().getDOB().getYear());
+			accountString 		+= this.birthYear + ",";
 
-				this.birthYear		= String.valueOf(account.getOwner().getDOB().getYear());
-				accountString 		+= this.birthYear + ",";
+			this.joinMonth		= String.valueOf(account.getOwner().getDateJoined().getMonth());
+			accountString 		+= this.joinMonth + ",";
 
-				this.joinMonth		= String.valueOf(account.getOwner().getDateJoined().getMonth());
-				accountString 		+= this.joinMonth + ",";
+			this.joinDay		= String.valueOf(account.getOwner().getDateJoined().getDay());
+			accountString 		+= this.joinDay + ",";
 
-				this.joinDay		= String.valueOf(account.getOwner().getDateJoined().getDay());
-				accountString 		+= this.joinDay + ",";
+			this.joinYear		= String.valueOf(account.getOwner().getDateJoined().getYear());
+			accountString 		+= this.joinYear + ",";
 
-				this.joinYear		= String.valueOf(account.getOwner().getDateJoined().getYear());
-				accountString 		+= this.joinYear + ",";
+			this.customerID		= account.getOwner().getID();
+			accountString 		+= this.customerID + ",";
 
-				this.customerID		= account.getOwner().getID();
-				accountString 		+= this.customerID + ",";
+			this.accountID		= String.valueOf((int)account.getAccountNumber());
+			accountString 		+= this.accountID + ",";
 
-				this.accountID		= String.valueOf((int)account.getAccountNumber());
-				accountString 		+= this.accountID + ",";
+			if (account.getClass() == SavingsAccount.class){
+				this.accountType = "savings";
+				accountString += this.accountType + ",";
+			}
+			if (account.getClass() == CheckingAccount.class){
+				this.accountType = "checking";
+				accountString += this.accountType + ",";
+			}
+			if (account.getClass() == Account.class){
+				this.accountType = " ";
+				accountString += this.accountType + ",";
+			}
 
-				if (account.getClass() == SavingsAccount.class){
-					this.accountType = "savings";
-					accountString += this.accountType + ",";
-				}
-				if (account.getClass() == CheckingAccount.class){
-					this.accountType = "checking";
-					accountString += this.accountType + ",";
-				}
-				if (account.getClass() == Account.class){
-					this.accountType = " ";
-					accountString += this.accountType + ",";
-				}
+			this.accntDateM		= String.valueOf(account.getDateCreated().getMonth());
+			accountString 		+= this.accntDateM + ",";
 
-				this.accntDateM		= String.valueOf(account.getDateCreated().getMonth());
-				accountString 		+= this.accntDateM + ",";
+			this.accntDateD		= String.valueOf(account.getDateCreated().getDay());
+			accountString 		+= this.accntDateD + ",";
 
-				this.accntDateD		= String.valueOf(account.getDateCreated().getDay());
-				accountString 		+= this.accntDateD + ",";
+			this.accntDateY		= String.valueOf(account.getDateCreated().getYear());
+			accountString 		+= this.accntDateY + ",";
 
-				this.accntDateY		= String.valueOf(account.getDateCreated().getYear());
-				accountString 		+= this.accntDateY + ",";
+			this.accountBal		= String.valueOf(account.getBalance());
+			accountString 		+= this.accountBal + ",";
 
-				this.accountBal		= String.valueOf(account.getBalance());
-				accountString 		+= this.accountBal + ",";
+			if (account.getClass() == SavingsAccount.class){
+				SavingsAccount savings_account = (SavingsAccount) account;
+				this.limit_rate = String.valueOf(savings_account.getInterest());
+				accountString 	+= this.limit_rate + ",";
+			}
+			if (account.getClass() == CheckingAccount.class) {
+				CheckingAccount checking_account = (CheckingAccount) account;
+				this.limit_rate = String.valueOf(checking_account.getOverdraftLimit());
+				accountString 	+= this.limit_rate + ",";
+			}
+			if (account.getClass() == Account.class) {
+				this.limit_rate = " ";
+				accountString 	+= this.limit_rate + ",";
+			}
 
-				if (account.getClass() == SavingsAccount.class){
-					SavingsAccount savings_account = (SavingsAccount) account;
-					this.limit_rate = String.valueOf(savings_account.getInterest());
-					accountString 	+= this.limit_rate + ",";
-				}
-				if (account.getClass() == CheckingAccount.class) {
-					CheckingAccount checking_account = (CheckingAccount) account;
-					this.limit_rate = String.valueOf(checking_account.getOverdraftLimit());
-					accountString 	+= this.limit_rate + ",";
-				}
-				if (account.getClass() == Account.class) {
-					this.limit_rate = " ";
-					accountString 	+= this.limit_rate + ",";
-				}
+			this.managerID		= String.valueOf(this.currentEmployeeLoggedInID);
+			accountString 		+= this.managerID + ",";
 
-				this.managerID		= String.valueOf(this.currentEmployeeLoggedInID);
-				accountString 		+= this.managerID + ",";
-
-				writer.print(accountString + "\n");
-			} 	
+			// need to fix it so that it only saves a customer if they aren't already present 
+			// so that the correct manage is not overwritten
+			writer.print(accountString + "\n");
+		
 			writer.close();
 		}catch(IOException ioe){
 			System.out.print("Could not write to file");
@@ -342,6 +343,10 @@ public class AccountManager {
 
 	public void setCurrentLoginID(Employee employee){
 		this.currentEmployeeLoggedInID = employee.getId();
+	}
+
+	public int getCurrentLoginID(){
+		return this.currentEmployeeLoggedInID;
 	}
 	
 
