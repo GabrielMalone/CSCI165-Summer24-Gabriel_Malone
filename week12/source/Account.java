@@ -165,12 +165,13 @@ public class Account
 	@Override
 	public String toString() {
 		String space = " ";
-		return 	"\n" + space.repeat(21) + "Account Number: "+ accountNumber	+ 
-				"\n" + space.repeat(21) + "Opened: "		+ dateCreated	+	// calls Date.toString
-				"\n" + space.repeat(21) + "Owner: "			+ owner 		+ 	// calls Customer.toString
-				"\n" + space.repeat(21) + "Total of All Acnt Balances: "	+ balance + "\n" +
-				"\n" + space.repeat(21) + "Acnt Manager: "	+ accountManager + "\n";	// calls Employee.toString
-				
+		return 	"\n" + Colors.ANSI_CYAN + space.repeat(21)	+ "Account Number: "				+ Colors.ANSI_RESET+ accountNumber 										+ 
+				"\n" + Colors.ANSI_CYAN + space.repeat(21) 	+ "Opened: "						+ Colors.ANSI_RESET	+ dateCreated 										+	
+				"\n" + space.repeat(21) + Colors.ANSI_CYAN 	+ "Owner: "							+ Colors.ANSI_RESET	+ owner + Colors.ANSI_RESET							+ 	
+				"\n" + space.repeat(21) + Colors.ANSI_CYAN 	+ "Total of All Acnt Balances: "	+ Colors.ANSI_RESET  + Colors.ANSI_GREEN + balance + Colors.ANSI_RESET 	+
+				"\n" + 
+				"\n" + Colors.ANSI_CYAN + space.repeat(21) 	+ "Acnt Manager: " + accountManager + 
+				"\n" + Colors.ANSI_RESET;				
 	}
 
 	@Override

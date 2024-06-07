@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class AccountManager {
-
+	// customer vars
 	private String firstName;
 	private String lastName;
 	private String phone;
@@ -29,82 +29,27 @@ public class AccountManager {
 	private String accntDateY;
 	private String accountBal;
 	private String limit_rate;
-	//private String managerF;
-	//private String managerL;
+	// employee vars
+	private String managerF;
+	private String managerL;
+	private String managerPhone;
+	private String managerBirthM;
+	private String managerBirthD;
+	private String managerBirthY;
+	private String managerHireM;
+	private String managerHireD;
+	private String managerHireY;
+	private String managerID;
+	private String managerDept;
+	// total accounts at bank
 	public int total_acnts;
-
 	// load current accounts
 	public ArrayList<Account> bankAccounts = new ArrayList<>();
+	// load manager accounts
+	public ArrayList<Employee> employeeAccounts = new ArrayList<>();
 	// Map of customer ID and their account for searching purposes
+	public Map<String, Employee> bankEmployeeMap = new HashMap<String, Employee>(10); 
 	public Map<String, Account> bankAccountMap = new HashMap<String, Account>(10); 
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public void setBirthMonth(String birthMonth) {
-		this.birthMonth = birthMonth;
-	}
-
-	public void setBirthDay(String birthDay) {
-		this.birthDay = birthDay;
-	}
-
-	public void setBirthYear(String birthYear) {
-		this.birthYear = birthYear;
-	}
-
-	public void setJoinMonth(String joinMonth) {
-		this.joinMonth = joinMonth;
-	}
-
-	public void setJoinDay(String joinDay) {
-		this.joinDay = joinDay;
-	}
-
-	public void setJoinYear(String joinYear) {
-		this.joinYear = joinYear;
-	}
-
-	public void setCustomerID(String customerID) {
-		this.customerID = customerID;
-	}
-
-	public void setAccountID(String accountID) {
-		this.accountID = accountID;
-	}
-
-	public void setAccountType(String accountType) {
-		this.accountType = accountType;
-	}
-
-	public void setAccntDateM(String accntDateM) {
-		this.accntDateM = accntDateM;
-	}
-
-	public void setAccntDateD(String accntDateD) {
-		this.accntDateD = accntDateD;
-	}
-
-	public void setAccntDateY(String accntDateY) {
-		this.accntDateY = accntDateY;
-	}
-
-	public void setAccountBal(String accountBal) {
-		this.accountBal = accountBal;
-	}
-
-	public void setLimit_rate(String limit_rate) {
-		this.limit_rate = limit_rate;
-	}
 
 	/**
 	 * Method to iterate through the array of accounts and save them to a text file
@@ -196,6 +141,41 @@ public class AccountManager {
 		}	
 	}
 
+	public void loadManagers(String filename){
+		try{
+			// Create a File object
+			File file = new File(filename);
+			// Create a Scanner object to read the file
+			Scanner scanner	= new Scanner(file);
+			// Loop through the file
+			while(scanner.hasNextLine()){
+				// split line at commas into array
+				String[] line = scanner.nextLine().split(",", 0);
+				// pull out name, price, calories via indexing
+				this.managerF  		= line[0];
+				this.managerL   	= line[1];
+				this.managerPhone	= line[2];
+				this.managerBirthM 	= line[3];
+				this.managerBirthD	= line[4];
+				this.managerBirthY  = line[5];
+				this.managerHireM  	= line[6];
+				this.managerHireD   = line[7];
+				this.managerHireY   = line[8];
+				this.managerID 		= line[9];
+				this.managerDept 	= line[10];
+
+				Employee employee = createEmployee();
+				// add it to the ArrayList
+				this.employeeAccounts.add(employee);
+				this.bankEmployeeMap.put(this.managerID, employee);
+			}
+			scanner.close();
+		}
+		catch(FileNotFoundException e){
+			System.out.println("File not found: " + filename);
+		}
+	}
+
 	/**
 	* Method to load text info of accounts from a file
 	*
@@ -229,13 +209,13 @@ public class AccountManager {
 				this.accntDateY 	= line[14];
 				this.accountBal 	= line[15];
 				this.limit_rate   	= line[16];
-				//this.managerF 	= line[17];
-				//this.managerL   	= line[18];
+				//this.managerID 	= line[17];
+			
 				Account account = createAccount();
 				// add it to the ArrayList
 				this.bankAccounts.add(account);
 				// add to map for searching function
-				this.bankAccountMap.put(customerID, account);
+				this.bankAccountMap.put(this.customerID, account);
 				this.total_acnts ++;
 			}
 			scanner.close();
@@ -250,6 +230,8 @@ public class AccountManager {
 	 * @returns an instance of the appropriate account type from the data in a text file
 	 */
 	public Account createAccount(){
+		// set manager to employee at terminal / change this later to get the employee object from the bank class
+		Employee employee = new Employee(new Person("Gabriel", "Malone", "6072620842", new Date(6,22,1983)), new Date(12, 1, 2020), 0000, "Mail Room Dept");
 		// create person's DOB object
 		Date DOB = new Date(Integer.valueOf(this.birthMonth), Integer.valueOf(this.birthDay), Integer.valueOf(this.birthYear));
 		// create person's join date object
@@ -264,22 +246,36 @@ public class AccountManager {
 			//convert account rate/limit to double
 			double rate_l = Double.valueOf(this.limit_rate);
 			// create filled out checking account object
-			CheckingAccount checkingAccount = new CheckingAccount(actID, new Customer( new Person(this.firstName, this.lastName, this.phone, DOB), joinDate, this.customerID), accDate, balance, rate_l);
+			CheckingAccount checkingAccount = new CheckingAccount(actID, new Customer( new Person(this.firstName, this.lastName, this.phone, DOB), joinDate, this.customerID),accDate, balance, rate_l);
+			checkingAccount.setManager(employee);
 			return checkingAccount;
 		}
 		if (this.accountType.equals("savings")){
 			double rate_l = Double.valueOf(this.limit_rate);
 			// create filled out checking account object
 			SavingsAccount savingsAccount = new SavingsAccount(actID, new Customer( new Person(this.firstName, this.lastName, this.phone, DOB), joinDate, this.customerID), accDate, balance, rate_l);
+			savingsAccount.setManager(employee);
 			return savingsAccount;
 		}
 		if (this.accountType.equals(" ")){
 			// create filled out checking account object
 			Account account = new Account (actID, new Customer( new Person(this.firstName, this.lastName, this.phone, DOB), joinDate, this.customerID), accDate, balance);
+			account.setManager(employee);
 			return account;
 		}
 		Account acnt = new Account(actID, new Customer( new Person(this.firstName, this.lastName, this.phone, DOB), joinDate, this.customerID), accDate, balance);
+		acnt.setManager(employee);
 		return acnt;
+	}
+
+	/**
+	 * 
+	 * @return an employee object with the variable states provided by the text file
+	 */
+	public Employee createEmployee(){
+		// create a new employee from the data in the text file
+		Employee employee = new Employee(new Person(this.managerF, this.managerL, this.managerPhone, new Date(Integer.valueOf(this.managerBirthM),Integer.valueOf(this.managerBirthD),Integer.valueOf(this.managerBirthY))), new Date(Integer.valueOf(this.managerHireM), Integer.valueOf(this.managerHireD), Integer.valueOf(this.managerHireY)), Integer.valueOf(this.managerID), this.managerDept);
+		return employee;
 	}
 
 	/**
@@ -328,6 +324,17 @@ public class AccountManager {
 			return foundAccount;
 		}
 	}
+
+	/**
+	 * Method to get an employee via their ID from the employee map
+	 * @param employeeID
+	 * @return
+	 */
+	public Employee findEmployee(String employeeID){
+		Employee foundEmployee = this.bankEmployeeMap.get(employeeID);
+		return foundEmployee;
+	}
+	
 
 	
 

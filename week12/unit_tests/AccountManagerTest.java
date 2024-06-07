@@ -9,7 +9,7 @@ public class AccountManagerTest {
 
 
     @Test
-    void testSaveAccount() {
+    void testSaveCustomerAccount() {
        
         // new manager loaded
         AccountManager manager = new AccountManager();
@@ -40,7 +40,7 @@ public class AccountManagerTest {
     }
 
     @Test
-    void testFindMethod() {
+    void testFindCustomerMethod() {
 
         // create a new account and add the account to the Map
 
@@ -59,6 +59,20 @@ public class AccountManagerTest {
         
         // privacy protection test
         assertFalse(savingsAccount == foundAccount);
+    }
+
+    @Test
+    void testLoadEmployee(){
+        // create a new account and add the account to the Map
+        // new manager loaded
+        AccountManager manager = new AccountManager();
+        manager.loadManagers("source/employees.txt");
+        // manager with ID 0000 in the employees text file
+        Employee employee = manager.findEmployee("0000");
+        // employee info should match the info in the text file (not an exhaustive test yet)
+        assertTrue(employee.getId() == 0000);
+        assertTrue(employee.getName().equals("Big Wig"));
+        assertTrue(employee.getDepartment().equals("Accounts Dept"));
     }
 
 }

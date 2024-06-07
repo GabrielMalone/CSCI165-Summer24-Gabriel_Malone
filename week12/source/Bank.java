@@ -1,55 +1,43 @@
 // Gabriel Malone / CSCI165 / Week 12 / Summer 2024
-
-import java.text.NumberFormat;
 import java.util.Scanner;
 
 public class Bank {
-    // text // graphic colors
-	private static 	String ANSI_RESET           = "\u001B[0m"; 
-	private static  String ANSI_PURPLE          = "\u001B[35m";
-	private static  String ANSI_WHITE           = "\u001B[37m";
-	private static  String ANSI_BLACK           = "\u001B[31m";
-	private static  String ANSI_YELLOW          = "\u001B[33m";
-	private static  String ANSI_PINK            = "\u001b[38;5;201m";
-	private static  String ANSI_BLUE            = "\u001B[34m";
-	private static  String ANSI_CYAN            = "\u001B[36m";
-	private static  String ANSI_BOLD            = "\u001b[1m";
-	private static  String ANSI_BLUE_BACK       = "\u001b[1m\u001B[32m";
-    private static  String ANSI_GREEN           = "\u001B[32m";
-	private static  String CALORIE_COLOR        = ANSI_PURPLE;
-	private static  String MENU_NUMBER_COLOR    = ANSI_PURPLE;
-	private static  String MENU_BORDER_COLOR    = ANSI_PINK;
-	private static  String PRICE_COLORS         = ANSI_BLUE;
-	
+ 
     private static Scanner scanner = new Scanner(System.in);
     private AccountManager manager = new AccountManager();
-	
-    // use this a lot
 	private static String space = " ";
-	// money output used quite a bit
-	private static NumberFormat nf = NumberFormat.getCurrencyInstance();
 	private double dividendRate = 0.01;
+	private boolean loggedIn = false;
 
 	/**
 	 * No arguments constructor. Begins GUI Terminal Sequence.
 	 */
 	public Bank(){
-
-        clearSequence();
-        manager.loadAccounts("source/accounts.txt");
-        MainMenu();
-        mainMenuOptions();
-        String selection = scanner.nextLine().toLowerCase();
-		if (selection.equals("a")){
-			openAccount();
+		manager.loadAccounts("source/accounts.txt");
+		while (true){
+			clearSequence();
+			if (! loggedIn)
+				MainMenuLogin();
+			clearSequence();
+			MainMenu();
+			mainMenuOptions();
+			String selection = scanner.nextLine().toLowerCase();
+			if (selection.equals("a")){
+				openAccount();
+			}
+			if (selection.equals("f")){
+				Account account = findAccount();
+				displayCustomerInfo(account);
+				customerMenuOptions();
+			}
+			if (selection.equals("0")){
+				clearSequence();
+				MainMenu();
+				mainMenuOptions();
+			}
+			clearSequence();
 		}
-		if (selection.equals("f")){
-			Account account = findAccount();
-			displayCustomerInfo(account);
-			customerMenuOptions();
-		}
-        clearSequence();
-    }
+	}	
 
 	public void updateAccounts(){
 		
@@ -63,12 +51,16 @@ public class Bank {
 
 	}
 
+	private void login(){
+
+	}
+
 	private Account findAccount(){
 		clearSequence();
 		MainMenu();
-		System.out.printf("%21s%s%n", space, ANSI_YELLOW + "Retrieve Customer Info" + ANSI_RESET);
+		System.out.printf("%21s%s%n", space, Colors.ANSI_YELLOW + "Retrieve Customer Info" + Colors.ANSI_RESET);
 		yellowhorizontalLine();
-		System.out.printf("%21s%s", space, ANSI_CYAN 	+ "Enter Customer ID:     " + ANSI_RESET);
+		System.out.printf("%21s%s", space, Colors.ANSI_CYAN 	+ "Enter Customer ID:     " + Colors.ANSI_RESET);
     	String customerID = scanner.nextLine().toLowerCase();
 		// get customer account object from ID
 		Account retrieved_customer = this.manager.findAccount(customerID);
@@ -76,24 +68,23 @@ public class Bank {
 	}
 
 	public void showAccounts(){
-
 	}
+
 	private void openAccount(){
 		clearSequence();
 		MainMenu();
 		// Header
-		System.out.printf("%21s%s%n", space, ANSI_YELLOW + "Enter New Customer Information" + ANSI_RESET);
+		System.out.printf("%21s%s%n", space, Colors.ANSI_YELLOW + "Enter New Customer Information" + Colors.ANSI_RESET);
 		yellowhorizontalLine();
 		// Inputs
-		System.out.printf("%21s%s", space, ANSI_CYAN 	+ "First Name     " + ANSI_RESET);
+		System.out.printf("%21s%s", space,Colors.ANSI_CYAN 	+ "First Name     " 	+ Colors.ANSI_RESET);
     	String firstName = scanner.nextLine().toLowerCase();
-		System.out.printf("%21s%s", space, ANSI_CYAN 	+ "Last Name      " + ANSI_RESET);
+		System.out.printf("%21s%s", space, Colors.ANSI_CYAN 	+ "Last Name      " 	+ Colors.ANSI_RESET);
     	String lastName = scanner.nextLine().toLowerCase();
-		System.out.printf("%21s%s", space, ANSI_CYAN 	+ "10-Digit Phone " + ANSI_RESET);
+		System.out.printf("%21s%s", space, Colors.ANSI_CYAN 	+ "10-Digit Phone " 	+ Colors.ANSI_RESET);
     	String phone = scanner.nextLine();
-		System.out.printf( "%21s%s", space, ANSI_CYAN 	+ "DOB (1/1/1111) " + ANSI_RESET);
+		System.out.printf( "%21s%s", space, Colors.ANSI_CYAN + "DOB (1/1/1111) " 	+ Colors.ANSI_RESET);
     	String DOBstring[] = scanner.nextLine().split("/");
-
 		// create DOB Date object
 		Date DOB = new Date(Integer.valueOf(DOBstring[0]), Integer.valueOf(DOBstring[1]), Integer.valueOf(DOBstring[2]));
 		// create Person Object with the current info
@@ -136,47 +127,68 @@ public class Bank {
 	}
 
     private void greenhorizontalLine(){
-		System.out.printf("%s%71s%s%n", ANSI_GREEN, "-".repeat(50), ANSI_RESET);
+		System.out.printf("%s%71s%s%n", Colors.ANSI_GREEN, "-".repeat(50), Colors.ANSI_RESET);
 	}
 
 	private void yellowhorizontalLine(){
-		System.out.printf("%s%71s%s%n", ANSI_YELLOW, "-".repeat(50), ANSI_RESET);
+		System.out.printf("%s%71s%s%n", Colors.ANSI_YELLOW, "-".repeat(50), Colors.ANSI_RESET);
 	}
 
 	private void bluehorizontalLine(){
-		System.out.printf("%s%71s%s%n", ANSI_CYAN, "-".repeat(50), ANSI_RESET);
-	}
-
-    private void Options(){
-		String itemString  =  ANSI_PURPLE + "item"  +  ANSI_RESET;
-		String quantString =  ANSI_PURPLE + "quant" +  ANSI_RESET;
-		String priceString =  ANSI_PURPLE + "price" +  ANSI_RESET;
-		String calsString  =  ANSI_PURPLE + "cals"  +  ANSI_RESET;
-		System.out.printf("%-26s%-33s%-16s%-17s%s%n", space, itemString, quantString, priceString, calsString);
+		System.out.printf("%s%71s%s%n", Colors.ANSI_CYAN, "-".repeat(50), Colors.ANSI_RESET);
 	}
 
     private void MainMenu(){
-		System.out.printf("%43s%37s%n",ANSI_CYAN + "CHEMICAL BANK" + ANSI_RESET, Date.dateInitializer());
+		System.out.printf("%43s%37s%n",Colors.ANSI_CYAN 			+ "CHEMICAL BANK" 		+ Colors.ANSI_RESET, Date.dateInitializer());
         greenhorizontalLine();
-        System.out.printf("%47s",ANSI_YELLOW +  "Employee Terminal" + ANSI_RESET);
-        System.out.printf("%25s %s%n",  ANSI_BLUE_BACK + String.valueOf(manager.total_acnts), "accounts on file" + ANSI_RESET);
+        System.out.printf("%47s",Colors.ANSI_YELLOW 				+ "Employee Terminal" 	+ Colors.ANSI_RESET);
+        System.out.printf("%25s %s%n",  Colors.ANSI_BLUE_BACK 	+ String.valueOf(manager.total_acnts), "accounts on file" + Colors.ANSI_RESET);
+        greenhorizontalLine();
+    }
+
+	private void MainMenuLogin(){
+		// login header
+		System.out.printf("%43s%37s%n",Colors.ANSI_CYAN 	+ "CHEMICAL BANK" 		+ Colors.ANSI_RESET, Date.dateInitializer());
+        greenhorizontalLine();
+        System.out.printf("%47s",  Colors.ANSI_YELLOW 	+ "Employee Terminal" 	+ Colors.ANSI_RESET);
+        System.out.printf("%35s",  Colors.ANSI_CYAN 		+ "Enter Login ID: " 	+ Colors.ANSI_RESET);
+		// employee login
+		// search for the employee with the given ID
+		String employeeID = scanner.nextLine();
+		while (true){
+			try {
+				Employee employee = manager.findEmployee(employeeID);
+				break;
+			} catch (Exception e) {
+				System.out.printf("%43s%37s%n",Colors.ANSI_CYAN 	+ "CHEMICAL BANK" 		+ Colors.ANSI_RESET, Date.dateInitializer());
+				greenhorizontalLine();
+				System.out.printf("%47s",  Colors.ANSI_YELLOW 	+ "Employee Terminal" 	+ Colors.ANSI_RESET);
+				System.out.printf("%35s",  Colors.ANSI_CYAN 		+ "Enter Login ID: " 	+ Colors.ANSI_RESET);
+				employeeID = scanner.nextLine();
+			}
+		}
+		this.loggedIn = true;
         greenhorizontalLine();
     }
 
     private void mainMenuOptions(){
-		String itemRequest =  "(" + ANSI_YELLOW + "A" + ANSI_RESET + ")" + ANSI_CYAN + "DD CUSTOMER" + ANSI_RESET + " |" + " (" + ANSI_YELLOW + "F" + ANSI_RESET + ")" +  ANSI_CYAN + "IND CUSTOMER" + ANSI_RESET + " | (" + ANSI_YELLOW + "U" + ANSI_RESET + ")" + ANSI_CYAN + "PDATE ACCNTS " + ANSI_RESET;
-		System.out.printf("%21s%s", space, itemRequest);
+		String itemRequest =  		   "(" + Colors.ANSI_YELLOW + "A" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN 	+ "DD CUSTOMER" 	+ Colors.ANSI_RESET + 
+								" |" + " (" + Colors.ANSI_YELLOW + "F" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN + "IND CUSTOMER" 	+ Colors.ANSI_RESET +
+								" |" + " (" + Colors.ANSI_YELLOW + "U" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN 	+ "PDATE ACCNTS " 	+ Colors.ANSI_RESET;
+								System.out.printf("%21s%s", space, itemRequest);
 	}
 
 	private void customerMenuOptions(){
 		bluehorizontalLine();
-		String itemRequest =  "(" + ANSI_YELLOW + "A" + ANSI_RESET + ")" + ANSI_CYAN + "DD ACCOUNT" + ANSI_RESET + " |" + " (" + ANSI_YELLOW + "C" + ANSI_RESET + ")" +  ANSI_CYAN + "LOSE ACCOUNT" + ANSI_RESET + " | (" + ANSI_YELLOW + "U" + ANSI_RESET + ")" + ANSI_CYAN + "PDATE ACCOUNT " + ANSI_RESET;
-		System.out.printf("%21s%s", space, itemRequest);
-		String phone = scanner.nextLine();
+	String itemRequest =  			 	  "(" + Colors.ANSI_YELLOW + "A" + Colors.ANSI_RESET + ")" 	+ Colors.ANSI_CYAN + "DD ACCOUNT" 		+ Colors.ANSI_RESET 
+								+ " |" + " (" + Colors.ANSI_YELLOW + "C" + Colors.ANSI_RESET + ")" 	+ Colors.ANSI_CYAN + "LOSE ACCOUNT" 	+ Colors.ANSI_RESET
+		 						+ " |" + " (" + Colors.ANSI_YELLOW + "U" + Colors.ANSI_RESET + ")" 	+ Colors.ANSI_CYAN + "PDATE ACCOUNT " 	+ Colors.ANSI_RESET;
+								System.out.printf("%21s%s", space, itemRequest);
+		String selection = scanner.nextLine();
 	}
 
 	private void displayCustomerInfo(Account account){
 		bluehorizontalLine();
-		System.out.printf("%45s%n", account);
+		System.out.printf("%s%n", account);
 	}
 }

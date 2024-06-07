@@ -151,9 +151,12 @@ public class Person{
 	@Override
 	public String toString() {
 		String space = " ";
-		return  "Name: " 	+ firstName + " " + lastName + "\n" +
-				space.repeat(21) + "Phone: " 	+ getPhoneNumber() + "\n" +
-				space.repeat(21) + "DOB: " 	+ DOB;
+		return  Colors.ANSI_CYAN + "Name: " + Colors.ANSI_RESET 
+				+ Colors.ANSI_YELLOW + firstName + " " + lastName  + Colors.ANSI_RESET 
+				+ "\n" + space.repeat(21) + Colors.ANSI_CYAN +  "Phone: " + Colors.ANSI_RESET	
+				+ getPhoneNumber() + "\n"  + space.repeat(21) 
+				+ Colors.ANSI_CYAN + "DOB: " + Colors.ANSI_RESET 
+				+ DOB;
 	}
 
 	@Override
