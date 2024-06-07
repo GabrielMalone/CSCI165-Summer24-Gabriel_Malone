@@ -49,7 +49,8 @@ public class AccountManager {
 	public ArrayList<Employee> employeeAccounts = new ArrayList<>();
 	// Map of customer ID and their account for searching purposes
 	public Map<String, Employee> bankEmployeeMap = new HashMap<String, Employee>(10); 
-	public Map<String, Account> bankAccountMap = new HashMap<String, Account>(10); 
+	public Map<String, Account> bankAccountMap = new HashMap<String, Account>(10);
+	private int currentEmployeeLoggedInID; 
 
 	/**
 	 * Method to iterate through the array of accounts and save them to a text file
@@ -121,17 +122,21 @@ public class AccountManager {
 				if (account.getClass() == SavingsAccount.class){
 					SavingsAccount savings_account = (SavingsAccount) account;
 					this.limit_rate = String.valueOf(savings_account.getInterest());
-					accountString 	+= this.limit_rate;
+					accountString 	+= this.limit_rate + ",";
 				}
 				if (account.getClass() == CheckingAccount.class) {
 					CheckingAccount checking_account = (CheckingAccount) account;
 					this.limit_rate = String.valueOf(checking_account.getOverdraftLimit());
-					accountString 	+= this.limit_rate;
+					accountString 	+= this.limit_rate + ",";
 				}
 				if (account.getClass() == Account.class) {
 					this.limit_rate = " ";
-					accountString 	+= this.limit_rate;
+					accountString 	+= this.limit_rate + ",";
 				}
+
+				this.managerID		= String.valueOf(this.currentEmployeeLoggedInID);
+				accountString 		+= this.managerID + ",";
+
 				writer.print(accountString + "\n");
 			} 	
 			writer.close();
@@ -209,7 +214,7 @@ public class AccountManager {
 				this.accntDateY 	= line[14];
 				this.accountBal 	= line[15];
 				this.limit_rate   	= line[16];
-				//this.managerID 	= line[17];
+				this.managerID 		= line[17];
 			
 				Account account = createAccount();
 				// add it to the ArrayList
@@ -230,8 +235,8 @@ public class AccountManager {
 	 * @returns an instance of the appropriate account type from the data in a text file
 	 */
 	public Account createAccount(){
-		// set manager to employee at terminal / change this later to get the employee object from the bank class
-		Employee employee = new Employee(new Person("Gabriel", "Malone", "6072620842", new Date(6,22,1983)), new Date(12, 1, 2020), 0000, "Mail Room Dept");
+		// set manager to employee at terminal when account created
+		Employee employee = findEmployee(String.valueOf(this.managerID));
 		// create person's DOB object
 		Date DOB = new Date(Integer.valueOf(this.birthMonth), Integer.valueOf(this.birthDay), Integer.valueOf(this.birthYear));
 		// create person's join date object
@@ -333,6 +338,10 @@ public class AccountManager {
 	public Employee findEmployee(String employeeID){
 		Employee foundEmployee = this.bankEmployeeMap.get(employeeID);
 		return foundEmployee;
+	}
+
+	public void setCurrentLoginID(Employee employee){
+		this.currentEmployeeLoggedInID = employee.getId();
 	}
 	
 

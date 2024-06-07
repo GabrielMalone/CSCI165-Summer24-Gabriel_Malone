@@ -14,8 +14,8 @@ public class Bank {
 	 */
 	public Bank(){
 		// load saved data 
-		manager.loadAccounts("source/accounts.txt");
 		manager.loadManagers("source/employees.txt");
+		manager.loadAccounts("source/accounts.txt");	
 		// start the GUI loop
 		while (true){
 			clearSequence();
@@ -51,10 +51,6 @@ public class Bank {
 	}
 
 	public void payDividends(){
-
-	}
-
-	private void login(){
 
 	}
 
@@ -165,6 +161,8 @@ public class Bank {
 			employee = manager.findEmployee(employeeID);
 		}
 		this.loggedIn = true;
+		// set the current login ID to this employee (used to track / associate a manager with new accounts)
+		this.manager.setCurrentLoginID(employee);
         greenhorizontalLine();
     }
 
