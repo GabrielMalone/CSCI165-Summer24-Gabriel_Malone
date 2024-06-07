@@ -3,61 +3,66 @@
 
 
 public class Bank {
-    
-    
-    private double dividendRate = 0.01;
+	
+	
+	private double dividendRate = 0.01;
 
 
-    public void updateAccounts(){
-        
-    }
+	public void updateAccounts(){
+		
+	}
 
-    public void openAccount(){
+	public void openAccount(){
 
-    }
+	}
 
-    public void closeAccount(){
+	public void closeAccount(){
 
-    }
+	}
 
-    public void payDividends(){
+	public void payDividends(){
 
-    }
+	}
 
-    public void onBoardEmployee(){
+	public void onBoardEmployee(){
 
-    }
+	}
 
-    public void terminateEmployee(){
+	public void terminateEmployee(){
 
-    }
+	}
 
-    public void findAccount(){
+	public void findAccount(Customer customer){
 
-    }
+	}
 
-    public void showAccounts(){
+	public void findAccount(String customerID){
 
-    }
+	}
 
-    private String createCustomerID(){
-        String customerID = "";
-        return customerID;
-    }
+	public void showAccounts(){
 
-    private int createEmployeeID(){
-        int employeeID = 0;
-        return employeeID;
-    }
+	}
 
-    private int createAccountNumber(){
-        int accountNumber = 0;
-        return accountNumber;
-    }
+	private String createCustomerID(String firstName, String lastName){
+		String customerID = "";
+		Date today = Date.dateInitializer();
+		String day = String.valueOf(today.getDay());
+		String year = String.valueOf(today.getYear());
+		char firstInitial = firstName.charAt(0);
+		char lastInitial  = lastName.charAt(0);
+		customerID = firstInitial + lastInitial + day + year;
+		return customerID;
+	}
 
-    private Date getTodaysDate(){
-        Date today = Date.dateInitializer();
-        return today;
-    }
+	private int createEmployeeID(){
+		int employeeID = 0;
+		return employeeID;
+	}
+
+	private int createAccountNumber(){
+		int accountNumber = 0;
+		return accountNumber;
+	}
 
 }

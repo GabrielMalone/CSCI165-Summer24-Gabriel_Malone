@@ -102,7 +102,7 @@ public class Customer extends Person{
 			this.custID = custID;
 	}
 
-	private String rawPhoneNumber(String formattedPhoneNumber){
+	public String rawPhoneNumber(String formattedPhoneNumber){
 		String numbersonly = "";
 		char[] phoneArray = formattedPhoneNumber.toCharArray();
 		for (char character : phoneArray){
@@ -133,7 +133,7 @@ public class Customer extends Person{
 		else if (!dateJoined.equals(other.dateJoined))		// calls Date.equals (composition)
 			return false;
 
-		if (custID != other.custID)					return false;	// id (primitive)
+		if (!custID.equals(other.custID))					return false;	// String
 
 		return true;	// everything is equal
 	}

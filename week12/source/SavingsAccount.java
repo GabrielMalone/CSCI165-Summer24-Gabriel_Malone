@@ -3,7 +3,7 @@
 public class SavingsAccount extends Account{
 	
 	private double interest;
-	private double savaingsBalance;
+	private double savingsBalance;
 
 	/**
 	 * Overloaded constructor
@@ -11,13 +11,13 @@ public class SavingsAccount extends Account{
 	 * @param accountNumber
 	 * @param owner
 	 * @param created
-	 * @param savaingsBalance
+	 * @param savingsBalance
 	 * @param interest
 	 */
-	public SavingsAccount(int accountNumber, Customer owner, Date created, double savaingsBalance, double interest){
-		super(accountNumber, owner, created, savaingsBalance);
+	public SavingsAccount(int accountNumber, Customer owner, Date created, double savingsBalance, double interest){
+		super(accountNumber, owner, created, savingsBalance);
 		this.interest = interest;
-		this.savaingsBalance = savaingsBalance;
+		this.savingsBalance = savingsBalance;
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class SavingsAccount extends Account{
 	 */
 	public SavingsAccount (SavingsAccount toCopy){
 		super(toCopy);
-		this.savaingsBalance = toCopy.getBalance();
+		this.savingsBalance = toCopy.getBalance();
 		this.interest = toCopy.getInterest();
 	}
 
@@ -66,7 +66,7 @@ public class SavingsAccount extends Account{
 	 */
 	@Override
 	public double getBalance(){
-		return this.savaingsBalance;
+		return this.savingsBalance;
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class SavingsAccount extends Account{
 	 */
 	@Override
 	public void deposit(double sum){
-		if (sum > 0) 	this.savaingsBalance += sum;
+		if (sum > 0) 	this.savingsBalance += sum;
 		else 			System.err.println("Account.deposit(...): cannot deposit negative amount.");    
 	}
 
@@ -85,8 +85,8 @@ public class SavingsAccount extends Account{
 	 */
 	public void addInterest(){
 		double interestEarned = 0;
-		interestEarned = this.savaingsBalance * this.interest;
-		this.savaingsBalance += interestEarned;
+		interestEarned = this.savingsBalance * this.interest;
+		this.savingsBalance += interestEarned;
 	}
 	/**
 	 * 
@@ -94,20 +94,20 @@ public class SavingsAccount extends Account{
 	 */
 	@Override
 	public void withdraw(double sum){
-		// if withdrawing a positive value that does not result in a negative savaingsBalance
+		// if withdrawing a positive value that does not result in a negative savingsBalance
 		// okay
-		// needed to override to check for the negative savaingsBalance result
-		if (sum > 0 && this.savaingsBalance - sum >= 0){ 	
-			this.savaingsBalance -= sum;
+		// needed to override to check for the negative savingsBalance result
+		if (sum > 0 && this.savingsBalance - sum >= 0){ 	
+			this.savingsBalance -= sum;
 		}
-		// otherwise no action on account savaingsBalance
+		// otherwise no action on account savingsBalance
 		else			
 			System.err.println("Account.withdraw(...): cannot withdraw negative amount.");
 	}
 
 	@Override
 	public String toString() {
-		return 	super.toString()+ "\n" + getClass()  + "\nInterest Rate: " + getInterest() + "\nSavings Acnt savaingsBalance: " + this.savaingsBalance;
+		return 	super.toString()+ "\n" + getClass()  + "\nInterest Rate: " + getInterest() + "\nSavings Acnt Balance: " + this.savingsBalance;
 	}        
 
 	/**
@@ -129,7 +129,7 @@ public class SavingsAccount extends Account{
 			return false;
 		if (getAccountNumber() != other.getAccountNumber())			
 			return false;
-		if (this.savaingsBalance != other.getBalance())							
+		if (this.savingsBalance != other.getBalance())							
 			return false;
 		if (getOwner() == null) {
 			if (other.getOwner() != null)
