@@ -31,6 +31,7 @@ public class AccountManager {
 	private String limit_rate;
 	//private String managerF;
 	//private String managerL;
+	public int total_acnts;
 
 	// load current accounts
 	public ArrayList<Account> bankAccounts = new ArrayList<>();
@@ -100,7 +101,7 @@ public class AccountManager {
 				this.accountBal		= String.valueOf(account.getBalance());
 				accountString 		+= this.accountBal + ",";
 
-				if (account.getClass().toString().equals("class SavingsAccount")){
+				if (account.getClass() == SavingsAccount.class){
 					SavingsAccount savings_account = (SavingsAccount) account;
 					this.limit_rate = String.valueOf(savings_account.getInterest());
 					accountString 	+= this.limit_rate;
@@ -159,6 +160,7 @@ public class AccountManager {
 				this.bankAccounts.add(account);
 				// add to map for searching function
 				this.bankAccountMap.put(customerID, account);
+				this.total_acnts ++;
 			}
 			scanner.close();
 		}
@@ -217,6 +219,7 @@ public class AccountManager {
 	public void addAccount(Account account){
 		this.bankAccounts.add(account);
 		this.bankAccountMap.put(account.getOwner().getID(), account);
+		this.total_acnts ++;
 	}
 
 	/**
@@ -227,7 +230,7 @@ public class AccountManager {
 	public Account findAccount(String customerID){
 		Account foundAccount = this.bankAccountMap.get(customerID);
 		// privacy protection
-		if (foundAccount.getClass().toString().equals("class SavingsAccount")){
+		if (foundAccount.getClass() == SavingsAccount.class){
 			// downcast
 			SavingsAccount found_savings_account = (SavingsAccount) foundAccount;
 			found_savings_account = new SavingsAccount(found_savings_account);

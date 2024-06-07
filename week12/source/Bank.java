@@ -13,7 +13,7 @@ public class Bank {
 	}
 
 	public void openAccount(){
-
+			
 	}
 
 	public void closeAccount(){
@@ -21,14 +21,6 @@ public class Bank {
 	}
 
 	public void payDividends(){
-
-	}
-
-	public void onBoardEmployee(){
-
-	}
-
-	public void terminateEmployee(){
 
 	}
 
