@@ -20,14 +20,14 @@ public class AccountManagerTest {
         // add the account to the array and the map
         manager.addAccount(savingsAccount);
         // save the account info to txt file
-        manager.saveAccounts("source/accounts.txt");
+        manager.saveAccounts("unit_test/accounts.txt");
 
         // clear the arrays and map
         manager.bankAccountMap.clear();
         manager.bankAccounts.clear();
 
         //load the data from file into the map and array
-        manager.loadAccounts("source/accounts.txt");
+        manager.loadAccounts("unit_tests/accounts.txt");
 
         // let's test to see that the account was added safely and kept the correct information
         Account foundAccount = manager.findAccount("4346-23421");

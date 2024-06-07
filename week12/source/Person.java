@@ -150,9 +150,10 @@ public class Person{
 
 	@Override
 	public String toString() {
+		String space = " ";
 		return  "Name: " 	+ firstName + " " + lastName + "\n" +
-				"Phone: " 	+ getPhoneNumber() + "\n" +
-				"DOB: " 	+ DOB;
+				space.repeat(21) + "Phone: " 	+ getPhoneNumber() + "\n" +
+				space.repeat(21) + "DOB: " 	+ DOB;
 	}
 
 	@Override

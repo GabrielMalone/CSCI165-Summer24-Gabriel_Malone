@@ -111,7 +111,7 @@ public class AccountManager {
 	 */
 	public void saveAccounts(String filename){     
 		try{
-			PrintWriter writer = new PrintWriter(new FileOutputStream(new File(filename)));
+			PrintWriter writer = new PrintWriter(new FileOutputStream(new File(filename), false));
 			for (Account account : bankAccounts){
 
 				String accountString = "";
@@ -148,12 +148,16 @@ public class AccountManager {
 				this.accountID		= String.valueOf((int)account.getAccountNumber());
 				accountString 		+= this.accountID + ",";
 
-				if (account.getClass().toString().equals("class SavingsAccount")){
+				if (account.getClass() == SavingsAccount.class){
 					this.accountType = "savings";
 					accountString += this.accountType + ",";
 				}
-				else{
+				if (account.getClass() == CheckingAccount.class){
 					this.accountType = "checking";
+					accountString += this.accountType + ",";
+				}
+				if (account.getClass() == Account.class){
+					this.accountType = " ";
 					accountString += this.accountType + ",";
 				}
 
@@ -174,12 +178,16 @@ public class AccountManager {
 					this.limit_rate = String.valueOf(savings_account.getInterest());
 					accountString 	+= this.limit_rate;
 				}
-				else {
+				if (account.getClass() == CheckingAccount.class) {
 					CheckingAccount checking_account = (CheckingAccount) account;
 					this.limit_rate = String.valueOf(checking_account.getOverdraftLimit());
 					accountString 	+= this.limit_rate;
 				}
-				writer.print(accountString);
+				if (account.getClass() == Account.class) {
+					this.limit_rate = " ";
+					accountString 	+= this.limit_rate;
+				}
+				writer.print(accountString + "\n");
 			} 	
 			writer.close();
 		}catch(IOException ioe){
@@ -252,17 +260,23 @@ public class AccountManager {
 		int actID = Integer.valueOf(this.accountID);
 		//convert account bal to double
 		double balance = Double.valueOf(this.accountBal);
-		//convert account rate/limit to double
-		double rate_l = Double.valueOf(this.limit_rate);
 		if (this.accountType.equals("checking")){
+			//convert account rate/limit to double
+			double rate_l = Double.valueOf(this.limit_rate);
 			// create filled out checking account object
 			CheckingAccount checkingAccount = new CheckingAccount(actID, new Customer( new Person(this.firstName, this.lastName, this.phone, DOB), joinDate, this.customerID), accDate, balance, rate_l);
 			return checkingAccount;
 		}
 		if (this.accountType.equals("savings")){
+			double rate_l = Double.valueOf(this.limit_rate);
 			// create filled out checking account object
 			SavingsAccount savingsAccount = new SavingsAccount(actID, new Customer( new Person(this.firstName, this.lastName, this.phone, DOB), joinDate, this.customerID), accDate, balance, rate_l);
 			return savingsAccount;
+		}
+		if (this.accountType.equals(" ")){
+			// create filled out checking account object
+			Account account = new Account (actID, new Customer( new Person(this.firstName, this.lastName, this.phone, DOB), joinDate, this.customerID), accDate, balance);
+			return account;
 		}
 		Account acnt = new Account(actID, new Customer( new Person(this.firstName, this.lastName, this.phone, DOB), joinDate, this.customerID), accDate, balance);
 		return acnt;
@@ -304,11 +318,14 @@ public class AccountManager {
 			found_savings_account = new SavingsAccount(found_savings_account);
 			return found_savings_account;
 		}
-		else {
+		if (foundAccount.getClass() == CheckingAccount.class){
 			// downcast
 			CheckingAccount found_checking_account = (CheckingAccount) foundAccount;
 			found_checking_account = new CheckingAccount(found_checking_account);
 			return found_checking_account;
+		}
+		else{
+			return foundAccount;
 		}
 	}
 

@@ -113,7 +113,8 @@ public class Employee extends Person {
 
 	@Override
 	public String toString() {
-		return super.toString() + "\nHired: " + hireDate + "\nID: " + id + "\nDept: " + department;
+		String space = " ";
+		return super.toString() + "\n" + space.repeat(21) + "Hired: " + hireDate + "\n" + space.repeat(21) + "ID: " + id + "\n"+ space.repeat(21) + "Dept: " + department;
 	}
 
 	@Override

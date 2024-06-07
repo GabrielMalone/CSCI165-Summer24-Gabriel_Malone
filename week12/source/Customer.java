@@ -115,7 +115,8 @@ public class Customer extends Person{
 
 	@Override
 	public String toString() {
-		return super.toString() + "\nJoined: " + dateJoined + "\nID: " + custID + "\n";
+		String space = " ";
+		return super.toString() + "\n" + space.repeat(21) + "Joined: " + dateJoined + "\n" + space.repeat(21) + "ID: " + custID + "\n";
 	}
 
 	@Override

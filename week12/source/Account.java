@@ -164,11 +164,12 @@ public class Account
 
 	@Override
 	public String toString() {
-		return 	"\nAccount Number: "+ accountNumber	+ 
-				"\nOpened: "		+ dateCreated	+	// calls Date.toString
-				"\nOwner: "			+ owner 		+ 	// calls Customer.toString
-				"\nTotal of All Acnt Balances: "	+ balance + "\n" +
-				"\nAcnt Manager: "	+ accountManager + "\n";	// calls Employee.toString
+		String space = " ";
+		return 	"\n" + space.repeat(21) + "Account Number: "+ accountNumber	+ 
+				"\n" + space.repeat(21) + "Opened: "		+ dateCreated	+	// calls Date.toString
+				"\n" + space.repeat(21) + "Owner: "			+ owner 		+ 	// calls Customer.toString
+				"\n" + space.repeat(21) + "Total of All Acnt Balances: "	+ balance + "\n" +
+				"\n" + space.repeat(21) + "Acnt Manager: "	+ accountManager + "\n";	// calls Employee.toString
 				
 	}
 
