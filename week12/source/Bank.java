@@ -6,14 +6,17 @@ public class Bank {
     private static Scanner scanner = new Scanner(System.in);
     private AccountManager manager = new AccountManager();
 	private static String space = " ";
-	private double dividendRate = 0.01;
+	//private double dividendRate = 0.01;
 	private boolean loggedIn = false;
 
 	/**
 	 * No arguments constructor. Begins GUI Terminal Sequence.
 	 */
 	public Bank(){
+		// load saved data 
 		manager.loadAccounts("source/accounts.txt");
+		manager.loadManagers("source/employees.txt");
+		// start the GUI loop
 		while (true){
 			clearSequence();
 			if (! loggedIn)
@@ -110,11 +113,6 @@ public class Bank {
 		return customerID;
 	}
 
-	private int createEmployeeID(){
-		int employeeID = 0;
-		return employeeID;
-	}
-
 	private int createAccountNumber(){
 		// return the size of the customer list + 1
 		return this.manager.getAccounts().size() + 1;
@@ -155,17 +153,16 @@ public class Bank {
 		// employee login
 		// search for the employee with the given ID
 		String employeeID = scanner.nextLine();
-		while (true){
-			try {
-				Employee employee = manager.findEmployee(employeeID);
-				break;
-			} catch (Exception e) {
-				System.out.printf("%43s%37s%n",Colors.ANSI_CYAN 	+ "CHEMICAL BANK" 		+ Colors.ANSI_RESET, Date.dateInitializer());
-				greenhorizontalLine();
-				System.out.printf("%47s",  Colors.ANSI_YELLOW 	+ "Employee Terminal" 	+ Colors.ANSI_RESET);
-				System.out.printf("%35s",  Colors.ANSI_CYAN 		+ "Enter Login ID: " 	+ Colors.ANSI_RESET);
-				employeeID = scanner.nextLine();
-			}
+		Employee employee = manager.findEmployee(employeeID);
+		while (employee == null){
+			// if invalid, re-request until valid
+			clearSequence();
+			System.out.printf("%43s%37s%n",Colors.ANSI_CYAN 	+ "CHEMICAL BANK" 		+ Colors.ANSI_RESET, Date.dateInitializer());
+			greenhorizontalLine();
+			System.out.printf("%47s",  Colors.ANSI_YELLOW 	+ "Employee Terminal" 	+ Colors.ANSI_RESET);
+			System.out.printf("%35s",  Colors.ANSI_CYAN 		+ "Enter Login ID: " 	+ Colors.ANSI_RESET);
+			employeeID = scanner.nextLine();
+			employee = manager.findEmployee(employeeID);
 		}
 		this.loggedIn = true;
         greenhorizontalLine();
