@@ -38,6 +38,74 @@ public class AccountManager {
 	// Map of customer ID and their account for searching purposes
 	public Map<String, Account> bankAccountMap = new HashMap<String, Account>(10); 
 
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public void setBirthMonth(String birthMonth) {
+		this.birthMonth = birthMonth;
+	}
+
+	public void setBirthDay(String birthDay) {
+		this.birthDay = birthDay;
+	}
+
+	public void setBirthYear(String birthYear) {
+		this.birthYear = birthYear;
+	}
+
+	public void setJoinMonth(String joinMonth) {
+		this.joinMonth = joinMonth;
+	}
+
+	public void setJoinDay(String joinDay) {
+		this.joinDay = joinDay;
+	}
+
+	public void setJoinYear(String joinYear) {
+		this.joinYear = joinYear;
+	}
+
+	public void setCustomerID(String customerID) {
+		this.customerID = customerID;
+	}
+
+	public void setAccountID(String accountID) {
+		this.accountID = accountID;
+	}
+
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
+	}
+
+	public void setAccntDateM(String accntDateM) {
+		this.accntDateM = accntDateM;
+	}
+
+	public void setAccntDateD(String accntDateD) {
+		this.accntDateD = accntDateD;
+	}
+
+	public void setAccntDateY(String accntDateY) {
+		this.accntDateY = accntDateY;
+	}
+
+	public void setAccountBal(String accountBal) {
+		this.accountBal = accountBal;
+	}
+
+	public void setLimit_rate(String limit_rate) {
+		this.limit_rate = limit_rate;
+	}
+
 	/**
 	 * Method to iterate through the array of accounts and save them to a text file
 	 */
@@ -243,5 +311,7 @@ public class AccountManager {
 			return found_checking_account;
 		}
 	}
+
+	
 
 }

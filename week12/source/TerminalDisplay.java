@@ -14,13 +14,13 @@ public class TerminalDisplay {
 	private static  String ANSI_BLUE            = "\u001B[34m";
 	public static  	String ANSI_CYAN            = "\u001B[36m";
 	private static  String ANSI_BOLD            = "\u001b[1m";
-	private static  String ANSI_BLUE_BACK       = "\u001B[44m";
+	private static  String ANSI_BLUE_BACK       = "\u001b[1m\u001B[32m";
     private static  String ANSI_GREEN           = "\u001B[32m";
 	private static  String CALORIE_COLOR        = ANSI_PURPLE;
 	private static  String MENU_NUMBER_COLOR    = ANSI_PURPLE;
 	private static  String MENU_BORDER_COLOR    = ANSI_PINK;
 	public 	static  String PRICE_COLORS         = ANSI_BLUE;
-	private static  String SUBTOTAL_COLOR       = ANSI_BLUE_BACK + ANSI_BOLD + ANSI_WHITE;
+
 	public static boolean display = true;
     public static Scanner scanner = new Scanner(System.in);
     public AccountManager manager = new AccountManager();
@@ -31,7 +31,7 @@ public class TerminalDisplay {
 	static NumberFormat nf = NumberFormat.getCurrencyInstance();
 
     public TerminalDisplay(){
-        
+        clearSequence();
         manager.loadAccounts("source/accounts.txt");
         MainMenu();
         addRequest();
@@ -58,15 +58,15 @@ public class TerminalDisplay {
 	}
 
     public void MainMenu(){
-		System.out.printf("%45s%35s%n",ANSI_CYAN + "TERMINAL BANK" + ANSI_RESET, Date.dateInitializer().toString());
+		System.out.printf("%43s%35s%n",ANSI_CYAN + "TERMINAL BANK" + ANSI_RESET, Date.dateInitializer().toString());
         horizontalLine();
-        System.out.printf("%48s",ANSI_YELLOW +  "Employee Terminal" + ANSI_RESET);
-        System.out.printf("%23s %s%n", ANSI_CYAN + String.valueOf(manager.total_acnts) + ANSI_RESET, ANSI_GREEN + "accounts on file" + ANSI_RESET);
+        System.out.printf("%47s",ANSI_YELLOW +  "Employee Terminal" + ANSI_RESET);
+        System.out.printf("%25s %s%n",  ANSI_BLUE_BACK + String.valueOf(manager.total_acnts), "accounts on file" + ANSI_RESET);
         horizontalLine();
     }
 
     public void addRequest(){
 		String itemRequest =  "(" + ANSI_YELLOW + "A" + ANSI_RESET + ")" + ANSI_CYAN + "DD CUSTOMER" + ANSI_RESET + " |" + " (" + ANSI_YELLOW + "F" + ANSI_RESET + ")" +  ANSI_CYAN + "IND CUSTOMER" + ANSI_RESET + " | (" + ANSI_YELLOW + "U" + ANSI_RESET + ")" + ANSI_CYAN + "PDATE ACNTS " + ANSI_RESET;
-		System.out.printf("%22s%s", space, itemRequest);
+		System.out.printf("%21s%s", space, itemRequest);
 	}
 }
