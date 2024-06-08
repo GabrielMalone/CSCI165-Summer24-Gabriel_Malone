@@ -11,10 +11,19 @@ public class Print {
 		System.out.printf("%-12.0f", accountNumString );
 		System.out.printf("%-14s",account.getOwner().getID());
 		System.out.printf("%-12s",account.getType());
-		if (account.getClass()		== CheckingAccount.class)
-			System.out.printf("%s%n", Colors.ANSI_GREEN 	+ nf.format(account.getBalance()) + Colors.ANSI_RESET);
-		else if (account.getClass() == SavingsAccount.class)
+		if (account.getClass()		== CheckingAccount.class){
+			Double balance = account.getBalance();
+			String balanceStr = nf.format(account.getBalance());
+			if (balance < 0){
+				balanceStr = Colors.ANSI_PINK + nf.format(account.getBalance()) + Colors.ANSI_RESET;
+			}
+			else
+				balanceStr = Colors.ANSI_GREEN + nf.format(account.getBalance()) + Colors.ANSI_RESET;
+			System.out.printf("%s%n",  balanceStr );
+		}
+		else if (account.getClass() == SavingsAccount.class){
 			System.out.printf("%s%n", Colors.ANSI_GREEN + nf.format(account.getBalance()) + Colors.ANSI_RESET);
+		}
 	}
     public static void mainMenuOptions(){
 		String itemRequest =  	"(" + Colors.ANSI_YELLOW + "A" + Colors.ANSI_RESET 	+ ")" 			+ Colors.ANSI_CYAN 	+ "DD ACCOUNT" 	    + Colors.ANSI_RESET + 
@@ -73,9 +82,8 @@ public class Print {
 	}
 	public static void updateAllMenuOptions(){
 		String itemRequest =	 " ("   + Colors.ANSI_YELLOW + "D"  + Colors.ANSI_RESET 	    + ")" 	+ Colors.ANSI_CYAN  + "IVIDENDS PAY" 	+ Colors.ANSI_RESET
-								+ " |"  + " (" + Colors.ANSI_YELLOW + "I" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN  + "NTEREST PAY" 	 
-								+ " |"  + " (" + Colors.ANSI_YELLOW + "O" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN  + "VERDRAFT MAIL " 	+ Colors.ANSI_RESET;
-		System.out.printf("%20s%s", space, itemRequest);
+								+ " |"  + " (" + Colors.ANSI_YELLOW + "U" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN  + "PDATE SAVINGS & CHECKINGS " + Colors.ANSI_RESET;
+		System.out.printf("%21s%s", space, itemRequest);
 	}
 	public static void customerMenuOptions(){
 		bluehorizontalLine();

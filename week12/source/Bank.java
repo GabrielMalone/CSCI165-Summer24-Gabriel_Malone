@@ -23,6 +23,10 @@ public class Bank {
 	 * Mehthod to update all accounts at once
 	 */
 	public void updateAccounts(){
+		// only update accounts associate with the logged in managers
+		for (Account account : this.manager.getAccounts()){
+			
+			}
 	}
 
 	/**
@@ -465,26 +469,41 @@ public class Bank {
 				Print.updateAllAccountsHeader();
 				Print.updateAllMenuOptions();
 				String updateAllSelection = scanner.nextLine().toLowerCase();
-				while (! updateAllSelectionOptions.contains(updateAllSelection)){
-					Print.clearSequence();
-					Print.MainMenu(manager);
-					displayAccounts();
-					Print.mainMenuOptions();
-					System.out.println();
-					Print.updateAllAccountsHeader();
-					Print.updateAllMenuOptions();
-					updateAllSelection = scanner.nextLine().toLowerCase();
-				}
-				if (updateAllSelection.equals("d")){
-					payDividends();
-					Print.clearSequence();
-					Print.MainMenu(manager);
-					displayAccounts();
-					Print.mainMenuOptions();
-					System.out.println();
-					Print.updateAllAccountsHeader();
-					Print.updateAllMenuOptions();
-					updateAllSelection = scanner.nextLine().toLowerCase();
+				// stay in updat all menu until user states done with '0'
+				while (! updateAllSelection.equals("0")){
+					while (! updateAllSelectionOptions.contains(updateAllSelection)){
+						Print.clearSequence();
+						Print.MainMenu(manager);
+						displayAccounts();
+						Print.mainMenuOptions();
+						System.out.println();
+						Print.updateAllAccountsHeader();
+						Print.updateAllMenuOptions();
+						updateAllSelection = scanner.nextLine().toLowerCase();
+					}
+					// pay dividends
+					if (updateAllSelection.equals("d")){
+						payDividends();
+						Print.clearSequence();
+						Print.MainMenu(manager);
+						displayAccounts();
+						Print.mainMenuOptions();
+						System.out.println();
+						Print.updateAllAccountsHeader();
+						Print.updateAllMenuOptions();
+						updateAllSelection = scanner.nextLine().toLowerCase();
+					}
+					if (updateAllSelection.equals("i")){
+						//payDividends();
+						Print.clearSequence();
+						Print.MainMenu(manager);
+						displayAccounts();
+						Print.mainMenuOptions();
+						System.out.println();
+						Print.updateAllAccountsHeader();
+						Print.updateAllMenuOptions();
+						updateAllSelection = scanner.nextLine().toLowerCase();
+					}
 				}
 			}
 			Print.clearSequence();
