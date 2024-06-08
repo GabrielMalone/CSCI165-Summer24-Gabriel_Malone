@@ -8,16 +8,28 @@
 	It allows deposits and withdrawals but not overdraft limits or interest rates.
 */
 
-public class Account
-{
+public class Account {
+
+	public static enum TYPE {
+		CHECKING,
+		SAVINGS;
+	}
+
 	private Customer	owner;			// the owner of the account
 	private Employee	accountManager;	// the manager of the account
 	private Date		dateCreated; 	// date the account was created
 	private int 		accountNumber;	// The account number
     private double 		balance;  		// The current balance
+	private TYPE type;
     
 	
+	public TYPE getType() {
+		return type;
+	}
 
+	public void setType(TYPE type) {
+		this.type = type;
+	}
 
 	/**
 	 * Overloaded constructor
@@ -168,8 +180,6 @@ public class Account
 		return 	"\n" + Colors.ANSI_CYAN + space.repeat(21)	+ "Account Number: "				+ Colors.ANSI_RESET+ accountNumber 										+ 
 				"\n" + Colors.ANSI_CYAN + space.repeat(21) 	+ "Opened: "						+ Colors.ANSI_RESET	+ dateCreated 										+	
 				"\n" + space.repeat(21) + Colors.ANSI_CYAN 	+ "Owner: "							+ Colors.ANSI_RESET	+ owner + Colors.ANSI_RESET							+ 	
-				"\n" + space.repeat(21) + Colors.ANSI_CYAN 	+ "Total of All Acnt Balances: "	+ Colors.ANSI_RESET  + Colors.ANSI_GREEN + balance + Colors.ANSI_RESET 	+
-				"\n" + 
 				"\n" + Colors.ANSI_CYAN + space.repeat(21) 	+ "Acnt Manager: " + accountManager + 
 				"\n" + Colors.ANSI_RESET;				
 	}

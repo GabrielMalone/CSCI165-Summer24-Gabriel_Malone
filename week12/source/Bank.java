@@ -22,13 +22,13 @@ public class Bank {
 		manager.loadAccounts("source/accounts.txt");	
 		// start the GUI loop
 		while (true){
-			clearSequence();
+			Print.clearSequence();
 			if (! loggedIn)
 				MainMenuLogin();
-			clearSequence();
-			MainMenu();
+			Print.clearSequence();
+			Print.MainMenu(manager);
 			displayAccounts();
-			mainMenuOptions();
+			Print.mainMenuOptions();
 			String mainMenuSelection = scanner.nextLine().toLowerCase();
 			// add a customer
 			if (mainMenuSelection.equals("a")){
@@ -38,27 +38,26 @@ public class Bank {
 			// find a customer
 			if (mainMenuSelection.equals("s")){
 				this.currentAccount = findAccount();
-				displayCustomerInfo(this.currentAccount);
-				customerMenuOptions();
+				Print.displayCustomerInfo(this.currentAccount);
+				Print.customerMenuOptions();
 				String CustomerSelection = scanner.nextLine().toLowerCase();
 				// add an account to an existing customer
-				if (CustomerSelection.equals("a")){
-					addAccountToCustomer();
-					displayCustomerInfo(this.currentAccount);
+				if (CustomerSelection.equals("u")){
+					Print.displayCustomerInfo(this.currentAccount);
 					CustomerSelection = scanner.nextLine().toLowerCase();
 				}
 			}
 			// return to main menu
-			if (mainMenuSelection.equals("0")){
-				clearSequence();
-				MainMenu();
-				mainMenuOptions();
+			if (mainMenuSelection.equals("m")){
+				Print.clearSequence();
+				Print.MainMenu(manager);
+				Print.mainMenuOptions();
 			}
 			// update a customer
 			if (mainMenuSelection.equals("u")){
 				
 			}
-			clearSequence();
+			Print.clearSequence();
 		}
 	}	
 
@@ -66,152 +65,19 @@ public class Bank {
 	 * Mehthod to update all accounts at once
 	 */
 	public void updateAccounts(){
-
 	}
-
-	public void displayAccounts(){
-		int index = 1;
-		String headerString =  "Customer Name" + space.repeat(23) + "Account Number";
-			System.out.printf("%21s%s%n", space, headerString);
-		yellowhorizontalLine();
-		for (Account account : this.manager.getAccounts()){
-			System.out.printf("%22s%-4d", space, index);
-			System.out.printf("%-35s", account.getOwner().getName());
-			String accountNumString =  account.getOwner().getID();
-			System.out.printf("%s%n", accountNumString);
-			index ++;
-		}
-		yellowhorizontalLine();
-	}
-	
-	public void addAccountToCustomer(){
-		clearSequence();
-		MainMenu();
-		String title =  Colors.ANSI_YELLOW + "// CURRENT ACCOUNT INFO //" + Colors.ANSI_RESET;
-		System.out.printf("%21s%s%n", space, title);
-		displayCustomerInfo(this.currentAccount);
-		bluehorizontalLine();
-		String menutitle =  Colors.ANSI_YELLOW + "// ADD ACCOUNT TYPE //" + Colors.ANSI_RESET;
-		System.out.printf("%35s%s%n", space, menutitle);
-		yellowhorizontalLine();
-		String itemRequest =  "(" + Colors.ANSI_YELLOW 			+ "C" + Colors.ANSI_RESET + ")" 	+ Colors.ANSI_CYAN + "HECKING ACCOUNT" 	+ Colors.ANSI_RESET 
-							+ " |" + " (" + Colors.ANSI_YELLOW 	+ "S" + Colors.ANSI_RESET + ")" 	+ Colors.ANSI_CYAN + "AVINGS ACCOUNT" 	+ Colors.ANSI_RESET;
-		System.out.printf("%27s%s ", space, itemRequest);
-		String accountType = scanner.nextLine().toLowerCase();
-		ArrayList<String> options = new ArrayList<>();
-		options.add("c");
-		options.add("s");
-		while (! options.contains(accountType)){
-			clearSequence();
-			MainMenu();
-			displayCustomerInfo(this.currentAccount);
-			bluehorizontalLine();
-			yellowhorizontalLine();
-			itemRequest =  "(" + Colors.ANSI_YELLOW 		+ "C" + Colors.ANSI_RESET + ")" 	+ Colors.ANSI_CYAN + "HECKING ACCOUNT" 	+ Colors.ANSI_RESET 
-						+ " |" + " (" + Colors.ANSI_YELLOW 	+ "S" + Colors.ANSI_RESET + ")" 	+ Colors.ANSI_CYAN + "AVINGS ACCOUNT" 	+ Colors.ANSI_RESET;
-			System.out.printf("%27s%s ", space, itemRequest);
-			accountType = scanner.nextLine().toLowerCase();
-		}
-		yellowhorizontalLine();
-		itemRequest =  Colors.ANSI_YELLOW + "DEPOSIT AMMOUNT: " + Colors.ANSI_RESET;
-			System.out.printf("%28s%s ", space, itemRequest);
-		String deposit = scanner.nextLine();
-		double depsositDouble;
-		double overDraftLimitDouble;
-		while (true){
-			try {
-				depsositDouble = Double.parseDouble(deposit);
-				break;
-			} catch (Exception e) {
-				clearSequence();
-				MainMenu();
-				displayCustomerInfo(this.currentAccount);
-				bluehorizontalLine();
-				yellowhorizontalLine();
-				itemRequest =  "(" + Colors.ANSI_YELLOW 			+ "C" + Colors.ANSI_RESET + ")" 	+ Colors.ANSI_CYAN + "HECKING ACCOUNT" 	+ Colors.ANSI_RESET 
-							+ " |" + " (" + Colors.ANSI_YELLOW 	+ "S" + Colors.ANSI_RESET + ")" 	+ Colors.ANSI_CYAN + "AVINGS ACCOUNT" 	+ Colors.ANSI_RESET;
-				System.out.printf("%27s%s%n", space, itemRequest);
-				yellowhorizontalLine();
-				itemRequest =  Colors.ANSI_YELLOW + "DEPOSIT AMMOUNT: " + Colors.ANSI_RESET;
-				System.out.printf("%28s%s ", space, itemRequest);
-				deposit = scanner.nextLine();
-			}
-		}
-		if (accountType.equals("c")){
-			itemRequest =  Colors.ANSI_YELLOW + "OVERDRAFT LIMIT: " + Colors.ANSI_RESET;
-			System.out.printf("%28s%s ", space, itemRequest);
-			String overDraftLimit = scanner.nextLine();
-			while (true){
-				try {
-					overDraftLimitDouble = Double.parseDouble(overDraftLimit);
-					break;
-				} catch (Exception e) {
-					clearSequence();
-					MainMenu();
-					displayCustomerInfo(this.currentAccount);
-					bluehorizontalLine();
-					yellowhorizontalLine();
-					itemRequest =  "(" + Colors.ANSI_YELLOW 			+ "C" + Colors.ANSI_RESET + ")" 	+ Colors.ANSI_CYAN + "HECKING ACCOUNT" 	+ Colors.ANSI_RESET 
-								+ " |" + " (" + Colors.ANSI_YELLOW 	+ "S" + Colors.ANSI_RESET + ")" 	+ Colors.ANSI_CYAN + "AVINGS ACCOUNT" 	+ Colors.ANSI_RESET;
-					System.out.printf("%27s%s%n", space, itemRequest);
-					yellowhorizontalLine();
-					itemRequest =  Colors.ANSI_YELLOW + "OVERDRAFT LIMIT: " + Colors.ANSI_RESET;
-					System.out.printf("%28s%s ", space, itemRequest);
-					overDraftLimit = scanner.nextLine();
-				}
-			}
-			int accountID = createCheckingAccountNumber();
-			// set manager to employee at terminal when account created
-			// create filled out checking account object
-			CheckingAccount checkingAccount = new CheckingAccount(accountID, this.currentAccount.getOwner(), Date.dateInitializer() , depsositDouble, overDraftLimitDouble);
-			this.manager.addAccount(checkingAccount);
-			this.manager.saveAccount("source/accounts.txt", checkingAccount);
-		}
-	}
-			
-			
-
 	public void closeAccount(){
 
 	}
-
 	public void payDividends(){
-
 	}
-
-	private Account findAccount(){
-		clearSequence();
-		MainMenu();
-		displayAccounts();
-		System.out.printf("%35s%s%n", space, Colors.ANSI_YELLOW + "// RETRIEVE CUSTOMER INFO // " + Colors.ANSI_RESET);
-		yellowhorizontalLine();
-		System.out.printf("%21s%s", space, Colors.ANSI_CYAN 	+ "Enter Customer ID: " + Colors.ANSI_RESET);
-    	String customerID = scanner.nextLine().toLowerCase();
-		// get customer account object from ID
-		while (true){
-			try {
-				Account retrieved_customer = this.manager.findAccount(customerID);
-				return retrieved_customer;
-			} catch (Exception e) {
-				clearSequence();
-				MainMenu();
-				System.out.printf("%21s%s%n", space, Colors.ANSI_YELLOW + "Retrieve Customer Info" + Colors.ANSI_RESET);
-				yellowhorizontalLine();
-				System.out.printf("%21s%s", space, Colors.ANSI_CYAN 	+ "Enter Customer ID:     " + Colors.ANSI_RESET);
-				customerID = scanner.nextLine().toLowerCase();
-			}
-		}
-	}
-
-	public void showAccounts(){
-	}
-
+				
 	private void openAccount(){
-		clearSequence();
-		MainMenu();
+		Print.clearSequence();
+		Print.MainMenu(manager);
 		// Header
 		System.out.printf("%21s%s%n", space, Colors.ANSI_YELLOW + "// NEW CUSTOMER INFO //" + Colors.ANSI_RESET);
-		yellowhorizontalLine();
+		Print.yellowhorizontalLine();
 		// Inputs
 		System.out.printf("%21s%s", space,Colors.ANSI_CYAN 	+ "First Name     " 	+ Colors.ANSI_RESET);
     	String firstName = scanner.nextLine().toLowerCase();
@@ -221,6 +87,8 @@ public class Bank {
     	String phone = scanner.nextLine();
 		System.out.printf( "%21s%s", space, Colors.ANSI_CYAN + "DOB (1/1/1111) " 	+ Colors.ANSI_RESET);
     	String DOBstring[] = scanner.nextLine().split("/");
+		Print.yellowhorizontalLine();
+		String accountType = checkingsOrSavingsRequest();
 		// create DOB Date object
 		Date DOB = new Date(Integer.valueOf(DOBstring[0]), Integer.valueOf(DOBstring[1]), Integer.valueOf(DOBstring[2]));
 		// create Person Object with the current info
@@ -230,11 +98,19 @@ public class Bank {
 		// Now create new Customer Object (Person, todays date, new customer ID)
 		Customer customer = new Customer(person, Date.dateInitializer(), customerID);
 		// Open an account
-		Account account = new Account(createAccountNumber(), customer, manager.findEmployee(String.valueOf(manager.getCurrentLoginID())), Date.dateInitializer());
+		if (accountType.equals("c")){
+			Print.yellowhorizontalLine();
+			double deposit = depositRequest();
+			Print.yellowhorizontalLine();
+			double overDraftLimit = setOverDraftLimit();
+			CheckingAccount checkingAccount =  new CheckingAccount(createAccountNumber(), customer, manager.findEmployee(String.valueOf(manager.getCurrentLoginID())), Date.dateInitializer(), overDraftLimit);
+			checkingAccount.deposit(deposit);
+			this.manager.addAccount(checkingAccount);
+			this.manager.saveAccount("source/accounts.txt", checkingAccount);
+			this.currentAccount = checkingAccount;
+		}
 		// add this customer to the bank's 'database'
-		this.manager.addAccount(account);
-		this.manager.saveAccount("source/accounts.txt", account);
-		this.currentAccount = account;
+		
 	}
 
 	private String createCustomerID(String firstName, String lastName, Date DOB){
@@ -248,11 +124,6 @@ public class Bank {
 	}
 
 	private int createAccountNumber(){
-		// return the size of the customer list + 1
-		return this.manager.getAccounts().size() + 1;
-	}
-
-	private int createCheckingAccountNumber(){
 		Random rand = new Random();
 		int randInt = rand.nextInt(0,1000);
 		int dateCode = Date.dateInitializer().getYear();
@@ -260,76 +131,121 @@ public class Bank {
 		return accntnum;
 	}
 
-    private void clearSequence(){
-		System.out.print("\033[H\033[2J");  
-		System.out.flush();
-		System.out.println(); 
-	}
-
-    private void greenhorizontalLine(){
-		System.out.printf("%s%71s%s%n", Colors.ANSI_GREEN, "-".repeat(50), Colors.ANSI_RESET);
-	}
-
-	private void yellowhorizontalLine(){
-		System.out.printf("%s%71s%s%n", Colors.ANSI_YELLOW, "-".repeat(50), Colors.ANSI_RESET);
-	}
-
-	private void bluehorizontalLine(){
-		System.out.printf("%s%71s%s%n", Colors.ANSI_CYAN, "-".repeat(50), Colors.ANSI_RESET);
-	}
-
-    private void MainMenu(){
-		System.out.printf("%43s%37s%n",Colors.ANSI_CYAN 	+ "CHEMICAL BANK" + Colors.ANSI_RESET, Date.dateInitializer());
-        greenhorizontalLine();
-        System.out.printf("%35s", Colors.ANSI_YELLOW 	+ "Welcome, ");  
-		System.out.printf("%s",manager.findEmployee(String.valueOf(manager.getCurrentLoginID())).getFirstName() + Colors.ANSI_RESET);
-        System.out.printf("%25s %s%n", Colors.ANSI_BLUE_BACK  + "// "+ String.valueOf(manager.total_acnts), "accounts on file //" + Colors.ANSI_RESET);
-        greenhorizontalLine();
-    }
-
 	private void MainMenuLogin(){
-		// login header
-		System.out.printf("%43s%37s%n",Colors.ANSI_CYAN 	+ "CHEMICAL BANK" 		+ Colors.ANSI_RESET, Date.dateInitializer());
-        greenhorizontalLine();
-        System.out.printf("%54s",  Colors.ANSI_YELLOW 	+ "// EMPLOYEE TERMINAL //" 	+ Colors.ANSI_RESET);
-        System.out.printf("%30s",  Colors.ANSI_CYAN 		+ "Login ID: " 	+ Colors.ANSI_RESET);
+		Print.loginHeader();
 		// employee login
 		// search for the employee with the given ID
 		String employeeID = scanner.nextLine();
 		Employee employee = manager.findEmployee(employeeID);
 		while (employee == null){
 			// if invalid, re-request until valid
-			clearSequence();
-			System.out.printf("%43s%37s%n",Colors.ANSI_CYAN 	+ "CHEMICAL BANK" 		+ Colors.ANSI_RESET, Date.dateInitializer());
-			greenhorizontalLine();
-			System.out.printf("%47s",  Colors.ANSI_YELLOW 	+ "Employee Terminal" 	+ Colors.ANSI_RESET);
-			System.out.printf("%35s",  Colors.ANSI_CYAN 		+ "Enter Login ID: " 	+ Colors.ANSI_RESET);
+			Print.clearSequence();
+			Print.nullLoginHeader();
 			employeeID = scanner.nextLine();
 			employee = manager.findEmployee(employeeID);
 		}
 		this.loggedIn = true;
 		// set the current login ID to this employee (used to track / associate a manager with new accounts)
 		this.manager.setCurrentLoginID(employee);
-        greenhorizontalLine();
+		Print. greenhorizontalLine();
     }
 
-    private void mainMenuOptions(){
-		String itemRequest =  	"(" + Colors.ANSI_YELLOW + "A" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN 	+ "DD CUSTOMER" 			+ Colors.ANSI_RESET + 
-								" |" + " (" + Colors.ANSI_YELLOW + "S" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN + "ELECT CUSTOMER" 	+ Colors.ANSI_RESET +
-								" |" + " (" + Colors.ANSI_YELLOW + "U" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN 	+ "PDATE ALL" 	+ Colors.ANSI_RESET;
-								System.out.printf("%21s%s", space, itemRequest);
+	private void displayAccounts(){
+		Print.customerIDHeader();
+		Print.yellowhorizontalLine();
+		for (Account account : this.manager.getAccounts()){
+			System.out.printf("%22s", space);
+			System.out.printf("%-35s", account.getOwner().getID());
+			double accountNumString =  account.getAccountNumber();
+			System.out.printf("%.0f%n", accountNumString);
+		}
+		Print.yellowhorizontalLine();
 	}
 
-	private void customerMenuOptions(){
-		bluehorizontalLine();
-		String itemRequest =  	"(" + Colors.ANSI_YELLOW + "A" + Colors.ANSI_RESET + ")" 		+ Colors.ANSI_CYAN + "DD ACCOUNT" 				+ Colors.ANSI_RESET 
-								+ " |" + " (" + Colors.ANSI_YELLOW + "C" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN + "LOSE ACCOUNT" 	+ Colors.ANSI_RESET
-								+ " |" + " (" + Colors.ANSI_YELLOW + "U" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN + "PDATE ACCOUNT " 	+ Colors.ANSI_RESET;
-								System.out.printf("%21s%s", space, itemRequest);
+	private String checkingsOrSavingsRequest(){
+		Print.accountTypeHeader();
+		Print.yellowhorizontalLine();
+		Print.checkingOrSavingsSelectPrint();
+		String accountType = scanner.nextLine().toLowerCase();
+		ArrayList<String> options = new ArrayList<>();
+		options.add("c");
+		options.add("s");
+		while (! options.contains(accountType)){
+			Print.clearSequence();
+			Print.MainMenu(manager);
+			Print.displayCustomerInfo(this.currentAccount);
+			Print.bluehorizontalLine();
+			Print.yellowhorizontalLine();
+			Print.checkingOrSavingsSelectPrint();
+			accountType = scanner.nextLine().toLowerCase();
 		}
+		return accountType;
+	}
 
-	private void displayCustomerInfo(Account account){
-		bluehorizontalLine();
-		System.out.printf("%s%n", account);
+	private double depositRequest(){
+		Print.depositRequestHeader();
+		String deposit = scanner.nextLine();
+		double depsositDouble;
+		while (true){
+			try {
+				depsositDouble = Double.parseDouble(deposit);
+				break;
+			} catch (Exception e) {
+				Print.clearSequence();
+				Print.MainMenu(manager);
+				Print.displayCustomerInfo(this.currentAccount);
+				Print.bluehorizontalLine();
+				Print.yellowhorizontalLine();
+				Print.checkingOrSavingsSelectPrint();
+				Print.yellowhorizontalLine();
+				Print.depositRequestHeader();
+				deposit = scanner.nextLine();
+			}
+		}
+		return depsositDouble;
+	}
+
+	private double setOverDraftLimit(){
+		String itemRequest =  Colors.ANSI_YELLOW + "OVERDRAFT LIMIT: " + Colors.ANSI_RESET;
+			System.out.printf("%28s%s ", space, itemRequest);
+			String overDraftLimit = scanner.nextLine();
+		while (true){
+			try {
+				Double overDraftLimitDouble = Double.parseDouble(overDraftLimit);
+				return overDraftLimitDouble;
+			} catch (Exception e) {
+				Print.clearSequence();
+				Print.MainMenu(manager);
+				Print.displayCustomerInfo(this.currentAccount);
+				Print.bluehorizontalLine();
+				Print.yellowhorizontalLine();
+				Print.checkingOrSavingsSelectPrint();
+				Print.yellowhorizontalLine();
+				itemRequest =  Colors.ANSI_YELLOW + "OVERDRAFT LIMIT: " + Colors.ANSI_RESET;
+				System.out.printf("%28s%s ", space, itemRequest);
+				overDraftLimit = scanner.nextLine();
+			}
+		}
+	}
+
+	private Account findAccount(){
+		Print.clearSequence();
+		Print.MainMenu(manager);
+		displayAccounts();
+		Print.accountInfoRetrieveHeader();
+    	String accntNum = scanner.nextLine();
+		// get customer account object from ID
+		while (true){
+			try {
+				Account retrieved_customer = this.manager.findAccount(accntNum);
+				return retrieved_customer;
+			} catch (Exception e) {
+				Print.clearSequence();
+				Print.MainMenu(manager);
+				displayAccounts();
+				Print.accountInfoRetrieveHeader();
+				accntNum = scanner.nextLine();
+			}
+		}
 	}
 }

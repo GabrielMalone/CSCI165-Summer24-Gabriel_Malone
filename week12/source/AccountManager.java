@@ -47,9 +47,12 @@ public class AccountManager {
 	public ArrayList<Account> bankAccounts = new ArrayList<>();
 	// load manager accounts
 	public ArrayList<Employee> employeeAccounts = new ArrayList<>();
-	// Map of customer ID and their account for searching purposes
-	public Map<String, Employee> bankEmployeeMap = new HashMap<String, Employee>(10); 
-	public Map<String, Account> bankAccountMap = new HashMap<String, Account>(10);
+	// Employee ID to Employee Object
+	public Map<String, Employee> bankEmployeeMap = new HashMap<>(); 
+	// Customer ID and Account Object -- not very useful
+	public Map<String, Account> bankAccountMap = new HashMap<>();
+	// Account Num to Account Map
+	public Map<Integer, Account> accountNumToAccountMap = new HashMap<>();
 	private int currentEmployeeLoggedInID; 
 
 	/**
@@ -216,12 +219,14 @@ public class AccountManager {
 				this.accountBal 	= line[15];
 				this.limit_rate   	= line[16];
 				this.managerID 		= line[17];
-			
+				
 				Account account = createAccount();
-				// add it to the ArrayList
+				// need to connect all accounts associated with one customer
+				this.accountNumToAccountMap.put(Integer.valueOf(this.accountID), account);
+				this.bankAccountMap.put(this.customerID, account);
 				this.bankAccounts.add(account);
 				// add to map for searching function
-				this.bankAccountMap.put(this.customerID, account);
+				
 				this.total_acnts ++;
 			}
 			scanner.close();
@@ -254,6 +259,7 @@ public class AccountManager {
 			// create filled out checking account object
 			CheckingAccount checkingAccount = new CheckingAccount(actID, new Customer( new Person(this.firstName, this.lastName, this.phone, DOB), joinDate, this.customerID),accDate, balance, rate_l);
 			checkingAccount.setManager(employee);
+			checkingAccount.setType(Account.TYPE.CHECKING);
 			return checkingAccount;
 		}
 		if (this.accountType.equals("savings")){
@@ -261,6 +267,7 @@ public class AccountManager {
 			// create filled out checking account object
 			SavingsAccount savingsAccount = new SavingsAccount(actID, new Customer( new Person(this.firstName, this.lastName, this.phone, DOB), joinDate, this.customerID), accDate, balance, rate_l);
 			savingsAccount.setManager(employee);
+			savingsAccount.setType(Account.TYPE.SAVINGS);
 			return savingsAccount;
 		}
 		if (this.accountType.equals(" ")){
@@ -303,16 +310,18 @@ public class AccountManager {
 	public void addAccount(Account account){
 		this.bankAccounts.add(account);
 		this.bankAccountMap.put(account.getOwner().getID(), account);
+		this.accountNumToAccountMap.put((int)account.getAccountNumber(), account);
 		this.total_acnts ++;
 	}
 
 	/**
 	 * Method to get the customer via their ID from the bank accounts map
-	 * @param customerID
+	 * @param accntNum
 	 * @return
 	 */
-	public Account findAccount(String customerID){
-		Account foundAccount = this.bankAccountMap.get(customerID);
+	public Account findAccount(String accntNum){
+		int accntNumInt = Integer.valueOf(accntNum);
+		Account foundAccount = this.accountNumToAccountMap.get(accntNumInt);
 		// privacy protection
 		if (foundAccount.getClass() == SavingsAccount.class){
 			// downcast
@@ -348,8 +357,4 @@ public class AccountManager {
 	public int getCurrentLoginID(){
 		return this.currentEmployeeLoggedInID;
 	}
-	
-
-	
-
 }
