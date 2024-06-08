@@ -44,14 +44,10 @@ public class Bank {
 	}
 
 	private void emailer(Account account){
-		String accountString = String.valueOf((int)account.getAccountNumber());
-		String accountSubString = accountString.substring(2,4);
-		String emailFile = account.getOwner().getLastName() + account.getAccountNumber() + ".txt";
-
 		try{
-			PrintWriter writer = new PrintWriter(new FileOutputStream(new File(emailFile), false));
-			String emailString = "Good afternoon " + account.getOwner().getName() + ",\n" + " Your account ending in " + accountSubString + " is in overdraft with a current balance of: " + Print.nf.format(account.getBalance()) + ". Pay it by " + (Date.dateInitializer().getMonth() + 1) + "/" +  Date.dateInitializer().getDay() +  "/" + Date.dateInitializer().getYear();
-			writer.print(emailString);
+			Print.emailString(account);
+			PrintWriter writer = new PrintWriter(new FileOutputStream(new File(Print.emailFileString(account)), false));
+			writer.print(Print.emailString(account));
 			writer.close();
 		}catch(IOException ioe){
 			System.out.print("Could not write to file");

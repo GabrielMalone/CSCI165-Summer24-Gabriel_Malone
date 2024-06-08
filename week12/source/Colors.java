@@ -1,3 +1,5 @@
+// Gabriel Malone / CSCI165 / Week 12 / Summer 2024
+
 public class Colors {
     // text // graphic colors
 	public static 	String ANSI_RESET          = "\u001B[0m"; 

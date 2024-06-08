@@ -1,3 +1,5 @@
+// Gabriel Malone / CSCI165 / Week 12 / Summer 2024
+
 import java.text.NumberFormat;
 
 public class Print {
@@ -205,5 +207,15 @@ public class Print {
 	public static void interestRateHeader(){
 		String itemRequest =  Colors.ANSI_YELLOW + "INTEREST RATE % :" 	+ Colors.ANSI_RESET;
 		System.out.printf("%22s%s ", space, itemRequest);
+	}
+	public static String emailString(Account account){
+		String accountString = String.valueOf((int)account.getAccountNumber());
+		String accountSubString = accountString.substring(2,4);
+		String emailString = "Good afternoon " + account.getOwner().getName() + ",\n" + " Your account ending in " + accountSubString + " is in overdraft with a current balance of: " + Print.nf.format(account.getBalance()) + ". Pay it by " + (Date.dateInitializer().getMonth() + 1) + "/" +  Date.dateInitializer().getDay() +  "/" + Date.dateInitializer().getYear();
+		return emailString;
+	}
+	public static String emailFileString(Account account){
+		String emailFile = account.getOwner().getLastName() + account.getAccountNumber() + ".txt";
+		return emailFile;
 	}
 }
