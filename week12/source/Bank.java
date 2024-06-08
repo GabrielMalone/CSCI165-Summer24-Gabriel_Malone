@@ -1,4 +1,8 @@
 // Gabriel Malone / CSCI165 / Week 12 / Summer 2024
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -27,7 +31,7 @@ public class Bank {
 		// only update accounts associate with the logged in managers
 		for (Account account : this.manager.getAccounts()){
 			if (account.getBalance() < 0){
-				// send letter
+				emailer(account);
 			}
 			// if interest bearing, pay interest
 			account.addInterest();
@@ -37,6 +41,22 @@ public class Bank {
 			// save new info to text file
 			manager.saveAccount("source/accounts.txt", account);
 		}
+	}
+
+	private void emailer(Account account){
+		String accountString = String.valueOf((int)account.getAccountNumber());
+		String accountSubString = accountString.substring(2,4);
+		String emailFile = account.getOwner().getLastName() + account.getAccountNumber() + ".txt";
+
+		try{
+			PrintWriter writer = new PrintWriter(new FileOutputStream(new File(emailFile), false));
+			String emailString = "Good afternoon " + account.getOwner().getName() + ",\n" + " Your account ending in " + accountSubString + " is in overdraft with a current balance of: " + Print.nf.format(account.getBalance()) + ". Pay it by " + (Date.dateInitializer().getMonth() + 1) + "/" +  Date.dateInitializer().getDay() +  "/" + Date.dateInitializer().getYear();
+			writer.print(emailString);
+			writer.close();
+		}catch(IOException ioe){
+			System.out.print("Could not write to file");
+			System.exit(0);
+		}	
 	}
 
 	/**
