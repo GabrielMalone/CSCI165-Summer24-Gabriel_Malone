@@ -54,7 +54,9 @@ public class AccountManagerTest {
         manager.addAccount(savingsAccount);
 
         // let's test to see that the account was added safely and kept the correct information
-        Account foundAccount = manager.findAccount("4346-23421");
+        Account foundAccount = manager.findAccount(String.valueOf(savingsAccount.getAccountNumber()));
+        
+        //Account foundAccount = manager.findAccount(String.valueOf(savingsAccount.getAccountNumber()));
         assertTrue(savingsAccount.equals(foundAccount));
         
         // privacy protection test

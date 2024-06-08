@@ -52,7 +52,7 @@ public class AccountManager {
 	// Customer ID and Account Object -- not very useful
 	public Map<String, Account> bankAccountMap = new HashMap<>();
 	// Account Num to Account Map
-	public Map<Integer, Account> accountNumToAccountMap = new HashMap<>();
+	public Map<Double, Account> accountNumToAccountMap = new HashMap<>();
 	private int currentEmployeeLoggedInID; 
 
 	/**
@@ -222,7 +222,7 @@ public class AccountManager {
 				
 				Account account = createAccount();
 				// need to connect all accounts associated with one customer
-				this.accountNumToAccountMap.put(Integer.valueOf(this.accountID), account);
+				this.accountNumToAccountMap.put(Double.valueOf(this.accountID), account);
 				this.bankAccountMap.put(this.customerID, account);
 				this.bankAccounts.add(account);
 				// add to map for searching function
@@ -310,7 +310,7 @@ public class AccountManager {
 	public void addAccount(Account account){
 		this.bankAccounts.add(account);
 		this.bankAccountMap.put(account.getOwner().getID(), account);
-		this.accountNumToAccountMap.put((int)account.getAccountNumber(), account);
+		this.accountNumToAccountMap.put(account.getAccountNumber(), account);
 		this.total_acnts ++;
 	}
 
@@ -320,7 +320,7 @@ public class AccountManager {
 	 * @return
 	 */
 	public Account findAccount(String accntNum){
-		int accntNumInt = Integer.valueOf(accntNum);
+		double accntNumInt = Double.valueOf(accntNum);
 		Account foundAccount = this.accountNumToAccountMap.get(accntNumInt);
 		// privacy protection
 		if (foundAccount.getClass() == SavingsAccount.class){

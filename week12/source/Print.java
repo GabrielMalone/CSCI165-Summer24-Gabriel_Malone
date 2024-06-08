@@ -28,14 +28,13 @@ public class Print {
 		System.out.printf("%35s%s%n", space, menutitle);
 	}
 	public static void checkingOrSavingsSelectPrint(){
-		String itemRequest =  "(" + Colors.ANSI_YELLOW + "C" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN 	+ "HECKING ACCOUNT" 	+ Colors.ANSI_RESET 
-		+ " |" + " (" + Colors.ANSI_YELLOW 	+ "S" + Colors.ANSI_RESET + ")" 		+ Colors.ANSI_CYAN 			+ "AVINGS ACCOUNT" 		+ Colors.ANSI_RESET;
+		String itemRequest =  "(" + Colors.ANSI_YELLOW + "C" + Colors.ANSI_RESET + ")" 	+ Colors.ANSI_CYAN 	+ "HECKING ACCOUNT" + Colors.ANSI_RESET + " |" + " (" + Colors.ANSI_YELLOW 	+ "S" + Colors.ANSI_RESET + ")" + Colors.ANSI_CYAN + "AVINGS ACCOUNT" + Colors.ANSI_RESET;
 		System.out.printf("%27s%s ", space, itemRequest);
 	}
 	public static void accountInfoRetrieveHeader(){
-		System.out.printf("%35s%s%n", space, Colors.ANSI_YELLOW + "// RETRIEVE ACCOUNT INFO // " + Colors.ANSI_RESET);
+		System.out.printf("%35s%s%n", space, Colors.ANSI_YELLOW 	+ "// RETRIEVE ACCOUNT INFO // " 	+ Colors.ANSI_RESET);
 		yellowhorizontalLine();
-		System.out.printf("%21s%s", space, Colors.ANSI_CYAN 	+ "Enter Accnt #: " + Colors.ANSI_RESET);
+		System.out.printf("%21s%s", space, Colors.ANSI_CYAN 		+ "Enter Accnt #: " 				+ Colors.ANSI_RESET);
 	}
 	public static void MainMenu(AccountManager manager){
 		System.out.printf("%43s%37s%n",Colors.ANSI_CYAN 	+ "CHEMICAL BANK" + Colors.ANSI_RESET, Date.dateInitializer());
@@ -46,10 +45,10 @@ public class Print {
         greenhorizontalLine();
     }
 	public static void loginHeader(){
-		System.out.printf("%43s%37s%n",Colors.ANSI_CYAN 	+ "CHEMICAL BANK" + Colors.ANSI_RESET, Date.dateInitializer());
+		System.out.printf("%43s%37s%n",Colors.ANSI_CYAN 	+ "CHEMICAL BANK" 			+ Colors.ANSI_RESET, Date.dateInitializer());
         greenhorizontalLine();
-        System.out.printf("%54s",  Colors.ANSI_YELLOW + "// EMPLOYEE TERMINAL //" + Colors.ANSI_RESET);
-        System.out.printf("%30s",  Colors.ANSI_CYAN 	+ "Login ID: " 	+ Colors.ANSI_RESET);
+        System.out.printf("%54s",  Colors.ANSI_YELLOW 	+ "// EMPLOYEE TERMINAL //" + Colors.ANSI_RESET);
+        System.out.printf("%30s",  Colors.ANSI_CYAN 		+ "Login ID: " 				+ Colors.ANSI_RESET);
 	}
 	public static void clearSequence(){
 		System.out.print("\033[H\033[2J");  
@@ -65,14 +64,31 @@ public class Print {
 	public static void bluehorizontalLine(){
 		System.out.printf("%s%71s%s%n", Colors.ANSI_CYAN, "-".repeat(50), Colors.ANSI_RESET);
 	}
-	public static void nullLoginHeader(){
-		System.out.printf("%43s%37s%n",Colors.ANSI_CYAN 	+ "CHEMICAL BANK" 		+ Colors.ANSI_RESET, Date.dateInitializer());
-		greenhorizontalLine();
-		System.out.printf("%47s",  Colors.ANSI_YELLOW 	+ "Employee Terminal" 	+ Colors.ANSI_RESET);
-		System.out.printf("%35s",  Colors.ANSI_CYAN 		+ "Enter Login ID: " 	+ Colors.ANSI_RESET);
-	}
 	public static void depositRequestHeader(){
 		String itemRequest =  Colors.ANSI_YELLOW + "DEPOSIT AMMOUNT: " + Colors.ANSI_RESET;
 		System.out.printf("%28s%s ", space, itemRequest);
 	} 
+	public static void newCustomerHeader(){
+		System.out.printf("%21s%s%n", space, Colors.ANSI_YELLOW 	+ "// NEW CUSTOMER INFO //" + Colors.ANSI_RESET);
+	}
+	public static void firstNameHeader(){
+		System.out.printf("%21s%s", space,Colors.ANSI_CYAN 		+ "First Name     " 		+ Colors.ANSI_RESET);
+	}
+	public static void lasttNameHeader(){
+		System.out.printf("%21s%s", space, Colors.ANSI_CYAN 		+ "Last Name      " 		+ Colors.ANSI_RESET);
+	}
+	public static void phoneHeader(){
+		System.out.printf("%21s%s", space, Colors.ANSI_CYAN 		+ "10-Digit Phone " 		+ Colors.ANSI_RESET);
+	}
+	public static void DOBHeader(){
+		System.out.printf( "%21s%s", space, Colors.ANSI_CYAN 	+ "DOB (1/1/1111) " 		+ Colors.ANSI_RESET);
+	}
+	public static void OverDraftHeader(){
+		String itemRequest =  Colors.ANSI_YELLOW + "OVERDRAFT LIMIT: " 	+ Colors.ANSI_RESET;
+		System.out.printf("%28s%s ", space, itemRequest);
+	}
+	public static void interestRateHeader(){
+		String itemRequest =  Colors.ANSI_YELLOW + "INTEREST RATE % :" 	+ Colors.ANSI_RESET;
+		System.out.printf("%28s%s ", space, itemRequest);
+	}
 }

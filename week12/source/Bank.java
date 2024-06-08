@@ -54,8 +54,7 @@ public class Bank {
 				Print.mainMenuOptions();
 			}
 			// update a customer
-			if (mainMenuSelection.equals("u")){
-				
+			if (mainMenuSelection.equals("u")){	
 			}
 			Print.clearSequence();
 		}
@@ -76,16 +75,16 @@ public class Bank {
 		Print.clearSequence();
 		Print.MainMenu(manager);
 		// Header
-		System.out.printf("%21s%s%n", space, Colors.ANSI_YELLOW + "// NEW CUSTOMER INFO //" + Colors.ANSI_RESET);
+		Print.newCustomerHeader();
 		Print.yellowhorizontalLine();
 		// Inputs
-		System.out.printf("%21s%s", space,Colors.ANSI_CYAN 	+ "First Name     " 	+ Colors.ANSI_RESET);
+		Print.firstNameHeader();
     	String firstName = scanner.nextLine().toLowerCase();
-		System.out.printf("%21s%s", space, Colors.ANSI_CYAN 	+ "Last Name      " 	+ Colors.ANSI_RESET);
+		Print.lasttNameHeader();
     	String lastName = scanner.nextLine().toLowerCase();
-		System.out.printf("%21s%s", space, Colors.ANSI_CYAN 	+ "10-Digit Phone " 	+ Colors.ANSI_RESET);
+		Print.phoneHeader();
     	String phone = scanner.nextLine();
-		System.out.printf( "%21s%s", space, Colors.ANSI_CYAN + "DOB (1/1/1111) " 	+ Colors.ANSI_RESET);
+		Print.DOBHeader();
     	String DOBstring[] = scanner.nextLine().split("/");
 		Print.yellowhorizontalLine();
 		String accountType = checkingsOrSavingsRequest();
@@ -109,8 +108,17 @@ public class Bank {
 			this.manager.saveAccount("source/accounts.txt", checkingAccount);
 			this.currentAccount = checkingAccount;
 		}
-		// add this customer to the bank's 'database'
-		
+		if (accountType.equals("s")){
+			Print.yellowhorizontalLine();
+			double deposit = depositRequest();
+			Print.yellowhorizontalLine();
+			double interestRate = setInterestRate();
+			SavingsAccount savingsAccount =  new SavingsAccount(createAccountNumber(), customer, manager.findEmployee(String.valueOf(manager.getCurrentLoginID())), Date.dateInitializer(), interestRate);
+			savingsAccount.deposit(deposit);
+			this.manager.addAccount(savingsAccount);
+			this.manager.saveAccount("source/accounts.txt", savingsAccount);
+			this.currentAccount = savingsAccount;
+		}	
 	}
 
 	private String createCustomerID(String firstName, String lastName, Date DOB){
@@ -140,7 +148,7 @@ public class Bank {
 		while (employee == null){
 			// if invalid, re-request until valid
 			Print.clearSequence();
-			Print.nullLoginHeader();
+			Print.loginHeader();
 			employeeID = scanner.nextLine();
 			employee = manager.findEmployee(employeeID);
 		}
@@ -206,8 +214,7 @@ public class Bank {
 	}
 
 	private double setOverDraftLimit(){
-		String itemRequest =  Colors.ANSI_YELLOW + "OVERDRAFT LIMIT: " + Colors.ANSI_RESET;
-			System.out.printf("%28s%s ", space, itemRequest);
+			Print.OverDraftHeader();
 			String overDraftLimit = scanner.nextLine();
 		while (true){
 			try {
@@ -221,9 +228,30 @@ public class Bank {
 				Print.yellowhorizontalLine();
 				Print.checkingOrSavingsSelectPrint();
 				Print.yellowhorizontalLine();
-				itemRequest =  Colors.ANSI_YELLOW + "OVERDRAFT LIMIT: " + Colors.ANSI_RESET;
-				System.out.printf("%28s%s ", space, itemRequest);
+				Print.OverDraftHeader();
 				overDraftLimit = scanner.nextLine();
+			}
+		}
+	}
+
+	private double setInterestRate(){
+		Print.interestRateHeader();
+		String interestRate = scanner.nextLine();
+	while (true){
+		try {
+			Double interestRateDouble = Double.parseDouble(interestRate);
+			// return a percentage
+			return interestRateDouble / 100;
+		} catch (Exception e) {
+			Print.clearSequence();
+			Print.MainMenu(manager);
+			Print.displayCustomerInfo(this.currentAccount);
+			Print.bluehorizontalLine();
+			Print.yellowhorizontalLine();
+			Print.checkingOrSavingsSelectPrint();
+			Print.yellowhorizontalLine();
+			Print.interestRateHeader();
+			interestRate = scanner.nextLine();
 			}
 		}
 	}
