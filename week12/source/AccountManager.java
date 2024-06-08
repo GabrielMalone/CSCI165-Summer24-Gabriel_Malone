@@ -373,7 +373,7 @@ public class AccountManager {
 		// remove the account from any arrays / maps
 		this.accountNumToAccountMap.remove(currentAccount.getAccountNumber());
 		for (Account account : this.bankAccounts){
-			if (account.equals(currentAccount)){
+			if (account.getAccountNumber() == currentAccount.getAccountNumber()){
 				this.bankAccounts.remove(account);
 				break;
 			}
@@ -391,7 +391,7 @@ public class AccountManager {
 		this.deleting = false;
 		for (Account account : this.bankAccounts){
 			saveAccount("source/accounts.txt", account);
-		}			
+		}
 	}
 	/**
 	 * Method to update the account in real time for the GUI terminal
@@ -406,6 +406,7 @@ public class AccountManager {
 			if (account.getAccountNumber() == currAccount.getAccountNumber()){
 				this.bankAccounts.remove(account);
 				this.bankAccounts.add(currAccount);
+				break;
 			}
 		}
 		

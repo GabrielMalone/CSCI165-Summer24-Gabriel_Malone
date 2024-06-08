@@ -50,8 +50,11 @@ public class Bank {
 						double deposit = depositRequest();
 						// update object state
 						currentAccount.deposit(deposit);
+						// remove old info from text file
 						manager.deleteAccount(currentAccount);
-						manager.updateAccount(currentAccount);
+						// replace new info in maps/arrays
+						manager.addAccount(currentAccount);
+						// save new info to text file
 						manager.saveAccount("source/accounts.txt", currentAccount);
 					}
 				}
