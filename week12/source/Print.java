@@ -9,9 +9,11 @@ public class Print {
 		double accountNumString =  account.getAccountNumber();
 		System.out.printf("%22s", space);
 		System.out.printf("%-12.0f", accountNumString );
-		System.out.printf("%-14s",account.getOwner().getID());
-		System.out.printf("%-12s",account.getType());
-		if (account.getClass()		== CheckingAccount.class){
+		System.out.printf("%-12s",account.getOwner().getID());
+		if (account.getClass() == SavingsAccount.class)
+			System.out.printf("%-11s", "SAVINGS");
+		if (account.getClass() == CheckingAccount.class){
+			System.out.printf("%-11s", "CHECKNG");
 			Double balance = account.getBalance();
 			String balanceStr = nf.format(account.getBalance());
 			if (balance < 0){
@@ -40,9 +42,9 @@ public class Print {
 								+ " |"  + " (" + Colors.ANSI_YELLOW + "W" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_PURPLE  + "WITHDRAW" 	 
 								+ " |"  + " (" + Colors.ANSI_YELLOW + "S" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_PURPLE  + "ET LIMIT" + Colors.ANSI_RESET
 								+ " |"  + " (" + Colors.ANSI_YELLOW + "T" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_PURPLE  + "RANSFER" + Colors.ANSI_RESET;
-		if (currAccount.getType() == Account.TYPE.SAVINGS )
+		if (currAccount.getClass() == SavingsAccount.class )
 			System.out.printf("%20s%s", space, itemRequestA);
-		else if (currAccount.getType() == Account.TYPE.CHECKING )
+		else if (currAccount.getClass() == CheckingAccount.class)
 			System.out.printf("%20s%s", space, itemRequestB);
 	}
 	public static void updateAccountHeader(){
@@ -96,7 +98,7 @@ public class Print {
 		System.out.printf("%s%n", account);
 	}
 	public static  void customerIDHeader (){
-		String headerString = Colors.ANSI_CYAN + "Accnt #" + space.repeat(6) + "Cust ID" + space.repeat(7) + "Type" + space.repeat(9) + "Balance" +  Colors.ANSI_RESET;
+		String headerString = Colors.ANSI_CYAN + "Accnt #" + space.repeat(6) + "Cust ID" + space.repeat(6) + "Type" + space.repeat(8) + "Balance" +  Colors.ANSI_RESET;
 		System.out.printf("%21s%s%n", space, headerString);
 	}
 	public static  void enterContinue (){

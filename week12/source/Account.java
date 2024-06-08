@@ -10,34 +10,15 @@
 
 public class Account {
 
-	public static enum TYPE {
-		CHECKING,
-		SAVINGS;
-	}
-
-	public static enum STATUS {
-		EARNING,
-		PROTECTED,
-		OVERDRAFT;
-	}
 
 	private Customer	owner;			// the owner of the account
 	private Employee	accountManager;	// the manager of the account
 	private Date		dateCreated; 	// date the account was created
 	private int 		accountNumber;	// The account number
     private double 		balance;  		// The current balance
-	private TYPE type;
+	private double 		interest;
+	private boolean		interestBearing;
 	
-	public TYPE getType() {
-		return type;
-	}
-
-	public void setType(TYPE type) {
-		if (this.getClass() == SavingsAccount.class)
-			this.type = TYPE.SAVINGS;
-		if (this.getClass() == CheckingAccount.class)
-			this.type = TYPE.CHECKING;
-	}
 
 	/**
 	 * Overloaded constructor
@@ -80,6 +61,23 @@ public class Account {
 		this.accountNumber = toCopy.accountNumber;
 		this.balance = toCopy.balance;
 	}
+
+	/**
+	 * Method to set an account to be interest bearing
+	 * @param interestBearing
+	 */
+	public void setInterestBearing(boolean interestBearing) {
+		this.interestBearing = interestBearing;
+	}
+
+	/**
+	 * Method to see if an account is interest bearing
+	 * @return boolean
+	 */
+	public boolean getInterestBearing() {
+		return this.interestBearing;
+	}
+
 
 	/**
 	 * 
@@ -181,6 +179,28 @@ public class Account {
 		this.owner = new Customer(newPerson, DOB, custID);
 	}
 
+
+	/**
+	 * Method to add interest to this account if it is an interest bearing account
+	 */
+	public void addInterest(){
+		if (this.interestBearing){
+			double interestEarned = 0;
+			interestEarned = this.balance * this.interest;
+			this.balance += interestEarned;
+		}
+	}
+
+	/**
+	 * Method to set the interest rate for this account
+	 * if it is an interest bearing account
+	 * @param interest
+	 */
+	public void setInterest(double interest) {
+		if (this.interestBearing){
+			this.interest = interest;
+		}
+	}
 
 	@Override
 	public String toString() {

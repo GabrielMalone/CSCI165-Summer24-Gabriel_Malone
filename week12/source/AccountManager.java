@@ -263,7 +263,7 @@ public class AccountManager {
 			// create filled out checking account object
 			CheckingAccount checkingAccount = new CheckingAccount(actID, new Customer( new Person(this.firstName, this.lastName, this.phone, DOB), joinDate, this.customerID),accDate, balance, rate_l);
 			checkingAccount.setManager(employee);
-			checkingAccount.setType(Account.TYPE.CHECKING);
+		
 	
 			return checkingAccount;
 		}
@@ -272,7 +272,7 @@ public class AccountManager {
 			// create filled out checking account object
 			SavingsAccount savingsAccount = new SavingsAccount(actID, new Customer( new Person(this.firstName, this.lastName, this.phone, DOB), joinDate, this.customerID), accDate, balance, rate_l);
 			savingsAccount.setManager(employee);
-			savingsAccount.setType(Account.TYPE.SAVINGS);
+
 
 			return savingsAccount;
 		}
@@ -332,16 +332,13 @@ public class AccountManager {
 			// downcast
 			SavingsAccount found_savings_account = (SavingsAccount) foundAccount;
 			found_savings_account = new SavingsAccount(found_savings_account);
-			found_savings_account.setType(found_savings_account.getType());
-		
+			found_savings_account.setInterestBearing(true);
 			return found_savings_account;
 		}
 		if (foundAccount.getClass() == CheckingAccount.class){
 			// downcast
 			CheckingAccount found_checking_account = (CheckingAccount) foundAccount;
 			found_checking_account = new CheckingAccount(found_checking_account);
-			found_checking_account.setType(found_checking_account.getType());
-
 			return found_checking_account;
 		}
 		else{

@@ -21,20 +21,24 @@ public class Bank {
 
 	/**
 	 * Mehthod to update all accounts at once
+	 * without using type checks
 	 */
 	public void updateAccounts(){
 		// only update accounts associate with the logged in managers
 		for (Account account : this.manager.getAccounts()){
-			
+			if (account.getBalance() < 0){
+				// send letter
 			}
+			// if interest bearing, pay interest
+			account.addInterest();
+			manager.deleteAccount(account);
+			// replace new info in maps/arrays
+			manager.addAccount(account);
+			// save new info to text file
+			manager.saveAccount("source/accounts.txt", account);
+		}
 	}
 
-	/**
-	 * Method to close/delete an account
-	 */
-	public void closeAccount(){
-
-	}
 	/**
 	 * Method to pay divends to each account 
 	 */
@@ -92,8 +96,6 @@ public class Bank {
 			this.manager.addAccount(checkingAccount);
 			this.manager.saveAccount("source/accounts.txt", checkingAccount);
 			this.currentAccount = checkingAccount;
-			this.currentAccount.setType(Account.TYPE.CHECKING);
-	
 		}
 		if (accountType.equals("s")){
 			Print.yellowhorizontalLine();
@@ -101,12 +103,11 @@ public class Bank {
 			Print.yellowhorizontalLine();
 			double interestRate = setInterestRate();
 			SavingsAccount savingsAccount =  new SavingsAccount(createAccountNumber(), customer, manager.findEmployee(String.valueOf(manager.getCurrentLoginID())), Date.dateInitializer(), interestRate);
+			savingsAccount.setInterestBearing(true);
 			savingsAccount.deposit(deposit);
 			this.manager.addAccount(savingsAccount);
 			this.manager.saveAccount("source/accounts.txt", savingsAccount);
 			this.currentAccount = savingsAccount;
-			this.currentAccount.setType(Account.TYPE.SAVINGS);
-		
 		}	
 	}
 
@@ -281,8 +282,7 @@ public class Bank {
 		updateSelectionOptions.add("0");
 		ArrayList<String> updateAllSelectionOptions = new ArrayList<>();
 		updateAllSelectionOptions.add("d");
-		updateAllSelectionOptions.add("i");
-		updateAllSelectionOptions.add("o");
+		updateAllSelectionOptions.add("u");
 		updateAllSelectionOptions.add("0");
 		// load saved data 
 		manager.loadManagers("source/employees.txt");
@@ -493,8 +493,8 @@ public class Bank {
 						Print.updateAllMenuOptions();
 						updateAllSelection = scanner.nextLine().toLowerCase();
 					}
-					if (updateAllSelection.equals("i")){
-						//payDividends();
+					if (updateAllSelection.equals("u")){
+						updateAccounts();
 						Print.clearSequence();
 						Print.MainMenu(manager);
 						displayAccounts();
