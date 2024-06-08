@@ -17,10 +17,10 @@ public class Print {
 			System.out.printf("%s%n", Colors.ANSI_GREEN + nf.format(account.getBalance()) + Colors.ANSI_RESET);
 	}
     public static void mainMenuOptions(){
-		String itemRequest =  	"(" + Colors.ANSI_YELLOW + "A" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN 	        + "DD ACCOUNT" 	    + Colors.ANSI_RESET + 
+		String itemRequest =  	"(" + Colors.ANSI_YELLOW + "A" + Colors.ANSI_RESET 	+ ")" 			+ Colors.ANSI_CYAN 	+ "DD ACCOUNT" 	    + Colors.ANSI_RESET + 
 								" |" + " (" + Colors.ANSI_YELLOW + "S" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN  + "ELECT ACCOUNT" 	+ Colors.ANSI_RESET +
 								" |" + " (" + Colors.ANSI_YELLOW + "U" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN 	+ "PDATE ALL" 	    + Colors.ANSI_RESET;
-		System.out.printf("%21s%s", space, itemRequest);
+		System.out.printf("%22s%s", space, itemRequest);
 	}
 	public static void updateMenuOptions(Account currAccount){
 		String itemRequestA =	 " ("   + Colors.ANSI_YELLOW + "D"  + Colors.ANSI_RESET 	    + ")" 	+ Colors.ANSI_PURPLE  + "EPOSIT" 	+ Colors.ANSI_RESET
@@ -39,6 +39,11 @@ public class Print {
 	public static void updateAccountHeader(){
 		yellowhorizontalLine();
 		System.out.printf("%35s%s%n", space, Colors.ANSI_YELLOW 	+ "// UPDATE ACCOUNT // " 	+ Colors.ANSI_RESET);
+		yellowhorizontalLine();
+	}
+	public static void updateAccountFooter(){
+		yellowhorizontalLine();
+		System.out.printf("%35s%s%n", space, Colors.ANSI_PURPLE 	+ "// ACCOUNT UPDATED // " 	+ Colors.ANSI_RESET);
 		yellowhorizontalLine();
 	}
 	public static void despoitAccountHeader(){
@@ -74,6 +79,10 @@ public class Print {
 	public static  void customerIDHeader (){
 		String headerString = Colors.ANSI_CYAN + "Accnt #" + space.repeat(6) + "Cust ID" + space.repeat(7) + "Type" + space.repeat(10) + "Status" +  Colors.ANSI_RESET;
 		System.out.printf("%21s%s%n", space, headerString);
+	}
+	public static  void enterContinue (){
+		String continueString = Colors.ANSI_CYAN + "Return to Menu " +Colors.ANSI_RESET;
+		System.out.printf("%21s%s", space, continueString);
 	}
 	public static void accountTypeHeader(){
 		String menutitle =  Colors.ANSI_YELLOW + "// SET ACCOUNT TYPE //" + Colors.ANSI_RESET;
