@@ -83,6 +83,46 @@ public class Bank {
 						Print.customerMenuOptions();
 						updateSelection = scanner.nextLine().toLowerCase();
 					}
+					// change interest rates or overdraft limits on an account
+					if (updateSelection.equals("s")){
+						// rates for savings
+						if (currentAccount.getClass() == SavingsAccount.class){
+							// downcast to get interest rate set method
+							SavingsAccount current_savings = (SavingsAccount) currentAccount;
+							Print.rateAccountHeader();
+							double interestRate = setInterestRate();
+							// update object state
+							current_savings.setInterest(interestRate);
+							// remove old info from text file // arrays
+							manager.deleteAccount(current_savings);
+							// replace new info in maps/arrays
+							manager.addAccount(current_savings);
+							// save new info to text file
+							manager.saveAccount("source/accounts.txt", current_savings);
+						}
+						// limits for checking
+						if (currentAccount.getClass() == CheckingAccount.class){
+							// downcast to get interest rate set method
+							CheckingAccount current_checking = (CheckingAccount) currentAccount;
+							Print.limitAccountHeader();
+							double overDraftLimit = setOverDraftLimit();
+							// update object state
+							current_checking.setOverdraftLimit(overDraftLimit);
+							// remove old info from text file // arrays
+							manager.deleteAccount(current_checking);
+							// replace new info in maps/arrays
+							manager.addAccount(current_checking);
+							// save new info to text file
+							manager.saveAccount("source/accounts.txt", current_checking);
+						}
+						Print.clearSequence();
+						Print.MainMenu(manager);
+						displayAccounts();
+						Print.accountInfoRetrieveHeader();
+						Print.displayCustomerInfo(this.currentAccount);
+						Print.customerMenuOptions();
+						updateSelection = scanner.nextLine().toLowerCase();
+					}
 				}
 				if (CustomerSelection.equals("c")){
 					// delete an account

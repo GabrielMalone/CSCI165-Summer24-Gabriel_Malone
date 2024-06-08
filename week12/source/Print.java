@@ -46,6 +46,16 @@ public class Print {
 		System.out.printf("%22s%s%n", space, Colors.ANSI_GREEN 	+ "// CASH DEPOSIT // " 	+ Colors.ANSI_RESET);
 		greenhorizontalLine();
 	}
+	public static void rateAccountHeader(){
+		greenhorizontalLine();
+		System.out.printf("%22s%s%n", space, Colors.ANSI_GREEN 	+ "// INTEREST RATE // " 	+ Colors.ANSI_RESET);
+		greenhorizontalLine();
+	}
+	public static void limitAccountHeader(){
+		greenhorizontalLine();
+		System.out.printf("%22s%s%n", space, Colors.ANSI_GREEN 	+ "// OVERDRAFT LIMIT // " 	+ Colors.ANSI_RESET);
+		greenhorizontalLine();
+	}
 	public static void withdrawAccountHeader(){
 		greenhorizontalLine();
 		System.out.printf("%22s%s%n", space, Colors.ANSI_GREEN 	+ "// CASH WITHDRAWL // " 	+ Colors.ANSI_RESET);
@@ -139,10 +149,10 @@ public class Print {
 	}
 	public static void OverDraftHeader(){
 		String itemRequest =  Colors.ANSI_YELLOW + "OVERDRAFT LIMIT: " 	+ Colors.ANSI_RESET;
-		System.out.printf("%28s%s ", space, itemRequest);
+		System.out.printf("%22s%s ", space, itemRequest);
 	}
 	public static void interestRateHeader(){
 		String itemRequest =  Colors.ANSI_YELLOW + "INTEREST RATE % :" 	+ Colors.ANSI_RESET;
-		System.out.printf("%28s%s ", space, itemRequest);
+		System.out.printf("%22s%s ", space, itemRequest);
 	}
 }
