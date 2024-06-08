@@ -264,7 +264,7 @@ public class AccountManager {
 			CheckingAccount checkingAccount = new CheckingAccount(actID, new Customer( new Person(this.firstName, this.lastName, this.phone, DOB), joinDate, this.customerID),accDate, balance, rate_l);
 			checkingAccount.setManager(employee);
 			checkingAccount.setType(Account.TYPE.CHECKING);
-			checkingAccount.setStatus(Account.STATUS.PROTECTED);
+	
 			return checkingAccount;
 		}
 		if (this.accountType.equals("savings")){
@@ -273,7 +273,7 @@ public class AccountManager {
 			SavingsAccount savingsAccount = new SavingsAccount(actID, new Customer( new Person(this.firstName, this.lastName, this.phone, DOB), joinDate, this.customerID), accDate, balance, rate_l);
 			savingsAccount.setManager(employee);
 			savingsAccount.setType(Account.TYPE.SAVINGS);
-			savingsAccount.setStatus(Account.STATUS.EARNING);
+
 			return savingsAccount;
 		}
 		if (this.accountType.equals(" ")){
@@ -332,14 +332,16 @@ public class AccountManager {
 			// downcast
 			SavingsAccount found_savings_account = (SavingsAccount) foundAccount;
 			found_savings_account = new SavingsAccount(found_savings_account);
-			found_savings_account.setType(Account.TYPE.SAVINGS);
+			found_savings_account.setType(found_savings_account.getType());
+		
 			return found_savings_account;
 		}
 		if (foundAccount.getClass() == CheckingAccount.class){
 			// downcast
 			CheckingAccount found_checking_account = (CheckingAccount) foundAccount;
 			found_checking_account = new CheckingAccount(found_checking_account);
-			found_checking_account.setType(Account.TYPE.CHECKING);
+			found_checking_account.setType(found_checking_account.getType());
+
 			return found_checking_account;
 		}
 		else{
@@ -392,23 +394,5 @@ public class AccountManager {
 		for (Account account : this.bankAccounts){
 			saveAccount("source/accounts.txt", account);
 		}
-	}
-	/**
-	 * Method to update the account in real time for the GUI terminal
-	 * @param currAccount
-	 */
-	public void updateAccount (Account currAccount){
-		// replace in map with updated info
-		this.accountNumToAccountMap.remove(currAccount.getAccountNumber(), currAccount);
-		this.accountNumToAccountMap.put(currAccount.getAccountNumber(), currAccount);	
-		// replace in array with updated info
-		for (Account account : this.bankAccounts){
-			if (account.getAccountNumber() == currAccount.getAccountNumber()){
-				this.bankAccounts.remove(account);
-				this.bankAccounts.add(currAccount);
-				break;
-			}
-		}
-		
 	}
 }

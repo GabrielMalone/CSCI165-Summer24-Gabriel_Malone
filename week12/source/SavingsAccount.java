@@ -112,7 +112,7 @@ public class SavingsAccount extends Account{
 		+ "\n" + space.repeat(21) + Colors.ANSI_PURPLE + getClass() + Colors.ANSI_RESET 
 		+ "\n" + space.repeat(21) + Colors.ANSI_CYAN + "Checking Accnt Num: " + Colors.ANSI_RESET  + (int)getAccountNumber() 
 		+ "\n" + space.repeat(21) + Colors.ANSI_CYAN + "Interest rate: " + Colors.ANSI_RESET + getInterest() 
-		+ "\n" + space.repeat(21) + Colors.ANSI_CYAN + "Checking Acnt Balance: " + Colors.ANSI_RESET +  Colors.ANSI_GREEN + getBalance() + Colors.ANSI_RESET
+		+ "\n" + space.repeat(21) + Colors.ANSI_CYAN + "Checking Acnt Balance: " + Colors.ANSI_RESET +  Colors.ANSI_GREEN + Print.nf.format(getBalance()) + Colors.ANSI_RESET
 		+ "\n" ;
 	}        
 

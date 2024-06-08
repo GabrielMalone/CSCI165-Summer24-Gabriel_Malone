@@ -1,21 +1,20 @@
-
+import java.text.NumberFormat;
 
 public class Print {
 
     public static String space = " ";
+	public static NumberFormat nf = NumberFormat.getCurrencyInstance();
 
 	public static void displayINFO(Account account){
 		double accountNumString =  account.getAccountNumber();
 		System.out.printf("%22s", space);
 		System.out.printf("%-12.0f", accountNumString );
 		System.out.printf("%-14s",account.getOwner().getID());
-		System.out.printf("%-13s",account.getType());
-		if (account.getStatus() == Account.STATUS.PROTECTED)
-			System.out.printf("%s%n", Colors.ANSI_GREEN + account.getStatus() + Colors.ANSI_RESET);
-		else if (account.getStatus() == Account.STATUS.OVERDRAFT)
-			System.out.printf("%s%n", Colors.ANSI_PURPLE + account.getStatus() + Colors.ANSI_RESET);
-		else
-			System.out.printf("%s%n",  Colors.ANSI_CYAN + account.getStatus() + Colors.ANSI_RESET);
+		System.out.printf("%-12s",account.getType());
+		if (account.getClass()		== CheckingAccount.class)
+			System.out.printf("%s%n", Colors.ANSI_GREEN 	+ nf.format(account.getBalance()) + Colors.ANSI_RESET);
+		else if (account.getClass() == SavingsAccount.class)
+			System.out.printf("%s%n", Colors.ANSI_GREEN + nf.format(account.getBalance()) + Colors.ANSI_RESET);
 	}
     public static void mainMenuOptions(){
 		String itemRequest =  	"(" + Colors.ANSI_YELLOW + "A" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN 	        + "DD ACCOUNT" 	    + Colors.ANSI_RESET + 
@@ -44,7 +43,12 @@ public class Print {
 	}
 	public static void despoitAccountHeader(){
 		greenhorizontalLine();
-		System.out.printf("%36s%s%n", space, Colors.ANSI_GREEN 	+ "// CASH DEPOSIT // " 	+ Colors.ANSI_RESET);
+		System.out.printf("%22s%s%n", space, Colors.ANSI_GREEN 	+ "// CASH DEPOSIT // " 	+ Colors.ANSI_RESET);
+		greenhorizontalLine();
+	}
+	public static void withdrawAccountHeader(){
+		greenhorizontalLine();
+		System.out.printf("%22s%s%n", space, Colors.ANSI_GREEN 	+ "// CASH WITHDRAWL // " 	+ Colors.ANSI_RESET);
 		greenhorizontalLine();
 	}
 	public static void customerMenuOptions(){
@@ -55,7 +59,6 @@ public class Print {
 		System.out.printf("%20s%s", space, itemRequest);
 	}
 	public static void displayCustomerInfo(Account account){
-		bluehorizontalLine();
 		System.out.printf("%s%n", account);
 	}
 	public static  void customerIDHeader (){
@@ -112,8 +115,12 @@ public class Print {
 		System.out.printf("%s%71s%s%n", Colors.ANSI_CYAN, "-".repeat(50), Colors.ANSI_RESET);
 	}
 	public static void depositRequestHeader(){
-		String itemRequest =  Colors.ANSI_YELLOW + "DEPOSIT AMMOUNT: " + Colors.ANSI_RESET;
-		System.out.printf("%28s%s ", space, itemRequest);
+		String itemRequest =  Colors.ANSI_YELLOW + "AMMOUNT: " + Colors.ANSI_RESET;
+		System.out.printf("%22s%s ", space, itemRequest);
+	} 
+	public static void withdrawRequestHeader(){
+		String itemRequest =  Colors.ANSI_YELLOW + "WITHDRAWL AMMOUNT: " + Colors.ANSI_RESET;
+		System.out.printf("%26s%s ", space, itemRequest);
 	} 
 	public static void newCustomerHeader(){
 		System.out.printf("%21s%s%n", space, Colors.ANSI_YELLOW 	+ "// NEW CUSTOMER INFO //" + Colors.ANSI_RESET);

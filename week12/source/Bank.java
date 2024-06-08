@@ -47,15 +47,41 @@ public class Bank {
 					String updateSelection = scanner.nextLine().toLowerCase();
 					if (updateSelection.equals("d")){
 						Print.despoitAccountHeader();
-						double deposit = depositRequest();
+						double deposit = dwRequest();
 						// update object state
 						currentAccount.deposit(deposit);
-						// remove old info from text file
+						// remove old info from text file // arrays
 						manager.deleteAccount(currentAccount);
 						// replace new info in maps/arrays
 						manager.addAccount(currentAccount);
 						// save new info to text file
 						manager.saveAccount("source/accounts.txt", currentAccount);
+						Print.clearSequence();
+						Print.MainMenu(manager);
+						displayAccounts();
+						Print.accountInfoRetrieveHeader();
+						Print.displayCustomerInfo(this.currentAccount);
+						Print.customerMenuOptions();
+						updateSelection = scanner.nextLine().toLowerCase();
+					}
+					if (updateSelection.equals("w")){
+						Print.withdrawAccountHeader();
+						double withdrawl = dwRequest();
+						// update object state
+						currentAccount.withdraw(withdrawl);
+						// remove old info from text file // arrays
+						manager.deleteAccount(currentAccount);
+						// replace new info in maps/arrays
+						manager.addAccount(currentAccount);
+						// save new info to text file
+						manager.saveAccount("source/accounts.txt", currentAccount);
+						Print.clearSequence();
+						Print.MainMenu(manager);
+						displayAccounts();
+						Print.accountInfoRetrieveHeader();
+						Print.displayCustomerInfo(this.currentAccount);
+						Print.customerMenuOptions();
+						updateSelection = scanner.nextLine().toLowerCase();
 					}
 				}
 				if (CustomerSelection.equals("c")){
@@ -115,7 +141,7 @@ public class Bank {
 		// Open an account
 		if (accountType.equals("c")){
 			Print.yellowhorizontalLine();
-			double deposit = depositRequest();
+			double deposit = dwRequest();
 			Print.yellowhorizontalLine();
 			double overDraftLimit = setOverDraftLimit();
 			CheckingAccount checkingAccount =  new CheckingAccount(createAccountNumber(), customer, manager.findEmployee(String.valueOf(manager.getCurrentLoginID())), Date.dateInitializer(), overDraftLimit);
@@ -124,11 +150,11 @@ public class Bank {
 			this.manager.saveAccount("source/accounts.txt", checkingAccount);
 			this.currentAccount = checkingAccount;
 			this.currentAccount.setType(Account.TYPE.CHECKING);
-			this.currentAccount.setStatus(Account.STATUS.PROTECTED);
+	
 		}
 		if (accountType.equals("s")){
 			Print.yellowhorizontalLine();
-			double deposit = depositRequest();
+			double deposit = dwRequest();
 			Print.yellowhorizontalLine();
 			double interestRate = setInterestRate();
 			SavingsAccount savingsAccount =  new SavingsAccount(createAccountNumber(), customer, manager.findEmployee(String.valueOf(manager.getCurrentLoginID())), Date.dateInitializer(), interestRate);
@@ -137,7 +163,7 @@ public class Bank {
 			this.manager.saveAccount("source/accounts.txt", savingsAccount);
 			this.currentAccount = savingsAccount;
 			this.currentAccount.setType(Account.TYPE.SAVINGS);
-			this.currentAccount.setStatus(Account.STATUS.EARNING);
+		
 		}	
 	}
 
@@ -210,13 +236,13 @@ public class Bank {
 		return accountType;
 	}
 
-	private double depositRequest(){
+	private double dwRequest(){
 		Print.depositRequestHeader();
-		String deposit = scanner.nextLine();
-		double depsositDouble;
+		String sum = scanner.nextLine();
+		double sumdouble;
 		while (true){
 			try {
-				depsositDouble = Double.parseDouble(deposit);
+				sumdouble = Double.parseDouble(sum);
 				break;
 			} catch (Exception e) {
 				Print.clearSequence();
@@ -227,10 +253,10 @@ public class Bank {
 				Print.checkingOrSavingsSelectPrint();
 				Print.yellowhorizontalLine();
 				Print.depositRequestHeader();
-				deposit = scanner.nextLine();
+				sum = scanner.nextLine();
 			}
 		}
-		return depsositDouble;
+		return sumdouble;
 	}
 
 	private double setOverDraftLimit(){

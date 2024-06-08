@@ -27,23 +27,16 @@ public class Account {
 	private int 		accountNumber;	// The account number
     private double 		balance;  		// The current balance
 	private TYPE type;
-	private STATUS status;
-    
 	
 	public TYPE getType() {
 		return type;
 	}
 
 	public void setType(TYPE type) {
-		this.type = type;
-	}
-
-	public STATUS getStatus() {
-		return status;
-	}
-
-	public void setStatus(STATUS status) {
-		this.status = status;
+		if (this.getClass() == SavingsAccount.class)
+			this.type = TYPE.SAVINGS;
+		if (this.getClass() == CheckingAccount.class)
+			this.type = TYPE.CHECKING;
 	}
 
 	/**
