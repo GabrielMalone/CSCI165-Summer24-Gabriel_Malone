@@ -23,7 +23,6 @@ public class AccountManagerTest {
         manager.saveAccount("unit_test/accounts.txt", savingsAccount);
 
         // clear the arrays and map
-        manager.bankAccountMap.clear();
         manager.bankAccounts.clear();
 
         //load the data from file into the map and array
@@ -35,8 +34,6 @@ public class AccountManagerTest {
 
         // privacy protection test
         assertFalse(savingsAccount == foundAccount);
-
-
     }
 
     @Test
@@ -55,7 +52,7 @@ public class AccountManagerTest {
 
         // let's test to see that the account was added safely and kept the correct information
         Account foundAccount = manager.findAccount(String.valueOf(savingsAccount.getAccountNumber()));
-        
+
         //Account foundAccount = manager.findAccount(String.valueOf(savingsAccount.getAccountNumber()));
         assertTrue(savingsAccount.equals(foundAccount));
         

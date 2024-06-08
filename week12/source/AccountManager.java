@@ -49,8 +49,6 @@ public class AccountManager {
 	public ArrayList<Employee> employeeAccounts = new ArrayList<>();
 	// Employee ID to Employee Object
 	public Map<String, Employee> bankEmployeeMap = new HashMap<>(); 
-	// Customer ID and Account Object -- not very useful
-	public Map<String, Account> bankAccountMap = new HashMap<>();
 	// Account Num to Account Map
 	public Map<Double, Account> accountNumToAccountMap = new HashMap<>();
 	private int currentEmployeeLoggedInID; 
@@ -223,7 +221,6 @@ public class AccountManager {
 				Account account = createAccount();
 				// need to connect all accounts associated with one customer
 				this.accountNumToAccountMap.put(Double.valueOf(this.accountID), account);
-				this.bankAccountMap.put(this.customerID, account);
 				this.bankAccounts.add(account);
 				// add to map for searching function
 				
@@ -308,9 +305,8 @@ public class AccountManager {
 	 * @param account
 	 */
 	public void addAccount(Account account){
-		this.bankAccounts.add(account);
-		this.bankAccountMap.put(account.getOwner().getID(), account);
 		this.accountNumToAccountMap.put(account.getAccountNumber(), account);
+		this.bankAccounts.add(account);
 		this.total_acnts ++;
 	}
 
