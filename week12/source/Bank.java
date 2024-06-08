@@ -247,10 +247,6 @@ public class Bank {
 	}
 
 	private Account findAccount(){
-		Print.clearSequence();
-		Print.MainMenu(manager);
-		displayAccounts();
-		Print.accountInfoRetrieveHeader();
     	String accntNum = scanner.nextLine();
 		// get customer account object from ID
 		while (true){
@@ -305,6 +301,10 @@ public class Bank {
 			}
 			if (mainMenuSelection.equals("s")){
 				// find a customer
+				Print.clearSequence();
+				Print.MainMenu(manager);
+				displayAccounts();
+				Print.accountInfoRetrieveHeader();
 				this.currentAccount = findAccount();
 				Print.displayCustomerInfo(this.currentAccount);
 				Print.customerMenuOptions();
@@ -400,6 +400,67 @@ public class Bank {
 								managerSelection = scanner.nextLine().toLowerCase();
 							}
 						}
+						if (updateSelection.equals("t")){
+							// transfer money sequence
+							Print.transferAccountHeader();
+							// get amount to transfer
+							double withdrawl = dwRequest();
+							// find another account
+							Print.accountInfoRetrieveHeader();
+							Account otherAccount = findAccount();
+							// transfer money if the other account is valid
+							if (this.currentAccount.transferTo(otherAccount, withdrawl)){
+								currentAccount.withdraw(withdrawl);
+								otherAccount.deposit(withdrawl);
+								// remove old info from text file // arrays
+								manager.deleteAccount(currentAccount);
+								manager.deleteAccount(otherAccount);
+								// replace new info in maps/arrays
+								manager.addAccount(currentAccount);
+								manager.addAccount(otherAccount);
+								// save new info to text file
+								manager.saveAccount("source/accounts.txt", currentAccount);
+								manager.saveAccount("source/accounts.txt", otherAccount);
+								Print.clearSequence();
+								Print.MainMenu(manager);
+								displayAccounts();
+								Print.accountInfoRetrieveHeader();
+								Print.displayCustomerInfo(this.currentAccount);
+								Print.updateAccountFooter();
+								Print.customerMenuOptions();		
+								managerSelection = scanner.nextLine().toLowerCase();
+								while (! managerSelectionOptions.contains(managerSelection)){
+									Print.clearSequence();
+									Print.MainMenu(manager);
+									displayAccounts();
+									Print.accountInfoRetrieveHeader();
+									Print.displayCustomerInfo(this.currentAccount);
+									Print.updateAccountHeader();
+									Print.customerMenuOptions();
+									managerSelection = scanner.nextLine().toLowerCase();
+								}
+							}
+							else{
+								Print.clearSequence();
+								Print.MainMenu(manager);
+								displayAccounts();
+								Print.accountInfoRetrieveHeader();
+								Print.displayCustomerInfo(this.currentAccount);
+								Print.updateAccountInvalidFooter();
+								Print.customerMenuOptions();
+								managerSelection = scanner.nextLine().toLowerCase();
+								while (! managerSelectionOptions.contains(managerSelection)){
+									Print.clearSequence();
+									Print.MainMenu(manager);
+									displayAccounts();
+									Print.accountInfoRetrieveHeader();
+									Print.displayCustomerInfo(this.currentAccount);
+									Print.updateAccountHeader();
+									Print.customerMenuOptions();
+									managerSelection = scanner.nextLine().toLowerCase();
+								}
+							}
+						}
 						// change interest rates or overdraft limits on an account
 						if (updateSelection.equals("s")){
 							// rates for savings
@@ -455,6 +516,16 @@ public class Bank {
 					if (managerSelection.equals("c")){
 						// delete an account
 						manager.deleteAccount(this.currentAccount);
+						Print.clearSequence();
+						Print.MainMenu(manager);
+						displayAccounts();
+						Print.accountInfoRetrieveHeader();
+						Print.displayCustomerInfo(this.currentAccount);
+						Print.deleteAccountFooter();
+						Print.customerMenuOptionsAfterDelete();
+						scanner.nextLine().toLowerCase();
+						// give only option as returning to main meny (anykey)
+						managerSelection = "m";
 					}
 				}
 			}

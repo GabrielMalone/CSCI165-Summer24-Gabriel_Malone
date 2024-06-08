@@ -7,15 +7,16 @@ public class Print {
 
 	public static void displayINFO(Account account){
 		double accountNumString =  account.getAccountNumber();
+		String balanceStr = nf.format(account.getBalance());
 		System.out.printf("%22s", space);
 		System.out.printf("%-12.0f", accountNumString );
 		System.out.printf("%-12s",account.getOwner().getID());
-		if (account.getClass() == SavingsAccount.class)
+		if (account.getClass() == SavingsAccount.class){
 			System.out.printf("%-11s", "SAVINGS");
+		}
 		if (account.getClass() == CheckingAccount.class){
 			System.out.printf("%-11s", "CHECKNG");
 			Double balance = account.getBalance();
-			String balanceStr = nf.format(account.getBalance());
 			if (balance < 0){
 				balanceStr = Colors.ANSI_PINK + nf.format(account.getBalance()) + Colors.ANSI_RESET;
 			}
@@ -24,7 +25,7 @@ public class Print {
 			System.out.printf("%s%n",  balanceStr );
 		}
 		else if (account.getClass() == SavingsAccount.class){
-			System.out.printf("%s%n", Colors.ANSI_GREEN + nf.format(account.getBalance()) + Colors.ANSI_RESET);
+			System.out.printf("%s%n", Colors.ANSI_BLUE_BACK + nf.format(account.getBalance()) + Colors.ANSI_RESET);
 		}
 	}
     public static void mainMenuOptions(){
@@ -49,7 +50,12 @@ public class Print {
 	}
 	public static void updateAccountHeader(){
 		yellowhorizontalLine();
-		System.out.printf("%35s%s%n", space, Colors.ANSI_YELLOW 	+ "// UPDATE ACCOUNT // " 	+ Colors.ANSI_RESET);
+		System.out.printf("%37s%s%n", space, Colors.ANSI_YELLOW 	+ "// UPDATE ACCOUNT // " 	+ Colors.ANSI_RESET);
+		yellowhorizontalLine();
+	}
+	public static void transferAccountHeader(){
+		yellowhorizontalLine();
+		System.out.printf("%37s%s%n", space, Colors.ANSI_YELLOW 	+ "// TRANSFER CASH // " 	+ Colors.ANSI_RESET);
 		yellowhorizontalLine();
 	}
 	public static void updateAllAccountsHeader(){
@@ -60,6 +66,16 @@ public class Print {
 	public static void updateAccountFooter(){
 		yellowhorizontalLine();
 		System.out.printf("%35s%s%n", space, Colors.ANSI_PURPLE 	+ "// ACCOUNT UPDATED // " 	+ Colors.ANSI_RESET);
+		yellowhorizontalLine();
+	}
+	public static void updateAccountInvalidFooter(){
+		yellowhorizontalLine();
+		System.out.printf("%32s%s%n", space, Colors.ANSI_RED 	+ "// INVALID TRANSFER REQUEST // " 	+ Colors.ANSI_RESET);
+		yellowhorizontalLine();
+	}
+	public static void deleteAccountFooter(){
+		yellowhorizontalLine();
+		System.out.printf("%35s%s%n", space, Colors.ANSI_RED 	+ "// ACCOUNT DELETED // " 	+ Colors.ANSI_RESET);
 		yellowhorizontalLine();
 	}
 	public static void despoitAccountHeader(){
@@ -93,6 +109,11 @@ public class Print {
 								+ " |"  + " (" + Colors.ANSI_YELLOW + "U" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN  + "PDATE ACCOUNT " 	 
 								+ " |"  + " (" + Colors.ANSI_YELLOW + "M" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN  + "AIN MENU" 	+ Colors.ANSI_RESET;
 		System.out.printf("%20s%s", space, itemRequest);
+	}
+	public static void customerMenuOptionsAfterDelete(){
+		bluehorizontalLine();
+		String itemRequest = Colors.ANSI_YELLOW + "M" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN  + "AIN MENU" 	+ Colors.ANSI_RESET;
+		System.out.printf("%39s%s", space, itemRequest);
 	}
 	public static void displayCustomerInfo(Account account){
 		System.out.printf("%s%n", account);

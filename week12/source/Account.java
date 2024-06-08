@@ -97,9 +97,12 @@ public class Account {
 		else			System.err.println("Account.withdraw(...): cannot withdraw negative amount.");
 	}
 
-	public void transferTo(Account otherAccount, double amount){
-		if(this.owner.equals(otherAccount.owner) && amount < this.balance)
-			otherAccount.deposit(amount);
+	public boolean transferTo(Account otherAccount, double amount){
+		// added on more check so cant send money to self (was causing a weird bug)
+		if(this.owner.equals(otherAccount.owner) && amount < this.balance && this.getAccountNumber() != otherAccount.getAccountNumber()){
+			return true;
+		}
+		else return false;	
 	}
 
 	/**
