@@ -16,200 +16,7 @@ public class Bank {
 	 * No arguments constructor. Begins GUI Terminal Sequence.
 	 */
 	public Bank(){
-		ArrayList<String> managerSelectionOptions = new ArrayList<>();
-		managerSelectionOptions.add("c");
-		managerSelectionOptions.add("u");
-		managerSelectionOptions.add("m");
-		ArrayList<String> updateSelectionOptions = new ArrayList<>();
-		updateSelectionOptions.add("d");
-		updateSelectionOptions.add("w");
-		updateSelectionOptions.add("s");
-		updateSelectionOptions.add("t");
-		// load saved data 
-		manager.loadManagers("source/employees.txt");
-		manager.loadAccounts("source/accounts.txt");	
-		// start the GUI loop
-		while (true){
-			Print.clearSequence();
-			if (! loggedIn)
-				MainMenuLogin();
-			Print.clearSequence();
-			Print.MainMenu(manager);
-			displayAccounts();
-			Print.mainMenuOptions();
-			// await user input
-			String mainMenuSelection = scanner.nextLine().toLowerCase();
-			
-			if (mainMenuSelection.equals("a")){
-				// add a customer
-				openAccount();
-			}
-			if (mainMenuSelection.equals("s")){
-				// find a customer
-				this.currentAccount = findAccount();
-				Print.displayCustomerInfo(this.currentAccount);
-				Print.customerMenuOptions();
-				// await user input
-				String managerSelection = scanner.nextLine().toLowerCase();
-				while (! managerSelectionOptions.contains(managerSelection)){
-					Print.clearSequence();
-					Print.MainMenu(manager);
-					displayAccounts();
-					Print.accountInfoRetrieveHeader();
-					Print.displayCustomerInfo(this.currentAccount);
-					Print.customerMenuOptions();
-					managerSelection = scanner.nextLine().toLowerCase();
-				}
-				// m to return to main menu - update account loop
-				while (! managerSelection.equals("m")){
-					Print.clearSequence();
-					Print.MainMenu(manager);
-					displayAccounts();
-					Print.accountInfoRetrieveHeader();
-					Print.displayCustomerInfo(this.currentAccount);
-					if (managerSelection.equals("u")){
-						Print.updateAccountHeader();
-						Print.updateMenuOptions(currentAccount);
-						String updateSelection = scanner.nextLine().toLowerCase();
-						while (! updateSelectionOptions.contains(updateSelection)){
-							Print.clearSequence();
-							Print.MainMenu(manager);
-							displayAccounts();
-							Print.accountInfoRetrieveHeader();
-							Print.displayCustomerInfo(this.currentAccount);
-							Print.updateAccountHeader();
-							Print.updateMenuOptions(currentAccount);
-							updateSelection = scanner.nextLine().toLowerCase();
-						}
-						if (updateSelection.equals("d")){
-							Print.despoitAccountHeader();
-							double deposit = dwRequest();
-							// update object state
-							currentAccount.deposit(deposit);
-							// remove old info from text file // arrays
-							manager.deleteAccount(currentAccount);
-							// replace new info in maps/arrays
-							manager.addAccount(currentAccount);
-							// save new info to text file
-							manager.saveAccount("source/accounts.txt", currentAccount);
-							Print.clearSequence();
-							Print.MainMenu(manager);
-							displayAccounts();
-							Print.accountInfoRetrieveHeader();
-							Print.displayCustomerInfo(this.currentAccount);
-							Print.updateAccountFooter();
-							Print.customerMenuOptions();
-							managerSelection = scanner.nextLine().toLowerCase();
-							while (! managerSelectionOptions.contains(managerSelection)){
-								Print.clearSequence();
-								Print.MainMenu(manager);
-								displayAccounts();
-								Print.accountInfoRetrieveHeader();
-								Print.displayCustomerInfo(this.currentAccount);
-								Print.updateAccountFooter();
-								Print.customerMenuOptions();
-								managerSelection = scanner.nextLine().toLowerCase();
-							}
-						}
-						if (updateSelection.equals("w")){
-							Print.withdrawAccountHeader();
-							double withdrawl = dwRequest();
-							// update object state
-							currentAccount.withdraw(withdrawl);
-							// remove old info from text file // arrays
-							manager.deleteAccount(currentAccount);
-							// replace new info in maps/arrays
-							manager.addAccount(currentAccount);
-							// save new info to text file
-							manager.saveAccount("source/accounts.txt", currentAccount);
-							Print.clearSequence();
-							Print.MainMenu(manager);
-							displayAccounts();
-							Print.accountInfoRetrieveHeader();
-							Print.displayCustomerInfo(this.currentAccount);
-							Print.updateAccountFooter();
-							Print.customerMenuOptions();
-							managerSelection = scanner.nextLine().toLowerCase();
-							while (! managerSelectionOptions.contains(managerSelection)){
-								Print.clearSequence();
-								Print.MainMenu(manager);
-								displayAccounts();
-								Print.accountInfoRetrieveHeader();
-								Print.displayCustomerInfo(this.currentAccount);
-								Print.updateAccountHeader();
-								Print.customerMenuOptions();
-								managerSelection = scanner.nextLine().toLowerCase();
-							}
-						}
-						// change interest rates or overdraft limits on an account
-						if (updateSelection.equals("s")){
-							// rates for savings
-							if (currentAccount.getClass() == SavingsAccount.class){
-								// downcast to get interest rate set method
-								SavingsAccount current_savings = (SavingsAccount) currentAccount;
-								Print.rateAccountHeader();
-								double interestRate = setInterestRate();
-								// update object state
-								current_savings.setInterest(interestRate);
-								// remove old info from text file // arrays
-								manager.deleteAccount(current_savings);
-								// replace new info in maps/arrays
-								manager.addAccount(current_savings);
-								// save new info to text file
-								manager.saveAccount("source/accounts.txt", current_savings);
-							}
-							// limits for checking
-							if (currentAccount.getClass() == CheckingAccount.class){
-								// downcast to get interest rate set method
-								CheckingAccount current_checking = (CheckingAccount) currentAccount;
-								Print.limitAccountHeader();
-								double overDraftLimit = setOverDraftLimit();
-								// update object state
-								current_checking.setOverdraftLimit(overDraftLimit);
-								// remove old info from text file // arrays
-								manager.deleteAccount(current_checking);
-								// replace new info in maps/arrays
-								manager.addAccount(current_checking);
-								// save new info to text file
-								manager.saveAccount("source/accounts.txt", current_checking);
-							}
-							Print.clearSequence();
-							Print.MainMenu(manager);
-							displayAccounts();
-							Print.accountInfoRetrieveHeader();
-							Print.displayCustomerInfo(this.currentAccount);
-							Print.updateAccountFooter();
-							Print.customerMenuOptions();
-							managerSelection = scanner.nextLine().toLowerCase();
-							while (! managerSelectionOptions.contains(managerSelection)){
-								Print.clearSequence();
-								Print.MainMenu(manager);
-								displayAccounts();
-								Print.accountInfoRetrieveHeader();
-								Print.displayCustomerInfo(this.currentAccount);
-								Print.updateAccountHeader();
-								Print.customerMenuOptions();
-								managerSelection = scanner.nextLine().toLowerCase();
-						}
-						}
-					}
-					if (managerSelection.equals("c")){
-						// delete an account
-						manager.deleteAccount(this.currentAccount);
-					}
-				}
-			}
-			// return to main menu
-			if (mainMenuSelection.equals("m")){
-				Print.clearSequence();
-				Print.MainMenu(manager);
-				Print.mainMenuOptions();
-			}
-			// update a customer
-			if (mainMenuSelection.equals("u")){	
-			}
-			Print.clearSequence();
-		}
+		GUIloop();
 	}	
 
 	/**
@@ -217,12 +24,34 @@ public class Bank {
 	 */
 	public void updateAccounts(){
 	}
+
+	/**
+	 * Method to close/delete an account
+	 */
 	public void closeAccount(){
 
 	}
+	/**
+	 * Method to pay divends to each account 
+	 */
 	public void payDividends(){
-	}
-				
+		double dividentRate = 0.025;
+		// only pay dividends to accounts under the logged in manager
+		for (Account account : this.manager.getAccounts()){
+			// calculate the gains
+			double current_balance 	= account.getBalance();
+			double divident_gains 	= current_balance * dividentRate;
+			// deposit the gains
+			account.deposit(divident_gains); 
+			// delete old account info
+			manager.deleteAccount(account);
+			// replace new info in maps/arrays
+			manager.addAccount(account);
+			// save new info to text file
+			manager.saveAccount("source/accounts.txt", account);
+			}
+		}
+		
 	private void openAccount(){
 		Print.clearSequence();
 		Print.MainMenu(manager);
@@ -430,6 +259,235 @@ public class Bank {
 				Print.accountInfoRetrieveHeader();
 				accntNum = scanner.nextLine();
 			}
+		}
+	}
+
+	private void GUIloop(){
+		ArrayList<String> managerSelectionOptions = new ArrayList<>();
+		managerSelectionOptions.add("c");
+		managerSelectionOptions.add("u");
+		managerSelectionOptions.add("m");
+		// 0 to escape any menu
+		managerSelectionOptions.add("0");
+		ArrayList<String> updateSelectionOptions = new ArrayList<>();
+		updateSelectionOptions.add("d");
+		updateSelectionOptions.add("w");
+		updateSelectionOptions.add("s");
+		updateSelectionOptions.add("t");
+		updateSelectionOptions.add("0");
+		ArrayList<String> updateAllSelectionOptions = new ArrayList<>();
+		updateAllSelectionOptions.add("d");
+		updateAllSelectionOptions.add("i");
+		updateAllSelectionOptions.add("o");
+		updateAllSelectionOptions.add("0");
+		// load saved data 
+		manager.loadManagers("source/employees.txt");
+		manager.loadAccounts("source/accounts.txt");	
+		// start the GUI loop
+		while (true){
+			Print.clearSequence();
+			if (! loggedIn)
+				MainMenuLogin();
+			Print.clearSequence();
+			Print.MainMenu(manager);
+			displayAccounts();
+			Print.mainMenuOptions();
+			// await user input
+			String mainMenuSelection = scanner.nextLine().toLowerCase();
+			
+			if (mainMenuSelection.equals("a")){
+				// add a customer
+				openAccount();
+			}
+			if (mainMenuSelection.equals("s")){
+				// find a customer
+				this.currentAccount = findAccount();
+				Print.displayCustomerInfo(this.currentAccount);
+				Print.customerMenuOptions();
+				// await user input
+				String managerSelection = scanner.nextLine().toLowerCase();
+				while (! managerSelectionOptions.contains(managerSelection)){
+					Print.clearSequence();
+					Print.MainMenu(manager);
+					displayAccounts();
+					Print.accountInfoRetrieveHeader();
+					Print.displayCustomerInfo(this.currentAccount);
+					Print.customerMenuOptions();
+					managerSelection = scanner.nextLine().toLowerCase();
+				}
+				// m to return to main menu - update account loop
+				while (! managerSelection.equals("m")){
+					Print.clearSequence();
+					Print.MainMenu(manager);
+					displayAccounts();
+					Print.accountInfoRetrieveHeader();
+					Print.displayCustomerInfo(this.currentAccount);
+					if (managerSelection.equals("u")){
+						Print.updateAccountHeader();
+						Print.updateMenuOptions(currentAccount);
+						String updateSelection = scanner.nextLine().toLowerCase();
+						while (! updateSelectionOptions.contains(updateSelection)){
+							Print.clearSequence();
+							Print.MainMenu(manager);
+							displayAccounts();
+							Print.accountInfoRetrieveHeader();
+							Print.displayCustomerInfo(this.currentAccount);
+							Print.updateAccountHeader();
+							Print.updateMenuOptions(currentAccount);
+							updateSelection = scanner.nextLine().toLowerCase();
+						}
+						if (updateSelection.equals("d")){
+							Print.despoitAccountHeader();
+							double deposit = dwRequest();
+							// update object state
+							currentAccount.deposit(deposit);
+							// remove old info from text file // arrays
+							manager.deleteAccount(currentAccount);
+							// replace new info in maps/arrays
+							manager.addAccount(currentAccount);
+							// save new info to text file
+							manager.saveAccount("source/accounts.txt", currentAccount);
+							Print.clearSequence();
+							Print.MainMenu(manager);
+							displayAccounts();
+							Print.accountInfoRetrieveHeader();
+							Print.displayCustomerInfo(this.currentAccount);
+							Print.updateAccountFooter();
+							Print.customerMenuOptions();
+							managerSelection = scanner.nextLine().toLowerCase();
+							while (! managerSelectionOptions.contains(managerSelection)){
+								Print.clearSequence();
+								Print.MainMenu(manager);
+								displayAccounts();
+								Print.accountInfoRetrieveHeader();
+								Print.displayCustomerInfo(this.currentAccount);
+								Print.updateAccountFooter();
+								Print.customerMenuOptions();
+								managerSelection = scanner.nextLine().toLowerCase();
+							}
+						}
+						if (updateSelection.equals("w")){
+							Print.withdrawAccountHeader();
+							double withdrawl = dwRequest();
+							// update object state
+							currentAccount.withdraw(withdrawl);
+							// remove old info from text file // arrays
+							manager.deleteAccount(currentAccount);
+							// replace new info in maps/arrays
+							manager.addAccount(currentAccount);
+							// save new info to text file
+							manager.saveAccount("source/accounts.txt", currentAccount);
+							Print.clearSequence();
+							Print.MainMenu(manager);
+							displayAccounts();
+							Print.accountInfoRetrieveHeader();
+							Print.displayCustomerInfo(this.currentAccount);
+							Print.updateAccountFooter();
+							Print.customerMenuOptions();
+							managerSelection = scanner.nextLine().toLowerCase();
+							while (! managerSelectionOptions.contains(managerSelection)){
+								Print.clearSequence();
+								Print.MainMenu(manager);
+								displayAccounts();
+								Print.accountInfoRetrieveHeader();
+								Print.displayCustomerInfo(this.currentAccount);
+								Print.updateAccountHeader();
+								Print.customerMenuOptions();
+								managerSelection = scanner.nextLine().toLowerCase();
+							}
+						}
+						// change interest rates or overdraft limits on an account
+						if (updateSelection.equals("s")){
+							// rates for savings
+							if (currentAccount.getClass() == SavingsAccount.class){
+								// downcast to get interest rate set method
+								SavingsAccount current_savings = (SavingsAccount) currentAccount;
+								Print.rateAccountHeader();
+								double interestRate = setInterestRate();
+								// update object state
+								current_savings.setInterest(interestRate);
+								// remove old info from text file // arrays
+								manager.deleteAccount(current_savings);
+								// replace new info in maps/arrays
+								manager.addAccount(current_savings);
+								// save new info to text file
+								manager.saveAccount("source/accounts.txt", current_savings);
+							}
+							// limits for checking
+							if (currentAccount.getClass() == CheckingAccount.class){
+								// downcast to get interest rate set method
+								CheckingAccount current_checking = (CheckingAccount) currentAccount;
+								Print.limitAccountHeader();
+								double overDraftLimit = setOverDraftLimit();
+								// update object state
+								current_checking.setOverdraftLimit(overDraftLimit);
+								// remove old info from text file // arrays
+								manager.deleteAccount(current_checking);
+								// replace new info in maps/arrays
+								manager.addAccount(current_checking);
+								// save new info to text file
+								manager.saveAccount("source/accounts.txt", current_checking);
+							}
+							Print.clearSequence();
+							Print.MainMenu(manager);
+							displayAccounts();
+							Print.accountInfoRetrieveHeader();
+							Print.displayCustomerInfo(this.currentAccount);
+							Print.updateAccountFooter();
+							Print.customerMenuOptions();
+							managerSelection = scanner.nextLine().toLowerCase();
+							while (! managerSelectionOptions.contains(managerSelection)){
+								Print.clearSequence();
+								Print.MainMenu(manager);
+								displayAccounts();
+								Print.accountInfoRetrieveHeader();
+								Print.displayCustomerInfo(this.currentAccount);
+								Print.updateAccountHeader();
+								Print.customerMenuOptions();
+								managerSelection = scanner.nextLine().toLowerCase();
+						}
+						}
+					}
+					if (managerSelection.equals("c")){
+						// delete an account
+						manager.deleteAccount(this.currentAccount);
+					}
+				}
+			}
+			// return to main menu
+			if (mainMenuSelection.equals("m")){
+				Print.clearSequence();
+				Print.MainMenu(manager);
+				Print.mainMenuOptions();
+			}
+			// pay interest / email overdrafted accounts / pay dividends
+			if (mainMenuSelection.equals("u")){	
+				Print.updateAllAccountsHeader();
+				Print.updateAllMenuOptions();
+				String updateAllSelection = scanner.nextLine().toLowerCase();
+				while (! updateAllSelectionOptions.contains(updateAllSelection)){
+					Print.clearSequence();
+					Print.MainMenu(manager);
+					displayAccounts();
+					Print.mainMenuOptions();
+					System.out.println();
+					Print.updateAllAccountsHeader();
+					Print.updateAllMenuOptions();
+					updateAllSelection = scanner.nextLine().toLowerCase();
+				}
+				if (updateAllSelection.equals("d")){
+					payDividends();
+					Print.clearSequence();
+					Print.MainMenu(manager);
+					displayAccounts();
+					Print.mainMenuOptions();
+					System.out.println();
+					Print.updateAllAccountsHeader();
+					Print.updateAllMenuOptions();
+					updateAllSelection = scanner.nextLine().toLowerCase();
+				}
+			}
+			Print.clearSequence();
 		}
 	}
 }

@@ -41,6 +41,11 @@ public class Print {
 		System.out.printf("%35s%s%n", space, Colors.ANSI_YELLOW 	+ "// UPDATE ACCOUNT // " 	+ Colors.ANSI_RESET);
 		yellowhorizontalLine();
 	}
+	public static void updateAllAccountsHeader(){
+		bluehorizontalLine();
+		System.out.printf("%38s%s%n", space, Colors.ANSI_YELLOW 	+ "// UPDATE ALL // " 	+ Colors.ANSI_RESET);
+		bluehorizontalLine();
+	}
 	public static void updateAccountFooter(){
 		yellowhorizontalLine();
 		System.out.printf("%35s%s%n", space, Colors.ANSI_PURPLE 	+ "// ACCOUNT UPDATED // " 	+ Colors.ANSI_RESET);
@@ -66,6 +71,12 @@ public class Print {
 		System.out.printf("%22s%s%n", space, Colors.ANSI_GREEN 	+ "// CASH WITHDRAWL // " 	+ Colors.ANSI_RESET);
 		greenhorizontalLine();
 	}
+	public static void updateAllMenuOptions(){
+		String itemRequest =	 " ("   + Colors.ANSI_YELLOW + "D"  + Colors.ANSI_RESET 	    + ")" 	+ Colors.ANSI_CYAN  + "IVIDENDS PAY" 	+ Colors.ANSI_RESET
+								+ " |"  + " (" + Colors.ANSI_YELLOW + "I" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN  + "NTEREST PAY" 	 
+								+ " |"  + " (" + Colors.ANSI_YELLOW + "O" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN  + "VERDRAFT MAIL " 	+ Colors.ANSI_RESET;
+		System.out.printf("%20s%s", space, itemRequest);
+	}
 	public static void customerMenuOptions(){
 		bluehorizontalLine();
 		String itemRequest =	 " ("   + Colors.ANSI_YELLOW + "C"  + Colors.ANSI_RESET 	    + ")" 	+ Colors.ANSI_CYAN  + "LOSE ACCOUNT" 	+ Colors.ANSI_RESET
@@ -77,7 +88,7 @@ public class Print {
 		System.out.printf("%s%n", account);
 	}
 	public static  void customerIDHeader (){
-		String headerString = Colors.ANSI_CYAN + "Accnt #" + space.repeat(6) + "Cust ID" + space.repeat(7) + "Type" + space.repeat(10) + "Status" +  Colors.ANSI_RESET;
+		String headerString = Colors.ANSI_CYAN + "Accnt #" + space.repeat(6) + "Cust ID" + space.repeat(7) + "Type" + space.repeat(9) + "Balance" +  Colors.ANSI_RESET;
 		System.out.printf("%21s%s%n", space, headerString);
 	}
 	public static  void enterContinue (){
