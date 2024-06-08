@@ -15,12 +15,19 @@ public class Account {
 		SAVINGS;
 	}
 
+	public static enum STATUS {
+		EARNING,
+		PROTECTED,
+		OVERDRAFT;
+	}
+
 	private Customer	owner;			// the owner of the account
 	private Employee	accountManager;	// the manager of the account
 	private Date		dateCreated; 	// date the account was created
 	private int 		accountNumber;	// The account number
     private double 		balance;  		// The current balance
 	private TYPE type;
+	private STATUS status;
     
 	
 	public TYPE getType() {
@@ -29,6 +36,14 @@ public class Account {
 
 	public void setType(TYPE type) {
 		this.type = type;
+	}
+
+	public STATUS getStatus() {
+		return status;
+	}
+
+	public void setStatus(STATUS status) {
+		this.status = status;
 	}
 
 	/**

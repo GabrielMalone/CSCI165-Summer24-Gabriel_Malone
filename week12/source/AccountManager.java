@@ -257,6 +257,7 @@ public class AccountManager {
 			CheckingAccount checkingAccount = new CheckingAccount(actID, new Customer( new Person(this.firstName, this.lastName, this.phone, DOB), joinDate, this.customerID),accDate, balance, rate_l);
 			checkingAccount.setManager(employee);
 			checkingAccount.setType(Account.TYPE.CHECKING);
+			checkingAccount.setStatus(Account.STATUS.PROTECTED);
 			return checkingAccount;
 		}
 		if (this.accountType.equals("savings")){
@@ -265,6 +266,7 @@ public class AccountManager {
 			SavingsAccount savingsAccount = new SavingsAccount(actID, new Customer( new Person(this.firstName, this.lastName, this.phone, DOB), joinDate, this.customerID), accDate, balance, rate_l);
 			savingsAccount.setManager(employee);
 			savingsAccount.setType(Account.TYPE.SAVINGS);
+			savingsAccount.setStatus(Account.STATUS.EARNING);
 			return savingsAccount;
 		}
 		if (this.accountType.equals(" ")){

@@ -1,6 +1,22 @@
+
+
 public class Print {
 
     public static String space = " ";
+
+	public static void displayINFO(Account account){
+		double accountNumString =  account.getAccountNumber();
+		System.out.printf("%22s", space);
+		System.out.printf("%-12.0f", accountNumString );
+		System.out.printf("%-14s",account.getOwner().getID());
+		System.out.printf("%-13s",account.getType());
+		if (account.getStatus() == Account.STATUS.PROTECTED)
+			System.out.printf("%s%n", Colors.ANSI_GREEN + account.getStatus() + Colors.ANSI_RESET);
+		else if (account.getStatus() == Account.STATUS.OVERDRAFT)
+			System.out.printf("%s%n", Colors.ANSI_PURPLE + account.getStatus() + Colors.ANSI_RESET);
+		else
+			System.out.printf("%s%n",  Colors.ANSI_CYAN + account.getStatus() + Colors.ANSI_RESET);
+	}
 
     public static void mainMenuOptions(){
 		String itemRequest =  	"(" + Colors.ANSI_YELLOW + "A" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN 	        + "DD ACCOUNT" 	    + Colors.ANSI_RESET + 
@@ -20,7 +36,7 @@ public class Print {
 		System.out.printf("%s%n", account);
 	}
 	public static  void customerIDHeader (){
-		String headerString =  "Customer ID" + space.repeat(23) + "Account Number";
+		String headerString = Colors.ANSI_CYAN + "Accnt #" + space.repeat(6) + "Cust ID" + space.repeat(7) + "Type" + space.repeat(10) + "Status" +  Colors.ANSI_RESET;
 		System.out.printf("%21s%s%n", space, headerString);
 	}
 	public static void accountTypeHeader(){

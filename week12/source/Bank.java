@@ -7,7 +7,6 @@ public class Bank {
  
     private static Scanner scanner = new Scanner(System.in);
     private AccountManager manager = new AccountManager();
-	private static String space = " ";
 	//private double dividendRate = 0.01;
 	private boolean loggedIn = false;
 	// current account being interacted with 
@@ -107,6 +106,8 @@ public class Bank {
 			this.manager.addAccount(checkingAccount);
 			this.manager.saveAccount("source/accounts.txt", checkingAccount);
 			this.currentAccount = checkingAccount;
+			this.currentAccount.setType(Account.TYPE.CHECKING);
+			this.currentAccount.setStatus(Account.STATUS.PROTECTED);
 		}
 		if (accountType.equals("s")){
 			Print.yellowhorizontalLine();
@@ -118,6 +119,8 @@ public class Bank {
 			this.manager.addAccount(savingsAccount);
 			this.manager.saveAccount("source/accounts.txt", savingsAccount);
 			this.currentAccount = savingsAccount;
+			this.currentAccount.setType(Account.TYPE.SAVINGS);
+			this.currentAccount.setStatus(Account.STATUS.EARNING);
 		}	
 	}
 
@@ -164,10 +167,7 @@ public class Bank {
 		for (Account account : this.manager.getAccounts()){
 			// only show accounts associatd to the manager logged in
 			if (account.getManager().equals(manager.bankEmployeeMap.get(String.valueOf(manager.getCurrentLoginID())))){
-				System.out.printf("%22s", space);
-				System.out.printf("%-35s", account.getOwner().getID());
-				double accountNumString =  account.getAccountNumber();
-				System.out.printf("%.0f%n", accountNumString);
+				Print.displayINFO(account);
 			}
 		}
 		Print.yellowhorizontalLine();

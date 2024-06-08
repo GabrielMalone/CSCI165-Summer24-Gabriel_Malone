@@ -87,9 +87,11 @@ public class CheckingAccount extends Account {
     public boolean isInOverDraft(double checkingBalance){ 
         if (checkingBalance < 0){
             this.inOverdraft = true;
+            this.setStatus(Account.STATUS.OVERDRAFT);
             return true;
         }
         else
+            this.setStatus(Account.STATUS.PROTECTED);
             return false;
     }
 
