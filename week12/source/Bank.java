@@ -320,7 +320,7 @@ public class Bank {
 					managerSelection = scanner.nextLine().toLowerCase();
 				}
 				// m to return to main menu - update account loop
-				while (! managerSelection.equals("m")){
+				while (! managerSelection.equals("m") || ! managerSelection.equals("0")){
 					Print.clearSequence();
 					Print.MainMenu(manager);
 					displayAccounts();
@@ -526,6 +526,9 @@ public class Bank {
 						scanner.nextLine().toLowerCase();
 						// give only option as returning to main meny (anykey)
 						managerSelection = "m";
+					}
+					if (managerSelection.equals("m") || managerSelection.equals("0") ){
+						break;
 					}
 				}
 			}
