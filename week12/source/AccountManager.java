@@ -52,13 +52,15 @@ public class AccountManager {
 	// Account Num to Account Map
 	public Map<Double, Account> accountNumToAccountMap = new HashMap<>();
 	private int currentEmployeeLoggedInID; 
+	private boolean deleting = false;
+	boolean append = true;
 
 	/**
 	 * Method to iterate through the array of accounts and save them to a text file
 	 */
-	public void saveAccount(String filename, Account account){     
+	public void saveAccount(String filename, Account account){  
 		try{
-			PrintWriter writer = new PrintWriter(new FileOutputStream(new File(filename), true));
+			PrintWriter writer = new PrintWriter(new FileOutputStream(new File(filename), this.append));
 			
 			String accountString = "";
 			this.firstName		= account.getOwner().getFirstName();
@@ -139,8 +141,12 @@ public class AccountManager {
 
 			// need to fix it so that it only saves a customer if they aren't already present 
 			// so that the correct manage is not overwritten
-			writer.print(accountString + "\n");
-		
+			if (deleting){
+				writer.print("");
+			}
+			else{
+				writer.print(accountString + "\n");
+			}
 			writer.close();
 		}catch(IOException ioe){
 			System.out.print("Could not write to file");
@@ -354,5 +360,31 @@ public class AccountManager {
 
 	public int getCurrentLoginID(){
 		return this.currentEmployeeLoggedInID;
+	}
+
+	/**
+	 * Method to remove an account from the systems
+	 * @param currentAccount
+	 */
+	public void deleteAccount(Account currentAccount){
+		this.accountNumToAccountMap.remove(currentAccount.getAccountNumber());
+		for (Account account : this.bankAccounts){
+			if (account.equals(currentAccount)){
+				this.bankAccounts.remove(account);
+				break;
+			}
+		}
+		// loop twice
+		this.deleting = true;
+		this.append = false;
+		for (Account account : this.bankAccounts){
+			saveAccount("source/accounts.txt", account);
+		}
+		this.append = true;
+		this.deleting = false;
+		for (Account account : this.bankAccounts){
+			saveAccount("source/accounts.txt", account);
+		}	
+			
 	}
 }

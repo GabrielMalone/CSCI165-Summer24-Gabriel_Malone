@@ -42,8 +42,9 @@ public class Bank {
 				String CustomerSelection = scanner.nextLine().toLowerCase();
 				// add an account to an existing customer
 				if (CustomerSelection.equals("u")){
-					Print.displayCustomerInfo(this.currentAccount);
-					CustomerSelection = scanner.nextLine().toLowerCase();
+				}
+				if (CustomerSelection.equals("c")){
+					manager.deleteAccount(this.currentAccount);
 				}
 			}
 			// return to main menu
