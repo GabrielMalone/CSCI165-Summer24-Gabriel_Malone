@@ -37,11 +37,19 @@ public class Print {
 		System.out.printf("%21s%s", space, Colors.ANSI_CYAN 		+ "Enter Accnt #: " 				+ Colors.ANSI_RESET);
 	}
 	public static void MainMenu(AccountManager manager){
+		// count how many accounts this manager has
+		int total_accnts = 0;
+		for (Account account : manager.getAccounts()){
+			// only show accounts associatd to the manager logged in
+			if (account.getManager().equals(manager.bankEmployeeMap.get(String.valueOf(manager.getCurrentLoginID())))){
+				total_accnts ++;
+			}
+		}
 		System.out.printf("%43s%37s%n",Colors.ANSI_CYAN 	+ "CHEMICAL BANK" + Colors.ANSI_RESET, Date.dateInitializer());
         greenhorizontalLine();
         System.out.printf("%35s", Colors.ANSI_YELLOW + "Welcome, ");  
 		System.out.printf("%s",manager.findEmployee(String.valueOf(manager.getCurrentLoginID())).getFirstName() + Colors.ANSI_RESET);
-        System.out.printf("%25s %s%n", Colors.ANSI_BLUE_BACK  + "// "+ String.valueOf(manager.total_acnts), "accounts on file //" + Colors.ANSI_RESET);
+        System.out.printf("%25s %s%n", Colors.ANSI_BLUE_BACK  + "// "+ String.valueOf(total_accnts), "accounts on file //" + Colors.ANSI_RESET);
         greenhorizontalLine();
     }
 	public static void loginHeader(){

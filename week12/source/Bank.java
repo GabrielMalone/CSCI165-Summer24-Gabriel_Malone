@@ -162,10 +162,13 @@ public class Bank {
 		Print.customerIDHeader();
 		Print.yellowhorizontalLine();
 		for (Account account : this.manager.getAccounts()){
-			System.out.printf("%22s", space);
-			System.out.printf("%-35s", account.getOwner().getID());
-			double accountNumString =  account.getAccountNumber();
-			System.out.printf("%.0f%n", accountNumString);
+			// only show accounts associatd to the manager logged in
+			if (account.getManager().equals(manager.bankEmployeeMap.get(String.valueOf(manager.getCurrentLoginID())))){
+				System.out.printf("%22s", space);
+				System.out.printf("%-35s", account.getOwner().getID());
+				double accountNumString =  account.getAccountNumber();
+				System.out.printf("%.0f%n", accountNumString);
+			}
 		}
 		Print.yellowhorizontalLine();
 	}
