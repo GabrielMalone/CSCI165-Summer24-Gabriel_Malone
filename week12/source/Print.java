@@ -17,19 +17,42 @@ public class Print {
 		else
 			System.out.printf("%s%n",  Colors.ANSI_CYAN + account.getStatus() + Colors.ANSI_RESET);
 	}
-
     public static void mainMenuOptions(){
 		String itemRequest =  	"(" + Colors.ANSI_YELLOW + "A" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN 	        + "DD ACCOUNT" 	    + Colors.ANSI_RESET + 
 								" |" + " (" + Colors.ANSI_YELLOW + "S" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN  + "ELECT ACCOUNT" 	+ Colors.ANSI_RESET +
 								" |" + " (" + Colors.ANSI_YELLOW + "U" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN 	+ "PDATE ALL" 	    + Colors.ANSI_RESET;
-								System.out.printf("%21s%s", space, itemRequest);
+		System.out.printf("%21s%s", space, itemRequest);
+	}
+	public static void updateMenuOptions(Account currAccount){
+		String itemRequestA =	 " ("   + Colors.ANSI_YELLOW + "D"  + Colors.ANSI_RESET 	    + ")" 	+ Colors.ANSI_PURPLE  + "EPOSIT" 	+ Colors.ANSI_RESET
+								+ " |"  + " (" + Colors.ANSI_YELLOW + "W" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_PURPLE  + "WITHDRAW" 	 
+								+ " |"  + " (" + Colors.ANSI_YELLOW + "S" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_PURPLE  + "ET RATE" + Colors.ANSI_RESET
+								+ " |"  + " (" + Colors.ANSI_YELLOW + "T" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_PURPLE  + "RANSFER" + Colors.ANSI_RESET;
+		String itemRequestB =	 " ("   + Colors.ANSI_YELLOW + "D"  + Colors.ANSI_RESET 	    + ")" 	+ Colors.ANSI_PURPLE  + "EPOSIT" 	+ Colors.ANSI_RESET
+								+ " |"  + " (" + Colors.ANSI_YELLOW + "W" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_PURPLE  + "WITHDRAW" 	 
+								+ " |"  + " (" + Colors.ANSI_YELLOW + "S" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_PURPLE  + "ET LIMIT" + Colors.ANSI_RESET
+								+ " |"  + " (" + Colors.ANSI_YELLOW + "T" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_PURPLE  + "RANSFER" + Colors.ANSI_RESET;
+		if (currAccount.getType() == Account.TYPE.SAVINGS )
+			System.out.printf("%20s%s", space, itemRequestA);
+		else if (currAccount.getType() == Account.TYPE.CHECKING )
+			System.out.printf("%20s%s", space, itemRequestB);
+	}
+	public static void updateAccountHeader(){
+		yellowhorizontalLine();
+		System.out.printf("%35s%s%n", space, Colors.ANSI_YELLOW 	+ "// UPDATE ACCOUNT // " 	+ Colors.ANSI_RESET);
+		yellowhorizontalLine();
+	}
+	public static void despoitAccountHeader(){
+		greenhorizontalLine();
+		System.out.printf("%36s%s%n", space, Colors.ANSI_GREEN 	+ "// CASH DEPOSIT // " 	+ Colors.ANSI_RESET);
+		greenhorizontalLine();
 	}
 	public static void customerMenuOptions(){
 		bluehorizontalLine();
 		String itemRequest =	 " ("   + Colors.ANSI_YELLOW + "C"  + Colors.ANSI_RESET 	    + ")" 	+ Colors.ANSI_CYAN  + "LOSE ACCOUNT" 	+ Colors.ANSI_RESET
 								+ " |"  + " (" + Colors.ANSI_YELLOW + "U" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN  + "PDATE ACCOUNT " 	 
 								+ " |"  + " (" + Colors.ANSI_YELLOW + "M" + Colors.ANSI_RESET 	+ ")" 	+ Colors.ANSI_CYAN  + "AIN MENU" 	+ Colors.ANSI_RESET;
-								System.out.printf("%20s%s", space, itemRequest);
+		System.out.printf("%20s%s", space, itemRequest);
 	}
 	public static void displayCustomerInfo(Account account){
 		bluehorizontalLine();

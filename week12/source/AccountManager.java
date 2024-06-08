@@ -51,7 +51,8 @@ public class AccountManager {
 	public Map<String, Employee> bankEmployeeMap = new HashMap<>(); 
 	// Account Num to Account Map
 	public Map<Double, Account> accountNumToAccountMap = new HashMap<>();
-	private int currentEmployeeLoggedInID; 
+	private int currentEmployeeLoggedInID;
+	// bools for saving/delete accounts 
 	private boolean deleting = false;
 	boolean append = true;
 
@@ -331,12 +332,14 @@ public class AccountManager {
 			// downcast
 			SavingsAccount found_savings_account = (SavingsAccount) foundAccount;
 			found_savings_account = new SavingsAccount(found_savings_account);
+			found_savings_account.setType(Account.TYPE.SAVINGS);
 			return found_savings_account;
 		}
 		if (foundAccount.getClass() == CheckingAccount.class){
 			// downcast
 			CheckingAccount found_checking_account = (CheckingAccount) foundAccount;
 			found_checking_account = new CheckingAccount(found_checking_account);
+			found_checking_account.setType(Account.TYPE.CHECKING);
 			return found_checking_account;
 		}
 		else{
@@ -367,6 +370,7 @@ public class AccountManager {
 	 * @param currentAccount
 	 */
 	public void deleteAccount(Account currentAccount){
+		// remove the account from any arrays / maps
 		this.accountNumToAccountMap.remove(currentAccount.getAccountNumber());
 		for (Account account : this.bankAccounts){
 			if (account.equals(currentAccount)){
@@ -374,17 +378,36 @@ public class AccountManager {
 				break;
 			}
 		}
+		// remove the account from the text file
 		// loop twice
+		// first overwrite everythign in the file to a blank slate
 		this.deleting = true;
 		this.append = false;
 		for (Account account : this.bankAccounts){
 			saveAccount("source/accounts.txt", account);
 		}
+		// take what is left in the current bank array and put in text file
 		this.append = true;
 		this.deleting = false;
 		for (Account account : this.bankAccounts){
 			saveAccount("source/accounts.txt", account);
-		}	
-			
+		}			
+	}
+	/**
+	 * Method to update the account in real time for the GUI terminal
+	 * @param currAccount
+	 */
+	public void updateAccount (Account currAccount){
+		// replace in map with updated info
+		this.accountNumToAccountMap.remove(currAccount.getAccountNumber(), currAccount);
+		this.accountNumToAccountMap.put(currAccount.getAccountNumber(), currAccount);	
+		// replace in array with updated info
+		for (Account account : this.bankAccounts){
+			if (account.getAccountNumber() == currAccount.getAccountNumber()){
+				this.bankAccounts.remove(account);
+				this.bankAccounts.add(currAccount);
+			}
+		}
+		
 	}
 }

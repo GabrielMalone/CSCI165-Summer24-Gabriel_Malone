@@ -28,22 +28,35 @@ public class Bank {
 			Print.MainMenu(manager);
 			displayAccounts();
 			Print.mainMenuOptions();
+			// await user input
 			String mainMenuSelection = scanner.nextLine().toLowerCase();
-			// add a customer
 			if (mainMenuSelection.equals("a")){
-				// open the account
+				// add a customer
 				openAccount();
 			}
-			// find a customer
 			if (mainMenuSelection.equals("s")){
+				// find a customer
 				this.currentAccount = findAccount();
 				Print.displayCustomerInfo(this.currentAccount);
 				Print.customerMenuOptions();
+				// await user input
 				String CustomerSelection = scanner.nextLine().toLowerCase();
-				// add an account to an existing customer
 				if (CustomerSelection.equals("u")){
+					Print.updateAccountHeader();
+					Print.updateMenuOptions(currentAccount);
+					String updateSelection = scanner.nextLine().toLowerCase();
+					if (updateSelection.equals("d")){
+						Print.despoitAccountHeader();
+						double deposit = depositRequest();
+						// update object state
+						currentAccount.deposit(deposit);
+						manager.deleteAccount(currentAccount);
+						manager.updateAccount(currentAccount);
+						manager.saveAccount("source/accounts.txt", currentAccount);
+					}
 				}
 				if (CustomerSelection.equals("c")){
+					// delete an account
 					manager.deleteAccount(this.currentAccount);
 				}
 			}
