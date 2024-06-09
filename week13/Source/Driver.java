@@ -6,7 +6,6 @@ import java.util.ArrayList;
 public class Driver {
 
 	public static void main(String[] args) {
-
 		// Task 3 
 		// circles
 		Circle c1 = new Circle(3.2);
@@ -26,10 +25,10 @@ public class Driver {
 		shapes.add(r1);shapes.add(r2);shapes.add(r3);
 		shapes.add(s1);shapes.add(s2);shapes.add(s3);
 		// call method
-		Shape largestShape = findLargest(shapes);
-		System.out.println(largestShape);
-		System.out.println(c2.getArea());
-		
+		// task 3
+		System.out.println(findLargest(shapes));
+		// task 4
+		System.out.println(totalArea(shapes));	
 	}
 
 	/**
@@ -82,6 +81,11 @@ public class Driver {
 		// System.out.println(sq1.getLength()); // getLength does not exist in any method}
 	}
 
+	/**
+	 * task 3 method
+	 * @param shapes
+	 * @return
+	 */
 	public static Shape findLargest(ArrayList<Shape> shapes){
 		// var to hold the current largest calcualted area
 		double largest_area = 0;
@@ -100,4 +104,21 @@ public class Driver {
 		// return the largest shape found
 		return largestShape[0];
 	} 
+
+	/**
+	 * task 4 method
+	 * @param shapes
+	 * @return
+	 */
+	public static double totalArea (ArrayList<Shape> shapes){
+		// var to hold area of each shape
+		double total_area = 0;
+		for (Shape shape : shapes){
+			// add area to var above
+			total_area += shape.getArea();
+			}
+		// return the largest shape found
+		return total_area;
+	} 
+
 }
