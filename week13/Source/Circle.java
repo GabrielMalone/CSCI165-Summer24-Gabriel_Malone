@@ -1,7 +1,7 @@
 // Gabriel Malone // CSCI165 // Week 13 / Summer 2024
 import java.awt.Color;
 
-public class Circle extends Shape {
+public class Circle extends Shape implements Resizable{
 
     double radius;
 
@@ -73,6 +73,13 @@ public class Circle extends Shape {
         " Circle [radius=" + radius + " area=" + getArea() + " circumference=" + getPerimeter() + "]"
         + "\n " + super.toString();
     }
+
+    @Override
+    public void resize(int percent){
+        double percentDouble = (double)percent / 100;
+        this.radius *= percentDouble;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

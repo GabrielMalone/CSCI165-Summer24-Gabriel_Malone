@@ -21,10 +21,14 @@ public class AreaTest {
         // triangle with sides 3, 4, 5 should have area 6
         Triangle t1 = new Triangle(3, 4, 5);
         assertTrue(t1.getArea() == 6);
+        // semicircle area should be half of a circle area with same radius
+        SemiCircle sc1 = new SemiCircle(10);
+        Circle c4 = new Circle(10);
+        assertTrue(sc1.getArea() == c4.getArea() / 2);
         // of these three shapes, circle one has the largest area.
         // add shapes to array
         ArrayList<Shape> shapes = new ArrayList<>();
-        shapes.add(c1);shapes.add(r2);shapes.add(s3);shapes.add(t1);
+        shapes.add(c1);shapes.add(r2);shapes.add(s3);shapes.add(t1);shapes.add(sc1);
         // call largestShape method
         Shape largestShape = Driver.findLargest(shapes);
         // largestShape should equal the c1 Circle
@@ -45,12 +49,15 @@ public class AreaTest {
         // triangle with sides 3, 4, 5 should have area 6
         Triangle t1 = new Triangle(3, 4, 5);
         assertTrue(t1.getArea() == 6);
+        // semicircle area should be half of a circle area with same radius
+        SemiCircle sc1 = new SemiCircle(10);
+        Circle c4 = new Circle(10);
+        assertTrue(sc1.getArea() == c4.getArea() / 2);
         // var to hold the total area
-        // total area should be (95.03317777109125 + 50 + 25 + 6 == 176.03317777109125)
-        double total_via_sum = c1.getArea() + r2.getArea() + s3.getArea() + t1.getArea();
+        double total_via_sum = c1.getArea() + r2.getArea() + s3.getArea() + t1.getArea() + sc1.getArea();
         // add shapes to array
         ArrayList<Shape> shapes = new ArrayList<>();
-        shapes.add(c1);shapes.add(r2);shapes.add(s3);shapes.add(t1);
+        shapes.add(c1);shapes.add(r2);shapes.add(s3);shapes.add(t1);shapes.add(sc1);
         // call totalArea method
         double total_via_method = Driver.totalArea(shapes);
         // total_area and totalArea should be equal

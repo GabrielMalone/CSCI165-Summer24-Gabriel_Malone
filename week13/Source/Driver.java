@@ -35,9 +35,19 @@ public class Driver {
 		shapes.add(t1);shapes.add(t2);shapes.add(t3);
 		shapes.add(sc1);shapes.add(sc2);shapes.add(sc3);
 		// call method
-		// task 3
+		// task 3-4-5
 		System.out.println(findLargest(shapes));
 		System.out.println(totalArea(shapes));
+		// task 6
+		// add the above shapes into the resizables array
+		ArrayList<Resizable> resizables = new ArrayList<>();
+		// iterate and downcast
+		for (Shape shape : shapes){
+			Resizable shaped = (Resizable) shape;
+			resizables.add(shaped);
+		}
+		resize(resizables, 200);
+
 	}
 
 	/**
@@ -91,7 +101,7 @@ public class Driver {
 	}
 
 	/**
-	 * task 3 method
+	 * task 3 - 5 method
 	 * @param shapes
 	 * @return
 	 */
@@ -117,7 +127,7 @@ public class Driver {
 	} 
 
 	/**
-	 * task 3 method
+	 * task 3 - 5 method
 	 * @param shapes
 	 * @return
 	 */
@@ -131,5 +141,19 @@ public class Driver {
 		// return the largest shape found
 		return total_area;
 	} 
+
+	/**
+	 * task 6 method
+	 * @param resizables
+	 * @param percent
+	 */
+	public static void resize(ArrayList<Resizable> resizables, int percent){
+		for (Resizable shape : resizables){
+			System.out.println(shape);
+			shape.resize(percent);
+			System.out.println(shape);
+			System.out.println();
+		}
+	}
 
 }

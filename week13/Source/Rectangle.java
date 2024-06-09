@@ -1,7 +1,7 @@
 // Gabriel Malone / CS165 / Summer 2024 / Week 13
 import java.awt.Color;
 
-public class Rectangle extends Shape {
+public class Rectangle extends Shape implements Resizable{
 
     double height;
     double width;
@@ -82,6 +82,13 @@ public class Rectangle extends Shape {
     @Override
     public double getPerimeter(){
         return (this.width * 2) + (this.height * 2);
+    }
+
+    @Override
+    public void resize(int percent){
+        double percentDouble = (double)percent / 100;
+        this.width  *= percentDouble;
+        this.height *= percentDouble;
     }
 
     @Override

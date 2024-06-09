@@ -1,7 +1,7 @@
 // Gabriel Malone / CS165 / Summer 2024 / Week 13
 import java.awt.Color;
 
-public class Triangle extends Shape{
+public class Triangle extends Shape implements Resizable{
 
 	double sideA;
 	double sideB;
@@ -114,6 +114,14 @@ public class Triangle extends Shape{
 	@Override
 	public double getPerimeter(){
 		return this.sideA + this.sideB + this.sideC;
+	}
+
+	@Override
+	public void resize(int percent){
+		double percentDouble = (double)percent / 100;
+		this.sideA *= percentDouble;
+		this.sideB *= percentDouble;
+		this.sideC *= percentDouble;
 	}
 
 	@Override

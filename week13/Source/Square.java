@@ -1,11 +1,13 @@
 // Gabriel Malone // CSCI165 // Week 13 / Summer 2024
 import java.awt.Color;
 
-public class Square extends Rectangle{
+public class Square extends Rectangle {
+
     /**
      * no arguments constructor method
      */
     public Square(){}
+
     /**
      * height (side) argument constructor method
      * @param height
@@ -13,6 +15,7 @@ public class Square extends Rectangle{
     public Square(double height){
         setSide(height);   
      }
+
      /**
       * fully loaded constructor method
       * @param height
@@ -26,6 +29,7 @@ public class Square extends Rectangle{
         this.filled = filled;
         this.point  = point;
     }
+
     /**
      * set sides equal for square
      * @param side
@@ -34,6 +38,7 @@ public class Square extends Rectangle{
         this.width  = side;
         this.height = side;
     }
+
     /**
      * 
      * @return this square's side length
@@ -41,6 +46,7 @@ public class Square extends Rectangle{
     public double getSide(){
         return this.width;
     }
+
     /**
      * if you set a width, set the heigh the same length for square
      */
@@ -49,6 +55,7 @@ public class Square extends Rectangle{
         this.width  = width;
         this.height = width;
     }
+
     /**
      * if you set a height, set the heigh the same width for square
      */
@@ -57,9 +64,18 @@ public class Square extends Rectangle{
         this.height = height;
         this.width  = height;
     }
+
+    @Override
+    public void resize(int percent){
+        double percentDouble = (double)percent/100;
+        setSide(this.width *= percentDouble);
+    }
+
     @Override
     public String toString() {
         return "Square [sides=" + getSide() + " area=" + getArea() + "]"
-        + "\n" + super.toString();
+        + "\n" + "Color: "   + this.color 
+        + "\n" + "Filled: " + this.filled 
+        + "\n" + "Point: "  + this.point ;
     }
 }
