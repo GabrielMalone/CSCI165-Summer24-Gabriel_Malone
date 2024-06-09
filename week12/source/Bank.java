@@ -30,16 +30,18 @@ public class Bank {
 	public void updateAccounts(){
 		// only update accounts associate with the logged in managers
 		for (Account account : this.manager.getAccounts()){
-			if (account.getBalance() < 0){
-				emailer(account);
+			if (account.getManager().equals(manager.bankEmployeeMap.get(String.valueOf(manager.getCurrentLoginID())))){
+				if (account.getBalance() < 0){
+					emailer(account);
+				}
+				// if interest bearing, pay interest
+				account.addInterest();
+				manager.deleteAccount(account);
+				// replace new info in maps/arrays
+				manager.addAccount(account);
+				// save new info to text file
+				manager.saveAccount("source/accounts.txt", account);
 			}
-			// if interest bearing, pay interest
-			account.addInterest();
-			manager.deleteAccount(account);
-			// replace new info in maps/arrays
-			manager.addAccount(account);
-			// save new info to text file
-			manager.saveAccount("source/accounts.txt", account);
 		}
 	}
 
@@ -62,19 +64,21 @@ public class Bank {
 		double dividentRate = 0.025;
 		// only pay dividends to accounts under the logged in manager
 		for (Account account : this.manager.getAccounts()){
-			// calculate the gains
-			double current_balance 	= account.getBalance();
-			double divident_gains 	= current_balance * dividentRate;
-			// deposit the gains
-			account.deposit(divident_gains); 
-			// delete old account info
-			manager.deleteAccount(account);
-			// replace new info in maps/arrays
-			manager.addAccount(account);
-			// save new info to text file
-			manager.saveAccount("source/accounts.txt", account);
+			if (account.getManager().equals(manager.bankEmployeeMap.get(String.valueOf(manager.getCurrentLoginID())))){
+				// calculate the gains
+				double current_balance 	= account.getBalance();
+				double divident_gains 	= current_balance * dividentRate;
+				// deposit the gains
+				account.deposit(divident_gains); 
+				// delete old account info
+				manager.deleteAccount(account);
+				// replace new info in maps/arrays
+				manager.addAccount(account);
+				// save new info to text file
+				manager.saveAccount("source/accounts.txt", account);
 			}
 		}
+	}
 		
 	private void openAccount(){
 		Print.clearSequence();
