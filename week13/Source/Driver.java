@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Driver {
 
 	public static void main(String[] args) {
-		// Task 3 
+		// Task 3 - 4
 		// circles
 		Circle c1 = new Circle(3.2);
 		Circle c2 = new Circle(5.5);
@@ -19,17 +19,20 @@ public class Driver {
 		Square s1 = new Square(5.5);
 		Square s2 = new Square(4.5);
 		Square s3 = new Square(14);
+		// triangles
+		Triangle t1 = new Triangle(3,4,5);
+		Triangle t2 = new Triangle(100, 110, 120);
+		Triangle t3 = new Triangle(1.3, 2.3, 3.3);
 		// add to array
 		ArrayList<Shape> shapes = new ArrayList<>();
 		shapes.add(c1);shapes.add(c2);shapes.add(c3);
 		shapes.add(r1);shapes.add(r2);shapes.add(r3);
 		shapes.add(s1);shapes.add(s2);shapes.add(s3);
+		shapes.add(t1);shapes.add(t2);shapes.add(t3);
 		// call method
 		// task 3
-		//System.out.println(findLargest(shapes));
-		//System.out.println(totalArea(shapes));
-		Triangle t1 = new Triangle(3,0,5);
-		System.err.println(t1);
+		System.out.println(findLargest(shapes));
+		System.out.println(totalArea(shapes));
 	}
 
 	/**
