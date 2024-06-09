@@ -22,43 +22,44 @@ public class Square extends Rectangle{
       */
     public Square(double height, Color color, boolean filled, Point point){
         setSide(height);
-        setColor(color);
-        setFilled(filled);
-        setLocation(point);
+        this.color  = color;
+        this.filled = filled;
+        this.point  = point;
     }
     /**
      * set sides equal for square
      * @param side
      */
     public void setSide (double side){
-        super.setWidth(side);
-        super.setHeight(side);
+        this.width  = side;
+        this.height = side;
     }
     /**
      * 
      * @return this square's side length
      */
     public double getSide(){
-        return super.getWidth();
+        return this.width;
     }
     /**
      * if you set a width, set the heigh the same length for square
      */
     @Override
     public void setWidth(double width){
-        super.setWidth(width);
-        super.setHeight(width);
+        this.width  = width;
+        this.height = width;
     }
     /**
      * if you set a height, set the heigh the same width for square
      */
     @Override
     public void setHeight(double height){
-        super.setHeight(height);
-        super.setWidth(height);
+        this.height = height;
+        this.width  = height;
     }
     @Override
     public String toString() {
-        return super.toString() + " Square [sides=" + getSide() + " area=" + getArea() + "]";
+        return "Square [sides=" + getSide() + " area=" + getArea() + "]"
+        + "\n" + super.toString();
     }
 }

@@ -90,7 +90,10 @@ public abstract class Shape {
 
     @Override
     public String toString() {
-        return "Shape [color=" + color + ", filled=" + filled + ", point=" + point + "]";
+        return 
+        "Color: "           + this.color 
+        + "\n" + "Filled: " + this.filled 
+        + "\n" + "Point: "  + this.point ;
     }
 
     @Override

@@ -4,6 +4,7 @@ import java.awt.Color;
 public class Circle extends Shape {
 
     double radius;
+
     /**
      * no arguments / null / constructor
      */
@@ -15,8 +16,13 @@ public class Circle extends Shape {
     public Circle (double radius){
         this.radius = radius;
     }
-    /*
+
+    /**
      * fully overloaded constructor
+     * @param radius
+     * @param color
+     * @param filled
+     * @param point
      */
     public Circle (double radius, Color color, boolean filled, Point point){
         super(color, filled, point);
@@ -63,7 +69,9 @@ public class Circle extends Shape {
 
     @Override
     public String toString() {
-        return super.toString() + " Circle [radius=" + radius + " area=" + getArea() + " circumference=" + getPerimeter() + "]";
+        return 
+        " Circle [radius=" + radius + " area=" + getArea() + " circumference=" + getPerimeter() + "]"
+        + "\n " + super.toString();
     }
     @Override
     public boolean equals(Object obj) {

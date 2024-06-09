@@ -42,12 +42,15 @@ public class AreaTest {
         // square with area 5, 5 should equal 5*5 -- > 25
         Square s3 = new Square(5);
         assertTrue(s3.getArea() == 25.0);
-        // total area should be (95.03317777109125 + 50 + 25 == 170.03317777109125)
+        // triangle with sides 3, 4, 5 should have area 6
+        Triangle t1 = new Triangle(3, 4, 5);
+        assertTrue(t1.getArea() == 6);
         // var to hold the total area
-        double total_via_sum = c1.getArea() + r2.getArea() + s3.getArea();
+        // total area should be (95.03317777109125 + 50 + 25 + 6 == 176.03317777109125)
+        double total_via_sum = c1.getArea() + r2.getArea() + s3.getArea() + t1.getArea();
         // add shapes to array
         ArrayList<Shape> shapes = new ArrayList<>();
-        shapes.add(c1);shapes.add(r2);shapes.add(s3);
+        shapes.add(c1);shapes.add(r2);shapes.add(s3);shapes.add(t1);
         // call totalArea method
         double total_via_method = Driver.totalArea(shapes);
         // total_area and totalArea should be equal

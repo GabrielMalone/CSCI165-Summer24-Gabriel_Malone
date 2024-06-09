@@ -33,10 +33,19 @@ public class Triangle extends Shape{
 			this.sideA = sideA;
 			this.sideB = sideB;
 			this.sideC = sideC;
-			setColor(color);
-			setFilled(filled);
-			setLocation(point);
+			this.filled = filled;
+			this.color = color;
+			this.point = point;
 		}
+	}
+
+	public Triangle (Triangle toCopy){
+		this.sideA 	= toCopy.sideA;
+		this.sideB 	= toCopy.sideB;
+		this.sideC	= toCopy.sideC;
+		this.filled = toCopy.filled;
+		this.color 	= toCopy.color;
+		this.point 	= toCopy.point;
 	}
 
 	private boolean sideLengthsValid(double sideA, double sideB, double sideC){
@@ -127,7 +136,8 @@ public class Triangle extends Shape{
 
 	@Override
 	public String toString() {
-		return super.toString() + " Triangle [sideA=" + this.sideA + ", sideB=" + this.sideB + ", sideC=" + this.sideC + ", area=" + getArea() + ", perimeter=" + getPerimeter() +", height=" + getHeight() +  "]";
+		return " Triangle [sideA=" + this.sideA + ", sideB=" + this.sideB + ", sideC=" + this.sideC + ", area=" + getArea() + ", perimeter=" + getPerimeter() +", height=" + getHeight() +  "]"
+		+ "\n" + super.toString();
 	}
 
 }

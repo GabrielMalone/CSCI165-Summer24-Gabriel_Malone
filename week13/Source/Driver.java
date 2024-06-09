@@ -6,14 +6,14 @@ import java.util.ArrayList;
 public class Driver {
 
 	public static void main(String[] args) {
-		// Task 3 - 4
+		// Task 3 - 4 - 5
 		// circles
 		Circle c1 = new Circle(3.2);
-		Circle c2 = new Circle(5.5);
+		Circle c2 = new Circle(5.5, Color.red, true, new Point(2,3));
 		Circle c3 = new Circle(10.2);
 		// rectangles
 		Rectangle r1 = new Rectangle(3.2, 4.4);
-		Rectangle r2 = new Rectangle(5.5, 10.2);
+		Rectangle r2 = new Rectangle(5.5, 10.2, Color.blue, false, new Point(5,6));
 		Rectangle r3 = new Rectangle(10.5, 12.5);
 		// squares
 		Square s1 = new Square(5.5);
@@ -21,14 +21,19 @@ public class Driver {
 		Square s3 = new Square(14);
 		// triangles
 		Triangle t1 = new Triangle(3,4,5);
-		Triangle t2 = new Triangle(100, 110, 120);
+		Triangle t2 = new Triangle(1000, 1100, 1200, Color.green, true, new Point(10, 100));
 		Triangle t3 = new Triangle(1.3, 2.3, 3.3);
+		// semicircles
+		SemiCircle sc1 = new SemiCircle(10);
+		SemiCircle sc2 = new SemiCircle(5);
+		SemiCircle sc3 = new SemiCircle(5000, Color.green, true, new Point(3,3));
 		// add to array
 		ArrayList<Shape> shapes = new ArrayList<>();
 		shapes.add(c1);shapes.add(c2);shapes.add(c3);
 		shapes.add(r1);shapes.add(r2);shapes.add(r3);
 		shapes.add(s1);shapes.add(s2);shapes.add(s3);
 		shapes.add(t1);shapes.add(t2);shapes.add(t3);
+		shapes.add(sc1);shapes.add(sc2);shapes.add(sc3);
 		// call method
 		// task 3
 		System.out.println(findLargest(shapes));
@@ -100,6 +105,8 @@ public class Driver {
 			// get area of shape
 			if (shape.getArea() > largest_area){
 				// if area larger than current largest, update that var
+				// appropriate getArea is called since each subclass 
+				// Overrides and uses its own specific getArea method
 				largest_area = shape.getArea();
 				// and place the shape in the array
 				largestShape[0] = shape;
