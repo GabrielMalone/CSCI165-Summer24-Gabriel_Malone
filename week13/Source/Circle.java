@@ -63,7 +63,7 @@ public class Circle extends Shape {
 
     @Override
     public String toString() {
-        return super.toString() + " Circle [radius=" + radius + "]";
+        return super.toString() + " Circle [radius=" + radius + " area=" + getArea() + " circumference=" + getPerimeter() + "]";
     }
     @Override
     public boolean equals(Object obj) {

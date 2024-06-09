@@ -26,9 +26,10 @@ public class Driver {
 		shapes.add(s1);shapes.add(s2);shapes.add(s3);
 		// call method
 		// task 3
-		System.out.println(findLargest(shapes));
-		// task 4
-		System.out.println(totalArea(shapes));	
+		//System.out.println(findLargest(shapes));
+		//System.out.println(totalArea(shapes));
+		Triangle t1 = new Triangle(3,0,5);
+		System.err.println(t1);
 	}
 
 	/**
@@ -106,7 +107,7 @@ public class Driver {
 	} 
 
 	/**
-	 * task 4 method
+	 * task 3 method
 	 * @param shapes
 	 * @return
 	 */

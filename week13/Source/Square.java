@@ -22,6 +22,9 @@ public class Square extends Rectangle{
       */
     public Square(double height, Color color, boolean filled, Point point){
         setSide(height);
+        setColor(color);
+        setFilled(filled);
+        setLocation(point);
     }
     /**
      * set sides equal for square
@@ -56,6 +59,6 @@ public class Square extends Rectangle{
     }
     @Override
     public String toString() {
-        return super.toString() + " Square [sides=" + getSide() + "]";
+        return super.toString() + " Square [sides=" + getSide() + " area=" + getArea() + "]";
     }
 }
