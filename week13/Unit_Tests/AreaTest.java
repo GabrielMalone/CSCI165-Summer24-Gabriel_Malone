@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class AreaTest {
 
     @Test
-    void testGetArea() {
+    void testGetAreaAndFindLargest() {
         // circles
 		Circle c1 = new Circle(5.5);
         // circle with radius 5.5 should have area of 5.5^2 * 3.14 --> 95.03..
