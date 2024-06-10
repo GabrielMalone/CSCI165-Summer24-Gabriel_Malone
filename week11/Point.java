@@ -115,7 +115,7 @@ public class Point {
                 return false;
             } 
         else if (this.x != otherPoint.getX() 
-                &&  this.y != otherPoint.getY()){
+                ||  this.y != otherPoint.getY()){
                 return false;
             }
         return true;
