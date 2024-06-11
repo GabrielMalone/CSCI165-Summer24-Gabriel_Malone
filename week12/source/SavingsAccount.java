@@ -88,6 +88,17 @@ public class SavingsAccount extends Account{
 		interestEarned = this.savingsBalance * this.interest;
 		this.savingsBalance += interestEarned;
 	}
+
+	/**
+	 * Method to add interest to this account if it is an interest bearing account
+	 */	
+	@Override
+	public void updateAccount(){
+		double interestEarned = 0;
+		interestEarned = this.savingsBalance * this.interest;
+		this.savingsBalance += interestEarned;
+	}
+
 	/**
 	 * 
 	 * @param sum

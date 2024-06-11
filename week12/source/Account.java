@@ -10,16 +10,13 @@
 
 public class Account {
 
-
 	private Customer	owner;			// the owner of the account
 	private Employee	accountManager;	// the manager of the account
 	private Date		dateCreated; 	// date the account was created
 	private int 		accountNumber;	// The account number
     private double 		balance;  		// The current balance
-	private double 		interest;
-	private boolean		interestBearing;
+		
 	
-
 	/**
 	 * Overloaded constructor
 	 * @param accountNumber
@@ -61,23 +58,6 @@ public class Account {
 		this.accountNumber = toCopy.accountNumber;
 		this.balance = toCopy.balance;
 	}
-
-	/**
-	 * Method to set an account to be interest bearing
-	 * @param interestBearing
-	 */
-	public void setInterestBearing(boolean interestBearing) {
-		this.interestBearing = interestBearing;
-	}
-
-	/**
-	 * Method to see if an account is interest bearing
-	 * @return boolean
-	 */
-	public boolean getInterestBearing() {
-		return this.interestBearing;
-	}
-
 
 	/**
 	 * 
@@ -184,26 +164,11 @@ public class Account {
 
 
 	/**
-	 * Method to add interest to this account if it is an interest bearing account
+	 * Method to update the current account
 	 */
-	public void addInterest(){
-		if (this.interestBearing){
-			double interestEarned = 0;
-			interestEarned = this.balance * this.interest;
-			this.balance += interestEarned;
-		}
+	public void updateAccount (){
 	}
-
-	/**
-	 * Method to set the interest rate for this account
-	 * if it is an interest bearing account
-	 * @param interest
-	 */
-	public void setInterest(double interest) {
-		if (this.interestBearing){
-			this.interest = interest;
-		}
-	}
+	
 
 	@Override
 	public String toString() {

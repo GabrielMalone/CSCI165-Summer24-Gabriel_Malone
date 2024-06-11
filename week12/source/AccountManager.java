@@ -332,7 +332,6 @@ public class AccountManager {
 			// downcast
 			SavingsAccount found_savings_account = (SavingsAccount) foundAccount;
 			found_savings_account = new SavingsAccount(found_savings_account);
-			found_savings_account.setInterestBearing(true);
 			return found_savings_account;
 		}
 		if (foundAccount.getClass() == CheckingAccount.class){

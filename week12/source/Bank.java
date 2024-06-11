@@ -31,11 +31,9 @@ public class Bank {
 		// only update accounts associate with the logged in managers
 		for (Account account : this.manager.getAccounts()){
 			if (account.getManager().equals(manager.bankEmployeeMap.get(String.valueOf(manager.getCurrentLoginID())))){
-				if (account.getBalance() < 0){
-					emailer(account);
-				}
 				// if interest bearing, pay interest
-				account.addInterest();
+				account.updateAccount();
+				// file update sequence follows:
 				manager.deleteAccount(account);
 				// replace new info in maps/arrays
 				manager.addAccount(account);
@@ -45,7 +43,7 @@ public class Bank {
 		}
 	}
 
-	private void emailer(Account account){
+	public static void emailer(Account account){
 		try{
 			Print.emailString(account);
 			PrintWriter writer = new PrintWriter(new FileOutputStream(new File(Print.emailFileString(account)), false));
@@ -123,7 +121,6 @@ public class Bank {
 			Print.yellowhorizontalLine();
 			double interestRate = setInterestRate();
 			SavingsAccount savingsAccount =  new SavingsAccount(createAccountNumber(), customer, manager.findEmployee(String.valueOf(manager.getCurrentLoginID())), Date.dateInitializer(), interestRate);
-			savingsAccount.setInterestBearing(true);
 			savingsAccount.deposit(deposit);
 			this.manager.addAccount(savingsAccount);
 			this.manager.saveAccount("source/accounts.txt", savingsAccount);

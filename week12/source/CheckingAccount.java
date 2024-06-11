@@ -73,6 +73,13 @@ public class CheckingAccount extends Account {
 		else 			System.err.println("Account.deposit(...): cannot deposit negative amount.");    
 	}
 
+    @Override
+    public void updateAccount(){
+        if (this.checkingBalance < 0){
+            Bank.emailer(this);
+        }
+    }
+
     /**
      * Method to set this account's overdraft limit
      * @param overdraftLimit
