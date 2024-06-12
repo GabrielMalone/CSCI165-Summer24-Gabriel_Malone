@@ -13,7 +13,7 @@ public class RaymarcherPanel extends JPanel {
 	
 	private final RaymarcherRunner raymarcherRunner; // reference to the parent app
 	Camera camera;
-	
+	ArrayList<Shape> shape_array = getShapes();
 
 	public RaymarcherPanel(RaymarcherRunner raymarcherRunner) {
 		this.raymarcherRunner = raymarcherRunner;
@@ -30,27 +30,16 @@ public class RaymarcherPanel extends JPanel {
 		g2d.fillRect(0,0,getWidth(), getHeight());
 		// get shapes from arrary
 		ArrayList<March>  marchArray  = new ArrayList<>();
-		ArrayList<Shape>  shape_array = getShapes();
 		Point nextStepPoint = camera.getLocation();
 		double shortestDistance = 1;
-		double distance = 640;
 		while (shortestDistance > 0.1 && shortestDistance < 640){
 			// draw shape
 			for (Shape shape : shape_array){
 				shape.drawObject(g2d);
-				shortestDistance = 9999;
-				for (Shape shapes : shape_array){
-					distance = shapes.computeDistance(nextStepPoint);
-					if (distance < shortestDistance){
-					// if shortest distance to point, save that distance
-					shortestDistance = distance;
-					}
-				}
-				// get distance from cuurentpoint to shape
+				shortestDistance = findShortestDistanceInArray(nextStepPoint);
 				// draw camera
 				camera.drawObject(g2d);
-				// When marching, the next point should be created at the current point plus the length of the march (with no alterations to the y coordinate – see step 16 for more on this!).
-				// draw camera's march
+				// create objects for march
 				Circle c = new Circle(shortestDistance * 2, Color.white, false, nextStepPoint);
 				Point currentPoint = new Point (nextStepPoint.getX(), nextStepPoint.getY());
 				nextStepPoint = new Point(nextStepPoint.getX() + shortestDistance, nextStepPoint.getY());
@@ -60,9 +49,8 @@ public class RaymarcherPanel extends JPanel {
 		}
 		Ray ray = new Ray();
 		ray.drawMarches(marchArray, g2d);
-		
 	}
-			
+	
 	ArrayList<Shape> getShapes(){
 		// shapes
 		Circle c1 		= new Circle(100.5, Color.orange, true, new Point(320,320.0));
@@ -75,5 +63,17 @@ public class RaymarcherPanel extends JPanel {
 		ArrayList<Shape> shape_array = new ArrayList<>();
 		shape_array.add(c1);shape_array.add(r1);shape_array.add(s1);shape_array.add(c2);shape_array.add(t1);//shape_array.add(sc1);
 		return shape_array;
+	}
+
+	private double findShortestDistanceInArray(Point nextStepPoint){
+		double shortestDistance = 9999;
+		for (Shape shape : shape_array){
+			double distance = shape.computeDistance(nextStepPoint);
+			if (distance < shortestDistance){
+			// if shortest distance to point, save that distance
+			shortestDistance = distance;
+			}
+		}
+		return shortestDistance;
 	}
 }
