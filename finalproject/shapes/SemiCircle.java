@@ -68,9 +68,15 @@ public class SemiCircle extends Circle {
         // need to place shape around the point.
         center[0] = (int)getLocation().getX() - (int)getRadius() / 2;
         center[1] = (int)getLocation().getY() - (int)getRadius() / 2;
-        double diameter = 2 * this.radius;
         g2d.setColor(this.color);
-        g2d.drawArc(center[0], center[1], (int)diameter, (int)diameter, 0, 180); 
+        g2d.drawRoundRect((int)center[0], (int)center[1], (int)getRadius(), (int)getRadius(), 90, 90);
+        g2d.drawLine((int)getLocation().getX(), (int)(getLocation().getY() + radius), (int)(getLocation().getX() + radius * 2), (int)(getLocation().getY() + radius));
+    }
+
+    @Override
+    public double computeDistance(Point cameraPoint){
+        double distance = Point.distance(getLocation(), cameraPoint) - radius / 2;
+        return distance;
     }
 
     @Override
@@ -81,7 +87,4 @@ public class SemiCircle extends Circle {
         + "\n" + "Filled: " + this.filled 
         + "\n" + "Point: "  + this.point ;
     }
-
-    
-
 }

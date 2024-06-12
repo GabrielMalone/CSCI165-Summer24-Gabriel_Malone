@@ -94,8 +94,10 @@ public class Circle extends Shape implements Resizable{
         center[0] = (int)(getCenterPoint().getX());
         center[1] = (int)(getCenterPoint().getY());
         g2d.setColor(this.color);
-        if (filled) g2d.fillOval(center[0], center[1], (int)getRadius(), (int)getRadius());
-        else        g2d.drawOval(center[0], center[1], (int)getRadius(), (int)getRadius());
+        if (filled) 
+            g2d.fillOval(center[0], center[1], (int)getRadius(), (int)getRadius());
+        else        
+            g2d.drawOval(center[0], center[1], (int)getRadius(), (int)getRadius());
         g2d.setColor(Color.white);
     }
 

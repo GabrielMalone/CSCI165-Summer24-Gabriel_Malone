@@ -174,6 +174,7 @@ public class Triangle extends Shape implements Resizable{
 		yarray[0] =	(int)this.p1.getY();
 		yarray[1] =	(int)this.p2.getY();
 		yarray[2] =	(int)this.p3.getY();
+		
 		if (this.filled)
 			g2d.fillPolygon(xarray, yarray, 3);
 		else 
