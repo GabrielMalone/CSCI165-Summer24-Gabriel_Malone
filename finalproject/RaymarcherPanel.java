@@ -14,6 +14,7 @@ public class RaymarcherPanel extends JPanel {
 	private final RaymarcherRunner raymarcherRunner; // reference to the parent app
 	Camera camera;
 	ArrayList<Shape> shape_array = getShapes();
+	Ray ray;
 
 	public RaymarcherPanel(RaymarcherRunner raymarcherRunner) {
 		this.raymarcherRunner = raymarcherRunner;
@@ -25,30 +26,13 @@ public class RaymarcherPanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		// background color
 		g2d.setBackground(Color.BLACK);
 		g2d.fillRect(0,0,getWidth(), getHeight());
-		// get shapes from arrary
-		ArrayList<March>  marchArray  = new ArrayList<>();
-		Point nextStepPoint = camera.getLocation();
-		double shortestDistance = 1;
-		while (shortestDistance > 0.1 && shortestDistance < 640){
-			// draw shape
-			for (Shape shape : shape_array){
-				shape.drawObject(g2d);
-				shortestDistance = findShortestDistanceInArray(nextStepPoint);
-				// draw camera
-				camera.drawObject(g2d);
-				// create objects for march
-				Circle c = new Circle(shortestDistance * 2, Color.white, false, nextStepPoint);
-				Point currentPoint = new Point (nextStepPoint.getX(), nextStepPoint.getY());
-				nextStepPoint = new Point(nextStepPoint.getX() + shortestDistance, nextStepPoint.getY());
-				March march = new March(c, currentPoint, nextStepPoint);
-				marchArray.add(march);
-			}
-		}
-		Ray ray = new Ray();
-		ray.drawMarches(marchArray, g2d);
+		ArrayList<March> marchArray = createMarchArray(g2d);
+		drawShapes(g2d);
+		this.camera.drawObject(g2d);
+		this.ray = new Ray();
+		this.ray.drawMarches(marchArray, g2d);
 	}
 	
 	ArrayList<Shape> getShapes(){
@@ -67,13 +51,41 @@ public class RaymarcherPanel extends JPanel {
 
 	private double findShortestDistanceInArray(Point nextStepPoint){
 		double shortestDistance = 9999;
-		for (Shape shape : shape_array){
+		for (Shape shape : this.shape_array){
 			double distance = shape.computeDistance(nextStepPoint);
 			if (distance < shortestDistance){
-			// if shortest distance to point, save that distance
-			shortestDistance = distance;
+				shortestDistance = distance;
 			}
 		}
 		return shortestDistance;
 	}
+
+	private ArrayList<March>  createMarchArray(Graphics2D g2d){
+		ArrayList<March> marchArray = new ArrayList<>();
+		Point nextStepPoint = camera.getLocation();
+		double shortestDistance = 1;
+		while (shortestDistance > 0.1 && shortestDistance < 640){
+			// draw shape
+			for (Shape shape : this.shape_array){
+				shape.drawObject(g2d);
+				shortestDistance = findShortestDistanceInArray(nextStepPoint);
+				// draw camera
+				this.camera.drawObject(g2d);
+				// create objects for march
+				Circle c 			= new Circle(shortestDistance * 2, Color.white, false, nextStepPoint);
+				Point currentPoint 	= new Point (nextStepPoint.getX(), nextStepPoint.getY());
+				nextStepPoint 		= new Point(nextStepPoint.getX() + shortestDistance, nextStepPoint.getY());
+				March march 		= new March(c, currentPoint, nextStepPoint);
+				marchArray.add(march);
+			}
+		}
+		return marchArray;
+	}
+
+	private void drawShapes(Graphics2D g2d){
+		for (Shape shape : this.shape_array){
+			shape.drawObject(g2d);
+		}
+	}
+
 }
