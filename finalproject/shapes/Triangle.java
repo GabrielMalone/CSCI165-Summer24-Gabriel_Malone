@@ -174,7 +174,7 @@ public class Triangle extends Shape implements Resizable{
 		yarray[0] =	(int)this.p1.getY();
 		yarray[1] =	(int)this.p2.getY();
 		yarray[2] =	(int)this.p3.getY();
-		
+
 		if (this.filled)
 			g2d.fillPolygon(xarray, yarray, 3);
 		else 
@@ -184,9 +184,9 @@ public class Triangle extends Shape implements Resizable{
 
 	@Override
     public double computeDistance(Point cameraPoint){
-        double distance1 = Line2D.ptSegDist(this.p1.getX(), this.p1.getY(), this.p2.getX(), this.p2.getY(), cameraPoint.getX(), cameraPoint.getY());
-        double distance2 = Line2D.ptSegDist(this.p2.getX(), this.p2.getY(), this.p3.getX(), this.p3.getY(), cameraPoint.getX(), cameraPoint.getY());
-        double distance3 = Line2D.ptSegDist(this.p1.getX(), this.p1.getY(), this.p3.getX(), this.p3.getY(), cameraPoint.getX(), cameraPoint.getY());
+        double distance1 = Line2D.ptSegDist(this.p1.getX(), this.p1.getY(), this.p2.getX(), this.p2.getY(), cameraPoint.getX() - 10 , cameraPoint.getY() - 10);
+        double distance2 = Line2D.ptSegDist(this.p2.getX(), this.p2.getY(), this.p3.getX(), this.p3.getY(), cameraPoint.getX() - 10 , cameraPoint.getY() - 10);
+        double distance3 = Line2D.ptSegDist(this.p1.getX(), this.p1.getY(), this.p3.getX(), this.p3.getY(), cameraPoint.getX() - 10 , cameraPoint.getY() - 10);
         ArrayList<Double> distanceArray = new ArrayList<>();
         distanceArray.add(distance1);distanceArray.add(distance2);distanceArray.add(distance3);
         double shortest_distance = 999999;

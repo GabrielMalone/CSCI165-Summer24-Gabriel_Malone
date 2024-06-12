@@ -114,7 +114,7 @@ public class Rectangle extends Shape implements Resizable{
         // four points of the rectangle based on the side lengths
         g2d.setColor(this.color);
         if (filled){ 
-            g2d.fillRect((int)getLocation().getX(), (int)getLocation().getY(),(int)getWidth(), (int)getHeight());      
+            g2d.fillRect((int)getLocation().getX() - 10 , (int)getLocation().getY() - 10 , (int)getWidth(), (int)getHeight());      
         }
         else{        
             g2d.drawLine((int)this.p1.getX(), (int)this.p1.getY(), (int)this.p2.getX(), (int)this.p2.getY());

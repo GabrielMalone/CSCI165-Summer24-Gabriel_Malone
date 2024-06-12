@@ -91,8 +91,8 @@ public class Circle extends Shape implements Resizable{
     public void drawObject (Graphics2D g2d){
         int [] center = new int[2];
         // need to place shape around the point.
-        center[0] = (int)(getCenterPoint().getX());
-        center[1] = (int)(getCenterPoint().getY());
+        center[0] = (int)(getCenterPoint().getX() - 10);
+        center[1] = (int)(getCenterPoint().getY() - 10);
         g2d.setColor(this.color);
         if (filled) 
             g2d.fillOval(center[0], center[1], (int)getRadius(), (int)getRadius());

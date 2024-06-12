@@ -13,6 +13,9 @@ public class RaymarcherPanel extends JPanel {
 	
 	private final RaymarcherRunner raymarcherRunner; // reference to the parent app
 	Camera camera;
+	Circle cameraCircle;
+	ArrayList<March> marchArray = new ArrayList<>();
+	ArrayList<Double> distances = new ArrayList<>();
 
 	public RaymarcherPanel(RaymarcherRunner raymarcherRunner) {
 		this.raymarcherRunner = raymarcherRunner;
@@ -29,24 +32,16 @@ public class RaymarcherPanel extends JPanel {
 		g2d.fillRect(0,0,getWidth(), getHeight());
 		// get shapes from arrary
 		ArrayList<Shape> shape_array = getShapes();
-		double shortest_distance = 99999;
-		// iterate through array
-		for(Shape shape : shape_array){
-			// get distance of each shape from camera
-			double distance_from_camera = shape.computeDistance(camera.getLocation());
-			if (distance_from_camera < shortest_distance){
-				// if distance is the shortest, save that distance
-				shortest_distance = distance_from_camera;
-			} 
-			// draw the current shape in the iteration
-			shape.drawObject(g2d);	
+		double shortestDistance = 99999;
+		for (Shape shape : shape_array){
+			shape.drawObject(g2d);
+			double distance = shape.computeDistance(camera.getLocation());
+			if (distance < shortestDistance){
+				shortestDistance = distance;
+			}
 		}
-		// draw the camera object
+		new Circle(shortestDistance * 2, Color.white, false, new Point(camera.getLocation())).drawObject(g2d);
 		camera.drawObject(g2d);
-		// draw a circle whose radius extends to the nearest object
-		Circle cameraCircle = new Circle(shortest_distance * 2, Color.white, false, camera.getLocation());
-	
-		cameraCircle.drawObject(g2d);
 	}
 
 	ArrayList<Shape> getShapes(){
@@ -54,12 +49,12 @@ public class RaymarcherPanel extends JPanel {
 		Circle c1 		= new Circle(100.5, Color.orange, true, new Point(320,320.0));
 		Circle c2 		= new Circle(134.5, Color.magenta, true, new Point(50.1,70.0));
 		Rectangle r1 	= new Rectangle(25.5, 100.2, Color.green, true, new Point(300.1,400.4));
-		SemiCircle sc1 	= new SemiCircle(200, Color.green, true, new Point(130,373));
-		Square s1		= new Square(104, Color.PINK, true, new Point(445, 245));
-		Triangle t1 	= new Triangle(new Point(200, 10), new Point(345, 300), new Point(90, 120), Color.red, true);
+		//SemiCircle sc1 	= new SemiCircle(200, Color.green, true, new Point(130,373));
+		Square s1		= new Square(104, Color.LIGHT_GRAY, true, new Point(445, 245));
+		Triangle t1 	= new Triangle(new Point(200, 10), new Point(345, 300), new Point(90, 120), Color.CYAN, true);
 		// array
 		ArrayList<Shape> shape_array = new ArrayList<>();
-		shape_array.add(c1);shape_array.add(r1);shape_array.add(s1);shape_array.add(c2);shape_array.add(t1);shape_array.add(sc1);
+		shape_array.add(c1);shape_array.add(r1);shape_array.add(s1);shape_array.add(c2);shape_array.add(t1);//shape_array.add(sc1);
 		return shape_array;
 	}
 }

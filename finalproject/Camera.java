@@ -15,11 +15,11 @@ public class Camera extends Circle implements MouseMotionListener{
     public void drawObject(Graphics2D g2d) {
         int [] center = new int[2];
         // need to place shape around the point.
-        center[0] = (int)getLocation().getX() - camera_radius;
-        center[1] = (int)getLocation().getY() - camera_radius;
+        center[0] = (int)getLocation().getX() - camera_radius - 5;
+        center[1] = (int)getLocation().getY() - camera_radius - 5;
         g2d.setColor(Color.white);
-        if (filled) g2d.fillOval(center[0], center[1], camera_radius, camera_radius);
-        else        g2d.drawOval(center[0], center[1], camera_radius, camera_radius); 
+        g2d.fillOval(center[0], center[1], camera_radius, camera_radius);
+      
     }
 
     @Override
