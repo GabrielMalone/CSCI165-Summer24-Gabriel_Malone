@@ -127,13 +127,13 @@ public class Rectangle extends Shape implements Resizable{
 
     @Override
     public Point getCenterPoint(){
-        Point centerPoint = new Point((int)getLocation().getX() - (int)getWidth() / 2, (int)getLocation().getY() - (int)getHeight() / 2);
+        Point centerPoint = new Point(getLocation().getX() - getWidth() / 2, getLocation().getY() - getHeight() / 2);
         return centerPoint;
     }
 
     @Override
     public double computeDistance(Point cameraPoint){
-        
+    
         double distance1 = Line2D.ptSegDist(this.p1.getX(), this.p1.getY(), this.p2.getX(), this.p2.getY(), cameraPoint.getX(), cameraPoint.getY());
         double distance2 = Line2D.ptSegDist(this.p2.getX(), this.p2.getY(), this.p3.getX(), this.p3.getY(), cameraPoint.getX(), cameraPoint.getY());
         double distance3 = Line2D.ptSegDist(this.p3.getX(), this.p3.getY(), this.p4.getX(), this.p4.getY(), cameraPoint.getX(), cameraPoint.getY());

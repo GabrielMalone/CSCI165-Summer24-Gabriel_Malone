@@ -107,7 +107,7 @@ public class Circle extends Shape implements Resizable{
      */
     @Override
     public Point getCenterPoint(){
-        Point centerPoint = new Point((int)getLocation().getX() - (int)getRadius() / 2, (int)getLocation().getY() - (int)getRadius() / 2);
+        Point centerPoint = new Point(getLocation().getX() - getRadius() / 2, getLocation().getY() - getRadius() / 2);
         return centerPoint;
     }
 

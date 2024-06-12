@@ -16,7 +16,8 @@ public class March implements Drawable{
     @Override
     public void drawObject(Graphics2D g2d) {
         g2d.setColor(Color.green);
-        g2d.drawLine((int)startinPoint.getX(), (int)startinPoint.getY(), (int)(endPoint.getX()), (int)endPoint.getY()); 
+        g2d.drawLine((int)startinPoint.getX() -10, (int)startinPoint.getY()-10, (int)(endPoint.getX())-10, (int)endPoint.getY()-10); 
+        circle.drawObject(g2d);
     }
 
 }
