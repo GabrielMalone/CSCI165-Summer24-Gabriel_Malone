@@ -54,12 +54,12 @@ public class RaymarcherPanel extends JPanel {
 		Circle c1 		= new Circle(100.5, Color.orange, true, new Point(320,320.0));
 		Circle c2 		= new Circle(134.5, Color.magenta, true, new Point(50.1,70.0));
 		Rectangle r1 	= new Rectangle(25.5, 100.2, Color.green, true, new Point(300.1,400.4));
-		//SemiCircle sc1 	= new SemiCircle(200, Color.green, true, new Point(130,373));
+		SemiCircle sc1 	= new SemiCircle(200, Color.green, true, new Point(130,373));
 		Square s1		= new Square(104, Color.PINK, true, new Point(445, 245));
 		Triangle t1 	= new Triangle(new Point(200, 10), new Point(345, 300), new Point(90, 120), Color.red, true);
 		// array
 		ArrayList<Shape> shape_array = new ArrayList<>();
-		shape_array.add(c1);shape_array.add(r1);shape_array.add(s1);shape_array.add(c2);shape_array.add(t1);//shape_array.add(sc1);
+		shape_array.add(c1);shape_array.add(r1);shape_array.add(s1);shape_array.add(c2);shape_array.add(t1);shape_array.add(sc1);
 		return shape_array;
 	}
 }
