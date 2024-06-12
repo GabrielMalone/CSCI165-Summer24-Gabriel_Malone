@@ -20,6 +20,7 @@ public class RaymarcherPanel extends JPanel {
 		this.raymarcherRunner = raymarcherRunner;
 		this.setPreferredSize(new Dimension(this.raymarcherRunner.getFrame().getHeight(), this.raymarcherRunner.getFrame().getHeight())); 
 		addMouseMotionListener(camera = new Camera());
+		addMouseListener(camera);
 	}
 	
 	// All drawing code goes here
@@ -35,7 +36,7 @@ public class RaymarcherPanel extends JPanel {
 		this.ray.drawMarches(marchArray, g2d);
 	}
 	
-	ArrayList<Shape> getShapes(){
+	private ArrayList<Shape> getShapes(){
 		// shapes
 		Circle c1 		= new Circle(100.5, Color.orange, true, new Point(320,320.0));
 		Circle c2 		= new Circle(134.5, Color.magenta, true, new Point(50.1,70.0));
@@ -60,12 +61,11 @@ public class RaymarcherPanel extends JPanel {
 		return shortestDistance;
 	}
 
-	private ArrayList<March>  createMarchArray(Graphics2D g2d){
+	private ArrayList<March> createMarchArray(Graphics2D g2d){
 		ArrayList<March> marchArray = new ArrayList<>();
 		Point nextStepPoint = camera.getLocation();
 		double shortestDistance = 1;
-		while (shortestDistance > 0.1 && shortestDistance < 640){
-			// draw shape
+		while (shortestDistance > 0.01 && shortestDistance < 640){
 			for (Shape shape : this.shape_array){
 				shape.drawObject(g2d);
 				shortestDistance = findShortestDistanceInArray(nextStepPoint);
@@ -74,7 +74,7 @@ public class RaymarcherPanel extends JPanel {
 				// create objects for march
 				Circle c 			= new Circle(shortestDistance * 2, Color.white, false, nextStepPoint);
 				Point currentPoint 	= new Point (nextStepPoint.getX(), nextStepPoint.getY());
-				nextStepPoint 		= new Point(nextStepPoint.getX() + shortestDistance, nextStepPoint.getY());
+				nextStepPoint 		= new Point(nextStepPoint.getX() + shortestDistance * Math.cos(camera.angle), nextStepPoint.getY() + shortestDistance * Math.sin(camera.angle));
 				March march 		= new March(c, currentPoint, nextStepPoint);
 				marchArray.add(march);
 			}

@@ -15,7 +15,6 @@ public class RaymarcherRunner extends SwingApplication {
 	
 	public RaymarcherRunner(int width, int height, int fps, String title) {
 		super(width, height, fps, title);
-		
 		// instantiate and add the raymarcher panel.
 		RaymarcherPanel raymarcherPanel = new RaymarcherPanel(this);
 		this.addComponent(raymarcherPanel);
