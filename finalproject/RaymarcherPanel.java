@@ -3,8 +3,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.Random;
-
 import javax.swing.JPanel;
 import java.awt.Color;
 
@@ -68,7 +66,6 @@ public class RaymarcherPanel extends JPanel {
 
 	private double findShortestDistanceInArray(Point nextStepPoint){
 		double shortestDistance = 9999;
-		Shape nearestShape = new Circle();
 		for (Shape shape : shape_array){
 			double distance = shape.computeDistance(nextStepPoint);
 			if (distance < shortestDistance){
