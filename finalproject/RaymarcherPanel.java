@@ -42,7 +42,7 @@ public class RaymarcherPanel extends JPanel {
 	
 	private static ArrayList<Shape> getShapes(){
 		ArrayList<Shape> shape_array = new ArrayList<>();
-		for (int i = 0 ; i < 4 ; i ++){
+		for (int i = 0 ; i < 2 ; i ++){
 			Circle 		c = RandomShapeGenerator.randomCircleGenerator();
 			Triangle 	t = RandomShapeGenerator.randomTriangleGenerator();
 			Square 		s = RandomShapeGenerator.randomSquareGenerator();

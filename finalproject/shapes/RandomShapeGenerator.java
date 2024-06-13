@@ -11,7 +11,7 @@ public class RandomShapeGenerator {
 		Random r = new Random();
 		int randomColor = r.nextInt(100000,999999);
         String color = "#" + randomColor;
-		int boolInt = r.nextInt(0,1);
+		int boolInt = r.nextInt(1,4);
 		boolean filled;
 		if (boolInt == 1)
 			filled = true;
@@ -34,7 +34,7 @@ public class RandomShapeGenerator {
 		Random r = new Random();
 		int randomColor = r.nextInt(100000,999999);
         String color = "#" + randomColor;
-		int boolInt = r.nextInt(0,1);
+		int boolInt = r.nextInt(1,4);
 		boolean filled;
 		if (boolInt == 1)
 			filled = true;
@@ -62,7 +62,7 @@ public class RandomShapeGenerator {
 		double radius = r.nextDouble(10,100);
 		int randomColor = r.nextInt(100000,999999);
         String color = "#" + randomColor;
-		int boolInt = r.nextInt(1,2);
+		int boolInt = r.nextInt(1,4);
 		boolean filled;
 		if (boolInt == 1)
 			filled = true;
@@ -84,7 +84,7 @@ public class RandomShapeGenerator {
 		double side = r.nextDouble(10,100);
 		int randomColor = r.nextInt(100000,999999);
         String color = "#" + randomColor;
-		int boolInt = r.nextInt(0,1);
+		int boolInt = r.nextInt(1,2);
 		boolean filled;
 		if (boolInt == 1)
 			filled = true;
