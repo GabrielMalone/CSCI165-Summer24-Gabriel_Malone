@@ -12,10 +12,10 @@ import java.awt.Color;
 public class RaymarcherPanel extends JPanel { 
 	
 	private final RaymarcherRunner raymarcherRunner; // reference to the parent app
-	Camera camera;
 	public static  ArrayList<Shape> shape_array = getShapes();
 	public static double speed = 0;
 	Ray ray;
+	Camera camera;
 
 
 	public RaymarcherPanel(RaymarcherRunner raymarcherRunner) {
@@ -89,6 +89,7 @@ public class RaymarcherPanel extends JPanel {
 	}
 
 	private void drawShapes(Graphics2D g2d){
+		// draws the shapes in the shape array
 		for (Shape shape : shape_array){
 			shape.drawObject(g2d);
 		}
