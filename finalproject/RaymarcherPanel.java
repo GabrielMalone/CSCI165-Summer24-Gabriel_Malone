@@ -13,15 +13,20 @@ public class RaymarcherPanel extends JPanel {
 	
 	private final RaymarcherRunner raymarcherRunner; // reference to the parent app
 	Camera camera;
-	ArrayList<Shape> shape_array = getShapes();
+	public static  ArrayList<Shape> shape_array = getShapes();
+	public static double speed = 0;
 	Ray ray;
+
 
 	public RaymarcherPanel(RaymarcherRunner raymarcherRunner) {
 		this.raymarcherRunner = raymarcherRunner;
 		this.setPreferredSize(new Dimension(this.raymarcherRunner.getFrame().getHeight(), this.raymarcherRunner.getFrame().getHeight())); 
 		addMouseMotionListener(camera = new Camera());
 		addMouseListener(camera);
+		addMouseWheelListener(camera);
 	}
+		
+			
 	
 	// All drawing code goes here
 	@Override
@@ -34,9 +39,10 @@ public class RaymarcherPanel extends JPanel {
 		this.camera.drawObject(g2d);
 		this.ray = new Ray();
 		this.ray.drawMarches(marchArray, g2d);
+		this.camera.angle += speed;
 	}
 	
-	private ArrayList<Shape> getShapes(){
+	private static ArrayList<Shape> getShapes(){
 		// shapes
 		Circle c1 		= new Circle(100.5, Color.orange, true, new Point(320,320.0));
 		Circle c2 		= new Circle(134.5, Color.magenta, true, new Point(50.1,70.0));
@@ -52,7 +58,7 @@ public class RaymarcherPanel extends JPanel {
 
 	private double findShortestDistanceInArray(Point nextStepPoint){
 		double shortestDistance = 9999;
-		for (Shape shape : this.shape_array){
+		for (Shape shape : shape_array){
 			double distance = shape.computeDistance(nextStepPoint);
 			if (distance < shortestDistance){
 				shortestDistance = distance;
@@ -66,7 +72,7 @@ public class RaymarcherPanel extends JPanel {
 		Point nextStepPoint = camera.getLocation();
 		double shortestDistance = 1;
 		while (shortestDistance > 0.01 && shortestDistance < 640){
-			for (Shape shape : this.shape_array){
+			for (Shape shape : shape_array){
 				shape.drawObject(g2d);
 				shortestDistance = findShortestDistanceInArray(nextStepPoint);
 				// draw camera
@@ -83,7 +89,7 @@ public class RaymarcherPanel extends JPanel {
 	}
 
 	private void drawShapes(Graphics2D g2d){
-		for (Shape shape : this.shape_array){
+		for (Shape shape : shape_array){
 			shape.drawObject(g2d);
 		}
 	}

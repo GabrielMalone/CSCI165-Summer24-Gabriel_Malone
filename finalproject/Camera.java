@@ -5,13 +5,14 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 
-public class Camera extends Circle implements MouseMotionListener, MouseListener{
+public class Camera extends Circle implements MouseMotionListener, MouseListener, MouseWheelListener{
 	
 	int camera_radius = 10;
 	double angle = 0;
-	
 
 	public Camera (){}
 
@@ -32,21 +33,25 @@ public class Camera extends Circle implements MouseMotionListener, MouseListener
 	}
 	@Override
 	public void mousePressed(MouseEvent e){
-	   if (e.getButton() == MouseEvent.BUTTON1){
-			this.angle ++;
-	   }
-	   if (e.getButton() == MouseEvent.BUTTON3){
-			this.angle --;
-	   }
+		if (e.getButton() == MouseEvent.BUTTON1){
+				RaymarcherPanel.speed = 0;
+		}
+		if (e.getButton() == MouseEvent.BUTTON3){
+				RaymarcherPanel.speed *= -1;
+			}
+		}
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		double speed = e.getPreciseWheelRotation();
+				RaymarcherPanel.speed -= speed/1000;
 	}
+	public void mouseDragged(MouseEvent e){}
 	@Override
-	public void mouseDragged(MouseEvent e) {}
-	@Override
-	public void mouseExited(MouseEvent e){ }
+	public void mouseExited(MouseEvent e){}
 	@Override
 	public void mouseReleased(MouseEvent e){}
 	@Override
-	public void mouseEntered(MouseEvent e){ }
+	public void mouseEntered(MouseEvent e){}
 	@Override
 	public void mouseClicked(MouseEvent e){}
 
