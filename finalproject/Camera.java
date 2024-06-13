@@ -31,18 +31,22 @@ public class Camera extends Circle implements MouseMotionListener, MouseListener
 	public void mouseMoved(MouseEvent e) {
 		setLocation(new Point(e.getX() + this.camera_radius, e.getY() + this.camera_radius)); 
 	}
+
 	@Override
 	public void mousePressed(MouseEvent e){
 		if (e.getButton() == MouseEvent.BUTTON1){
+				// stop
 				RaymarcherPanel.speed = 0;
 		}
 		if (e.getButton() == MouseEvent.BUTTON3){
+				// change directions
 				RaymarcherPanel.speed *= -1;
 			}
 		}
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		double speed = e.getPreciseWheelRotation();
+				// rotate freely 
 				RaymarcherPanel.speed -= speed/1000;
 	}
 	public void mouseDragged(MouseEvent e){}

@@ -1,6 +1,7 @@
 // Gabriel Malone / CSCI165 / Final Project / Summer 2024
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.Random;
 
 public class March implements Drawable{
 
@@ -15,8 +16,12 @@ public class March implements Drawable{
     
     @Override
     public void drawObject(Graphics2D g2d) {
-        g2d.setColor(Color.green);
+        Random rand = new Random();
+        int random = rand.nextInt(100000,999999);
+        String color = "#" + random;
+        g2d.setColor(Color.decode(color));
         g2d.drawLine((int)startinPoint.getX() -10, (int)startinPoint.getY()-10, (int)(endPoint.getX())-10, (int)endPoint.getY()-10); 
+        circle.color = Color.decode(color);
         circle.drawObject(g2d);
     }
 
