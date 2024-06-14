@@ -117,10 +117,10 @@ public class Rectangle extends Shape implements Resizable{
             g2d.fillRect((int)getLocation().getX() - 10 , (int)getLocation().getY() - 10 , (int)getWidth(), (int)getHeight());      
         }
         else{        
-            g2d.drawLine((int)this.p1.getX(), (int)this.p1.getY(), (int)this.p2.getX(), (int)this.p2.getY());
-            g2d.drawLine((int)this.p2.getX(), (int)this.p2.getY(), (int)this.p3.getX(), (int)this.p3.getY());
-            g2d.drawLine((int)this.p3.getX(), (int)this.p3.getY(), (int)this.p4.getX(), (int)this.p4.getY());
-            g2d.drawLine((int)this.p4.getX(), (int)this.p4.getY(), (int)this.p1.getX(), (int)this.p1.getY());
+            g2d.drawLine((int)this.p1.getX() - 10 , (int)this.p1.getY()- 10 , (int)this.p2.getX()- 10, (int)this.p2.getY()- 10);
+            g2d.drawLine((int)this.p2.getX()- 10 , (int)this.p2.getY()- 10 , (int)this.p3.getX()- 10, (int)this.p3.getY()- 10);
+            g2d.drawLine((int)this.p3.getX()- 10 , (int)this.p3.getY()- 10 , (int)this.p4.getX()- 10, (int)this.p4.getY()- 10);
+            g2d.drawLine((int)this.p4.getX()- 10 , (int)this.p4.getY()- 10 , (int)this.p1.getX()- 10, (int)this.p1.getY()- 10);
         }
        
     }

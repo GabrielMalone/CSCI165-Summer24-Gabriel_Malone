@@ -49,17 +49,18 @@ public class RaymarcherPanel extends JPanel {
 			Circle 		c3 	= RandomShapeGenerator.randomCircleGenerator();
 			Circle 		c4 	= RandomShapeGenerator.randomCircleGenerator();
 			Circle 		c5 	= RandomShapeGenerator.randomCircleGenerator();
-			Triangle 	t 	= RandomShapeGenerator.randomTriangleGenerator();
-			Square 		s 	= RandomShapeGenerator.randomSquareGenerator();
-			Rectangle 	r 	= RandomShapeGenerator.randomRectangleGenerator();
+			Triangle 	t1  = RandomShapeGenerator.randomTriangleGenerator();
+			Square		s1  = RandomShapeGenerator.randomSquareGenerator();
+			Rectangle	r1	= RandomShapeGenerator.randomRectangleGenerator();
+		
 			shape_array.add(c);
 			shape_array.add(c2);
 			shape_array.add(c3);
 			shape_array.add(c4);
 			shape_array.add(c5);
-			shape_array.add(t);
-			shape_array.add(s);
-			shape_array.add(r);
+			shape_array.add(t1);
+			shape_array.add(s1);
+			shape_array.add(r1);
 		}
 		return shape_array;
 	}
@@ -106,8 +107,12 @@ public class RaymarcherPanel extends JPanel {
 	}
 
 	private void rayShove(){
-		if (this.nearestShape.getClass() == Circle.class && this.nearestShape.getLocation().getX() + .01 < 640 && this.nearestShape.getLocation().getY() + .01 < 640
-		&& this.nearestShape.getLocation().getX() - .01 > 0 && this.nearestShape.getLocation().getY() - .01 > 0){
+		if (this.nearestShape.getClass() == Circle.class && (this.nearestShape.getLocation().getX() >650 || this.nearestShape.getLocation().getY() > 650 || this.nearestShape.getLocation().getX() < 0 || this.nearestShape.getLocation().getY() < 0)){
+			shape_array.remove(nearestShape);
+			//shape_array.add(RandomShapeGenerator.randomCircleGenerator());
+		}
+		if (this.nearestShape.getClass() == Circle.class && this.nearestShape.getLocation().getX() + .01 <= 700 && this.nearestShape.getLocation().getY() + .01 <= 700
+		&& this.nearestShape.getLocation().getX() - .01 >= -100 && this.nearestShape.getLocation().getY() - .01 >= -100){
 			if (camera.getLocation().getX() < this.nearestShape.getLocation().getX() && camera.getLocation().getY() < this.nearestShape.getLocation().getY()){
 				this.nearestShape.setLocation(new Point(this.nearestShape.getLocation().getX() + 0.1, this.nearestShape.getLocation().getY() + 0.1));
 			}
